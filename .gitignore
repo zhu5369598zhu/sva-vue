@@ -2,3 +2,10 @@
 dist/
 node_modules/
 
+# Other
+.babelrc
+.editorconfig
+.eslintignore
+.eslintrc.js
+postcss.config.js
+
