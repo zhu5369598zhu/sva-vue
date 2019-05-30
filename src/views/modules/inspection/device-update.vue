@@ -30,14 +30,14 @@
                 <a style="cursor:pointer">
                   <img class="device-qrcode" :src="getQrcode(dataForm.deviceId)"></img>
                 </a>
+                <div class="gen-qrcode" align="center">
+                  <el-button type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px;">生成二维码</el-button>
+                </div>
               </div>
             </el-form-item>
-            <div align="center">
-              <el-button type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px;">生成二维码</el-button>
-            </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row class="device-info">
           <el-col :span="8">
             <el-form-item label="设备名称:" prop="deviceName">
               <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:140px;"></el-input>
@@ -456,9 +456,10 @@
   }
 </script>
 <style>
-  .device-pic {
-    border-bottom: 1px dashed #c0ccda;
-    margin-bottom: 20px;
+  .device-info {
+    border-top: 1px dashed #c0ccda;
+    margin-top: 30px;
+    padding-top: 10px;
   }
   .device-qrcode-contain {
     width: 148px;
@@ -468,6 +469,10 @@
   .device-qrcode {
     width: 100%;
     height: 100%;
+  }
+  .gen-qrcode {
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   .device-form {
     height: 100%;
