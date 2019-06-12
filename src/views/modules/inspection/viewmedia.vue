@@ -3,7 +3,8 @@
     :close-on-click-modal="true"
     :modal=true
     width="30%"
-    :visible.sync="visible">
+    :visible.sync="visible"
+    append-to-body>
     <div class="view-media" align="center">
       <div classs="view-pic" v-if="type==='jpg'">
       <img 

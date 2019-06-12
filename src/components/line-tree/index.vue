@@ -31,7 +31,7 @@
   export default {
     props: {
       inspectionType: {
-        type: String
+        type: Number
       }
     },
     data () {
@@ -59,10 +59,8 @@
             'inspectionType': this.inspectionType
           })
         }).then(({data}) => {
-          console.log(data)
           this.lineList = data.lineTree
           this.selectLine(data.lineTree)
-          console.log(this.lines)
         })
       },
       selectLine (node) {

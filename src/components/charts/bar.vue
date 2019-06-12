@@ -40,7 +40,7 @@
       echarts
     },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var labelOption = {
           normal: {
             show: false
@@ -108,7 +108,7 @@
             }
           ]
         }
-        this.Chart = echarts.init(document.querySelector('.chart-bar'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
         window.addEventListener('resize', function () {
           this.Chart.resize()

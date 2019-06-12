@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-temperature">
+  <div class="mod-rotation">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -7,7 +7,7 @@
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
-        <linetree inspectionType="1" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
+        <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
       </template>
    <template slot="paneR">
@@ -65,13 +65,13 @@
       <el-tabs type="border-card" value="chart" ref="tabs">
       <el-tab-pane label="图表" name="chart" actived="true">
         <div v-show="hasData===true&&chartType==='chartbar'" id="chartbar" :style="{ 'height': chartHeight + 'px' }">
-          <component  :is="chartType" ref="chartbar" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="温度数据图表" @dblclick="chartDblClick"></component>
+          <component  :is="chartType" ref="chartbar" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="转速数据图表" @dblclick="chartDblClick"></component>
         </div>
         <div v-show="hasData===true&&chartType==='chartline'" id="chartline" :style="{ 'height': chartHeight + 'px' }">
-          <component  :is="chartType" ref="chartline" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="温度数据图表" @dblclick="chartDblClick"></component>
+          <component  :is="chartType" ref="chartline" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="转速数据图表" @dblclick="chartDblClick"></component>
         </div>
         <div v-show="hasData===true&&chartType==='chartpie'" id="chartpie" :style="{ 'height': chartHeight + 'px' }">
-          <component  :is="chartType" ref="chartpie" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="温度数据图表" @dblclick="chartDblClick"></component>
+          <component  :is="chartType" ref="chartpie" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="转速数据图表" @dblclick="chartDblClick"></component>
         </div>
         <div class="no-data" align="center" v-show="hasData===false" :style="{ 'height': chartHeight + 'px' }">暂无数据</div>
       </el-tab-pane>
@@ -139,7 +139,7 @@
               prop="unit"
               header-align="center"
               align="center"
-              width="50"
+              width="80"
               label="单位">
             </el-table-column>
             <el-table-column
@@ -250,6 +250,7 @@
           </el-pagination>
           <viewMedia v-if="viewMediaVisible" ref="viewMedia" ></viewMedia>
           <viewData v-if="viewDataVisible" ref="viewData"></viewData>
+          <viewChart v-if="viewChartVisible" ref="viewChart" ></viewChart>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -269,6 +270,7 @@
   import splitPane from '@/components/split-pane'
   import viewData from './viewdata'
   import viewMedia from './viewmedia'
+  import viewChart from './viewchart'
   export default {
     data () {
       return {
@@ -284,7 +286,7 @@
           statusId: '',
           deviceLevelId: '',
           exceptionId: '',
-          inspectionTypeId: 1,
+          inspectionTypeId: 7,
           isOk: '',
           startTime: null,
           endTime: ''
@@ -307,6 +309,7 @@
         dataListSelections: [],
         viewMediaVisible: false,
         viewDataVisible: false,
+        viewChartVisible: false,
         startDatePicker: this.beginDate(),
         chartHeight: '',
         type: 'dept',
@@ -328,7 +331,8 @@
       linetree,
       splitPane,
       viewMedia,
-      viewData
+      viewData,
+      viewChart
     },
     activated () {
       this.dataForm.startTime = new Date()
@@ -356,10 +360,17 @@
         this.getChartData()
       },
       view (type, url) {
-        this.viewMediaVisible = true
-        this.$nextTick(() => {
-          this.$refs.viewMedia.init(type, url)
-        })
+        if (type !== 'data') {
+          this.viewMediaVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewMedia.init(type, url)
+          })
+        } else {
+          this.viewChartVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewChart.init(type, url)
+          })
+        }
       },
       changeImg (type) {
         if (type === 'jpg') {

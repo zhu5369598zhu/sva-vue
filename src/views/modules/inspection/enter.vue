@@ -7,7 +7,7 @@
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
-        <linetree inspectionType="2" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
+        <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
       </template>
    <template slot="paneR">
@@ -64,10 +64,16 @@
       </el-form>
       <el-tabs type="border-card" value="chart" ref="tabs">
       <el-tab-pane label="图表" name="chart" actived="true">
-        <div :style="{ 'height': chartHeight + 'px' }">
-          <component v-show="hasData===true" :is="chartType" ref="chart" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="录入数据图表"></component>
-          <div class="no-data" align="center" v-show="hasData===false">暂无数据</div>
+        <div v-show="hasData===true&&chartType==='chartbar'" id="chartbar" :style="{ 'height': chartHeight + 'px' }">
+          <component  :is="chartType" ref="chartbar" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="录入数据图表" @dblclick="chartDblClick"></component>
         </div>
+        <div v-show="hasData===true&&chartType==='chartline'" id="chartline" :style="{ 'height': chartHeight + 'px' }">
+          <component  :is="chartType" ref="chartline" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="录入数据图表" @dblclick="chartDblClick"></component>
+        </div>
+        <div v-show="hasData===true&&chartType==='chartpie'" id="chartpie" :style="{ 'height': chartHeight + 'px' }">
+          <component  :is="chartType" ref="chartpie" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="录入数据图表" @dblclick="chartDblClick"></component>
+        </div>
+        <div class="no-data" align="center" v-show="hasData===false" :style="{ 'height': chartHeight + 'px' }">暂无数据</div>
       </el-tab-pane>
       <el-tab-pane label="数据" name="data">
         <div class="show-data">
@@ -133,7 +139,7 @@
               prop="unit"
               header-align="center"
               align="center"
-              width="50"
+              width="80"
               label="单位">
             </el-table-column>
             <el-table-column
@@ -243,6 +249,8 @@
             layout="total, sizes, prev, pager, next, jumper">
           </el-pagination>
           <viewMedia v-if="viewMediaVisible" ref="viewMedia" ></viewMedia>
+          <viewData v-if="viewDataVisible" ref="viewData"></viewData>
+          <viewChart v-if="viewChartVisible" ref="viewChart" ></viewChart>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -260,7 +268,9 @@
   import chartpie from '@/components/charts/pie-cake'
   import linetree from '@/components/line-tree'
   import splitPane from '@/components/split-pane'
+  import viewData from './viewdata'
   import viewMedia from './viewmedia'
+  import viewChart from './viewchart'
   export default {
     data () {
       return {
@@ -298,10 +308,13 @@
         dataListLoading: false,
         dataListSelections: [],
         viewMediaVisible: false,
+        viewDataVisible: false,
+        viewChartVisible: false,
         startDatePicker: this.beginDate(),
         chartHeight: '',
         type: 'dept',
         chartType: 'chartbar',
+        ids: [],
         legend: [],
         category: [],
         unNormal: [],
@@ -317,7 +330,9 @@
       chartline,
       linetree,
       splitPane,
-      viewMedia
+      viewMedia,
+      viewData,
+      viewChart
     },
     activated () {
       this.dataForm.startTime = new Date()
@@ -327,7 +342,6 @@
       this.getInspectionTypeList()
       this.getDeviceStatusList()
       this.getDataList()
-      console.log('activated')
     },
     methods: {
       beginDate () {
@@ -346,10 +360,17 @@
         this.getChartData()
       },
       view (type, url) {
-        this.viewMediaVisible = true
-        this.$nextTick(() => {
-          this.$refs.viewMedia.init(type, url)
-        })
+        if (type !== 'data') {
+          this.viewMediaVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewMedia.init(type, url)
+          })
+        } else {
+          this.viewChartVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewChart.init(type, url)
+          })
+        }
       },
       changeImg (type) {
         if (type === 'jpg') {
@@ -504,7 +525,6 @@
             'endTime': endTime
           })
         }).then(({data}) => {
-          console.log('data %o', data)
           if (data && data.code === 0) {
             this.legend = data.data.legend
             this.series = data.data.series
@@ -553,7 +573,6 @@
             'endTime': endTime
           })
         }).then(({data}) => {
-          console.log('data %o', data)
           if (data && data.code === 0) {
             this.legend = data.data.legend
             this.category = data.data.category
@@ -605,7 +624,6 @@
             'endTime': endTime
           })
         }).then(({data}) => {
-          console.log('data %o', data)
           if (data && data.code === 0) {
             this.legend = data.data.legend
             this.category = data.data.category
@@ -657,8 +675,8 @@
             'endTime': endTime
           })
         }).then(({data}) => {
-          console.log('data %o', data)
           if (data && data.code === 0) {
+            this.ids = data.data.ids
             this.category = data.data.category
             this.series = data.data.series
             if (this.series.length > 0) {
@@ -670,6 +688,13 @@
           } else {
             this.$message.error(data.msg)
           }
+        })
+      },
+      chartDblClick (index) {
+        var id = this.ids[index]
+        this.viewDataVisible = true
+        this.$nextTick(() => {
+          this.$refs.viewData.init(id)
         })
       },
       getChartData () {
@@ -715,9 +740,21 @@
       },
       drawChart () {
         if (this.hasData === true) {
-          this.$nextTick(() => {
-            this.$refs.chart.initChart()
-          })
+          if (this.chartType === 'chartline') {
+            this.$nextTick(() => {
+              this.$refs.chartline.initChart(this.chartType)
+            })
+          }
+          if (this.chartType === 'chartbar') {
+            this.$nextTick(() => {
+              this.$refs.chartbar.initChart(this.chartType)
+            })
+          }
+          if (this.chartType === 'chartpie') {
+            this.$nextTick(() => {
+              this.$refs.chartpie.initChart(this.chartType)
+            })
+          }
         }
       },
       exportToExcel (list) {
@@ -771,7 +808,6 @@
             'endTime': endTime
           })
         }).then(({data}) => {
-          console.log('data %o', data)
           if (data && data.code === 0) {
             this.exportToExcel(data.list)
           } else {

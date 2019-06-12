@@ -146,7 +146,7 @@
         prop="unit"
         header-align="center"
         align="center"
-        width="50"
+        width="80"
         label="单位">
       </el-table-column>
       <el-table-column
@@ -178,7 +178,7 @@
         label="附件">
         <template slot-scope="scope" style="display: inline-block;white-space:normal;">
           <template v-for="item in scope.row.medias">
-            <i style="cursor:pointer" @click="view(item.type, item.guid)">
+            <i style="cursor:pointer" @click="view(item.type, item.guid, item.inspectionTypeId)">
               <icon-svg
                 :name="changeImg(item.type)"
                 style="font-size:16px;"></icon-svg>
@@ -256,6 +256,7 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <viewMedia v-if="viewMediaVisible" ref="viewMedia" ></viewMedia>
+    <viewChart v-if="viewChartVisible" ref="viewChart" ></viewChart>
   </div>
   </div>
   </template>
@@ -269,6 +270,7 @@
   import depttree from '@/components/dept-tree'
   import splitPane from '@/components/split-pane'
   import viewMedia from './viewmedia'
+  import viewChart from './viewchart'
   export default {
     data () {
       return {
@@ -302,13 +304,15 @@
         dataListLoading: false,
         dataListSelections: [],
         viewMediaVisible: false,
+        viewChartVisible: false,
         startDatePicker: this.beginDate()
       }
     },
     components: {
       depttree,
       splitPane,
-      viewMedia
+      viewMedia,
+      viewChart
     },
     activated () {
       this.dataForm.startTime = new Date()
@@ -331,11 +335,26 @@
         this.dataForm.deptId = ''
         this.getDataList()
       },
-      view (type, url) {
-        this.viewMediaVisible = true
-        this.$nextTick(() => {
-          this.$refs.viewMedia.init(type, url)
-        })
+      view (type, url, inspectionTypeId) {
+        if (type !== 'data') {
+          this.viewMediaVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewMedia.init(type, url)
+          })
+        } else {
+          var inspectionType = 'acc'
+          if (inspectionTypeId === 4) {
+            inspectionType = 'acc'
+          } else if (inspectionTypeId === 5) {
+            inspectionType = 'speed'
+          } else if (inspectionTypeId === 6) {
+            inspectionType = 'distance'
+          }
+          this.viewChartVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewChart.init(inspectionType, url)
+          })
+        }
       },
       changeImg (type) {
         if (type === 'jpg') {

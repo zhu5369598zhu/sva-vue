@@ -1,6 +1,5 @@
 <template>
   <div class="charts">
-      <div class="chart-bar" align="center"></div>
   </div>
 </template>
 
@@ -31,7 +30,7 @@
       echarts
     },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var option = {
           color: ['#e3724e', '#30a231'],
           title: {
@@ -40,8 +39,7 @@
             y: '5px'
           },
           tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            trigger: 'item'
           },
           legend: {
             data: this.legend,
@@ -85,7 +83,7 @@
             }
           ]
         }
-        this.Chart = echarts.init(document.querySelector('.chart-bar'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
         window.addEventListener('resize', function () {
           this.Chart.resize()

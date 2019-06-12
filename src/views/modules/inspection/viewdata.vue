@@ -62,7 +62,7 @@
             prop="unit"
             header-align="center"
             align="center"
-            width="50"
+            width="80"
             label="单位">
           </el-table-column>
           <el-table-column
@@ -155,38 +155,78 @@
             label="备注">
           </el-table-column>
         </el-table>
+        <viewMedia v-if="viewMediaVisible" ref="viewMedia" ></viewMedia>
+        <viewChart v-if="viewChartVisible" ref="viewChart" ></viewChart>
       </div>
   </el-dialog>
 </template>
 
 <script>
+  import viewMedia from './viewmedia'
+  import viewChart from './viewchart'
   export default {
     data () {
       return {
         dataList: [],
         dataListLoading: false,
-        visible: false
+        viewMediaVisible: false,
+        viewChartVisible: false,
+        visible: false,
+        inspectionType: ''
       }
+    },
+    components: {
+      viewMedia,
+      viewChart
     },
     methods: {
       // 获取数据列表
-      init (id) {
+      init (id, inspectionType) {
+        this.inspectionType = inspectionType
         this.visible = true
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectionresult/export'),
+          url: this.$http.adornUrl('/inspection/inspectionresult/query'),
           method: 'get',
           params: this.$http.adornParams({
             'id': id
           })
         }).then(({data}) => {
+          console.log(data)
           if (data && data.code === 0) {
-            this.dataList = data.list
+            this.dataList = data.page.list
           } else {
             this.dataList = []
           }
           this.dataListLoading = false
         })
+      },
+      view (type, url) {
+        if (type !== 'data') {
+          this.viewMediaVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewMedia.init(type, url)
+          })
+        } else {
+          this.viewChartVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewChart.init(this.inspectionType, url)
+          })
+        }
+      },
+      changeImg (type) {
+        if (type === 'jpg') {
+          return 'chakan'
+        }
+        if (type === 'png') {
+          return 'chakan'
+        }
+        if (type === 'mp3') {
+          return 'shengyin'
+        }
+        if (type === 'data') {
+          return 'tubiao'
+        }
       },
       rowStyle ({row, rowIndex}) {
         return 'height:30px'

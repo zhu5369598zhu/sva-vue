@@ -142,7 +142,7 @@
         prop="unit"
         header-align="center"
         align="center"
-        width="50"
+        width="80"
         label="单位">
       </el-table-column>
       <el-table-column
@@ -252,6 +252,7 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <viewMedia v-if="viewMediaVisible" ref="viewMedia" ></viewMedia>
+    <viewChart v-if="viewChartVisible" ref="viewChart" ></viewChart>
   </div>
   </div>
   </template>
@@ -265,6 +266,7 @@
   import depttree from '@/components/dept-tree'
   import splitPane from '@/components/split-pane'
   import viewMedia from './viewmedia'
+  import viewChart from './viewchart'
   export default {
     data () {
       return {
@@ -298,13 +300,15 @@
         dataListLoading: false,
         dataListSelections: [],
         viewMediaVisible: false,
+        viewChartVisible: false,
         startDatePicker: this.beginDate()
       }
     },
     components: {
       depttree,
       splitPane,
-      viewMedia
+      viewMedia,
+      viewChart
     },
     activated () {
       this.dataForm.startTime = new Date()
@@ -324,10 +328,17 @@
         }
       },
       view (type, url) {
-        this.viewMediaVisible = true
-        this.$nextTick(() => {
-          this.$refs.viewMedia.init(type, url)
-        })
+        if (type !== 'data') {
+          this.viewMediaVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewMedia.init(type, url)
+          })
+        } else {
+          this.viewChartVisible = true
+          this.$nextTick(() => {
+            this.$refs.viewChart.init(type, url)
+          })
+        }
       },
       changeImg (type) {
         if (type === 'jpg') {
