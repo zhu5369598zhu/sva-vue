@@ -198,6 +198,9 @@
           name: [
             { required: true, message: '巡检项不能为空', trigger: 'change' }
           ],
+          inspectionUnit: [
+            { required: false, trigger: 'change', validator: this.validateinspectionUnit }
+          ],
           inspectionType: [
             { required: true, message: '巡检类型不能为空', trigger: 'change' }
           ],
@@ -224,6 +227,12 @@
       PresuppositionSetting
     },
     methods: {
+      validateinspectionUnit (rule, alue, callback) {
+        if (this.dataForm.inspectionType === 3 && this.dataForm.inspectionUnit === '') {
+          return callback(new Error('单位不能为空'))
+        }
+        return callback()
+      },
       validateDowndownLimit (rule, alue, callback) {
         if ((this.dataForm.downdownUsed === true && this.dataForm.downUsed === true) && (this.dataForm.downdownLimit > this.dataForm.downLimit)) {
           return callback(new Error('下下限值不能大于下限值'))
@@ -443,12 +452,14 @@
             }
           }
           if (newVal === 2 || newVal === 8 || newVal === 9) {
+            this.dataForm.inspectionUnit = ''
             this.dataForm.upLimit = ''
             this.dataForm.upupLimit = ''
             this.dataForm.downLimit = ''
             this.dataForm.downdownLimit = ''
           }
         }
+        console.log(this.dataForm.inspectionUnit)
       }
     }
   }
