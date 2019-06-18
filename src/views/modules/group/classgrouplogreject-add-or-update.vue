@@ -137,8 +137,8 @@
             <!--<el-button type="text" @click="clickTitle('接班人')">打开接班人</el-button>-->
             <!--<el-button type="info" @click="clickTitle('接班人')" icon="el-icon-plus" circle ></el-button>-->
             <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-              <div>
-              <div style="display:inline-block;">
+              <div style="display: flex;justify-content: space-around;align-items: center;">
+              <div style="width:400px;height: 500px;overflow: scroll;">
                   <el-form :model="deptFrom">
                     <el-row>
                       <el-col :span="8">
@@ -180,7 +180,7 @@
                     </el-table-column>
                   </el-table>
               </div>
-              <div style="display:inline-block;margin:10px;">
+              <div style="width:400px;height: 500px;overflow: scroll;">
                 <el-form :inline="true" :model="datauserForm" >
                   <el-row>
                     <el-col :span="8">

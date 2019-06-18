@@ -50,14 +50,14 @@
               </span>
             </el-input>
             <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-              <div>
-                <div style="display:inline-block;">
+            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true' style="clear: both;">
+              <div style="display: flex;justify-content: space-around;align-items: center;">
+                <div style="width:400px;height: 500px;overflow: scroll;">
                   <el-form :model="deptFrom">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 80px;"></el-input>
+                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 120px;"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -95,7 +95,7 @@
                     </el-table-column>
                   </el-table>
                 </div>
-                <div style="display:inline-block;margin:10px;">
+                <div style="width:400px;height: 500px;overflow: scroll;">
                   <el-form :inline="true" :model="datauserForm" >
                     <el-row>
                       <el-col :span="8">
