@@ -22,9 +22,7 @@
           <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
         </el-form-item>-->
         <el-form-item>
-          <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable>
-            <i slot="suffix" ><a href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/ff.jpg" @click=orderRecordHandle(scope.row.orderId,scope.row.orderNumber)></a></i>
-          </el-input>
+          <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-input v-model="dataForm.defectiveTheme" placeholder="请输入缺陷单主题" clearable></el-input>
