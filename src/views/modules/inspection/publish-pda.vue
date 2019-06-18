@@ -69,6 +69,7 @@
     },
     methods: {
       init (deptId) {
+        this.pdaList = []
         this.dataForm.deptId = deptId
         this.visible = true
       },
