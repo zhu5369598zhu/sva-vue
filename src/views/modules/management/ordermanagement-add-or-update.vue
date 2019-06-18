@@ -1,0 +1,536 @@
+<template>
+  <el-dialog
+    :title="!dataForm.id ? '新增' : '修改'"
+    :close-on-click-modal="false"
+    :append-to-body='true'
+    :visible.sync="visible">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form-item label="工单编号" prop="orderNumber">{{this.dataForm.orderNumber}}
+      <!--<el-input v-model="dataForm.orderNumber" placeholder="工单编号"></el-input>-->
+    </el-form-item>
+    <!--<el-form-item label="缺陷工单id" prop="defectiveId">
+      <el-input v-model="dataForm.defectiveId" placeholder="缺陷工单id"></el-input>
+    </el-form-item>
+    <el-form-item label="缺陷工单编号" prop="defectiveNumber">
+      <el-input v-model="dataForm.defectiveNumber" placeholder="缺陷工单编号"></el-input>
+    </el-form-item>-->
+    <el-form-item label="工单主题" prop="orderName">
+      <el-input v-model="dataForm.orderName" placeholder="工单主题"></el-input>
+    </el-form-item>
+    <el-form-item label="所属机构" prop="deptId">
+      <!--<el-input v-model="dataForm.deptId" placeholder="所属机构"></el-input>-->
+      <el-select v-model="dataForm.deptId" placeholder="所属机构" clearable
+      >
+        <el-option
+          v-for="item in deptList"
+          :key="item.deptId"
+          :label="item.name"
+          :value="item.deptId"
+        ></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="工单内容" prop="orderContent">
+      <el-input
+        type="textarea"
+        autosize
+        v-model="dataForm.orderContent" placeholder="工单内容"></el-input>
+    </el-form-item>
+    <el-form-item label="工单填报人意见" prop="orderApplicantOpinion" >
+      <el-input
+        type="textarea"
+        autosize
+        v-model="dataForm.orderApplicantOpinion" placeholder="工单填报人意见"></el-input>
+    </el-form-item>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="工单受理人" prop="orderAcceptor"  label-width="100px">
+            <el-input v-model="dataForm.orderAcceptor" placeholder="工单受理人" :disabled="true">
+              <span slot="suffix">
+                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
+              </span>
+            </el-input>
+            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
+            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
+              <div>
+                <div style="display:inline-block;">
+                  <el-form :model="deptFrom">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 80px;"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-button @click="getDataList()">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="dataList"
+                    style="width: 100%;">
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="80">
+                    </el-table-column>
+                    <table-tree-column
+                      style="width: auto"
+                      prop="name"
+                      header-align="center"
+                      treeKey="deptId"
+                      label="机构名称"
+                    >
+                    </table-tree-column>
+                    <el-table-column
+                      header-align="center"
+                      align="center"
+                      width="150"
+                      label="操作">
+                      <template slot-scope="scope">
+                        <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.deptId)">选中</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+                <div style="display:inline-block;margin:10px;">
+                  <el-form :inline="true" :model="datauserForm" >
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 80px;"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-button @click="search">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="4">
+                        <el-form-item>
+                          <el-button  type="danger" @click="Handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="4">
+                        <el-form-item>
+                          <el-button @click="dialogFormVisible = false">取 消</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="UserdataList"
+                    style="width: 100%;"
+                    :row-style="rowStyle"
+                    @selection-change="selectionChangeHandle"
+                  >
+                    <el-table-column
+                      type="selection"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="username"
+                      header-align="center"
+                      align="center"
+                      label="用户名">
+                    </el-table-column>
+                    <el-table-column
+                      prop="deptName"
+                      header-align="center"
+                      align="center"
+                      label="机构名称">
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+            </el-dialog>
+
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="要求完成时间" prop="requirementTime" label-width="100px">
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取消</el-button>
+      <el-button type="primary" @click="dataFormSubmit()" :disabled="isHttp">确定</el-button>
+    </span>
+  </el-dialog>
+</template>
+
+<script>
+  import { treeDataTranslate } from '@/utils'
+  import TableTreeColumn from '@/components/table-tree-column'
+  export default {
+    data () {
+      return {
+        isHttp: false,
+        visible: false,
+        dialogFormVisible: false,
+        dataList: [],
+        deptList: [],
+        deptFrom: {
+          name: ''
+        },
+        datauserForm: {
+          userName: ''
+        },
+        UserdataList: [],
+        dataListSelections: [],
+        dataForm: {
+          orderId: 0,
+          orderNumber: '',
+          defectiveId: '',
+          defectiveNumber: '',
+          orderName: '',
+          deptId: '',
+          defectiveName: '',
+          orderContent: '',
+          orderApplicant: '',
+          orderApplicantId: '',
+          orderApplicantOpinion: '',
+          orderAcceptor: '',
+          orderAcceptorId: '',
+          orderAcceptorOpinion: '',
+          orderConfirmer: '',
+          orderConfirmerId: '',
+          orderConfirmerOpinion: '',
+          requirementTime: '',
+          confirmedTime: '',
+          actualTime: '',
+          delayTime: '',
+          orderStatus: '',
+          orderType: '',
+          levelId: '',
+          orderDevice: ''
+        },
+        dataRule: {
+          orderNumber: [
+            { required: true, message: '工单编号不能为空', trigger: 'blur' }
+          ],
+          defectiveId: [
+            { required: true, message: '缺陷工单id不能为空', trigger: 'blur' }
+          ],
+          defectiveNumber: [
+            { required: true, message: '缺陷工单编号不能为空', trigger: 'blur' }
+          ],
+          orderName: [
+            { required: true, message: '工单主题不能为空', trigger: 'blur' }
+          ],
+          deptId: [
+            { required: true, message: '所属机构不能为空', trigger: 'blur' }
+          ],
+          defectiveName: [
+            { required: true, message: '缺陷确认人(填报)人不能为空', trigger: 'blur' }
+          ],
+          orderContent: [
+            { required: true, message: '工单内容不能为空', trigger: 'blur' }
+          ],
+          orderApplicant: [
+            { required: true, message: '工单填报人不能为空', trigger: 'blur' }
+          ],
+          orderApplicantId: [
+            { required: true, message: '工单填报人用户id不能为空', trigger: 'blur' }
+          ],
+          orderApplicantOpinion: [
+            { required: true, message: '工单填报人意见不能为空', trigger: 'blur' }
+          ],
+          orderAcceptor: [
+            { required: true, message: '工单受理人不能为空', trigger: 'blur' }
+          ],
+          orderAcceptorId: [
+            { required: true, message: '工单受理人 用户id不能为空', trigger: 'blur' }
+          ],
+          orderAcceptorOpinion: [
+            { required: true, message: '工单受理人意见（结论）不能为空', trigger: 'blur' }
+          ],
+          orderConfirmer: [
+            { required: true, message: '工单确认人不能为空', trigger: 'blur' }
+          ],
+          orderConfirmerId: [
+            { required: true, message: '工单确认人 用户id不能为空', trigger: 'blur' }
+          ],
+          orderConfirmerOpinion: [
+            { required: true, message: '工单确认人意见（结论）不能为空', trigger: 'blur' }
+          ],
+          requirementTime: [
+            { required: true, message: '要求完成时间不能为空', trigger: 'blur' }
+          ],
+          confirmedTime: [
+            { required: true, message: '确认时间不能为空', trigger: 'blur' }
+          ],
+          actualTime: [
+            { required: true, message: '实际完成时间不能为空', trigger: 'blur' }
+          ],
+          delayTime: [
+            { required: true, message: '申请延期时间不能为空', trigger: 'blur' }
+          ],
+          orderStatus: [
+            { required: true, message: '0拟制中，1代受理，2待上报，3待确认，4待结算(待完结)，5已完结不能为空', trigger: 'blur' }
+          ],
+          orderType: [
+            { required: true, message: '0 填报工单，1缺陷工单不能为空', trigger: 'blur' }
+          ],
+          levelId: [
+            { required: true, message: '缺陷等级id不能为空', trigger: 'blur' }
+          ],
+          orderDevice: [
+            { required: true, message: '使用的备件不能为空', trigger: 'blur' }
+          ]
+        },
+        startDatePicker:this.beginDate(),
+      }
+    },
+    components: {
+      TableTreeColumn
+    },
+    mounted () {
+      this.getDeptList()
+      this.getDataList()   // 部门查询
+    },
+    computed: {
+      loginuserName: {
+        get () { return this.$store.state.user.name }
+      },
+      loginuserId: {
+        get (){ return this.$store.state.user.id}
+      }
+
+    },
+    methods: {
+      init (id) {
+        this.dataForm.orderId = id || 0
+        this.visible = true
+        this.isHttp = false
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+          if (this.dataForm.orderId) {
+            this.$http({
+              url: this.$http.adornUrl(`/management/ordermanagement/info/${this.dataForm.orderId}`),
+              method: 'get',
+              params: this.$http.adornParams()
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                this.dataForm.orderNumber = data.ordermanagement.orderNumber
+                this.dataForm.defectiveId = data.ordermanagement.defectiveId
+                this.dataForm.defectiveNumber = data.ordermanagement.defectiveNumber
+                this.dataForm.orderName = data.ordermanagement.orderName
+                this.dataForm.deptId = data.ordermanagement.deptId
+                this.dataForm.defectiveName = data.ordermanagement.defectiveName
+                this.dataForm.orderContent = data.ordermanagement.orderContent
+                this.dataForm.orderApplicant = data.ordermanagement.orderApplicant
+                this.dataForm.orderApplicantId = data.ordermanagement.orderApplicantId
+                this.dataForm.orderApplicantOpinion = data.ordermanagement.orderApplicantOpinion
+                this.dataForm.orderAcceptor = data.ordermanagement.orderAcceptor
+                this.dataForm.orderAcceptorId = data.ordermanagement.orderAcceptorId
+                this.dataForm.orderAcceptorOpinion = data.ordermanagement.orderAcceptorOpinion
+                this.dataForm.orderConfirmer = data.ordermanagement.orderConfirmer
+                this.dataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
+                this.dataForm.orderConfirmerOpinion = data.ordermanagement.orderConfirmerOpinion
+                this.dataForm.requirementTime = data.ordermanagement.requirementTime
+                this.dataForm.confirmedTime = data.ordermanagement.confirmedTime
+                this.dataForm.actualTime = data.ordermanagement.actualTime
+                this.dataForm.delayTime = data.ordermanagement.delayTime
+                this.dataForm.orderStatus = data.ordermanagement.orderStatus
+                this.dataForm.orderType = data.ordermanagement.orderType
+                this.dataForm.levelId = data.ordermanagement.levelId
+                this.dataForm.orderDevice = data.ordermanagement.orderDevice
+              }
+            })
+          }
+        })
+
+        // 新增  工单编号  managementNumber
+        if(this.dataForm.orderId <= 0){
+          this.dataForm.orderApplicantId = this.loginuserId
+          this.dataForm.orderApplicant = this.loginuserName
+          this.$http({
+            url: this.$http.adornUrl('/management/ordermanagement/managementNumber'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            this.dataForm.orderNumber = data.managementNumber
+          })
+
+        }
+
+      },
+      // 机构的下拉列表
+      getDeptList() {
+        if(this.deptList <=0){
+          this.$http({
+            url: this.$http.adornUrl('/sys/dept/tree'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            this.deptList =data
+          })
+
+        }
+      },
+      // 部门查询
+      getDataList (){
+        this.$http({
+          url: this.$http.adornUrl('/sys/dept/list'),
+          method: 'get',
+          params: this.$http.adornParams({'name': this.deptFrom.name})
+        }).then(({data}) => {
+          this.dataList = treeDataTranslate(data, 'deptId')
+
+        })
+
+      },
+
+      // 选中部门 查询用户
+      addOrUpdateHandle(deptId){
+        this.$http({
+          url: this.$http.adornUrl('/sys/user/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'username': '',
+            'deptId': deptId
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.UserdataList = data.page.list
+          } else {
+            this.UserdataList = []
+          }
+          //this.dataListLoading = false
+        })
+
+      },
+      rowStyle ({row, rowIndex}) {
+        return 'height:40px'
+      },
+      cellStyle () {
+        return 'padding:0'
+      },
+      search(){
+        this.getUserDataList()
+      },
+      // 查询用户
+      getUserDataList (){
+        this.$http({
+          url: this.$http.adornUrl('/sys/user/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'username': this.datauserForm.userName,
+            'deptId': ''
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.UserdataList = data.page.list
+          } else {
+            this.UserdataList = []
+          }
+          //this.dataListLoading = false
+        })
+      },
+
+      Handle (username){
+        var userNames =username ? [username]: this.dataListSelections.map(item => {
+          return item.username
+        })
+        var userId = userId ? [userId]:this.dataListSelections.map(item =>{
+          return item.userId
+        })
+        if(this.dataListSelections.length>=2){
+          this.$alert("受理人只能选择一个")
+        }else{
+          this.dataForm.orderAcceptor = userNames.toString()
+          this.dataForm.orderAcceptorId =userId.toString()
+          this.dialogFormVisible = false
+        }
+
+      },
+
+
+      clickTitle (){
+        this.dialogFormVisible =true
+      },
+      // 多选
+      selectionChangeHandle (val) {
+        this.dataListSelections = val
+      },
+
+      beginDate(){
+        let self = this
+        return {
+          disabledDate(time){
+            return time.getTime() < Date.now()//开始时间不选时，结束时间最大值大于等于当天
+          }
+        }
+      },
+      handleStartTimeChange (val) {
+        this.dataForm.requirementTime = val
+      },
+      // 表单提交
+      dataFormSubmit () {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            this.isHttp = true
+            this.$http({
+              url: this.$http.adornUrl(`/management/ordermanagement/${!this.dataForm.orderId ? 'save' : 'update'}`),
+              method: 'post',
+              data: this.$http.adornData({
+                'orderId': this.dataForm.orderId || undefined,
+                'orderNumber': this.dataForm.orderNumber,
+                'defectiveId': this.dataForm.defectiveId,
+                'defectiveNumber': this.dataForm.defectiveNumber,
+                'orderName': this.dataForm.orderName,
+                'deptId': this.dataForm.deptId,
+                'defectiveName': this.dataForm.defectiveName,
+                'orderContent': this.dataForm.orderContent,
+                'orderApplicant': this.dataForm.orderApplicant,
+                'orderApplicantId': this.dataForm.orderApplicantId,
+                'orderApplicantOpinion': this.dataForm.orderApplicantOpinion,
+                'orderAcceptor': this.dataForm.orderAcceptor,
+                'orderAcceptorId': this.dataForm.orderAcceptorId,
+                'orderAcceptorOpinion': this.dataForm.orderAcceptorOpinion,
+                'orderConfirmer': this.dataForm.orderConfirmer,
+                'orderConfirmerId': this.dataForm.orderConfirmerId,
+                'orderConfirmerOpinion': this.dataForm.orderConfirmerOpinion,
+                'requirementTime':this.dataForm.requirementTime,
+                'confirmedTime': this.dataForm.confirmedTime,
+                'actualTime': this.dataForm.actualTime,
+                'delayTime': this.dataForm.delayTime,
+                'orderStatus': this.dataForm.orderStatus,
+                'orderType': this.dataForm.orderType,
+                'levelId': this.dataForm.levelId,
+                'orderDevice': this.dataForm.orderDevice
+              })
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                this.$message({
+                  message: '操作成功',
+                  type: 'success',
+                  duration: 1500,
+                  onClose: () => {
+                    this.visible = false
+                    this.$emit('refreshDataList')
+                  }
+                })
+              } else {
+                this.$message.error(data.msg)
+              }
+            })
+          }
+        })
+      }
+    }
+  }
+</script>
