@@ -596,6 +596,7 @@
     },
     methods: {
       search () {
+        this.lineForm.deptId = null
         this.getLineList(null)
       },
       onDrawBack () {
