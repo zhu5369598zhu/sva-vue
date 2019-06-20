@@ -1,21 +1,20 @@
 <template>
   <el-dialog style="z-index:1"
     :close-on-click-modal="true"
-    :modal=true
+    :modal=false
     width="50%"
-    :visible.sync="visible"
-    append-to-body>
+    :visible.sync="visible">
     <div class="view-chart" align="center" style="height:520px;">
       <div v-show="hasData===true" class="chart-container">
         <div class="remark" v-html="timeRemark"></div>
-        <div id="time-domain" style="width:100%;height:260px;">
+        <div :id="timeChartId" style="width:100%;height:260px;">
           <chartline ref="timeDomainChart" :category="timeXData" :series="timeYData" title="时域图"></chartline>
         </div>
       </div>
       <div v-show="hasData===true" class="chart-container">
         <div class="remark" v-html="fftRemark"></div>
-        <div id="fft-domain" style="width:100%;height:260px;">
-          <chartline ref="FftDomainChart" :category="fftXData" :series="fftYData" title="频域图"></chartline>
+        <div :id="fftChartId" style="width:100%;height:260px;">
+          <chartline ref="FftDomainChart" :category="fftXData" :series="fftYData" title="频域图" yAxisMin="1.0"></chartline>
         </div>
       </div>
       <div class="no-data" align="center" v-show="hasData===false" style="width:400px;height:400px;">{{tip}}</div>
@@ -28,6 +27,9 @@
   export default {
     data () {
       return {
+        guid: '',
+        fftChartId: '',
+        timeChartId: '',
         visible: false,
         hasData: false,
         timeXData: [],
@@ -45,8 +47,13 @@
     },
     methods: {
       init (inspectionType, guid) {
-        console.log(inspectionType)
+        this.fftChartId = 'fft-domain-' + guid
+        console.log(this.fftChartId)
+        this.timeChartId = 'time-domain-' + guid
+        this.hasData = false
         this.visible = true
+        this.timeRemark = ''
+        this.fftRemark = ''
         this.timeXData = []
         this.timeYData = []
         this.fftXData = []
@@ -65,15 +72,9 @@
               this.hasData = false
             }
             this.timeXData = data.chart.timeXData
-            this.timeYData = data.chart.timeYData.map(item => {
-              return parseFloat(item).toFixed(2)
-            })
-            this.fftXData = data.chart.fftXData.map(item => {
-              return parseFloat(item).toFixed(4)
-            })
-            this.fftYData = data.chart.fftYData.map(item => {
-              return parseFloat(item).toFixed(4)
-            })
+            this.timeYData = data.chart.timeYData
+            this.fftXData = data.chart.fftXData
+            this.fftYData = data.chart.fftYData
             this.timeRemark = '<br/>有效值：' + parseFloat(data.chart.rm).toFixed(2) + '<br/>' +
                               '峰&nbsp;&nbsp;值：' + parseFloat(data.chart.pk).toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;' + '峰峰值：' +
                               parseFloat(data.chart.pk2pk).toFixed(2)
@@ -83,17 +84,19 @@
                             '&nbsp;&nbsp;&nbsp;&nbsp;' + '频率：' + parseFloat(data.chart.freq_second).toFixed(4) +
                             '<br/>' + '幅值：' + parseFloat(data.chart.ff_third).toFixed(4) +
                             '&nbsp;&nbsp;&nbsp;&nbsp;' + '频率：' + parseFloat(data.chart.freq_third).toFixed(4)
+            this.hasData = true
             this.drawChart()
           } else {
             this.$message.error(data.msg)
+            this.hasData = false
           }
         })
       },
       drawChart () {
         if (this.hasData === true) {
           this.$nextTick(() => {
-            this.$refs.timeDomainChart.initChart('time-domain')
-            this.$refs.FftDomainChart.initChart('fft-domain')
+            this.$refs.timeDomainChart.initChart(this.timeChartId)
+            this.$refs.FftDomainChart.initChart(this.fftChartId)
           })
         }
       }

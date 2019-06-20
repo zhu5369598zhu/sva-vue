@@ -29,7 +29,7 @@
         <el-col :span="4" class="home-col-right">
           <el-row :gutter="10" class="home-row-right">
             <div class="show-chart">
-              <chartlink></chartlink>
+              <chartlink ref="chartLink" :series="series"></chartlink>
             </div>
           </el-row>
         </el-col>
@@ -47,6 +47,9 @@
 export default {
     data () {
       return {
+        hasData: false,
+        statusList: [],
+        series: [],
         category: ['2012', '2013', '2014', '2015', '2016'],
         bad: [320, 332, 301, 334, 390],
         normal: [320, 332, 301, 334, 390],
@@ -60,7 +63,41 @@ export default {
       chartcolumn,
       chartlink
     },
+    mounted () {
+      this.getDataList()
+    },
     methods: {
+      getDataList () {
+        this.getChartStatus()
+      },
+      getChartStatus () {
+        this.$http({
+          url: this.$http.adornUrl(`/inspection/device/getstatus`),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          console.log(data)
+          if (data && data.code === 0) {
+            if (data.status.length > 0) {
+              this.hasData = true
+              this.series = data.status
+            }
+            this.statusList = data.status
+            this.drawChart()
+          } else {
+            this.$message.error(data.msg)
+            this.hasData = false
+          }
+        })
+      },
+      drawChart () {
+        if (this.hasData === true) {
+          this.$nextTick(() => {
+            this.$refs.chartLink.initChart('chartDevice')
+            console.log('draw')
+          })
+        }
+      }
     }
 }
 </script>

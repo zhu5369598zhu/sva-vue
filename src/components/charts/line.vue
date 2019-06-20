@@ -21,6 +21,9 @@
       },
       series: {
         type: Array
+      },
+      yAxisMin:{
+        type: Number
       }
     },
     data () {

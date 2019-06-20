@@ -6,7 +6,8 @@
       </div>
     </div>
     <div class="exception-chart-down">
-      <div class="chart-link" align="center"></div>
+      <div id="chartDevice" class="chart-link" align="center">
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +19,11 @@
   require('echarts/lib/component/tooltip')
   require('echarts/lib/component/legend')
   export default {
+    props: {
+      series: {
+        type: Array
+      }
+    },
     data () {
       return {
         chart: null
@@ -26,11 +32,8 @@
     components: {
       echarts
     },
-    mounted () {
-      this.initChart()
-    },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var option = {
           tooltip: {
             trigger: 'item',
@@ -146,46 +149,10 @@
               },
               name: '报警'
             }],
-            links: [{
-              source: 'A类',
-              target: '正常',
-              value: 80
-            }, {
-              source: 'B类',
-              target: '正常',
-              value: 80
-            }, {
-              source: 'C类',
-              target: '正常',
-              value: 60
-            }, {
-              source: 'A类',
-              target: '危险',
-              value: 1
-            }, {
-              source: 'B类',
-              target: '危险',
-              value: 3
-            }, {
-              source: 'C类',
-              target: '危险',
-              value: 2
-            }, {
-              source: 'A类',
-              target: '报警',
-              value: 10
-            }, {
-              source: 'B类',
-              target: '报警',
-              value: 3
-            }, {
-              source: 'C类',
-              target: '报警',
-              value: 2
-            }]
+            links: this.series
           }
         }
-        this.Chart = echarts.init(document.querySelector('.chart-link'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
 
         window.addEventListener('resize', function () {
