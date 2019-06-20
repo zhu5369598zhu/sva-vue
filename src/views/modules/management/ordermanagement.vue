@@ -83,12 +83,6 @@
           <a href="#"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
         </template>
       </el-table-column>
-      <!--<el-table-column
-        prop="defectiveId"
-        header-align="center"
-        align="center"
-        label="缺陷工单id">
-      </el-table-column>-->
       <el-table-column
         prop="orderName"
         header-align="center"
@@ -290,10 +284,6 @@
             <el-form-item label="工单操作人" prop="orderApplicant">
               <el-input v-model="orderDataForm.orderApplicant"></el-input>
             </el-form-item>
-            <!--<el-form-item label="工单受理人" prop="orderAcceptor">
-              <el-input v-model="orderDataForm.orderAcceptor"></el-input>
-            </el-form-item>-->
-
           </div>
           <div class="div-c">
             <el-form-item label="工单主题" prop="orderName">
@@ -305,10 +295,8 @@
                 type="textarea"
                 v-model="orderDataForm.orderContent"></el-input>
             </el-form-item>
-
           </div>
           <div class="div-d">
-
             <el-form-item label="结论" prop="orderAcceptorOpinion">
               <el-input
                 :rows="6"
@@ -386,7 +374,6 @@
                 type="textarea"
                 v-model="orderDataForm.processingResult"></el-input>
             </el-form-item>
-
           </div>
           <div class="div-d">
             <el-form-item label="是否使用备件">
@@ -410,7 +397,6 @@
               <el-button type="warning" >申请延期</el-button>
               <el-button type="primary" >上报</el-button>
             </el-form-item>
-
           </div>
         </el-form>
       </div>
@@ -466,16 +452,6 @@
             <el-form-item label="工单受理人" prop="orderAcceptor">
               <el-input v-model="orderDataForm.orderAcceptor"></el-input>
             </el-form-item>
-           <!-- <el-form-item label="确定人" prop="orderConfirmer">
-              <el-input v-model="orderDataForm.orderConfirmer"></el-input>
-            </el-form-item>
-            <el-form-item label="工单下发人" prop="orderAcceptor">
-              <el-input v-model="orderDataForm.orderAcceptor"></el-input>
-            </el-form-item>
-            <el-form-item label="申请延期时间" prop="delayTime">
-              <el-input v-model="orderDataForm.delayTime"></el-input>
-            </el-form-item>-->
-
           </div>
           <div class="div-c">
             <el-form-item label="工单主题" prop="orderName">
@@ -487,10 +463,8 @@
                 type="textarea"
                 v-model="orderDataForm.processingResult"></el-input>
             </el-form-item>
-
           </div>
           <div class="div-d">
-
             <el-form-item label="是否使用备件">
               <el-switch
                 v-model="orderDataForm.value1"
@@ -511,7 +485,6 @@
               <el-button type="warning" >打回</el-button>
               <el-button type="primary" >确认</el-button>
             </el-form-item>
-
           </div>
         </el-form>
       </div>
@@ -567,7 +540,6 @@
             <el-form-item label="工单受理人" prop="orderAcceptor">
               <el-input v-model="orderDataForm.orderAcceptor"></el-input>
             </el-form-item>
-
           </div>
           <div class="div-c">
             <el-form-item label="工单主题" prop="orderName">
@@ -579,10 +551,8 @@
                 type="textarea"
                 v-model="orderDataForm.processingResult"></el-input>
             </el-form-item>
-
           </div>
           <div class="div-d">
-
             <el-form-item label="是否使用备件">
               <el-switch
                 v-model="orderDataForm.value1"
@@ -602,7 +572,6 @@
             <el-form-item>
               <el-button type="primary" >结单</el-button>
             </el-form-item>
-
           </div>
         </el-form>
       </div>
@@ -672,7 +641,6 @@
 
           </div>
           <div class="div-d">
-
             <el-form-item label="是否使用备件">
               <el-switch
                 v-model="orderDataForm.value1"
@@ -689,10 +657,6 @@
                 type="textarea"
                 v-model="orderDataForm.orderAcceptorOpinion"></el-input>
             </el-form-item>
-            <!--<el-form-item>
-              <el-button type="primary" >重新发起</el-button>
-            </el-form-item>-->
-
           </div>
         </el-form>
       </div>
@@ -722,7 +686,7 @@
           orderName: '',
           orderStatus: '',
           startTime: null,
-          endTime: null,
+          endTime: null
         },
         value1: true,
         deptList: [],
@@ -765,15 +729,15 @@
         curPercent: 12,
         oldPercent: 12,
         orderStatusList: [
-            {id:0,name:"拟制中"},
-            {id:1,name:"已下发待受理"},
-            {id:2,name:"已受理待上报"},
-            {id:3,name:"已上报待确认"},
-            {id:4,name:"已确认待完结"},
-            {id:5,name:"已完结"},
-            {id:6,name:"已下发被打回"},
-            {id:7,name:"已上报被打回"}
-            ],
+            {id: 0, name: '拟制中'},
+            {id: 1, name: '已下发待受理'},
+            {id: 2, name: '已受理待上报'},
+            {id: 3, name: '已上报待确认'},
+            {id: 4, name: '已确认待完结'},
+            {id: 5, name: '已完结'},
+            {id: 6, name: '已下发被打回'},
+            {id: 7, name: '已上报被打回'}
+        ],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -782,7 +746,7 @@
         dataListSelections: [],
         addOrUpdateVisible: false,
         orderRecordVisible: false,
-        startDatePicker:this.beginDate(),
+        startDatePicker: this.beginDate(),
         startDateDelayPicker: this.beginDelayDate()
       }
     },
@@ -794,34 +758,29 @@
     },
     activated () {
       this.getDataList()
-
-        this.getDeptList()
-        //this.getDataList()   // 部门查询
-
+      this.getDeptList()
     },
     computed: {
       loginuserName: {
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get (){ return this.$store.state.user.id}
+        get () { return this.$store.state.user.id }
       }
 
     },
     methods: {
-      beginDate(){
-        let self = this
+      beginDate () {
         return {
-          disabledDate(time){
-            return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() > Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
-      beginDelayDate(){
-        let self = this
+      beginDelayDate () {
         return {
-          disabledDate(time){
-            return time.getTime() < Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -845,10 +804,9 @@
       resize (val) {
         this.curPercent = val
       },
-      clickRow(row){
-
+      clickRow (row) {
         this.$http({
-          url: this.$http.adornUrl('/management/ordermanagement/info/'+row.orderId),
+          url: this.$http.adornUrl('/management/ordermanagement/info/' + row.orderId),
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {
@@ -884,93 +842,83 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-          var dom = document.getElementById( "did" );
-          var dom1 = document.getElementById( "did_1" );
-          var dom2 = document.getElementById("did_2");
-          var dom3 = document.getElementById("did_3");
-          var dom4 = document.getElementById("did_4");
-          var dom5 =document.getElementById("did_5");
+          var dom = document.getElementById('did')
+          var dom1 = document.getElementById('did_1')
+          var dom2 = document.getElementById('did_2')
+          var dom3 = document.getElementById('did_3')
+          var dom4 = document.getElementById('did_4')
+          var dom5 = document.getElementById('did_5')
 
           // 设置纵向滑动
-          var down_up = document.getElementById("data-up")
-          down_up.style.height="100px";
-          down_up.style.overflowY ="scroll";
-
-
-
-          if(this.orderDataForm.orderStatus === 0 ||this.orderDataForm.orderStatus === 6){
-
-
-            dom.style.display="block"
-            dom1.style.display="none"
-            dom2.style.display="none"
-            dom3.style.display="none"
-            dom4.style.display="none"
-            dom5.style.display="none"
-
-          }else if(this.orderDataForm.orderStatus === 1){
-            dom.style.display="none"
-            dom1.style.display="block"
-            dom2.style.display="none"
-            dom3.style.display="none"
-            dom4.style.display="none"
-            dom5.style.display="none"
-          }else if(this.orderDataForm.orderStatus === 2 ||this.orderDataForm.orderStatus ===7){
-            dom.style.display="none"
-            dom1.style.display="none"
-            dom2.style.display="block"
-            dom3.style.display="none"
-            dom4.style.display="none"
-            dom5.style.display="none"
-
-          }else if(this.orderDataForm.orderStatus === 3){
-            dom.style.display="none"
-            dom1.style.display="none"
-            dom2.style.display="none"
-            dom3.style.display="block"
-            dom4.style.display="none"
-            dom5.style.display="none"
-
-          }else if(this.orderDataForm.orderStatus === 4){
-            dom.style.display="none"
-            dom1.style.display="none"
-            dom2.style.display="none"
-            dom3.style.display="none"
-            dom4.style.display="block"
-            dom5.style.display="none"
-
-          }else if(this.orderDataForm.orderStatus === 5 ){
-            dom.style.display="none"
-            dom1.style.display="none"
-            dom2.style.display="none"
-            dom3.style.display="none"
-            dom4.style.display="none"
-            dom5.style.display="block"
+          var downup = document.getElementById('data-up')
+          downup.style.height = '100px'
+          downup.style.overflowY = 'scroll'
+          if (this.orderDataForm.orderStatus === 0 || this.orderDataForm.orderStatus === 6) {
+            dom.style.display = 'block'
+            dom1.style.display = 'none'
+            dom2.style.display = 'none'
+            dom3.style.display = 'none'
+            dom4.style.display = 'none'
+            dom5.style.display = 'none'
+          } else if (this.orderDataForm.orderStatus === 1) {
+            dom.style.display = 'none'
+            dom1.style.display = 'block'
+            dom2.style.display = 'none'
+            dom3.style.display = 'none'
+            dom4.style.display = 'none'
+            dom5.style.display = 'none'
+          } else if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
+            dom.style.display = 'none'
+            dom1.style.display = 'none'
+            dom2.style.display = 'block'
+            dom3.style.display = 'none'
+            dom4.style.display = 'none'
+            dom5.style.display = 'none'
+          } else if (this.orderDataForm.orderStatus === 3) {
+            dom.style.display = 'none'
+            dom1.style.display = 'none'
+            dom2.style.display = 'none'
+            dom3.style.display = 'block'
+            dom4.style.display = 'none'
+            dom5.style.display = 'none'
+          } else if (this.orderDataForm.orderStatus === 4) {
+            dom.style.display = 'none'
+            dom1.style.display = 'none'
+            dom2.style.display = 'none'
+            dom3.style.display = 'none'
+            dom4.style.display = 'block'
+            dom5.style.display = 'none'
+          } else if (this.orderDataForm.orderStatus === 5) {
+            dom.style.display = 'none'
+            dom1.style.display = 'none'
+            dom2.style.display = 'none'
+            dom3.style.display = 'none'
+            dom4.style.display = 'none'
+            dom5.style.display = 'block'
           }
         })
       },
-      getDeptList() {
-        if(this.deptList <=0){
+      getDeptList () {
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
       },
       // 拟制中变 成 待受理 (确认并派单)
-      orderConfirm(){
+      orderConfirm () {
         // 提交
-        if(this.orderDataForm.orderApplicantId === this.loginuserId){
+        if (this.orderDataForm.orderApplicantId === this.loginuserId) {
           this.orderDataForm.orderStatus = 1
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagement/orderupdate`),
             method: 'post',
             data: this.$http.adornData({
-              'orderId': this.orderDataForm.orderId ,
+              'orderId': this.orderDataForm.orderId,
               'orderNumber': this.orderDataForm.orderNumber,
               'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
@@ -987,7 +935,7 @@
               'orderConfirmer': this.orderDataForm.orderConfirmer,
               'orderConfirmerId': this.orderDataForm.orderConfirmerId,
               'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'requirementTime':this.orderDataForm.requirementTime,
+              'requirementTime': this.orderDataForm.requirementTime,
               'confirmedTime': this.orderDataForm.confirmedTime,
               'actualTime': this.orderDataForm.actualTime,
               'delayTime': this.orderDataForm.delayTime,
@@ -1007,18 +955,15 @@
                   this.$emit('refreshDataList')
                 }
               })
-              var dom = document.getElementById( "did" );
-              dom.style.display="none"
-              //this.dataForm.deptId = ''
-              this.search();
+              var dom = document.getElementById('did')
+              dom.style.display = 'none'
+              this.search()
             } else {
               this.$message.error(data.msg)
             }
           })
-
-
-        }else{
-          this.$alert("必须由填报用户来确认派单")
+        } else {
+          this.$alert('必须由填报用户来确认派单')
         }
       },
       // 获取数据列表
@@ -1028,8 +973,7 @@
         let endTime = new Date(this.dataForm.endTime)
         endTime = formatDate(endTime, 'yyyy-MM-dd hh:mm:ss')
         if (startTime === 'NaN-aN-aN aN:aN:aN' || startTime === '1970-01-01 08:00:00' || null) {
-          startTime =''
-
+          startTime = ''
         }
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
@@ -1060,7 +1004,7 @@
           this.dataListLoading = false
         })
       },
-      exportToExcel(list){
+      exportToExcel (list) {
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
@@ -1088,8 +1032,7 @@
         let endTime = new Date(this.dataForm.endTime)
         endTime = formatDate(endTime, 'yyyy-MM-dd hh:mm:ss')
         if (startTime === 'NaN-aN-aN aN:aN:aN' || startTime === '1970-01-01 08:00:00' || null) {
-          startTime =''
-
+          startTime = ''
         }
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
@@ -1118,7 +1061,6 @@
           this.dataListLoading = false
         })
       },
-
       handleStartTimeChange (val) {
         this.dataForm.startTime = val
       },
@@ -1145,24 +1087,21 @@
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id,orderStatus) {
-
-        if(id>0 && orderStatus !== 0 && orderStatus !==6){
-          this.$alert("只能修改 拟制中和已派单被打回的工单")
-        }else{
+      addOrUpdateHandle (id, orderStatus) {
+        if (id > 0 && orderStatus !== 0 && orderStatus !== 6) {
+          this.$alert('只能修改 拟制中和已派单被打回的工单')
+        } else {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(id)
           })
         }
-
       },
       // 删除
-      deleteHandle (id,orderStatus) {
-
-        if(id>0 && orderStatus>0){
-          this.$alert("只能删除 拟制中的工单")
-        }else{
+      deleteHandle (id, orderStatus) {
+        if (id > 0 && orderStatus > 0) {
+          this.$alert('只能删除 拟制中的工单')
+        } else {
           var ids = id ? [id] : this.dataListSelections.map(item => {
             return item.orderId
           })
@@ -1193,51 +1132,27 @@
         }
       },
       // 操作记录
-      orderRecordHandle(id,orderNumber){
+      orderRecordHandle (id, orderNumber) {
         this.orderRecordVisible = true
-
         this.$nextTick(() => {
-          this.$refs.OrderRecord.init(id,orderNumber)
-
+          this.$refs.OrderRecord.init(id, orderNumber)
         })
       }
-
-
-
     }
   }
 </script>
 
  <style>
-   /*.up {
-     float: top;
-   }
-
-   .down {
-   }
-   .div-a{ float:left;width:21%;height: 100%;border:1px solid #F00}
-   .div-b{ float:left;width:21%;height: 100%;border:1px solid #000}
-   .div-c{ float:left;width:28%;height: 100%;border:1px solid #F00}
-   .div-d{ float:left;width:30%;height: 100%;border:1px solid #000}*/
    .up {
      float: top;
    }
    .site-content .show-data-up{
-    /* min-height: 350px;*/
-     /*overflow-y:scroll;
-     height: 100px;*/
      position:absolute;
      height: 600px;
-     /*overflow-y:scroll;*/
      z-index: 20;
    }
 
   .site-content .show-data-down{
-      /*position: fixed;
-      right:0px;
-      bottom:0;
-      width:75%;
-      height:300px;*/
       position:absolute;
       z-index: 10;
       bottom:0;
@@ -1246,10 +1161,9 @@
       height:300px;
 
    }
-   .div-a{ float:left;width:24%;height: 100%;/*border:1px solid #F00*/}
-   .div-b{ float:left;width:24%;height: 100%;/*border:1px solid #000*/}
-   .div-c{ float:left;width:28%;height: 100%;/*border:1px solid #F00*/}
-   .div-d{ float:left;width:24%;height: 100%;/*border:1px solid #000*/}
-
+   .div-a{ float:left;width:24%;height: 100%;}
+   .div-b{ float:left;width:24%;height: 100%;}
+   .div-c{ float:left;width:28%;height: 100%;}
+   .div-d{ float:left;width:24%;height: 100%;}
 
  </style>

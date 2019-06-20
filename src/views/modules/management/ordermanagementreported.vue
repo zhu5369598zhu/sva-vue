@@ -17,7 +17,6 @@
     <div class="show-data-up" id="data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <!--<el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>-->
         工单列表
       </el-form-item>
       <el-form-item>
@@ -235,7 +234,7 @@
                     </el-col>
                     <el-col :span="4">
                       <el-form-item>
-                        <el-button  type="danger" @click="Handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                        <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
                       </el-form-item>
                     </el-col>
                     <el-col :span="4">
@@ -316,8 +315,8 @@
         </el-form-item>
         <el-form-item>
           <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
-          <el-button type="warning" @click="Reject()">申请延期</el-button>
-          <el-button type="primary" @click="Acceptance()">上报</el-button>
+          <el-button type="warning" @click="reJect()">申请延期</el-button>
+          <el-button type="primary" @click="accepTance()">上报</el-button>
         </el-form-item>
 
       </div>
@@ -351,7 +350,7 @@
           orderName: '',
           orderStatus: '',
           startTime: null,
-          endTime: null,
+          endTime: null
         },
         dialogFormVisible: false,
         deptdataList: [],
@@ -403,20 +402,20 @@
         curPercent: 12,
         oldPercent: 12,
         orderStatusList: [
-            {id:0,name:"拟制中"},
-            {id:1,name:"已下发待受理"},
-            {id:2,name:"已受理待上报"},
-            {id:3,name:"已上报待确认"},
-            {id:4,name:"已确认待完结"},
-            {id:5,name:"已完结"}],
+            {id: 0, name: '拟制中'},
+            {id: 1, name: '已下发待受理'},
+            {id: 2, name: '已受理待上报'},
+            {id: 3, name: '已上报待确认'},
+            {id: 4, name: '已确认待完结'},
+            {id: 5, name: '已完结'}
+        ],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
         dataListLoading: false,
-        dataListSelections: [],
         addOrUpdateVisible: false,
-        startDatePicker:this.beginDate(),
+        startDatePicker: this.beginDate(),
         startDateDelayPicker: this.beginDelayDate()
       }
     },
@@ -428,39 +427,33 @@
     },
     activated () {
       this.getDataList()
-
       this.getDeptList()
       this.getdeptDataList()   // 部门查询
-
     },
     computed: {
       loginuserName: {
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get (){ return this.$store.state.user.id}
-      },
-
-
+        get () { return this.$store.state.user.id }
+      }
     },
     methods: {
-      beginDelayDate(){
-        let self = this
+      beginDelayDate () {
         return {
-          disabledDate(time){
-            return time.getTime() < Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
-      beginDate(){
-        let self = this
+      beginDate () {
         return {
-          disabledDate(time){
-            return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() > Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
-      rowStyle ({row, rowIndex}) {
+      rowStyle () {
         return 'height:40px'
       },
       cellStyle () {
@@ -488,20 +481,17 @@
       },
 
       // 部门查询
-      getdeptDataList (){
+      getdeptDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
           params: this.$http.adornParams({'name': this.deptFrom.name})
         }).then(({data}) => {
           this.deptdataList = treeDataTranslate(data, 'deptId')
-
         })
-
       },
-
       // 选中部门 查询用户
-      addOrUpdateHandle(deptId){
+      addOrUpdateHandle (deptId) {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -515,15 +505,13 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
-
       },
-      search(){
+      search () {
         this.getUserDataList()
       },
       // 查询用户
-      getUserDataList (){
+      getUserDataList () {
         this.$http({
           url: this.$http.adornUrl('/  /user/list'),
           method: 'get',
@@ -537,39 +525,34 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
       },
 
-      Handle (username){
-        var userNames =username ? [username]: this.dataListSelections.map(item => {
+      handle (username, userid) {
+        var userNames = username ? [username] : this.dataListSelections.map(item => {
           return item.username
         })
-        var userId = userId ? [userId]:this.dataListSelections.map(item =>{
+        var userId = userid ? [userid] : this.dataListSelections.map(item =>{
           return item.userId
         })
-        if(this.dataListSelections.length>=2){
-          this.$alert("确认人只能选择一个")
-        }else{
+        if (this.dataListSelections.length >= 2) {
+          this.$alert('确认人只能选择一个')
+        } else {
           this.orderDataForm.orderConfirmer = userNames.toString()
           this.orderDataForm.orderConfirmerId = userId.toString()
           this.dialogFormVisible = false
         }
-
       },
-      clickTitle (){
-        this.dialogFormVisible =true
+      clickTitle () {
+        this.dialogFormVisible = true
       },
       // 多选
       selectionChangeHandle (val) {
         this.dataListSelections = val
       },
-
-
-      clickRow(row){
-
+      clickRow (row) {
         this.$http({
-          url: this.$http.adornUrl('/management/ordermanagementreported/info/'+row.orderId),
+          url: this.$http.adornUrl('/management/ordermanagementreported/info/' + row.orderId),
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {
@@ -605,70 +588,62 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-
-          var down_up = document.getElementById("data-up")
-          down_up.style.height="100px";
-          down_up.style.overflowY ="scroll";
-
-          if(this.orderDataForm.orderStatus === 0){
-            var dom = document.getElementById( "did" );
-            dom.style.display="block"
-          }else if(this.orderDataForm.orderStatus === 1){
-            var dom = document.getElementById( "did_1" );
-            dom.style.display="block"
-          }else if(this.orderDataForm.orderStatus === 2 ||this.orderDataForm.orderStatus === 7){
-            var dom = document.getElementById( "did_2" );
-            dom.style.display="block"
-          }else if(this.orderDataForm.orderStatus === 3){
-            var dom = document.getElementById( "did_3" );
-            dom.style.display="block"
-          }else if(this.orderDataForm.orderStatus === 4){
-            var dom = document.getElementById( "did_4" );
-            dom.style.display="block"
-          }else if(this.orderDataForm.orderStatus === 5 ){
-            var dom = document.getElementById( "did_5" );
-            dom.style.display="block"
+          var downup = document.getElementById('data-up')
+          downup.style.height = '100px'
+          downup.style.overflowY = 'scroll'
+          if (this.orderDataForm.orderStatus === 0) {
+            var dom = document.getElementById('did')
+            dom.style.display = 'block'
+          } else if (this.orderDataForm.orderStatus === 1) {
+            var dom1 = document.getElementById('did_1')
+            dom1.style.display = 'block'
+          } else if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
+            var dom2 = document.getElementById('did_2')
+            dom2.style.display = 'block'
+          } else if (this.orderDataForm.orderStatus === 3) {
+            var dom3 = document.getElementById('did_3')
+            dom3.style.display = 'block'
+          } else if (this.orderDataForm.orderStatus === 4) {
+            var dom4 = document.getElementById('did_4')
+            dom4.style.display = 'block'
+          } else if (this.orderDataForm.orderStatus === 5) {
+            var dom5 = document.getElementById('did_5')
+            dom5.style.display = 'block'
           }
         })
       },
-      getDeptList() {
-        if(this.deptList <=0){
+      getDeptList () {
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
       },
-
-
-      //已受理待上报状态 提交到 已上报待确认
-      Acceptance(){
-        if(this.orderDataForm.orderConfirmerId === 0){
-          this.$alert("确认人不能为空")
-        }else{
+      // 已受理待上报状态 提交到 已上报待确认
+      accepTance () {
+        if (this.orderDataForm.orderConfirmerId === 0) {
+          this.$alert('确认人不能为空')
+        } else {
           this.orderDataForm.orderStatus = 3
           this.orderConfirm()
         }
       },
       // 延期申请
-      Reject(){
+      reJect () {
         this.orderConfirm()
       },
-      orderConfirm(){
+      orderConfirm () {
         // 提交
-        if(this.orderDataForm.orderAcceptorId === this.loginuserId){
-
-
-
+        if (this.orderDataForm.orderAcceptorId === this.loginuserId) {
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagementreported/orderupdate`),
             method: 'post',
             data: this.$http.adornData({
-              'orderId': this.orderDataForm.orderId ,
+              'orderId': this.orderDataForm.orderId,
               'orderNumber': this.orderDataForm.orderNumber,
               'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
@@ -687,7 +662,7 @@
               'orderConfirmer': this.orderDataForm.orderConfirmer,
               'orderConfirmerId': this.orderDataForm.orderConfirmerId,
               'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'requirementTime':this.orderDataForm.requirementTime,
+              'requirementTime': this.orderDataForm.requirementTime,
               'confirmedTime': this.orderDataForm.confirmedTime,
               'actualTime': this.orderDataForm.actualTime,
               'delayTime': this.orderDataForm.delayTime,
@@ -708,22 +683,16 @@
                   this.$emit('refreshDataList')
                 }
               })
-              var dom = document.getElementById( "did_2" );
-              dom.style.display="none"
+              var dom = document.getElementById('did_2')
+              dom.style.display = 'none'
               this.getDataList()
             } else {
               this.$message.error(data.msg)
             }
           })
-
-
-
-        }else{
-          this.$alert("必须由受理用户来操作")
+        } else {
+          this.$alert('必须由受理用户来操作')
         }
-
-
-
       },
       // 获取数据列表
       getDataList () {
@@ -732,14 +701,12 @@
         let endTime = new Date(this.dataForm.endTime)
         endTime = formatDate(endTime, 'yyyy-MM-dd hh:mm:ss')
         if (startTime === 'NaN-aN-aN aN:aN:aN' || startTime === '1970-01-01 08:00:00' || null) {
-          startTime =''
-
+          startTime = ''
         }
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
         }
         this.dataListLoading = true
-        //this.dataForm.orderStatus
         this.$http({
           url: this.$http.adornUrl('/management/ordermanagementreported/list'),
           method: 'get',
@@ -766,7 +733,7 @@
           this.dataListLoading = false
         })
       },
-      exportToExcel(list){
+      exportToExcel (list) {
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
@@ -794,14 +761,12 @@
         let endTime = new Date(this.dataForm.endTime)
         endTime = formatDate(endTime, 'yyyy-MM-dd hh:mm:ss')
         if (startTime === 'NaN-aN-aN aN:aN:aN' || startTime === '1970-01-01 08:00:00' || null) {
-          startTime =''
-
+          startTime = ''
         }
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
         }
         this.dataListLoading = true
-        //this.dataForm.orderStatus
         this.$http({
           url: this.$http.adornUrl('/management/ordermanagementreported/list'),
           method: 'get',
@@ -823,19 +788,9 @@
           } else {
             this.$message.error(data.msg)
           }
-
-          /*if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
-          } else {
-            this.dataList = []
-            this.totalPage = 0
-          }*/
           this.dataListLoading = false
         })
       },
-
-
       handleStartTimeChange (val) {
         this.dataForm.startTime = val
       },
@@ -856,7 +811,7 @@
       currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
-      },
+      }
     }
   }
 </script>
@@ -865,40 +820,21 @@
    .up {
      float: top;
    }
-   /*.site-content .show-data-up{
-     min-height: 350px;
-   }
-
-   .show-data-down {
-     margin-top: 0px;
-   }*/
-
    .site-content .show-data-up{
-     /* min-height: 350px;*/
-     /*overflow-y:scroll;
-     height: 100px;*/
      position:absolute;
      height: 600px;
      width: 95%;
-     /*overflow-y:scroll;*/
      z-index: 20;
    }
 
    .site-content .show-data-down{
-     /*position: fixed;
-     right:0px;
-     bottom:0;
-     width:75%;
-     height:300px;*/
      position:absolute;
      z-index: 10;
      bottom:0;
      left: 20px;
      width:100%;
      height:300px;
-
    }
-
    .div-a{ float:left;width:24%;height: 100%;}
    .div-b{ float:left;width:24%;height: 100%;}
    .div-c{ float:left;width:28%;height: 100%;}

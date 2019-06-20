@@ -38,15 +38,6 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <!--<el-form-item label="日志类型（1:班长日志，2班前日志，3班后日志）" prop="logType">
-      <el-input v-model="dataForm.logType" placeholder="日志类型（1:班长日志，2班前日志，3班后日志）"></el-input>
-    </el-form-item>
-    <el-form-item label="日志状态(1待确认，2已确认，3拟制中，4已完成)" prop="logStatus">
-      <el-input v-model="dataForm.logStatus" placeholder="日志状态(1待确认，2已确认，3拟制中，4已完成)"></el-input>
-    </el-form-item>
-    <el-form-item label="记录人" prop="noteTaker">
-      <el-input v-model="dataForm.noteTaker" placeholder="记录人"></el-input>
-    </el-form-item>-->
     <el-row>
       <el-col :span="8">
         <el-form-item label="班长" prop="monitor">
@@ -66,51 +57,22 @@
     </el-row>
       <el-form-item label="实到人员" prop="actualArrival">
         <el-input v-model="dataForm.actualArrival" placeholder="实到人员"></el-input>
-        <!--<el-button type="info" @click="clickTitle('实到人员')" icon="el-icon-plus" circle ></el-button>-->
       </el-form-item>
     <el-row>
       <el-col :span="8">
         <el-form-item label="未到人员" prop="notArrived">
           <el-input v-model="dataForm.notArrived" placeholder="未到人员"></el-input>
-          <!--<el-button type="info" @click="clickTitle('未到人员')" icon="el-icon-plus" circle ></el-button>-->
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="顶班人员" prop="topArrived">
           <el-input v-model="dataForm.topArrived" placeholder="顶班人员"></el-input>
-          <!--<el-button type="info" @click="clickTitle('顶班人员')" icon="el-icon-plus" circle ></el-button>-->
         </el-form-item>
       </el-col>
     </el-row>
       <el-form-item label="缺勤原因" prop="reasonsAbsence">
         <el-input v-model="dataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
       </el-form-item>
-
-    <!--<el-form-item label="交接人" prop="handoverPerson">
-      <el-input v-model="dataForm.handoverPerson" placeholder="交接人"></el-input>
-    </el-form-item>
-    <el-form-item label="接班人" prop="successor">
-      <el-input v-model="dataForm.successor" placeholder="接班人"></el-input>
-    </el-form-item>
-    <el-form-item label="接班人id" prop="successorId">
-      <el-input v-model="dataForm.successorId" placeholder="接班人id"></el-input>
-    </el-form-item>
-    <el-form-item label="交接完成时间" prop="createTime">
-      <el-input v-model="dataForm.createTime" placeholder="交接完成时间"></el-input>
-    </el-form-item>-->
-
-    <!--<el-form-item label="接班记事" prop="successionRecord">
-      <el-input v-model="dataForm.successionRecord" placeholder="接班记事"></el-input>
-    </el-form-item>
-    <el-form-item label="当班记事" prop="onDuty">
-      <el-input v-model="dataForm.onDuty" placeholder="当班记事"></el-input>
-    </el-form-item>
-    <el-form-item label="上级通知" prop="superiorNotice">
-      <el-input v-model="dataForm.superiorNotice" placeholder="上级通知"></el-input>
-    </el-form-item>
-    <el-form-item label="交代事项" prop="accountConfession">
-      <el-input v-model="dataForm.accountConfession" placeholder="交代事项"></el-input>
-    </el-form-item>-->
     <el-row>
       <el-col :span="8">
           <el-form-item label="人员精神状态" prop="personnelMentalState">
@@ -154,21 +116,6 @@
     <el-form-item label="其他异常" prop="otherException">
       <el-input type="textarea" autosize v-model="dataForm.otherException" placeholder="其他异常"></el-input>
     </el-form-item>
-    <!--<el-form-item label="工作安排" prop="workTask">
-      <el-input v-model="dataForm.workTask" placeholder="工作安排"></el-input>
-    </el-form-item>-->
-    <!--<el-form-item label="危险点" prop="dangerousPoint">
-      <el-input v-model="dataForm.dangerousPoint" placeholder="危险点"></el-input>
-    </el-form-item>
-    <el-form-item label="防范措施" prop="preventiveMeasures">
-      <el-input v-model="dataForm.preventiveMeasures" placeholder="防范措施"></el-input>
-    </el-form-item>
-    <el-form-item label="交底人" prop="manAgreement">
-      <el-input v-model="dataForm.manAgreement" placeholder="交底人"></el-input>
-    </el-form-item>
-    <el-form-item label="班组成员" prop="teamMembers">
-      <el-input v-model="dataForm.teamMembers" placeholder="班组成员"></el-input>
-    </el-form-item>-->
     <el-form-item label="工作总结" prop="workSummary">
       <el-input type="textarea" autosize v-model="dataForm.workSummary" placeholder="工作总结"></el-input>
     </el-form-item>
@@ -195,121 +142,6 @@
             <el-button type="primary" @click="dataFormSubmit()"  :disabled="isHttp">确定</el-button>
           </span>
             </el-dialog>
-            <!--<el-button type="info" @click="clickTitle('班组成员')" icon="el-icon-plus" circle ></el-button>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-              <div>
-                <div style="display:inline-block;">
-                  <el-form :model="deptFrom">
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 80px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getDataList()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="dataList"
-                    style="width: 100%;">
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="80">
-                    </el-table-column>
-                    <table-tree-column
-                      style="width: auto"
-                      prop="name"
-                      header-align="center"
-                      treeKey="deptId"
-                      label="机构名称"
-                    >
-                    </table-tree-column>
-                    <el-table-column
-                      header-align="center"
-                      align="center"
-                      width="150"
-                      label="操作">
-                      <template slot-scope="scope">
-                        <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.deptId)">选中</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </div>
-                <div style="display:inline-block;margin:10px;">
-                  <el-form :inline="true" :model="datauserForm" >
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 80px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="search">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="4">
-                        <el-form-item>
-                          <el-button  type="danger" @click="Handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="4">
-                        <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取 消</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="UserdataList"
-                    style="width: 100%;"
-                    :row-style="rowStyle"
-                    @selection-change="selectionChangeHandle"
-                  >
-                    <el-table-column
-                      type="selection"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="username"
-                      header-align="center"
-                      align="center"
-                      label="用户名">
-                    </el-table-column>
-                    <el-table-column
-                      prop="deptName"
-                      header-align="center"
-                      align="center"
-                      label="机构名称">
-                    </el-table-column>
-                    &lt;!&ndash;<el-table-column label="操作">
-                      <template slot-scope="scope">
-                        <el-button type="text" @click="Handle(scope.row.username)">选中</el-button>
-                      </template>
-                    </el-table-column>&ndash;&gt;
-                  </el-table>
-
-                  &lt;!&ndash;<div slot="footer" class="dialog-footer" >
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                      &lt;!&ndash;<el-button type="primary" :disabled="dataListSelections.length <= 0" @click="Handle(scope.row.username)">确 定</el-button>&ndash;&gt;
-                  </div>&ndash;&gt;
-                </div>
-              </div>
-            </el-dialog>-->
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -320,8 +152,6 @@
       </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <!--<el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()" :disabled="isHttp">确定</el-button>-->
       <el-button @click="visible = false">取消</el-button>
       <el-button type="danger" @click="bohuiSubmit()">驳回</el-button>
       <el-button type="primary" @click="confirmedSubmit()"  :disabled="isHttp">确定</el-button>
@@ -400,9 +230,6 @@
         TurnList: [],
         deptList: [],
         dataRule: {
-          /*logNumber: [
-            { required: true, message: '日志编号不能为空', trigger: 'blur' }
-          ],*/
           deptId: [
             { required: true, message: '部门车间id不能为空', trigger: 'blur' }
           ],
@@ -445,15 +272,6 @@
           actualArrival: [
             { required: true, message: '实到人员不能为空', trigger: 'blur' }
           ],
-          /*notArrived: [
-            { required: true, message: '未到人员不能为空', trigger: 'blur' }
-          ],
-          topArrived: [
-            { required: true, message: '顶班人员不能为空', trigger: 'blur' }
-          ],
-          reasonsAbsence: [
-            { required: true, message: '缺勤原因不能为空', trigger: 'blur' }
-          ],*/
           successionRecord: [
             { required: true, message: '接班记事不能为空', trigger: 'blur' }
           ],
@@ -469,24 +287,12 @@
           personnelMentalState: [
             { required: true, message: '人员精神状态（1正常，2异常）不能为空', trigger: 'blur' }
           ],
-          /*mentalException: [
-            { required: true, message: '人员精神异常描述不能为空', trigger: 'blur' }
-          ],*/
           laborProtectiveArticles: [
             { required: true, message: '劳动防护用品不能为空', trigger: 'blur' }
           ],
-          /*protectiveException: [
-            { required: true, message: '劳动防护用品异常描述不能为空', trigger: 'blur' }
-          ],*/
           tools: [
             { required: true, message: '工器具（1正常，2异常）不能为空', trigger: 'blur' }
           ],
-          /*toolsException: [
-            { required: true, message: '工器具异常描述不能为空', trigger: 'blur' }
-          ],*/
-          /*otherException: [
-            { required: true, message: '其他异常不能为空', trigger: 'blur' }
-          ],*/
           workTask: [
             { required: true, message: '工作安排不能为空', trigger: 'blur' }
           ],
@@ -509,13 +315,13 @@
             { required: true, message: '负责人不能为空', trigger: 'blur' }
           ]
         },
-        startDatePicker: this.beginDate(),
+        startDatePicker: this.beginDate()
       }
     },
     components: {
       TableTreeColumn
     },
-    mounted (){
+    mounted () {
       this.getTurnList()
       this.getDeptList()
       this.getDataList()   // 部门查询
@@ -526,7 +332,7 @@
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get () { return this.$store.state.user.id}
+        get () { return this.$store.state.user.id }
       }
     },
     methods: {
@@ -585,9 +391,8 @@
             })
           }
         })
-
         // 进行新增 判断
-        if(this.dataForm.classId <= 0){
+        if (this.dataForm.classId <= 0) {
           // 新增时，进行 日志编号的刷新
           this.$http({
             url: this.$http.adornUrl('/group/classgrouplogconfirmed/logNumber'),
@@ -597,15 +402,11 @@
             this.dataForm.logNumber = data.logNumber
           })
         }
-
-
-
       },
-      beginDate (){
-        let self = this
+      beginDate () {
         return {
-          disabledDate(time){
-            return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() > Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -613,7 +414,7 @@
         this.dataForm.createTime = val
       },
       // 班次列表
-      getTurnList (){
+      getTurnList () {
         if (this.TurnList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/setting/baseturn/list'),
@@ -626,18 +427,18 @@
       },
       // 部门列表
       getDeptList () {
-        if(this.deptList <=0){
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
         }
       },
       // 查询部门
-      getDataList (){
+      getDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
@@ -645,10 +446,9 @@
         }).then(({data}) => {
           this.dataList = treeDataTranslate(data, 'deptId')
         })
-
       },
       // 选中部门 查询用户
-      addOrUpdateHandle(deptId){
+      addOrUpdateHandle (deptId) {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -662,16 +462,14 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
-
       },
       // 部门用户查询
-      search(){
+      search () {
         this.getUserDataList()
       },
       // 查询用户
-      getUserDataList (){
+      getUserDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -685,7 +483,6 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
       },
       // 多选
@@ -694,53 +491,49 @@
       },
 
       // 点击人员的确定
-      Handle (username){
-        var userNames =username ? [username]: this.dataListSelections.map(item => {
+      Handle (username) {
+        var userNames = username ? [username] : this.dataListSelections.map(item => {
           return item.username
         })
-
-        if(this.title === '班组成员'){
-          this.dataForm.teamMembers =userNames.toString()
-          this.dialogFormVisible =false
+        if (this.title === '班组成员') {
+          this.dataForm.teamMembers = userNames.toString()
+          this.dialogFormVisible = false
         }
-        if(this.title === '实到人员'){
-          this.dataForm.actualArrival =userNames.toString()
-          this.dialogFormVisible =false
+        if (this.title === '实到人员') {
+          this.dataForm.actualArrival = userNames.toString()
+          this.dialogFormVisible = false
         }
-        if(this.title === '未到人员'){
-          this.dataForm.notArrived =userNames.toString()
-          this.dialogFormVisible =false
+        if (this.title === '未到人员') {
+          this.dataForm.notArrived = userNames.toString()
+          this.dialogFormVisible = false
         }
-        if(this.title === '顶班人员'){
-          this.dataForm.topArrived =userNames.toString()
-          this.dialogFormVisible =false
+        if (this.title === '顶班人员') {
+          this.dataForm.topArrived = userNames.toString()
+          this.dialogFormVisible = false
         }
-
       },
-      clickTitle (title){
+      clickTitle (title) {
         this.title = title
-        this.dialogFormVisible =true
+        this.dialogFormVisible = true
       },
       // 驳回
-      bohuiSubmit (){
-        this.dataForm.logStatus ='4'
+      bohuiSubmit () {
+        this.dataForm.logStatus = '4'
         this.dataForm.logUserStatus = '4'
         this.dialogRejectVisible = true
-        //this.dataFormSubmit()
       },
       // 已确认
-      confirmedSubmit(){
-        this.dataForm.logStatus ='3'
+      confirmedSubmit () {
+        this.dataForm.logStatus = '3'
         this.dataFormSubmit()
       },
-
       // 表单提交
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.isHttp = true
             this.dialogRejectVisible = false
-            this.dataForm.successorId = this.loginuserId   // 驳回人 id
+            this.dataForm.successorId = this.loginuserId // 驳回人 id
             this.$http({
               url: this.$http.adornUrl(`/group/classgrouplogconfirmed/${!this.dataForm.classId ? 'save' : 'update'}`),
               method: 'post',

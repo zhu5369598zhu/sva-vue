@@ -37,7 +37,6 @@
             :value="item.id"
           ></el-option>
         </el-select>
-
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -131,8 +130,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="UpdateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">去确认</el-button>
-          <!--<el-button type="text" size="small" @click="deleteHandle(scope.row.classId)">删除</el-button>-->
+          <el-button type="text" size="small" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">去确认</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -170,14 +168,11 @@
           logStatus: '2',
           add: '新增',
           user_id: ''
-
         },
         logStatus: '',
         deptList: [],
         TurnList: [],
         userList: [],
-        /*GroupList: [{id: '1', name: '班长日志'}, {id: '2', name: '班前日志'}, {id: '3', name: '班后日志'}],*/
-        /*LogStatusList: [{id: '1', name: '拟制中'}, {id: '2', name: '待确认'}, {id: '3', name: '已确认'}, {id: '4', name: '已驳回'}],*/
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -190,9 +185,9 @@
         HouHandleVisable: false
       }
     },
-    computed:{
+    computed: {
       loginuserId: {
-        get (){ return this.$store.state.user.id}
+        get () { return this.$store.state.user.id }
       }
     },
     components: {
@@ -200,7 +195,7 @@
       banhou,
       banqian
     },
-    activated() {
+    activated () {
       this.getTurnList()
       this.getDeptList()
       this.getDataList()
@@ -237,7 +232,7 @@
           this.dataListLoading = false
         })
       },
-      exportToExcel(list){
+      exportToExcel (list) {
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
@@ -254,7 +249,6 @@
           })
           this.dataListLoading = false
         })
-
       },
       formatJson (filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
@@ -278,7 +272,6 @@
             'user_id': this.dataForm.user_id
           })
         }).then(({data}) => {
-
           if (data && data.code === 0) {
             this.exportToExcel(data.page.list)
           } else {
@@ -287,8 +280,6 @@
           this.dataListLoading = false
         })
       },
-
-
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
@@ -316,124 +307,73 @@
         }
       },
       getDeptList () {
-        if(this.deptList <=0){
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
-
       },
-      getUserList(){
-        this.userList = [{id:'',name:'全部的人'},{id:this.loginuserId,name:'与我相关'}]
+      getUserList () {
+        this.userList = [{id: '', name: '全部的人'}, {id: this.loginuserId, name: '与我相关'}]
       },
-      //修改选择
-      UpdateHandle(id,logStatus,logType,logNumber){
-
+      // 修改选择
+      updateHandle (id, logStatus, logType, logNumber) {
         this.$http({
           url: this.$http.adornUrl('/group/classgrouplogconfirmed/confirmed'),
           method: 'get',
           params: this.$http.adornParams({
-             'user_id': this.loginuserId,
-             'log_number': logNumber
+            'user_id': this.loginuserId,
+            'log_number': logNumber
           })
         }).then(({data}) => {
-          if(data.newsCounts===0){
-            this.$alert("您不需要确认")
-            return ;
-          }else{
-
-            if(logStatus === '1' ||logStatus === '2'){ // 拟制中 待确认可以修改
-              if(logType === '1'){ // 班长日志
+          if (data.newsCounts === 0) {
+            this.$alert('您不需要确认')
+          } else {
+            if (logStatus === '1' || logStatus === '2') { // 拟制中 待确认可以修改
+              if (logType === '1') { // 班长日志
                 this.addOrUpdateHandle(id)
               }
-              if(logType === '2'){ //班前日志
+              if (logType === '2') { // 班前日志
                 this.addOrUpdateBanQianHandle(id)
               }
-              if(logType === '3'){// 班后日志
+              if (logType === '3') { // 班后日志
                 this.addOrUpdateBanHouHandle(id)
               }
             }
             // 已确定 和已完成 不能修改
-            if(logStatus === '3'|| logStatus === '4'){
-              this.$alert("日志状态为 已确认和 已完成不能修改")
+            if (logStatus === '3' || logStatus === '4') {
+              this.$alert('日志状态为 已确认和 已完成不能修改')
             }
-
           }
-
         })
-
       },
       // 新增 / 修改  班长日志
       addOrUpdateHandle (id) {
-          this.addOrUpdateVisible = true
-          this.banhouVisible = false
-          this.$nextTick(() => {
-            this.$refs.addOrUpdate.init(id)
-          })
-
-
+        this.addOrUpdateVisible = true
+        this.banhouVisible = false
+        this.$nextTick(() => {
+          this.$refs.addOrUpdate.init(id)
+        })
       },
-      // 选择 班后日志
-      /*BanHouHandle(id){
-
-        this.HouHandleVisable= true
-
-        this.addOrUpdateBanHouHandle(id)
-      },*/
-
-
-
       // 新增 / 修改 班后日志
       addOrUpdateBanHouHandle (id) {
         this.addOrUpdateVisible = false
-        this.banhouVisible =true
-        this.$nextTick(() =>{
+        this.banhouVisible = true
+        this.$nextTick(() => {
           this.$refs.banhou.init(id)
         })
-
       },
       // 新增 / 修改 班前日志
-      addOrUpdateBanQianHandle (id){
+      addOrUpdateBanQianHandle (id) {
         this.banqianVisible = true
-        this.$nextTick(() =>{
+        this.$nextTick(() => {
           this.$refs.banqian.init(id)
         })
-      },
-      // 删除
-      /*deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.classId
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/group/classgrouplog/delete'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        })
-      }*/
+      }
     }
   }
 </script>

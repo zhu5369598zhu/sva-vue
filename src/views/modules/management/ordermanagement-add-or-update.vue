@@ -6,19 +6,11 @@
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
     <el-form-item label="工单编号" prop="orderNumber">{{this.dataForm.orderNumber}}
-      <!--<el-input v-model="dataForm.orderNumber" placeholder="工单编号"></el-input>-->
     </el-form-item>
-    <!--<el-form-item label="缺陷工单id" prop="defectiveId">
-      <el-input v-model="dataForm.defectiveId" placeholder="缺陷工单id"></el-input>
-    </el-form-item>
-    <el-form-item label="缺陷工单编号" prop="defectiveNumber">
-      <el-input v-model="dataForm.defectiveNumber" placeholder="缺陷工单编号"></el-input>
-    </el-form-item>-->
     <el-form-item label="工单主题" prop="orderName">
       <el-input v-model="dataForm.orderName" placeholder="工单主题"></el-input>
     </el-form-item>
     <el-form-item label="所属机构" prop="deptId">
-      <!--<el-input v-model="dataForm.deptId" placeholder="所属机构"></el-input>-->
       <el-select v-model="dataForm.deptId" placeholder="所属机构" clearable
       >
         <el-option
@@ -49,7 +41,6 @@
                 <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
               </span>
             </el-input>
-            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
             <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true' style="clear: both;">
               <div style="display: flex;justify-content: space-around;align-items: center;">
                 <div style="width:400px;height: 500px;overflow: scroll;">
@@ -110,7 +101,7 @@
                       </el-col>
                       <el-col :span="4">
                         <el-form-item>
-                          <el-button  type="danger" @click="Handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
                         </el-form-item>
                       </el-col>
                       <el-col :span="4">
@@ -291,7 +282,7 @@
             { required: true, message: '使用的备件不能为空', trigger: 'blur' }
           ]
         },
-        startDatePicker:this.beginDate(),
+        startDatePicker: this.beginDate()
       }
     },
     components: {
@@ -306,9 +297,8 @@
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get (){ return this.$store.state.user.id}
+        get () { return this.$store.state.user.id }
       }
-
     },
     methods: {
       init (id) {
@@ -354,7 +344,7 @@
         })
 
         // 新增  工单编号  managementNumber
-        if(this.dataForm.orderId <= 0){
+        if (this.dataForm.orderId <= 0) {
           this.dataForm.orderApplicantId = this.loginuserId
           this.dataForm.orderApplicant = this.loginuserName
           this.$http({
@@ -364,38 +354,32 @@
           }).then(({data}) => {
             this.dataForm.orderNumber = data.managementNumber
           })
-
         }
-
       },
       // 机构的下拉列表
-      getDeptList() {
-        if(this.deptList <=0){
+      getDeptList () {
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
       },
       // 部门查询
-      getDataList (){
+      getDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
           params: this.$http.adornParams({'name': this.deptFrom.name})
         }).then(({data}) => {
           this.dataList = treeDataTranslate(data, 'deptId')
-
         })
-
       },
-
       // 选中部门 查询用户
-      addOrUpdateHandle(deptId){
+      addOrUpdateHandle (deptId) {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -409,21 +393,19 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
-
       },
-      rowStyle ({row, rowIndex}) {
+      rowStyle () {
         return 'height:40px'
       },
       cellStyle () {
         return 'padding:0'
       },
-      search(){
+      search () {
         this.getUserDataList()
       },
       // 查询用户
-      getUserDataList (){
+      getUserDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -437,41 +419,36 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
       },
 
-      Handle (username){
-        var userNames =username ? [username]: this.dataListSelections.map(item => {
+      handle (username, userid) {
+        var userNames = username ? [username] : this.dataListSelections.map(item => {
           return item.username
         })
-        var userId = userId ? [userId]:this.dataListSelections.map(item =>{
+        var userId = userid ? [userid] : this.dataListSelections.map(item => {
           return item.userId
         })
-        if(this.dataListSelections.length>=2){
-          this.$alert("受理人只能选择一个")
-        }else{
+        if (this.dataListSelections.length >= 2) {
+          this.$alert('受理人只能选择一个')
+        } else {
           this.dataForm.orderAcceptor = userNames.toString()
-          this.dataForm.orderAcceptorId =userId.toString()
+          this.dataForm.orderAcceptorId = userId.toString()
           this.dialogFormVisible = false
         }
-
       },
 
-
-      clickTitle (){
-        this.dialogFormVisible =true
+      clickTitle () {
+        this.dialogFormVisible = true
       },
       // 多选
       selectionChangeHandle (val) {
         this.dataListSelections = val
       },
-
-      beginDate(){
-        let self = this
+      beginDate () {
         return {
-          disabledDate(time){
-            return time.getTime() < Date.now()//开始时间不选时，结束时间最大值大于等于当天
+          disabledDate (time) {
+            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值大于等于当天
           }
         }
       },
@@ -504,7 +481,7 @@
                 'orderConfirmer': this.dataForm.orderConfirmer,
                 'orderConfirmerId': this.dataForm.orderConfirmerId,
                 'orderConfirmerOpinion': this.dataForm.orderConfirmerOpinion,
-                'requirementTime':this.dataForm.requirementTime,
+                'requirementTime': this.dataForm.requirementTime,
                 'confirmedTime': this.dataForm.confirmedTime,
                 'actualTime': this.dataForm.actualTime,
                 'delayTime': this.dataForm.delayTime,

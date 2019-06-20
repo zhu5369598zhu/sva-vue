@@ -18,9 +18,6 @@
         <el-form-item>
           填报缺陷单列表
         </el-form-item>
-        <!--<el-form-item>
-          <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
-        </el-form-item>-->
         <el-form-item>
           <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
         </el-form-item>
@@ -34,14 +31,11 @@
               :label="item.name"
               :value="item.id"
             ></el-option>
-
           </el-select>
-
         </el-form-item>
         <el-form-item>
           <el-input v-model="dataForm.defectiveName" placeholder="请输入填报人" clearable></el-input>
         </el-form-item>
-
         <el-form-item>
           <el-button @click="search()">查询</el-button>
           <el-button v-if="isAuth('management:orderdefective:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
@@ -102,30 +96,12 @@
           align="center"
           label="缺陷等级">
         </el-table-column>
-        <!--<el-table-column
-          prop="orderContent"
-          header-align="center"
-          align="center"
-          label="默认的工单内容">
-        </el-table-column>-->
         <el-table-column
           prop="defectiveName"
           header-align="center"
           align="center"
           label="缺陷填报人">
         </el-table-column>
-        <!--<el-table-column
-          prop="defectiveNameId"
-          header-align="center"
-          align="center"
-          label="缺陷填报人id">
-        </el-table-column>
-        <el-table-column
-          prop="defectiveNameOpinion"
-          header-align="center"
-          align="center"
-          label="工单填报人意见">
-        </el-table-column>-->
         <el-table-column
           prop="createTime"
           header-align="center"
@@ -144,24 +120,12 @@
           align="center"
           label="工单确认人">
         </el-table-column>
-        <!--<el-table-column
-          prop="orderConfirmerId"
-          header-align="center"
-          align="center"
-          label="工单确认人 id">
-        </el-table-column>-->
         <el-table-column
           prop="confirmedTime"
           header-align="center"
           align="center"
           label="工单确认时间">
         </el-table-column>
-        <!-- <el-table-column
-           prop="orderConfirmerOpinion"
-           header-align="center"
-           align="center"
-           label="工单确认人意见">
-         </el-table-column>-->
         <el-table-column
           fixed="right"
           header-align="center"
@@ -192,7 +156,6 @@
       <div class="new_1" id="did" style="display: none">
         <el-form :inline="true" :model="orderDataForm" label-width="80px;">
         <div class="div-a">
-
             <el-form-item label="缺陷单编号" prop="defectiveNumber">
               <el-input v-model="orderDataForm.defectiveNumber"></el-input>
             </el-form-item>
@@ -214,8 +177,6 @@
               <el-input v-model="orderDataForm.defectiveDevice"></el-input>
             </el-form-item>
         </div>
-
-
         <div class="div-b">
           <el-form-item label="缺陷类型" prop="defectiveTypeName">
             <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
@@ -247,13 +208,11 @@
               v-model="orderDataForm.defectiveNameOpinion"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="Confirmation()" >确认缺陷单</el-button>
+            <el-button type="primary" @click="confirmation()" >确认缺陷单</el-button>
           </el-form-item>
-
         </div>
         </el-form>
       </div>
-
       <div class="new_1" id="did_1" style="display: none">
         <el-form :inline="true"   :model="orderDataForm" ref="orderDataForm" label-width="80px;">
           <!--  拟制中 -->
@@ -297,9 +256,6 @@
             <el-form-item label="缺陷确认人" prop="defectiveName">
               <el-input v-model="orderDataForm.defectiveName"></el-input>
             </el-form-item>
-            <!--<el-form-item label="工单确认人" prop="orderConfirmer">
-              <el-input v-model="orderDataForm.orderConfirmer"></el-input>
-            </el-form-item>-->
             <el-form-item
               label="受理人"
               prop="orderAcceptor"
@@ -310,7 +266,6 @@
                   <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
                 </span>
               </el-input>
-              <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
               <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
                 <div style="display: flex;justify-content: space-around;align-items: center;">
                   <div style="width:400px;height: 500px;overflow: scroll;">
@@ -351,7 +306,7 @@
                         width="150"
                         label="操作">
                         <template slot-scope="scope">
-                          <el-button  type="text" size="small" @click="DepteHandle(scope.row.deptId)">选中</el-button>
+                          <el-button  type="text" size="small" @click="depteHandle(scope.row.deptId)">选中</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -415,8 +370,6 @@
                   </div>
                 </div>
               </el-dialog>
-
-
             </el-form-item>
           </div>
           <div class="div-c">
@@ -552,7 +505,7 @@
         deptFrom: {
           name: ''
         },
-        orderDataForm:{
+        orderDataForm: {
           defectiveId: '',
           defectiveNumber: '',
           defectiveTheme: '',
@@ -584,12 +537,10 @@
         oldPercent: 12,
         deptList: [],
         dataExceptionList: [],
-        startDatePicker:this.beginDate(),
+        startDatePicker: this.beginDate(),
         dialogFormVisible: false,
         UserdataList: [],
         dataDeptList: [],
-
-
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -610,48 +561,46 @@
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get (){ return this.$store.state.user.id }
+        get () { return this.$store.state.user.id }
       }
 
     },
     activated () {
-      this.getDataList(),
-      this.getDeptList(),
+      this.getDataList()
+      this.getDeptList()
       this.getDeptDataList()
     },
     methods: {
-      beginDate(){
-        let self = this
+      beginDate () {
         return {
-          disabledDate(time){
-            return time.getTime() < Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          disabledDate (time) {
+            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
-      rowStyle ({row, rowIndex}) {
+      rowStyle () {
         return 'height:40px'
       },
       cellStyle () {
         return 'padding:0'
       },
-      Handle (username){
-        var userNames =username ? [username]: this.dataListSelections.map(item => {
+      Handle (username, userid) {
+        var userNames = username ? [username] : this.dataListSelections.map(item => {
           return item.username
         })
-        var userId = userId ? [userId]:this.dataListSelections.map(item =>{
+        var userId = userid ? [userid] : this.dataListSelections.map(item => {
           return item.userId
         })
-        if(this.dataListSelections.length>=2){
-          this.$alert("受理人只能选择一个")
-        }else{
+        if (this.dataListSelections.length >= 2) {
+          this.$alert('受理人只能选择一个')
+        } else {
           this.orderDataForm.orderAcceptor = userNames.toString()
-          this.orderDataForm.orderAcceptorId =userId.toString()
-          this.dialogFormVisible =false
+          this.orderDataForm.orderAcceptorId = userId.toString()
+          this.dialogFormVisible = false
         }
-
       },
       // 选中部门 查询用户
-      DepteHandle(deptId){
+      depteHandle (deptId) {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -666,11 +615,9 @@
             this.UserdataList = []
           }
         })
-
       },
-
       // 查询用户
-      getUserDataList (){
+      getUserDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
@@ -684,30 +631,26 @@
           } else {
             this.UserdataList = []
           }
-          //this.dataListLoading = false
         })
       },
       // 查询部门
-      getDeptDataList(){
+      getDeptDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
           params: this.$http.adornParams({'name': this.deptFrom.name})
         }).then(({data}) => {
           this.dataDeptList = treeDataTranslate(data, 'deptId')
-
         })
       },
-      clickTitle (){
-        this.dialogFormVisible =true
+      clickTitle () {
+        this.dialogFormVisible = true
       },
 
-
-      search(){
+      search () {
         this.dataForm.deptId = ''
         this.getDataList()
       },
-
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -735,13 +678,12 @@
         })
       },
       // 导出
-      exportToExcel(list){
+      exportToExcel (list) {
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['缺陷单编号', '缺陷单主题', '缺陷类型', '所属机构', '缺陷等级', '缺陷填报人', '填报时间', '转工单状态', '工单确认人', '工单确认时间']
-          const filterVal = ['defectiveNumber', 'defectiveTheme','defectiveTypeName', 'deptName', 'exceptionName', 'defectiveName', 'createTime', 'orderStatusName', 'orderConfirmer', 'confirmedTime']
-
+          const filterVal = ['defectiveNumber', 'defectiveTheme', 'defectiveTypeName', 'deptName', 'exceptionName', 'defectiveName', 'createTime', 'orderStatusName', 'orderConfirmer', 'confirmedTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
@@ -816,23 +758,19 @@
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id,orderStatus) {
-        console.log(orderStatus)
-        if(orderStatus === 0 || orderStatus === undefined){
+      addOrUpdateHandle (id, orderStatus) {
+        if (orderStatus === 0 || orderStatus === undefined) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(id)
           })
-        }else {
-          this.$alert("拟制中状态才能修改")
+        } else {
+          this.$alert('拟制中状态才能修改')
         }
-
-
-
       },
       // 删除
-      deleteHandle (id,orderStatus) {
-        if(orderStatus ===0){
+      deleteHandle (id, orderStatus) {
+        if (orderStatus === 0) {
           var ids = id ? [id] : this.dataListSelections.map(item => {
             return item.defectiveId
           })
@@ -853,38 +791,35 @@
                   duration: 1500,
                   onClose: () => {
                     this.getDataList()
-                  },
-
+                  }
                 })
-                var dom = document.getElementById( "did" );
-                dom.style.display="none"
-                this.search();
+                var dom = document.getElementById('did')
+                dom.style.display = 'none'
+                this.search()
               } else {
                 this.$message.error(data.msg)
               }
             })
           })
-        }else{
-          this.$alert("拟制中状态才能删除")
+        } else {
+          this.$alert('拟制中状态才能删除')
         }
       },
-      getDeptList() {
-        if(this.deptList <=0){
+      getDeptList () {
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
       },
       // 点击缺陷单编号
-      clickRow(row){
-
+      clickRow (row) {
         this.$http({
-          url: this.$http.adornUrl(`/management/orderdefective/info/`+row.defectiveId),
+          url: this.$http.adornUrl(`/management/orderdefective/info/` + row.defectiveId),
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
@@ -913,64 +848,51 @@
             this.orderDataForm.requirementTime = data.orderdefective.requirementTime
             this.orderDataForm.defectiveDevice = data.orderdefective.defectiveDevice
           }
-
-          var dom = document.getElementById( "did" );
-          var dom_1 = document.getElementById("did_1");
-          var dom_2 = document.getElementById("did_2");
-          var down_up = document.getElementById("data-up");
-          down_up.style.height="100px";
-          down_up.style.overflowY ="scroll";
-          if(row.orderStatus ===0){ // 拟制中
-            dom.style.display="block"
-            dom_1.style.display="none"
-            dom_2.style.display="none"
-          }else if(row.orderStatus ===1){
-            dom.style.display="none"
-            dom_1.style.display="block"
-            dom_2.style.display="none"
-          }else if(row.orderStatus ===2){
-            dom.style.display="none"
-            dom_1.style.display="none"
-            dom_2.style.display="block"
+          var dom = document.getElementById('did')
+          var domone = document.getElementById('did_1')
+          var domtwo = document.getElementById('did_2')
+          var downup = document.getElementById('data-up')
+          downup.style.height = '100px'
+          downup.style.overflowY = 'scroll'
+          if (row.orderStatus === 0) { // 拟制中
+            dom.style.display = 'block'
+            domone.style.display = 'none'
+            domtwo.style.display = 'none'
+          } else if (row.orderStatus === 1) {
+            dom.style.display = 'none'
+            domone.style.display = 'block'
+            domtwo.style.display = 'none'
+          } else if (row.orderStatus === 2) {
+            dom.style.display = 'none'
+            domone.style.display = 'none'
+            domtwo.style.display = 'block'
           }
-
-
-
-
         })
-
-
       },
       // 缺陷等级
-      getExeption(){
+      getExeption () {
         this.$http({
           url: this.$http.adornUrl('/setting/exception/list'),
           method: 'get',
-          params: this.$http.adornParams({
-            /* 'page': this.pageIndex,
-             'limit': this.pageSize,
-             'name': this.dataForm.name*/
-          })
+          params: this.$http.adornParams({})
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.dataExceptionList = data.page.list
           } else {
             this.dataExceptionList = []
-
           }
         })
       },
-      //确认缺陷单
-      Confirmation(){
-
-        if(this.orderDataForm.orderConfirmerId === this.loginuserId){
-          this.orderDataForm.orderStatus = 1;
-          this.orderDataForm.confirmedTime =  formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+      // 确认缺陷单
+      confirmation () {
+        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
+          this.orderDataForm.orderStatus = 1
+          this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
           this.$http({
             url: this.$http.adornUrl(`/management/orderdefective/update`),
             method: 'post',
             data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId ,
+              'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
               'defectiveTheme': this.orderDataForm.defectiveTheme,
               'defectiveType': this.orderDataForm.defectiveType,
@@ -995,45 +917,39 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.search();
-                  var dom = document.getElementById( "did" );
-                  dom.style.display = "none";
+                  this.search()
+                  var dom = document.getElementById('did')
+                  dom.style.display = 'none'
                 }
               })
             } else {
               this.$message.error(data.msg)
             }
           })
-        }else{
-          this.$alert("需要确认人来确认")
+        } else {
+          this.$alert('需要确认人来确认')
         }
-
-
-
       },
       handleStartTimeChange (val) {
         this.orderDataForm.requirementTime = val
       },
       // 确认并派单
-      orderConfirm(){
-        console.log(this.orderDataForm.orderAcceptor)
-        if(this.orderDataForm.orderAcceptor === ''){
-          this.$alert("受理人不能为空")
-          return;
+      orderConfirm () {
+        if (this.orderDataForm.orderAcceptor === '') {
+          this.$alert('受理人不能为空')
+          return
         }
-        console.log(this.orderDataForm.requirementTime)
-        if(this.orderDataForm.requirementTime ===null){
-          this.$alert("要求完成时间不能为空")
-          return;
+        if (this.orderDataForm.requirementTime === null) {
+          this.$alert('要求完成时间不能为空')
+          return
         }
-
-        if(this.orderDataForm.orderConfirmerId === this.loginuserId){
+        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
           this.orderDataForm.orderStatus = 2
           this.$http({
             url: this.$http.adornUrl(`/management/orderdefective/orderupdate`),
             method: 'post',
             data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId ,
+              'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
               'defectiveTheme': this.orderDataForm.defectiveTheme,
               'defectiveType': this.orderDataForm.defectiveType,
@@ -1060,23 +976,19 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.search();
-                  var dom_1 = document.getElementById("did_1");
-                  dom_1.style.display = "none";
+                  this.search()
+                  var domone = document.getElementById('did_1')
+                  domone.style.display = 'none'
                 }
               })
             } else {
               this.$message.error(data.msg)
             }
           })
-        }else{
-          this.$alert("需要确认人来确认并派单")
+        } else {
+          this.$alert('需要确认人来确认并派单')
         }
-
       }
-
-
-
     }
   }
 </script>
@@ -1084,22 +996,7 @@
   .up {
     float: top;
   }
-  /*.site-content .show-data-up{
-    !* min-height: 350px;*!
-    !*overflow-y:scroll;
-    height: 100px;*!
-    position:absolute;
-    height: 600px;
-    !*overflow-y:scroll;*!
-    z-index: 20;
-  }*/
-
   .site-content .show-data-down{
-    /*position: fixed;
-    right:0px;
-    bottom:0;
-    width:75%;
-    height:300px;*/
     position:absolute;
     z-index: 10;
     bottom:0;
@@ -1109,8 +1006,8 @@
 
   }
 
-  .div-a{ float:left;width:25%;height: 100%;/*border:1px solid #F00*/}
-  .div-b{ float:left;width:25%;height: 100%;/*border:1px solid #000*/}
-  .div-c{ float:left;width:26%;height: 100%;/*border:1px solid #F00*/}
-  .div-d{ float:left;width:24%;height: 100%;/*border:1px solid #000*/}
+  .div-a{ float:left;width:25%;height: 100%;}
+  .div-b{ float:left;width:25%;height: 100%;}
+  .div-c{ float:left;width:26%;height: 100%;}
+  .div-d{ float:left;width:24%;height: 100%;}
 </style>

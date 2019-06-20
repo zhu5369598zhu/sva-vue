@@ -82,12 +82,11 @@
             createTime: '',
             updateTime: ''
           }
-        ],
+        ]
       }
     },
-    mounted() {
+    mounted () {
       this.newsexist()
-      //this.timer()
     },
     components: {
       UpdatePassword,
@@ -111,21 +110,18 @@
         get () { return this.$store.state.user.name }
       },
       userId: {
-        get() { return this.$store.state.user.id}
-      },
-      /*totalPage: {
-        get() { return   this.totalPage}
-      }*/
+        get () { return this.$store.state.user.id }
+      }
     },
-    watch:{
-      imgList() {
+    watch: {
+      imgList () {
         this.timer()
       }
     },
     methods: {
-      //处理消息
-      newsHandle (){
-        this.newsVisible =true
+      // 处理消息
+      newsHandle () {
+        this.newsVisible = true
         this.$nextTick(() => {
           this.$refs.news.init()
         })
@@ -157,7 +153,7 @@
         }).catch(() => {})
       },
       // 查询是否有登录消息
-      newsexist (){
+      newsexist () {
         this.$http({
           url: this.$http.adornUrl('/sys/news/list'),
           method: 'get',
@@ -168,9 +164,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-
             this.imgList = data.page.list
-
             this.totalPage = data.page.totalCount
           } else {
             this.imgList = []
@@ -179,14 +173,14 @@
         })
       },
       // 这是一个定时器
-      timer() {
-        return setTimeout(()=>{
+      timer () {
+        return setTimeout(() => {
           this.newsexist()
-        },5000)
+        }, 5000)
       }
     },
     // 最终销毁
-    destroyed() {
+    destroyed () {
       clearTimeout(this.timer)
     }
   }

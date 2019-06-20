@@ -69,136 +69,125 @@
 
 <script>
     export default {
-      data() {
+      data () {
         return {
           visible: false,
           dataList: [],
           pageIndex: 1,
           pageSize: 10,
-          totalPage: 0
+          totalPage: 0,
+          userId: ''
         }
-
       },
       // 钩子函数
       mounted () {
-         this.getDataList(),
-         this.newsexist()
-       },
-      watch:{
-        dataList() {
+        this.getDataList()
+        this.newsexist()
+      },
+      watch: {
+        dataList () {
           this.timer()
         }
       },
       computed: {
          userId: {
-           get() { return this.$store.state.user.id}
-         },
-         /*totalPage: {
-           get() { return this.totalPage}
-         }*/
-       },
-       methods:{
-         // 初始化
-         init () {
-           this.visible = true
-           this.$nextTick(() => {
-
-           })
-         },
-         // 获取数据列表
-         getDataList(){
-           this.$http({
-             url: this.$http.adornUrl('/sys/news/list'),
-             method: 'get',
-             params: this.$http.adornParams({
-               'page': this.pageIndex,
-               'limit': this.pageSize,
-               'user_id': this.userId
-             })
-           }).then(({data}) => {
-             if (data && data.code === 0) {
-               this.dataList = data.page.list
-               this.totalPage = data.page.totalCount
-             } else {
-               this.dataList = []
-               this.totalPage = 0
-             }
-           })
-
-         },
-         // 每页数
-         sizeChangeHandle (val) {
-           this.pageSize = val
-           this.pageIndex = 1
-           this.getDataList()
-         },
-         // 当前页
-         currentChangeHandle (val) {
-           this.pageIndex = val
-           this.getDataList()
-         },
-         toNewsHandle (newsType){
-
-           // 待处理的 确认班组日志
-           if(newsType === 1){
-
-             this.$router.push('/group-classgrouplogconfirmed')
-             this.visible =false
-           }else if(newsType ===2){
-             this.$router.push('/group-classgrouplogreject')
-             this.visible =false
-           }else if(newsType ===3){
-             this.$router.push('/management-ordermanagementalready')
-             this.visible =false
-           }else if(newsType ===4){
-             this.$router.push('/management-ordermanagement')
-             this.visible =false
-           }else if(newsType ==5){
-             this.$router.push('/management-ordermanagementreported')
-             this.visible =false
-           }else if(newsType ==6){
-             this.$router.push('/management-ordermanagementconfirm')
-             this.visible =false
-           }else if(newsType ==7){
-             this.$router.push('/management-ordermanagementfinished')
-             this.visible =false
-           }else if(newsType ==8){
-             this.$router.push('/management-ordermanagementreported')
-             this.visible =false
-           }
-
-
-         },
-         newsexist(){
-           this.$http({
-             url: this.$http.adornUrl('/sys/news/list'),
-             method: 'get',
-             params: this.$http.adornParams({
-               'page': this.pageIndex,
-               'limit': this.pageSize,
-               'user_id': this.userId
-             })
-           }).then(({data}) => {
-             if (data && data.code === 0) {
-               this.dataList = data.page.list
-               this.totalPage = data.page.totalCount
-             } else {
-               this.dataList = []
-               this.totalPage = 0
-             }
-           })
-         },
-         // 这是一个定时器
-         timer() {
-           return setTimeout(()=>{
-             this.newsexist()
-           },5000)
+           get () { return this.$store.state.user.id }
          }
-
-
-       },
+      },
+      methods: {
+        // 初始化
+        init () {
+          this.visible = true
+          this.$nextTick(() => {
+          })
+        },
+        // 获取数据列表
+        getDataList () {
+          this.$http({
+            url: this.$http.adornUrl('/sys/news/list'),
+            method: 'get',
+            params: this.$http.adornParams({
+              'page': this.pageIndex,
+              'limit': this.pageSize,
+              'user_id': this.userId
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataList = data.page.list
+              this.totalPage = data.page.totalCount
+            } else {
+              this.dataList = []
+              this.totalPage = 0
+            }
+          })
+        },
+        // 每页数
+        sizeChangeHandle (val) {
+          this.pageSize = val
+          this.pageIndex = 1
+          this.getDataList()
+        },
+        // 当前页
+        currentChangeHandle (val) {
+          this.pageIndex = val
+          this.getDataList()
+        },
+        toNewsHandle (newsType) {
+          // 待处理的 确认班组日志
+          if (newsType === 1) {
+            this.$router.push('/group-classgrouplogconfirmed')
+            this.visible = false
+          } else if (newsType === 2) {
+            this.$router.push('/group-classgrouplogreject')
+            this.visible = false
+          } else if (newsType === 3) {
+            this.$router.push('/management-ordermanagementalready')
+            this.visible = false
+          } else if (newsType === 4) {
+            this.$router.push('/management-ordermanagement')
+            this.visible = false
+          } else if (newsType === 5) {
+            this.$router.push('/management-ordermanagementreported')
+            this.visible = false
+          } else if (newsType === 6) {
+            this.$router.push('/management-ordermanagementconfirm')
+            this.visible = false
+          } else if (newsType === 7) {
+            this.$router.push('/management-ordermanagementfinished')
+            this.visible = false
+          } else if (newsType === 8) {
+            this.$router.push('/management-ordermanagementreported')
+            this.visible = false
+          }
+        },
+        newsexist () {
+          this.$http({
+            url: this.$http.adornUrl('/sys/news/list'),
+            method: 'get',
+            params: this.$http.adornParams({
+              'page': this.pageIndex,
+              'limit': this.pageSize,
+              'user_id': this.userId
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataList = data.page.list
+              this.totalPage = data.page.totalCount
+            } else {
+              this.dataList = []
+              this.totalPage = 0
+            }
+          })
+        },
+        // 这是一个定时器
+        timer () {
+          return setTimeout(() => {
+            this.newsexist()
+          }, 5000)
+        }
+      },
       // 最终销毁
-      destroyed() {
+      destroyed () {
         clearTimeout(this.timer)
       }
     }

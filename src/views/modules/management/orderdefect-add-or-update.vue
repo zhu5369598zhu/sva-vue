@@ -7,27 +7,10 @@
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
       <el-form-item label="工单编号" prop="defectiveNumber">
         {{dataForm.defectiveNumber}}
-        <!--<el-input v-model="dataForm.defectiveNumber" placeholder="缺陷工单编号"></el-input>-->
       </el-form-item>
       <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
         <el-input v-model="dataForm.defectiveTheme" placeholder="缺陷单主题"></el-input>
       </el-form-item>
-      <!--<el-form-item label="缺陷类型" prop="defectiveType">
-        &lt;!&ndash;<el-input v-model="dataForm.defectiveType" placeholder="缺陷类型"></el-input>&ndash;&gt;
-        <el-select v-model="dataForm.defectiveType" placeholder="缺陷类型">
-          <el-option
-            v-for="item in defectiveTypeList"
-            :key="item.defectiveType"
-            :label="item.defectiveTypeName"
-            :value="item.defectiveTypeName"
-          >
-
-          </el-option>
-        </el-select>
-      </el-form-item>-->
-      <!--<el-form-item label="所属部门" prop="deptId">
-        <el-input v-model="dataForm.deptId" placeholder="所属部门"></el-input>
-      </el-form-item>-->
       <el-row>
         <el-col :span="8">
           <el-form-item label="所属机构" prop="deptId">
@@ -44,7 +27,6 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="缺陷异常等级" prop="exceptionId">
-            <!--<el-input v-model="dataForm.exceptionId" placeholder="缺陷异常等级"></el-input>-->
             <el-select v-model="dataForm.exceptionId">
               <el-option
                 v-for="item in dataExceptionList"
@@ -64,39 +46,18 @@
           autosize
           v-model="dataForm.orderContent" placeholder="工单内容"></el-input>
       </el-form-item>
-      <!--<el-form-item label="归属设备" prop="defectiveDevice">
-        <el-input v-model="dataForm.defectiveDevice"></el-input>
-      </el-form-item>-->
       <el-form-item label="缺陷填报人" prop="defectiveName">
         <el-input v-model="dataForm.defectiveName" placeholder="缺陷填报人"></el-input>
       </el-form-item>
-      <!--<el-form-item label="缺陷填报人id" prop="defectiveNameId">
-        <el-input v-model="dataForm.defectiveNameId" placeholder="缺陷确认人(填报)人id"></el-input>
-      </el-form-item>-->
       <el-form-item label="工单填报人意见" prop="defectiveNameOpinion">
         <el-input
           type="textarea"
           autosize
           v-model="dataForm.defectiveNameOpinion" placeholder="工单填报人意见"></el-input>
       </el-form-item>
-      <!--<el-form-item label="填报时间" prop="createTime">
-        <el-input v-model="dataForm.createTime" placeholder="填报时间"></el-input>
-      </el-form-item>
-      <el-form-item label="0 拟制中 1 待确认 3 已转" prop="orderStatus">
-        <el-input v-model="dataForm.orderStatus" placeholder="0 拟制中 1 待确认 3 已转"></el-input>
-      </el-form-item>-->
       <el-form-item label="工单确认人" prop="orderConfirmer">
         <el-input v-model="dataForm.orderConfirmer" placeholder="工单确认人"></el-input>
       </el-form-item>
-      <!--<el-form-item label="工单确认人 id" prop="orderConfirmerId">
-        <el-input v-model="dataForm.orderConfirmerId" placeholder="工单确认人 id"></el-input>
-      </el-form-item>-->
-      <!--<el-form-item label="工单确认时间" prop="confirmedTime">
-        <el-input v-model="dataForm.confirmedTime" placeholder="工单确认时间"></el-input>
-      </el-form-item>
-      <el-form-item label="工单确认人意见" prop="orderConfirmerOpinion">
-        <el-input v-model="dataForm.orderConfirmerOpinion" placeholder="工单确认人意见"></el-input>
-      </el-form-item>-->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -178,14 +139,12 @@
           ],
           orderConfirmerOpinion: [
             { required: true, message: '工单确认人意见不能为空', trigger: 'blur' }
-          ],
-
+          ]
         }
       }
     },
     mounted () {
       this.getDeptList()
-      //this.getDataList()   // 部门查询
       this.getExeption() // 异常等级
     },
     computed: {
@@ -193,19 +152,17 @@
         get () { return this.$store.state.user.name }
       },
       loginuserId: {
-        get (){ return this.$store.state.user.id}
+        get () { return this.$store.state.user.id }
       }
     },
     methods: {
-      init (defectiveId,id) {
+      init (defectiveId, id) {
         this.dataForm.defectiveId = defectiveId || 0
         this.visible = true
         this.isHttp = false
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
-
           if (this.dataForm.defectiveId > 0) {
-
             this.$http({
               url: this.$http.adornUrl(`/management/orderdefect/orderinfo`),
               method: 'get',
@@ -214,39 +171,35 @@
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
-
-                  this.dataForm.defectiveNumber = data.orderdefective.defectiveNumber
-                  this.dataForm.defectiveTheme = data.orderdefective.defectiveTheme
-                  this.dataForm.defectiveType = data.orderdefective.defectiveType
-                  this.dataForm.deptId = data.orderdefective.deptId
-                  this.dataForm.exceptionId = data.orderdefective.exceptionId
-                  this.dataForm.orderContent = data.orderdefective.orderContent
-                  this.dataForm.defectiveName = data.orderdefective.defectiveName
-                  this.dataForm.defectiveNameId = data.orderdefective.defectiveNameId
-                  this.dataForm.defectiveNameOpinion = data.orderdefective.defectiveNameOpinion
-                  this.dataForm.createTime = data.orderdefective.createTime
-                  this.dataForm.orderStatus = data.orderdefective.orderStatus
-                  this.dataForm.orderConfirmer = data.orderdefective.orderConfirmer
-                  this.dataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
-                  this.dataForm.confirmedTime = data.orderdefective.confirmedTime
-                  this.dataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
-                  this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
-                  this.dataForm.resultId = data.orderdefective.resultId
-
-
+                this.dataForm.defectiveNumber = data.orderdefective.defectiveNumber
+                this.dataForm.defectiveTheme = data.orderdefective.defectiveTheme
+                this.dataForm.defectiveType = data.orderdefective.defectiveType
+                this.dataForm.deptId = data.orderdefective.deptId
+                this.dataForm.exceptionId = data.orderdefective.exceptionId
+                this.dataForm.orderContent = data.orderdefective.orderContent
+                this.dataForm.defectiveName = data.orderdefective.defectiveName
+                this.dataForm.defectiveNameId = data.orderdefective.defectiveNameId
+                this.dataForm.defectiveNameOpinion = data.orderdefective.defectiveNameOpinion
+                this.dataForm.createTime = data.orderdefective.createTime
+                this.dataForm.orderStatus = data.orderdefective.orderStatus
+                this.dataForm.orderConfirmer = data.orderdefective.orderConfirmer
+                this.dataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
+                this.dataForm.confirmedTime = data.orderdefective.confirmedTime
+                this.dataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
+                this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
+                this.dataForm.resultId = data.orderdefective.resultId
               }
             })
           }
         })
         // 新增  工单编号  managementNumber
-        if(this.dataForm.defectiveId <=0){
+        if (this.dataForm.defectiveId <= 0) {
           // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
           this.dataForm.defectiveName = this.loginuserName
           this.dataForm.defectiveNameId = this.loginuserId
           this.dataForm.orderConfirmer = this.loginuserName
           this.dataForm.orderConfirmerId = this.loginuserId
           this.dataForm.resultId = id
-          //
           this.$http({
             url: this.$http.adornUrl('/management/orderdefective/managementNumber'),
             method: 'get',
@@ -255,39 +208,30 @@
             this.dataForm.defectiveNumber = data.managementNumber
             this.dataForm.defectiveId = 0
           })
-
         }
-
       },
-
       // 机构的下拉列表
-      getDeptList() {
-        if(this.deptList <=0){
+      getDeptList () {
+        if (this.deptList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/sys/dept/tree'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList =data
+            this.deptList = data
           })
-
         }
       },
-      getExeption(){
+      getExeption () {
         this.$http({
           url: this.$http.adornUrl('/setting/exception/list'),
           method: 'get',
-          params: this.$http.adornParams({
-            /* 'page': this.pageIndex,
-             'limit': this.pageSize,
-             'name': this.dataForm.name*/
-          })
+          params: this.$http.adornParams({})
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.dataExceptionList = data.page.list
           } else {
             this.dataExceptionList = []
-
           }
         })
       },
