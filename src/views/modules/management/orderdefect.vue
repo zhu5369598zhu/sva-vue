@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-result-exception">
+  <div class="mod-orderdefect">
     <div class="show-data-content">
       <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
         <template slot="paneL" >
@@ -1024,20 +1024,20 @@
         get () { return this.$store.state.common.documentClientHeight }
       }
     },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+      }
+    },
     mounted: function () {
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-
-        let self = this
-        window.onresize = function () {
-          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
-        }
       })
     }
   }
 </script>
 <style>
-  .site-content  .show-data-down{
+  .show-data-down{
     position:absolute;
     z-index: -10;
     bottom:0;

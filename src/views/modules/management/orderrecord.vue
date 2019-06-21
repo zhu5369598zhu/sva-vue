@@ -53,6 +53,7 @@
           </el-form-item>
         </div>
       </div>
+      <p>流程记录</p>
       <div v-for="item in recordList" :key="item.recordId">
 
           <el-form-item :label="item.orderPeopleName">

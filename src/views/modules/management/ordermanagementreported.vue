@@ -842,7 +842,7 @@
      width: 98%;
    }
    .site-content .show-data-down {
-     height: 300px;
+     height: 310px;
      margin-left: 10px;
      margin-top: 10px;
      overflow: hidden;
