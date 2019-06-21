@@ -52,10 +52,14 @@
       </el-form-item>
     </el-form>
     <el-table
+      ref="table"
+      :height="tableHeight"
       :data="dataList"
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
+      :cell-style="cellStyle"
+      :row-style="rowStyle"
       style="width: 100%;">
       <el-table-column
         type="selection"
@@ -810,7 +814,6 @@
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {
-          console.log(data.ordermanagement)
           if (data && data.code === 0) {
             this.orderDataForm.orderId = data.ordermanagement.orderId
             this.orderDataForm.orderNumber = data.ordermanagement.orderNumber
@@ -854,7 +857,6 @@
           var downup = document.getElementById('data-up')
           downup.style.height = '350px'
           downup.style.overflowY = 'scroll'
-          console.log(this.orderDataForm.orderStatus)
           if (this.orderDataForm.orderStatus === 0 || this.orderDataForm.orderStatus === 6) {
             dom.style.display = 'block'
             dom1.style.display = 'none'
@@ -1073,6 +1075,12 @@
         this.dataForm.deptId = val
         this.getDataList()
       },
+      rowStyle ({row, rowIndex}) {
+        return 'height:30px'
+      },
+      cellStyle () {
+        return 'padding:0'
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
@@ -1140,6 +1148,16 @@
           this.$refs.OrderRecord.init(id, orderNumber)
         })
       }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
+      })
     }
   }
 </script>

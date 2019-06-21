@@ -700,7 +700,7 @@
           var domtwo = document.getElementById('did_2')
           var downup = document.getElementById('data-up')
           var datadown = document.getElementById('data-down')
-          downup.style.height = '100px'
+          downup.style.height = '360px'
           downup.style.overflowY = 'scroll'
           datadown.style.zIndex = '10'
           if (row.orderStatus === 0) { // 拟制中
@@ -740,7 +740,6 @@
       },
       // 确认缺陷单
       confirmation () {
-        console.log(this.orderDataForm.orderConfirmerId, this.loginuserId)
         if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
           this.orderDataForm.orderStatus = 1
           this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
@@ -1025,23 +1024,20 @@
         get () { return this.$store.state.common.documentClientHeight }
       }
     },
-    watch: {
-      'documentClientHeight': function (val) {
-        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-      }
-    },
     mounted: function () {
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
       })
     }
   }
 </script>
 <style>
-  .up {
-    float: top;
-  }
-  .site-content .show-data-down{
+  .site-content  .show-data-down{
     position:absolute;
     z-index: -10;
     bottom:0;

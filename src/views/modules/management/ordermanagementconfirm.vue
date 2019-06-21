@@ -41,9 +41,13 @@
 
     </el-form>
     <el-table
+      ref="table"
+      :height="tableHeight"
       :data="dataList"
       border
       v-loading="dataListLoading"
+      :cell-style="cellStyle"
+      :row-style="rowStyle"
       style="width: 100%;">
       <el-table-column
         prop="orderId"
@@ -596,6 +600,12 @@
         this.dataForm.deptId = val
         this.getDataList()
       },
+      rowStyle ({row, rowIndex}) {
+        return 'height:30px'
+      },
+      cellStyle () {
+        return 'padding:0'
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
@@ -607,6 +617,16 @@
         this.pageIndex = val
         this.getDataList()
       }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
+      })
     }
   }
 </script>

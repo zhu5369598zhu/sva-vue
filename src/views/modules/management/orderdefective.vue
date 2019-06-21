@@ -46,10 +46,14 @@
         </el-form-item>
       </el-form>
       <el-table
+        ref="table"
+        :height="tableHeight"
         :data="dataList"
         border
         v-loading="dataListLoading"
         @selection-change="selectionChangeHandle"
+        :cell-style="cellStyle"
+        :row-style="rowStyle"
         style="width: 100%;">
         <el-table-column
           type="selection"
@@ -852,7 +856,7 @@
           var domone = document.getElementById('did_1')
           var domtwo = document.getElementById('did_2')
           var downup = document.getElementById('data-up')
-          downup.style.height = '100px'
+          downup.style.height = '360px'
           downup.style.overflowY = 'scroll'
           if (row.orderStatus === 0) { // 拟制中
             dom.style.display = 'block'
@@ -989,6 +993,16 @@
           this.$alert('需要确认人来确认并派单')
         }
       }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
+      })
     }
   }
 </script>
