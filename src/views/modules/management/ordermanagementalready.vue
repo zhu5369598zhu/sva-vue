@@ -338,6 +338,7 @@
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {
+          console.log(data.ordermanagement)
           if (data && data.code === 0) {
             this.orderDataForm.orderId = data.ordermanagement.orderId
             this.orderDataForm.orderNumber = data.ordermanagement.orderNumber
@@ -372,7 +373,7 @@
           }
           // 设置纵向滑动
           var downup = document.getElementById('data-up')
-          downup.style.height = '100px'
+          downup.style.height = '350px'
           downup.style.overflowY = 'scroll'
           if (this.orderDataForm.orderStatus === 0) {
             var dom = document.getElementById('did')
@@ -599,20 +600,28 @@
    .up {
      float: top;
    }
-   .site-content .show-data-up{
-     position:absolute;
-     height: 600px;
-     width: 95%;
+   .show-data-up{
+     position: absolute;
+     margin: 0px auto;
+     /*height: 400px;*/
      z-index: 20;
+     width: 98%;
    }
-   .site-content .show-data-down{
-     position:absolute;
+   .site-content .show-data-down {
+     height: 300px;
+     margin-left: 10px;
+     margin-top: 10px;
+     overflow: hidden;
+     bottom: 0px;
+   }
+   .show-data-down{
+     position: absolute;
      z-index: 10;
-     bottom: 0;
      left: 20px;
-     width:100%;
-     height:300px;
-
+     width: 100%;
+     margin: 0px auto;
+     /*height: 200px;*/
+     bottom: 0px;
    }
    .div-a{ float:left;width:24%;height: 100%;}
    .div-b{ float:left;width:24%;height: 100%;}

@@ -1,5 +1,6 @@
 <template>
-  <div class="mod-config">
+  <div class="mod-group">
+    <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item label="日志列表"></el-form-item>
       <el-form-item prop="logNumber">
@@ -46,8 +47,12 @@
       </el-form-item>
     </el-form>
     <el-table
+      ref="table"
+      :height="tableHeight"
       :data="dataList"
       border
+      :cell-style="cellStyle"
+      :row-style="rowStyle"
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
@@ -64,6 +69,7 @@
         label="序号">
       </el-table-column>
       <el-table-column
+        width="100"
         prop="logNumber"
         header-align="center"
         align="center"
@@ -148,6 +154,7 @@
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
     <banhou v-if="banhouVisible" ref="banhou" @refreshDataList="getDataList"></banhou>
     <banqian v-if="banqianVisible" ref="banqian" @refreshDataList="getDataList"></banqian>
+    </div>
   </div>
 </template>
 
@@ -169,6 +176,7 @@
           add: '新增',
           user_id: ''
         },
+        tableHeight: 300,
         logStatus: '4',
         logUserStatus: '4',
         logType: '',
@@ -284,7 +292,12 @@
           this.dataListLoading = false
         })
       },
-
+      rowStyle ({row, rowIndex}) {
+        return 'height:40px'
+      },
+      cellStyle () {
+        return 'padding:0'
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
@@ -381,6 +394,16 @@
           this.$refs.banqian.init(id)
         })
       }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
+      })
     }
   }
 </script>
