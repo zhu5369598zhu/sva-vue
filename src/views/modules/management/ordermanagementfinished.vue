@@ -46,6 +46,7 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
+      highlight-current-row
       :cell-style="cellStyle"
       :row-style="rowStyle"
       style="width: 100%;">

@@ -136,7 +136,6 @@
 </template>
 
 <script>
-  import { treeDataTranslate } from '@/utils'
   import TableTreeColumn from '@/components/table-tree-column'
   export default {
     data () {
@@ -265,7 +264,6 @@
       this.getTurnList()
       this.getDeptList()
       this.getDataList()    // 部门查询
-      this.getUserDataList()   // 用户查询
     },
     computed: {
       loginuserName: {
@@ -375,93 +373,6 @@
       },
       handleStartTimeChange (val) {
         this.dataForm.createTime = val
-      },
-      // 查询部门
-      getDataList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/dept/list'),
-          method: 'get',
-          params: this.$http.adornParams({'name': this.deptFrom.name})
-        }).then(({data}) => {
-          this.dataList = treeDataTranslate(data, 'deptId')
-        })
-      },
-      // 选中部门 查询用户
-      addOrUpdateHandle (deptId) {
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'username': '',
-            'deptId': deptId
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
-        })
-      },
-      // 部门用户查询
-      search () {
-        this.getUserDataList()
-      },
-      // 查询用户
-      getUserDataList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'username': this.datauserForm.userName,
-            'deptId': ''
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
-        })
-      },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-
-      // 点击人员的确定
-      Handle (username) {
-        var userNames = username ? [username] : this.dataListSelections.map(item => {
-          return item.username
-        })
-        var userId = userId ? [userId] : this.dataListSelections.map(item => {
-          return item.userId
-        })
-        if (this.title === '接班人') {
-          if (this.dataListSelections.length >= 2) {
-            this.$alert('接班人只能选择一个')
-          } else {
-            this.dataForm.successor = userNames.toString()
-            this.dataForm.successorId = userId.toString()
-            this.dialogFormVisible = false
-          }
-        }
-        if (this.title === '实到人员') {
-          this.dataForm.actualArrival = userNames.toString()
-          this.dialogFormVisible = false
-        }
-        if (this.title === '未到人员') {
-          this.dataForm.notArrived = userNames.toString()
-          this.dialogFormVisible = false
-        }
-        if (this.title === '顶班人员') {
-          this.dataForm.topArrived = userNames.toString()
-          this.dialogFormVisible = false
-        }
-      },
-      clickTitle (title) {
-        this.title = title
-        this.dialogFormVisible = true
       },
       // 驳回
       bohuiSubmit () { // 用户有了驳回记录

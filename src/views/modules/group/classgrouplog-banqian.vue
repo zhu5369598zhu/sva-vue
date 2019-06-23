@@ -136,7 +136,7 @@
         <el-input type="textarea" autosize v-model="dataForm.preventiveMeasures" placeholder="防范措施"></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="交底人" prop="manAgreement">
             <el-input v-model="dataForm.manAgreement" :disabled="true" placeholder="交底人"></el-input>
           </el-form-item>
@@ -153,9 +153,9 @@
                 <div style="width:400px;height: 500px;overflow: scroll;">
                   <el-form :model="deptFrom">
                     <el-row>
-                      <el-col :span="8">
+                      <el-col :span="13">
                         <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 80px;"></el-input>
+                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -167,6 +167,8 @@
                   </el-form>
                   <el-table
                     :data="dataList"
+                    highlight-current-row
+                    @current-change="addOrUpdateHandle"
                     style="width: 100%;">
                     <el-table-column
                       type="index"
@@ -174,23 +176,13 @@
                       align="center"
                       width="80">
                     </el-table-column>
-                    <table-tree-column
-                      style="width: auto"
-                      prop="name"
-                      header-align="center"
-                      treeKey="deptId"
-                      label="机构名称"
+                    <table-tree-column style="width: auto"
+                                       prop="name"
+                                       header-align="center"
+                                       treeKey="deptId"
+                                       label="机构名称"
                     >
                     </table-tree-column>
-                    <el-table-column
-                      header-align="center"
-                      align="center"
-                      width="150"
-                      label="操作">
-                      <template slot-scope="scope">
-                        <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.deptId)">选中</el-button>
-                      </template>
-                    </el-table-column>
                   </el-table>
                 </div>
                 <div style="width:400px;height: 500px;overflow: scroll;">
@@ -198,22 +190,22 @@
                     <el-row>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 80px;"></el-input>
+                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="8">
+                      <el-col :span="5">
                         <el-form-item>
                           <el-button @click="search">查询</el-button>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="4">
+                      <el-col :span="5">
                         <el-form-item>
                           <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="4">
+                      <el-col :span="5">
                         <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取 消</el-button>
+                          <el-button @click="dialogFormVisible = false">取消</el-button>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -256,7 +248,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:170px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -334,6 +326,9 @@
           workSummary: '',
           personCharge: ''
         },
+        currentRow: '',
+        pageIndex: 1,
+        pageSize: 2000,
         TurnList: [],
         deptList: [],
         dataRule: {
@@ -423,7 +418,6 @@
       this.getTurnList()
       this.getDeptList()
       this.getDataList()   // 部门查询
-      this.getUserDataList()  // 用户查询
     },
     computed: {
       loginuserName: {
@@ -548,11 +542,15 @@
         })
       },
       // 选中部门 查询用户
-      addOrUpdateHandle (deptId) {
+      addOrUpdateHandle (val) {
+        this.currentRow = val
+        var deptId = this.currentRow.deptId
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
           params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
             'username': '',
             'deptId': deptId
           })
@@ -574,6 +572,8 @@
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
           params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
             'username': this.datauserForm.userName,
             'deptId': ''
           })

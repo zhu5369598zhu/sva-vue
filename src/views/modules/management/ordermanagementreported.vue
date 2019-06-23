@@ -45,6 +45,7 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
+      highlight-current-row
       :cell-style="cellStyle"
       :row-style="rowStyle"
       style="width: 100%;">
@@ -183,9 +184,9 @@
               <div style="width:400px;height: 500px;overflow: scroll;">
                 <el-form :model="deptFrom">
                   <el-row>
-                    <el-col :span="8">
+                    <el-col :span="13">
                       <el-form-item>
-                        <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 80px;"></el-input>
+                        <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -197,6 +198,8 @@
                 </el-form>
                 <el-table
                   :data="deptdataList"
+                  highlight-current-row
+                  @current-change="addOrUpdateHandle"
                   style="width: 100%;">
                   <el-table-column
                     type="index"
@@ -212,15 +215,7 @@
                     label="机构名称"
                   >
                   </table-tree-column>
-                  <el-table-column
-                    header-align="center"
-                    align="center"
-                    width="150"
-                    label="操作">
-                    <template slot-scope="scope">
-                      <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.deptId)">选中</el-button>
-                    </template>
-                  </el-table-column>
+
                 </el-table>
               </div>
               <div style="width:400px;height: 500px;overflow: scroll;">
@@ -228,22 +223,22 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item>
-                        <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 80px;"></el-input>
+                        <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="5">
                       <el-form-item>
                         <el-button @click="search">查询</el-button>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="5">
                       <el-form-item>
                         <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="5">
                       <el-form-item>
-                        <el-button @click="dialogFormVisible = false">取 消</el-button>
+                        <el-button @click="dialogFormVisible = false">取消</el-button>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -416,6 +411,8 @@
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
+        currentRow: '',
+        limit: 2000,
         totalPage: 0,
         dataListLoading: false,
         addOrUpdateVisible: false,
@@ -495,11 +492,15 @@
         })
       },
       // 选中部门 查询用户
-      addOrUpdateHandle (deptId) {
+      addOrUpdateHandle (val) {
+        this.currentRow = val
+        var deptId = this.currentRow.deptId
         this.$http({
           url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
           params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.limit,
             'username': '',
             'deptId': deptId
           })
@@ -517,9 +518,11 @@
       // 查询用户
       getUserDataList () {
         this.$http({
-          url: this.$http.adornUrl('/  /user/list'),
+          url: this.$http.adornUrl('/sys/user/list'),
           method: 'get',
           params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.limit,
             'username': this.datauserForm.userName,
             'deptId': ''
           })

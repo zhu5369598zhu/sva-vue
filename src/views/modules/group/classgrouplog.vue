@@ -156,6 +156,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType)">修改</el-button>
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.classId,scope.row.logStatus)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -385,34 +386,39 @@
         })
       },
       // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.classId
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/group/classgrouplog/delete'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
+      deleteHandle (id, loginStatus) {
+        if (id > 0 && loginStatus > 0) {
+          this.$alert('只能删除拟制中的班组日志')
+        } else {
+          var ids = id ? [id] : this.dataListSelections.map(item => {
+            return item.classId
           })
-        })
+          this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$http({
+              url: this.$http.adornUrl('/group/classgrouplog/delete'),
+              method: 'post',
+              data: this.$http.adornData(ids, false)
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                this.$message({
+                  message: '操作成功',
+                  type: 'success',
+                  duration: 1500,
+                  onClose: () => {
+                    this.getDataList()
+                  }
+                })
+              } else {
+                this.$message.error(data.msg)
+              }
+            })
+          })
+        }
+
       }
     },
     mounted: function () {

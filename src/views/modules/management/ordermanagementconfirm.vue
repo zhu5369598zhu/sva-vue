@@ -46,6 +46,7 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
+      highlight-current-row
       :cell-style="cellStyle"
       :row-style="rowStyle"
       style="width: 100%;">
@@ -601,7 +602,7 @@
         this.getDataList()
       },
       rowStyle ({row, rowIndex}) {
-        return 'height:30px'
+        return 'height:40px'
       },
       cellStyle () {
         return 'padding:0'

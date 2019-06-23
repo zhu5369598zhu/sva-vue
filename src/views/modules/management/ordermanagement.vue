@@ -57,6 +57,7 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
+      highlight-current-row
       @selection-change="selectionChangeHandle"
       :cell-style="cellStyle"
       :row-style="rowStyle"
@@ -84,7 +85,7 @@
         style="width: 35%"
         >
         <template slot-scope="scope">
-          <a href="#"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
+          <a href="#" style="text-decoration: none;"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
         </template>
       </el-table-column>
       <el-table-column
@@ -307,11 +308,6 @@
                 type="textarea"
                 v-model="orderDataForm.orderAcceptorOpinion"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="warning">拒绝</el-button>
-              <el-button type="primary">受理</el-button>
-            </el-form-item>
-
           </div>
         </el-form>
       </div>
@@ -398,8 +394,6 @@
             </el-form-item>
             <el-form-item>
               <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
-              <el-button type="warning" >申请延期</el-button>
-              <el-button type="primary" >上报</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -485,10 +479,6 @@
                 type="textarea"
                 v-model="orderDataForm.orderAcceptorOpinion"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="warning" >打回</el-button>
-              <el-button type="primary" >确认</el-button>
-            </el-form-item>
           </div>
         </el-form>
       </div>
@@ -572,9 +562,6 @@
                 :rows="3"
                 type="textarea"
                 v-model="orderDataForm.orderAcceptorOpinion"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" >结单</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -1076,7 +1063,7 @@
         this.getDataList()
       },
       rowStyle ({row, rowIndex}) {
-        return 'height:30px'
+        return 'height:40px'
       },
       cellStyle () {
         return 'padding:0'
@@ -1115,7 +1102,7 @@
           var ids = id ? [id] : this.dataListSelections.map(item => {
             return item.orderId
           })
-          this.$confirm(`确定对[序号=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+          this.$confirm(`确定进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
