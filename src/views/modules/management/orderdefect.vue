@@ -14,12 +14,11 @@
           <div class="show-data-table">
             <div class="show-data-up" id="data-up">
               <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-
                 <el-form-item label="缺陷确认状态:" prop="orderStatus">
                   <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;">
-                    <el-option label="拟制中" value="0"></el-option>
-                    <el-option label="待确认" value="1"></el-option>
-                    <el-option label="已确认" value="2"></el-option>
+                    <el-option label="待确认" value="0"></el-option>
+                    <el-option label="已确认" value="1"></el-option>
+                    <el-option label="已挂起" value="2"></el-option>
                   </el-select>
                 </el-form-item>
 
@@ -65,8 +64,7 @@
                     <a href="#"><p   @click=clickRow(scope.row)>{{scope.row.deviceName}}</p></a>
                   </template>-->
                   <template slot-scope="scope">
-                    <span v-if="scope.row.defectiveId != null" style="color: #72ACE3" @click="clickRow(scope.row)">{{scope.row.deviceName}}</span>
-                    <span v-if="scope.row.defectiveId == null" >{{scope.row.deviceName}}</span>
+                    <span>{{scope.row.deviceName}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -157,8 +155,8 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">转工单</el-button>
-                    <!--<el-button type="text" size="small" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>-->
+                    <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
+                   <el-button type="text" size="small" @click="hangup(scope.row.id, scope.row.orderStatus)">挂起</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -174,315 +172,6 @@
               <!-- 弹窗, 新增 / 修改 -->
               <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
             </div>
-            <div class="show-data-down" id="data-down">
-
-              <div class="new_1" id="did" style="display: none">
-                <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-                  <div class="div-a">
-
-                    <el-form-item label="缺陷单编号" prop="defectiveNumber">
-                      <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所属机构" prop="deptId">
-                      <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-                      >
-                        <el-option
-                          v-for="item in deptList"
-                          :key="item.deptId"
-                          :label="item.name"
-                          :value="item.deptId"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="缺陷填报时间" prop="createTime">
-                      <el-input v-model="orderDataForm.createTime"></el-input>
-                    </el-form-item>
-                    <el-form-item label="归属设备" prop="defectiveDevice">
-                      <el-input v-model="orderDataForm.defectiveDevice"></el-input>
-                    </el-form-item>
-                  </div>
-
-
-                  <div class="div-b">
-                    <el-form-item label="缺陷类型" prop="defectiveTypeName">
-                      <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷等级" prop="exceptionName">
-                      <el-input v-model="orderDataForm.exceptionName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷填报人" prop="defectiveName">
-                      <el-input v-model="orderDataForm.defectiveName"></el-input>
-                    </el-form-item>
-                  </div>
-                  <div class="div-c">
-                    <el-form-item label="缺陷单主题" prop="defectiveTheme">
-                      <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-                    </el-form-item>
-                    <el-form-item >
-                      <el-input
-                        :rows="6"
-                        type="textarea"
-                        v-model="orderDataForm.orderContent"></el-input>
-                    </el-form-item>
-                  </div>
-                  <div class="div-d">
-                    <p>缺陷填报人意见</p>
-                    <el-form-item  prop="defectiveNameOpinion">
-                      <el-input
-                        type="textarea"
-                        :rows="4"
-                        v-model="orderDataForm.defectiveNameOpinion"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="confirmation()" >确认缺陷单</el-button>
-                    </el-form-item>
-
-                  </div>
-                </el-form>
-              </div>
-
-              <div class="new_1" id="did_1" style="display: none">
-                <el-form :inline="true"   :model="orderDataForm" ref="orderDataForm" label-width="80px;">
-                  <!--  拟制中 -->
-                  <h5> 缺陷单详情</h5>
-                  <div class="div-a">
-                    <el-form-item label="缺陷单编号" prop="defectiveNumber">
-                      <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所属机构" prop="deptId">
-                      <!--<el-input v-model="orderDataForm.deptId"></el-input>-->
-                      <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-                      >
-                        <el-option
-                          v-for="item in deptList"
-                          :key="item.deptId"
-                          :label="item.name"
-                          :value="item.deptId"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="缺陷确认时间" prop="createTime">
-                      <el-input v-model="orderDataForm.createTime"></el-input>
-                    </el-form-item>
-                    <el-form-item label="转工单状态" prop="orderStatusName">
-                      <el-input v-model="orderDataForm.orderStatusName"></el-input>
-                    </el-form-item>
-                    <el-form-item
-                      label="要求完成时间"
-                      prop="requirementTime"
-                    >
-                      <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
-                    </el-form-item>
-                  </div>
-                  <div class="div-b">
-                    <el-form-item label="缺陷类型" prop="defectiveTypeName">
-                      <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷等级" prop="exceptionId">
-                      <el-input v-model="orderDataForm.exceptionName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷确认人" prop="defectiveName">
-                      <el-input v-model="orderDataForm.defectiveName"></el-input>
-                    </el-form-item>
-                    <el-form-item
-                      label="受理人"
-                      prop="orderAcceptor"
-                    >
-                      <el-input v-model="orderDataForm.orderAcceptor" :disabled="true">
-                        <span slot="suffix">
-                          <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-                        </span>
-                      </el-input>
-                      <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-                        <div style="display: flex;justify-content: space-around;align-items: center;">
-                          <div style="width:400px;height: 500px;overflow: scroll;">
-                            <el-form :model="deptFrom">
-                              <el-row>
-                                <el-col :span="13">
-                                  <el-form-item>
-                                    <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                                  </el-form-item>
-                                </el-col>
-                                <el-col :span="8">
-                                  <el-form-item>
-                                    <el-button @click="getDataList()">查询</el-button>
-                                  </el-form-item>
-                                </el-col>
-                              </el-row>
-                            </el-form>
-                            <el-table
-                              :data="dataList"
-                              highlight-current-row
-                              @current-change="depteHandle"
-                              style="width: 100%;">
-                              <el-table-column
-                                type="index"
-                                header-align="center"
-                                align="center"
-                                width="80">
-                              </el-table-column>
-                              <table-tree-column style="width: auto"
-                                                 prop="name"
-                                                 header-align="center"
-                                                 treeKey="deptId"
-                                                 label="机构名称"
-                              >
-                              </table-tree-column>
-                            </el-table>
-                          </div>
-                          <div style="width:400px;height: 500px;overflow: scroll;">
-                            <el-form :inline="true" :model="datauserForm" >
-                              <el-row>
-                                <el-col :span="8">
-                                  <el-form-item>
-                                    <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                                  </el-form-item>
-                                </el-col>
-                                <el-col :span="5">
-                                  <el-form-item>
-                                    <el-button @click="search">查询</el-button>
-                                  </el-form-item>
-                                </el-col>
-                                <el-col :span="5">
-                                  <el-form-item>
-                                    <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                                  </el-form-item>
-                                </el-col>
-                                <el-col :span="5">
-                                  <el-form-item>
-                                    <el-button @click="dialogFormVisible = false">取消</el-button>
-                                  </el-form-item>
-                                </el-col>
-                              </el-row>
-                            </el-form>
-                            <el-table
-                              :data="UserdataList"
-                              style="width: 100%;"
-                              :row-style="rowStyle"
-                              @selection-change="selectionChangeHandle"
-                            >
-                              <el-table-column
-                                type="selection"
-                                header-align="center"
-                                align="center"
-                                width="50">
-                              </el-table-column>
-                              <el-table-column
-                                type="index"
-                                header-align="center"
-                                align="center"
-                                width="50">
-                              </el-table-column>
-                              <el-table-column
-                                prop="username"
-                                header-align="center"
-                                align="center"
-                                label="用户名">
-                              </el-table-column>
-                              <el-table-column
-                                prop="deptName"
-                                header-align="center"
-                                align="center"
-                                label="机构名称">
-                              </el-table-column>
-                            </el-table>
-                          </div>
-                        </div>
-                      </el-dialog>
-                    </el-form-item>
-                  </div>
-                  <div class="div-c">
-                    <el-form-item label="缺陷单主题" prop="defectiveTheme">
-                      <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-                    </el-form-item>
-                    <el-form-item label="默认内容" prop="orderContent">
-                      <el-input
-                        :rows="6"
-                        type="textarea"
-                        v-model="orderDataForm.orderContent"></el-input>
-                    </el-form-item>
-                  </div>
-                  <div class="div-d">
-                    <el-form-item label="工单确认人意见"></el-form-item><br>
-                    <el-form-item  prop="orderConfirmerOpinion">
-                      <el-input
-                        type="textarea"
-                        :rows="3"
-                        v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="orderConfirm()">确认并派单</el-button>
-                    </el-form-item>
-                  </div>
-                </el-form>
-              </div>
-
-              <div class="new_1" id="did_2" style="display: none;">
-                <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-                  <div class="div-a">
-                    <el-form-item label="缺陷单编号" prop="defectiveNumber">
-                      <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所属机构" prop="deptId">
-                      <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-                      >
-                        <el-option
-                          v-for="item in deptList"
-                          :key="item.deptId"
-                          :label="item.name"
-                          :value="item.deptId"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item label="缺陷确认时间" prop="createTime">
-                      <el-input v-model="orderDataForm.createTime"></el-input>
-                    </el-form-item>
-                    <el-form-item label="转工单状态" prop="orderStatusName">
-                      <el-input v-model="orderDataForm.orderStatusName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="工单确认时间" prop="confirmedTime">
-                      <el-input v-model="orderDataForm.confirmedTime"></el-input>
-                    </el-form-item>
-                  </div>
-                  <div class="div-b">
-                    <el-form-item label="缺陷类型" prop="defectiveTypeName">
-                      <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷等级" prop="exceptionName">
-                      <el-input v-model="orderDataForm.exceptionName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="缺陷填报人" prop="defectiveName">
-                      <el-input v-model="orderDataForm.defectiveName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="工单确认人" prop="orderConfirmer">
-                      <el-input v-model="orderDataForm.orderConfirmer"></el-input>
-                    </el-form-item>
-
-                  </div>
-                  <div class="div-c">
-                    <el-form-item label="缺陷单主题" prop="defectiveTheme">
-                      <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-                    </el-form-item>
-                    <el-form-item label="默认内容" prop="orderContent">
-                      <el-input
-                        :rows="6"
-                        type="textarea"
-                        v-model="orderDataForm.orderContent"></el-input>
-                    </el-form-item>
-                  </div>
-                  <div class="div-d">
-                    <p>工单确认人意见</p>
-
-                    <el-form-item  prop="orderConfirmerOpinion">
-                      <el-input
-                        type="textarea"
-                        :rows="4"
-                        v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-                    </el-form-item>
-                  </div>
-                </el-form>
-              </div>
-            </div>
           </div>
         </template>
       </split-pane>
@@ -495,7 +184,6 @@
   import AddOrUpdate from './orderdefect-add-or-update'
   import splitPane from '@/components/split-pane'
   import depttree from '@/components/dept-tree'
-  import { treeDataTranslate } from '@/utils'
   import TableTreeColumn from '@/components/table-tree-column'
   export default {
     data () {
@@ -545,11 +233,8 @@
         curPercent: 12,
         oldPercent: 12,
         deptList: [],
-        dataExceptionList: [],
         startDatePickerTime: this.beginstartDate(),
         dialogFormVisible: false,
-        UserdataList: [],
-        dataDeptList: [],
         dataList: [],
         pageIndex: 1,
         pageSize: 20,
@@ -571,7 +256,6 @@
       this.dataForm.startTime = new Date()
       this.dataForm.startTime.setDate(this.dataForm.startTime.getDate() - 7)
       this.getDeptList()
-      this.getDeptDataList()
       this.getDataList()
     },
     methods: {
@@ -598,62 +282,6 @@
           this.dialogFormVisible = false
         }
       },
-      // 选中部门 查询用户
-      depteHandle (val) {
-        this.currentRow = val
-        var deptId = this.currentRow.deptId
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.limit,
-            'username': '',
-            'deptId': deptId
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
-        })
-      },
-      search () {
-        this.getUserDataList()
-      },
-      // 查询用户
-      getUserDataList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.limit,
-            'username': this.datauserForm.userName,
-            'deptId': ''
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
-        })
-      },
-      // 查询部门
-      getDeptDataList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/dept/list'),
-          method: 'get',
-          params: this.$http.adornParams({'name': this.deptFrom.name})
-        }).then(({data}) => {
-          this.dataDeptList = treeDataTranslate(data, 'deptId')
-        })
-      },
-      clickTitle () {
-        this.dialogFormVisible = true
-      },
       getDeptList () {
         if (this.deptList <= 0) {
           this.$http({
@@ -665,109 +293,16 @@
           })
         }
       },
-      // 点击缺陷单编号
-      clickRow (row) {
-        if (row.defectiveId != null) {
+      // 挂起
+      hangup (resultId, orderStatus) {
+        if (orderStatus > 0) {
+          this.$alert('待确认的才能挂起')
+        } else {
           this.$http({
-            url: this.$http.adornUrl(`/management/orderdefective/info/` + row.defectiveId),
+            url: this.$http.adornUrl(`/management/orderdefect/hangup`),
             method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.orderDataForm.defectiveId = data.orderdefective.defectiveId
-              this.orderDataForm.defectiveNumber = data.orderdefective.defectiveNumber
-              this.orderDataForm.defectiveTheme = data.orderdefective.defectiveTheme
-              this.orderDataForm.defectiveType = data.orderdefective.defectiveType
-              this.orderDataForm.defectiveTypeName = data.orderdefective.defectiveTypeName
-              this.orderDataForm.deptId = data.orderdefective.deptId
-              this.orderDataForm.exceptionId = data.orderdefective.exceptionId
-              this.orderDataForm.exceptionName = data.orderdefective.exceptionName
-              this.orderDataForm.orderContent = data.orderdefective.orderContent
-              this.orderDataForm.defectiveName = data.orderdefective.defectiveName
-              this.orderDataForm.defectiveNameId = data.orderdefective.defectiveNameId
-              this.orderDataForm.defectiveNameOpinion = data.orderdefective.defectiveNameOpinion
-              this.orderDataForm.createTime = data.orderdefective.createTime
-              this.orderDataForm.orderStatus = data.orderdefective.orderStatus
-              this.orderDataForm.orderStatusName = data.orderdefective.orderStatusName
-              this.orderDataForm.orderConfirmer = data.orderdefective.orderConfirmer
-              this.orderDataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
-              this.orderDataForm.confirmedTime = data.orderdefective.confirmedTime
-              this.orderDataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
-              this.orderDataForm.orderAcceptor = data.orderdefective.orderAcceptor
-              this.orderDataForm.orderAcceptorId = data.orderdefective.orderAcceptorId
-              this.orderDataForm.requirementTime = data.orderdefective.requirementTime
-            }
-          })
-          this.orderDataForm.defectiveDevice = row.deviceName
-          var dom = document.getElementById('did')
-          var domone = document.getElementById('did_1')
-          var domtwo = document.getElementById('did_2')
-          var downup = document.getElementById('data-up')
-          var datadown = document.getElementById('data-down')
-          downup.style.height = '360px'
-          downup.style.overflowY = 'scroll'
-          datadown.style.zIndex = '10'
-          if (row.orderStatus === 0) { // 拟制中
-            dom.style.display = 'block'
-            domone.style.display = 'none'
-            domtwo.style.display = 'none'
-          } else if (row.orderStatus === 1) {
-            dom.style.display = 'none'
-            domone.style.display = 'block'
-            domtwo.style.display = 'none'
-          } else if (row.orderStatus === 2) {
-            dom.style.display = 'none'
-            domone.style.display = 'none'
-            domtwo.style.display = 'block'
-          }
-        } else {
-          dom.style.display = 'none'
-          domone.style.display = 'none'
-          domtwo.style.display = 'none'
-          downup.style.height = '100%'
-          datadown.style.zIndex = '-10'
-        }
-      },
-      // 缺陷等级
-      getExeption () {
-        this.$http({
-          url: this.$http.adornUrl('/setting/exception/list'),
-          method: 'get',
-          params: this.$http.adornParams({})
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.dataExceptionList = data.page.list
-          } else {
-            this.dataExceptionList = []
-          }
-        })
-      },
-      // 确认缺陷单
-      confirmation () {
-        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
-          this.orderDataForm.orderStatus = 1
-          this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-          this.$http({
-            url: this.$http.adornUrl(`/management/orderdefect/update`),
-            method: 'post',
-            data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'defectiveTheme': this.orderDataForm.defectiveTheme,
-              'defectiveType': this.orderDataForm.defectiveType,
-              'deptId': this.orderDataForm.deptId,
-              'exceptionId': this.orderDataForm.exceptionId,
-              'orderContent': this.orderDataForm.orderContent,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'defectiveNameId': this.orderDataForm.defectiveNameId,
-              'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
-              'createTime': this.orderDataForm.createTime,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'defectiveDevice': this.orderDataForm.defectiveDevice
+            params: this.$http.adornParams({
+              'resultId': resultId
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
@@ -776,84 +311,12 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  var dom = document.getElementById('did')
-                  var dataup = document.getElementById('data-up')
-                  var datadown = document.getElementById('data-down')
-                  dom.style.display = 'none'
-                  dataup.style.height = '100%'
-                  datadown.style.zIndex = '-10'
-                  this.getDataList()
                 }
               })
             } else {
               this.$message.error(data.msg)
             }
           })
-        } else {
-          this.$alert('需要确认人来确认')
-        }
-      },
-      handleRequirementTimeChange (val) {
-        this.orderDataForm.requirementTime = val
-      },
-      // 确认并派单
-      orderConfirm () {
-        if (this.orderDataForm.orderAcceptor === '') {
-          this.$alert('受理人不能为空')
-          return
-        }
-        if (this.orderDataForm.requirementTime === null) {
-          this.$alert('要求完成时间不能为空')
-          return
-        }
-        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
-          this.orderDataForm.orderStatus = 2
-          this.$http({
-            url: this.$http.adornUrl(`/management/orderdefect/orderupdate`),
-            method: 'post',
-            data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'defectiveTheme': this.orderDataForm.defectiveTheme,
-              'defectiveType': this.orderDataForm.defectiveType,
-              'deptId': this.orderDataForm.deptId,
-              'exceptionId': this.orderDataForm.exceptionId,
-              'orderContent': this.orderDataForm.orderContent,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'defectiveNameId': this.orderDataForm.defectiveNameId,
-              'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
-              'createTime': this.orderDataForm.createTime,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'orderAcceptor': this.orderDataForm.orderAcceptor,
-              'orderAcceptorId': this.orderDataForm.orderAcceptorId,
-              'requirementTime': this.orderDataForm.requirementTime
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  var domone = document.getElementById('did_1')
-                  var dataup = document.getElementById('data-up')
-                  var datadown = document.getElementById('data-down')
-                  domone.style.display = 'none'
-                  dataup.style.height = '100%'
-                  datadown.style.zIndex = '-10'
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        } else {
-          this.$alert('需要确认人来确认并派单')
         }
       },
       beginDate () {
@@ -890,7 +353,7 @@
             this.$refs.addOrUpdate.init(defectiveId, id)
           })
         } else {
-          this.$alert('拟制中状态才能修改')
+          this.$alert('待确认状态才能确认缺陷')
         }
       },
       // 获取数据列表
@@ -921,8 +384,6 @@
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
-            var datadown = document.getElementById('data-down')
-            datadown.style.zIndex = '-10'
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -1040,18 +501,4 @@
     }
   }
 </script>
-<style>
-  .show-data-down{
-    position:absolute;
-    z-index: -10;
-    bottom:0;
-    left: 20px;
-    width:98%;
-    height:300px;
 
-  }
-  .div-a{ float:left;width:25%;height: 100%;}
-  .div-b{ float:left;width:25%;height: 100%;}
-  .div-c{ float:left;width:26%;height: 100%;}
-  .div-d{ float:left;width:24%;height: 100%;}
-</style>

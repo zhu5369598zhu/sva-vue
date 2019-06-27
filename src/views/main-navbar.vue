@@ -72,6 +72,8 @@
         totalPage: 0,
         updatePassowrdVisible: false,
         newsVisible: false,
+        pageIndex: 1,
+        pageSize: 100,
         imgList: [
           {
             newsId: '',
