@@ -74,9 +74,8 @@
           visible: false,
           dataList: [],
           pageIndex: 1,
-          pageSize: 10,
-          totalPage: 0,
-          userId: ''
+          pageSize: 100,
+          totalPage: 0
         }
       },
       // 钩子函数
@@ -90,9 +89,9 @@
         }
       },
       computed: {
-         userId: {
-           get () { return this.$store.state.user.id }
-         }
+        userId: {
+          get () { return this.$store.state.user.id }
+        }
       },
       methods: {
         // 初始化

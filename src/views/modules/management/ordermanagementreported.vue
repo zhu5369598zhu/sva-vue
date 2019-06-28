@@ -1,5 +1,4 @@
  <template>
-
    <div class="mod-pda">
      <div class="show-data-content">
        <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
@@ -16,9 +15,6 @@
   <div class="show-data-table">
     <div class="show-data-up" id="data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        工单列表
-      </el-form-item>
       <el-form-item>
         <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" clearable></el-input>
       </el-form-item>
@@ -122,207 +118,225 @@
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-  </div>
-    <div class="show-data-down" >
-      <div class="new_1" id="did_2" style="display: none">
-      <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-      <!--  拟制中 -->
-        <h5> 工单详情</h5>
-      <div class="div-a">
-        <el-form-item label="工单编号" prop="orderNumber">
-          <el-input v-model="orderDataForm.orderNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="工单状态" prop="orderStatus">
-          <el-select v-model="orderDataForm.orderStatus"  >
-            <el-option
-              v-for="item in orderStatusList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="缺陷单编号" prop="defectiveNumber">
-          <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="下发时间" prop="createTime">
-          <el-input v-model="orderDataForm.createTime"></el-input>
-        </el-form-item>
-        <el-form-item label="要求完成时间" prop="requirementTime">
-          <el-input v-model="orderDataForm.requirementTime"></el-input>
-        </el-form-item>
-      </div>
-      <div class="div-b">
-        <el-form-item label="所属机构" prop="deptId">
-          <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-          >
-            <el-option
-              v-for="item in deptList"
-              :key="item.deptId"
-              :label="item.name"
-              :value="item.deptId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="工单类型" prop="orderTypeName">
-          <el-input v-model="orderDataForm.orderTypeName"></el-input>
-        </el-form-item>
-        <el-form-item label="缺陷单等级" prop="exceptionName">
-          <el-input v-model="orderDataForm.exceptionName"></el-input>
-        </el-form-item>
-        <el-form-item label="确认人" prop="orderConfirmer">
-          <el-input v-model="orderDataForm.orderConfirmer">
+      <!-- 已受理待上报 -->
+      <el-dialog
+        :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogtwovisible">
+        <el-form :model="orderDataForm" :rules="dataRule" ref="dataForm"  label-width="100px">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单编号" prop="orderNumber">
+                {{orderDataForm.orderNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单状态" prop="orderStatus">
+                <el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+                  <el-option
+                    v-for="item in orderStatusList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="缺陷单编号" prop="defectiveNumber">
+                {{orderDataForm.defectiveNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷单等级" prop="exceptionName">
+                {{orderDataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+            <el-form-item label="所属机构" prop="deptId">
+              <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              >
+                <el-option
+                  v-for="item in deptList"
+                  :key="item.deptId"
+                  :label="item.name"
+                  :value="item.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷操作人" prop="defectiveName">
+                {{orderDataForm.defectiveName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="下发时间" prop="createTime">
+                {{orderDataForm.createTime}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="要求完成时间" prop="requirementTime">
+                {{orderDataForm.requirementTime}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="工单类型" prop="orderTypeName">
+            <!--<el-input v-model="orderDataForm.orderTypeName"></el-input>-->
+            {{orderDataForm.orderTypeName}}
+          </el-form-item>
+
+          <el-form-item label="确认人" prop="orderConfirmer">
+            <el-input v-model="orderDataForm.orderConfirmer">
             <span slot="suffix">
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
             </span>
-          </el-input>
-          <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
-          <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-            <div style="display: flex;justify-content: space-around;align-items: center;">
-              <div style="width:400px;height: 500px;overflow: scroll;">
-                <el-form :model="deptFrom">
-                  <el-row>
-                    <el-col :span="13">
-                      <el-form-item>
-                        <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                      <el-form-item>
-                        <el-button @click="getdeptDataList()">查询</el-button>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </el-form>
-                <el-table
-                  :data="deptdataList"
-                  highlight-current-row
-                  @current-change="addOrUpdateHandle"
-                  style="width: 100%;">
-                  <el-table-column
-                    type="index"
-                    header-align="center"
-                    align="center"
-                    width="80">
-                  </el-table-column>
-                  <table-tree-column
-                    style="width: auto"
-                    prop="name"
-                    header-align="center"
-                    treeKey="deptId"
-                    label="机构名称"
+            </el-input>
+            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
+            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
+              <div style="display: flex;justify-content: space-around;align-items: center;">
+                <div style="width:400px;height: 500px;overflow: scroll;">
+                  <el-form :model="deptFrom">
+                    <el-row>
+                      <el-col :span="13">
+                        <el-form-item>
+                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-button @click="getdeptDataList()">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="deptdataList"
+                    highlight-current-row
+                    @current-change="addOrUpdateHandle"
+                    style="width: 100%;">
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="80">
+                    </el-table-column>
+                    <table-tree-column
+                      style="width: auto"
+                      prop="name"
+                      header-align="center"
+                      treeKey="deptId"
+                      label="机构名称"
+                    >
+                    </table-tree-column>
+
+                  </el-table>
+                </div>
+                <div style="width:400px;height: 500px;overflow: scroll;">
+                  <el-form :inline="true" :model="datauserForm" >
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button @click="search">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button @click="dialogFormVisible = false">取消</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="UserdataList"
+                    style="width: 100%;"
+                    :row-style="rowStyle"
+                    @selection-change="selectionChangeHandle"
                   >
-                  </table-tree-column>
-
-                </el-table>
+                    <el-table-column
+                      type="selection"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="username"
+                      header-align="center"
+                      align="center"
+                      label="用户名">
+                    </el-table-column>
+                    <el-table-column
+                      prop="deptName"
+                      header-align="center"
+                      align="center"
+                      label="机构名称">
+                    </el-table-column>
+                  </el-table>
+                </div>
               </div>
-              <div style="width:400px;height: 500px;overflow: scroll;">
-                <el-form :inline="true" :model="datauserForm" >
-                  <el-row>
-                    <el-col :span="8">
-                      <el-form-item>
-                        <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                      <el-form-item>
-                        <el-button @click="search">查询</el-button>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                      <el-form-item>
-                        <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                      <el-form-item>
-                        <el-button @click="dialogFormVisible = false">取消</el-button>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </el-form>
-                <el-table
-                  :data="UserdataList"
-                  style="width: 100%;"
-                  :row-style="rowStyle"
-                  @selection-change="selectionChangeHandle"
-                >
-                  <el-table-column
-                    type="selection"
-                    header-align="center"
-                    align="center"
-                    width="50">
-                  </el-table-column>
-                  <el-table-column
-                    type="index"
-                    header-align="center"
-                    align="center"
-                    width="50">
-                  </el-table-column>
-                  <el-table-column
-                    prop="username"
-                    header-align="center"
-                    align="center"
-                    label="用户名">
-                  </el-table-column>
-                  <el-table-column
-                    prop="deptName"
-                    header-align="center"
-                    align="center"
-                    label="机构名称">
-                  </el-table-column>
-                </el-table>
-              </div>
-            </div>
-          </el-dialog>
-        </el-form-item>
-        <el-form-item label="缺陷操作人" prop="defectiveName">
-          <el-input v-model="orderDataForm.defectiveName"></el-input>
-        </el-form-item>
+            </el-dialog>
+          </el-form-item>
 
-      </div>
-      <div class="div-c">
-        <el-form-item label="工单主题" prop="orderName">
-          <el-input v-model="orderDataForm.orderName"></el-input>
-        </el-form-item>
-        <el-form-item label="处理结果" prop="processingResult">
-          <el-input
-            :rows="6"
-            type="textarea"
-            v-model="orderDataForm.processingResult"></el-input>
-        </el-form-item>
+          <el-form-item label="工单主题" prop="orderName">
+            {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="处理结果" prop="processingResult">
+            <el-input
+              :rows="6"
+              type="textarea"
+              v-model="orderDataForm.processingResult"></el-input>
+          </el-form-item>
+          <el-form-item label="是否使用备件">
+            <el-switch
+              v-model="orderDataForm.value1"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
+            <el-input v-model="orderDataForm.orderDevice"></el-input>
+          </el-form-item>
+          <el-form-item label="结论" prop="orderAcceptorOpinion">
+            {{orderDataForm.orderAcceptorOpinion}}
+          </el-form-item>
+          <el-form-item label="申请延期时间" prop="delayTime">
+            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
+          </el-form-item>
 
-      </div>
-      <div class="div-d">
-        <el-form-item label="是否使用备件">
-          <el-switch
-            v-model="orderDataForm.value1"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
-        </el-form-item>
-        <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
-          <el-input v-model="orderDataForm.orderDevice"></el-input>
-        </el-form-item>
-        <el-form-item label="结论" prop="orderAcceptorOpinion">
-          <el-input
-            :rows="3"
-            type="textarea"
-            v-model="orderDataForm.orderAcceptorOpinion"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
-          <el-button type="warning" @click="reJect()">申请延期</el-button>
-          <el-button type="primary" @click="accepTance()">上报</el-button>
-        </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogtwovisible = false">取消</el-button>
+        <el-button type="warning" @click="reJect()">申请延期</el-button>
+        <el-button type="primary" @click="accepTance()">上报</el-button>
+      </span>
+      </el-dialog>
+    <!-- 弹窗, 新增 / 修改 -->
+    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+  </div>
 
-      </div>
-      </el-form>
-    </div>
-
-    </div>
   </div>
 
  </template>
@@ -417,7 +431,16 @@
         dataListLoading: false,
         addOrUpdateVisible: false,
         startDatePicker: this.beginDate(),
-        startDateDelayPicker: this.beginDelayDate()
+        startDateDelayPicker: this.beginDelayDate(),
+        dialogtwovisible: false,
+        dataRule: {
+          orderConfirmer: [
+            {required: true, message: '确认人不能为空', trigger: 'blur'}
+          ],
+          processingResult: [
+            {required: true, message: '处理结果不能为空', trigger: 'blur'}
+          ]
+        }
       }
     },
     components: {
@@ -539,7 +562,7 @@
         var userNames = username ? [username] : this.dataListSelections.map(item => {
           return item.username
         })
-        var userId = userid ? [userid] : this.dataListSelections.map(item =>{
+        var userId = userid ? [userid] : this.dataListSelections.map(item => {
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
@@ -595,27 +618,8 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-          var downup = document.getElementById('data-up')
-          downup.style.height = '350px'
-          downup.style.overflowY = 'scroll'
-          if (this.orderDataForm.orderStatus === 0) {
-            var dom = document.getElementById('did')
-            dom.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 1) {
-            var dom1 = document.getElementById('did_1')
-            dom1.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
-            var dom2 = document.getElementById('did_2')
-            dom2.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 3) {
-            var dom3 = document.getElementById('did_3')
-            dom3.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 4) {
-            var dom4 = document.getElementById('did_4')
-            dom4.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 5) {
-            var dom5 = document.getElementById('did_5')
-            dom5.style.display = 'block'
+          if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
+            this.dialogtwovisible = true
           }
         })
       },
@@ -686,12 +690,10 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.visible = false
+                  this.dialogtwovisible = false
                   this.$emit('refreshDataList')
                 }
               })
-              var dom = document.getElementById('did_2')
-              dom.style.display = 'none'
               this.getDataList()
             } else {
               this.$message.error(data.msg)
@@ -833,35 +835,3 @@
   }
 </script>
 
- <style>
-   .up {
-     float: top;
-   }
-   .show-data-up{
-     position: absolute;
-     margin: 0px auto;
-     /*height: 400px;*/
-     z-index: 20;
-     width: 98%;
-   }
-   .site-content .show-data-down {
-     height: 310px;
-     margin-left: 10px;
-     margin-top: 10px;
-     overflow: hidden;
-     bottom: 0px;
-   }
-   .show-data-down{
-     position: absolute;
-     z-index: 10;
-     left: 20px;
-     width: 100%;
-     margin: 0px auto;
-     /*height: 200px;*/
-     bottom: 0px;
-   }
-   .div-a{ float:left;width:24%;height: 100%;}
-   .div-b{ float:left;width:24%;height: 100%;}
-   .div-c{ float:left;width:28%;height: 100%;}
-   .div-d{ float:left;width:24%;height: 100%;}
- </style>

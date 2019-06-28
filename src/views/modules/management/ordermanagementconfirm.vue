@@ -17,10 +17,6 @@
     <div class="show-data-up" id="data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <!--<el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>-->
-        工单列表
-      </el-form-item>
-      <el-form-item>
         <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" clearable></el-input>
       </el-form-item>
       <el-form-item>
@@ -62,7 +58,7 @@
         align="center"
         label="工单编号">
         <template slot-scope="scope">
-          <a href="#"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
+          <a href="#" style="text-decoration: none;"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
         </template>
       </el-table-column>
       <el-table-column
@@ -123,13 +119,122 @@
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+
+      <!-- 已受理待确认 -->
+      <el-dialog
+        :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogthreevisible">
+        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单编号" prop="orderNumber">
+                {{orderDataForm.orderNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单状态" prop="orderStatus">
+                <el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+                  <el-option
+                    v-for="item in orderStatusList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="缺陷单编号" prop="defectiveNumber">
+                {{orderDataForm.defectiveNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷等级" prop="exceptionName">
+                {{orderDataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="所属机构" prop="deptId">
+                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+                >
+                  <el-option
+                    v-for="item in deptList"
+                    :key="item.deptId"
+                    :label="item.name"
+                    :value="item.deptId"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷操作人" prop="defectiveName">
+                {{orderDataForm.defectiveName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="下发时间" prop="createTime">
+                {{orderDataForm.createTime}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="要求完成时间" prop="requirementTime">
+                {{orderDataForm.requirementTime}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单类型" prop="orderTypeName">
+                {{orderDataForm.orderTypeName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单受理人" prop="orderAcceptor">
+                {{orderDataForm.orderAcceptor}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="工单主题" prop="orderName">
+            {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="处理结果" prop="processingResult">
+            {{orderDataForm.processingResult}}
+          </el-form-item>
+          <el-form-item label="是否使用备件">
+            <el-switch
+              v-model="orderDataForm.value1"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
+            {{orderDataForm.orderDevice}}
+          </el-form-item>
+          <el-form-item label="结论" prop="orderAcceptorOpinion">
+            {{orderDataForm.orderAcceptorOpinion}}
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogthreevisible = false">取消</el-button>
+        <el-button type="warning" @click="reJect()">打回</el-button>
+          <el-button type="primary" @click="accepTance()">确认</el-button>
+      </span>
+      </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
-    <div class="show-data-down" >
+    <!--<div class="show-data-down" >
       <div class="new_1" id="did_3" style="display: none">
       <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-      <!--  拟制中 -->
+      &lt;!&ndash;  拟制中 &ndash;&gt;
         <h5> 工单详情</h5>
       <div class="div-a">
         <el-form-item label="工单编号" prop="orderNumber">
@@ -222,7 +327,7 @@
       </el-form>
     </div>
 
-    </div>
+    </div>-->
   </div>
 
  </template>
@@ -303,7 +408,8 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false,
-        startDatePicker: this.beginDate()
+        startDatePicker: this.beginDate(),
+        dialogthreevisible: false
       }
     },
     components: {
@@ -389,27 +495,8 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-          var downup = document.getElementById('data-up')
-          downup.style.height = '350px'
-          downup.style.overflowY = 'scroll'
-          if (this.orderDataForm.orderStatus === 0) {
-            var dom = document.getElementById('did')
-            dom.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 1) {
-            var dom1 = document.getElementById('did_1')
-            dom1.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 2) {
-            var dom2 = document.getElementById('did_2')
-            dom2.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 3) {
-            var dom3 = document.getElementById('did_3')
-            dom3.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 4) {
-            var dom4 = document.getElementById('did_4')
-            dom4.style.display = 'block'
-          } else if (this.orderDataForm.orderStatus === 5) {
-            var dom5 = document.getElementById('did_5')
-            dom5.style.display = 'block'
+          if (this.orderDataForm.orderStatus === 3) {
+            this.dialogthreevisible = true
           }
         })
       },
@@ -477,12 +564,10 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.visible = false
+                  this.dialogthreevisible = false
                   this.$emit('refreshDataList')
                 }
               })
-              var dom = document.getElementById('did_3')
-              dom.style.display = 'none'
               this.getDataList()
             } else {
               this.$message.error(data.msg)
@@ -632,35 +717,3 @@
   }
 </script>
 
- <style>
-   .up {
-     float: top;
-   }
-   .show-data-up{
-     position: absolute;
-     margin: 0px auto;
-     /*height: 400px;*/
-     z-index: 20;
-     width: 98%;
-   }
-   .site-content .show-data-down {
-     height: 300px;
-     margin-left: 10px;
-     margin-top: 10px;
-     overflow: hidden;
-     bottom: 0px;
-   }
-   .show-data-down{
-     position: absolute;
-     z-index: 10;
-     left: 20px;
-     width: 100%;
-     margin: 0px auto;
-     /*height: 200px;*/
-     bottom: 0px;
-   }
-   .div-a{ float:left;width:24%;height: 100%;}
-   .div-b{ float:left;width:24%;height: 100%;}
-   .div-c{ float:left;width:28%;height: 100%;}
-   .div-d{ float:left;width:24%;height: 100%;}
- </style>
