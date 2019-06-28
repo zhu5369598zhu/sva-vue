@@ -37,3 +37,12 @@ export function isURL (s) {
 export function isMac (s) {
   return /^[A-F0-9]{2}(:[A-F0-9]{2}){5}$/.test(s)
 }
+
+
+/**
+ * Rfid
+ * @param {*} s
+ */
+export function isRfid (s) {
+  return /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8}$/.test(s)
+}

@@ -25,6 +25,7 @@
       <el-form-item>
           <el-upload
           class="device-import"
+          accept=".xlsx,.xls"
           :action="this.$http.adornUrl(`/inspection/zone/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
@@ -87,7 +88,7 @@
       @size-change="zoneSizeChangeHandle"
       @current-change="zoneCurrentChangeHandle"
       :current-page="zonePageIndex"
-      :page-sizes="[5, 10, 20, 50]"
+      :page-sizes="[5]"
       :page-size="zonePageSize"
       :total="zoneTotalPage"
       layout="total, sizes, prev, pager, next, jumper">
@@ -144,7 +145,7 @@
       @size-change="deviceSizeChangeHandle"
       @current-change="deviceCurrentChangeHandle"
       :current-page="devicePageIndex"
-      :page-sizes="[5, 10, 20, 50]"
+      :page-sizes="[5]"
       :page-size="devicePageSize"
       :total="deviceTotalPage"
       layout="total, sizes, prev, pager, next, jumper">
@@ -356,10 +357,11 @@
         })
       },
       handleDeptSelect (val) {
-        this.zoneId = 0
+        this.zoneId = 1
         this.zoneList = []
         this.deviceList = []
         this.dataForm.deptId = val
+        this.zonePageIndex = 0
         this.getZoneList()
       },
       // 每页数

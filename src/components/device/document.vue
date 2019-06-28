@@ -145,6 +145,7 @@
         })
       },
       uploadSuccessHandle (response, file, fileList) {
+        console.log(file)
         this.fileList = []
         if (response.code > 0) {
           this.$message.error(response.msg)

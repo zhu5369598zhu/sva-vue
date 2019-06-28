@@ -26,6 +26,7 @@
       <el-form-item>
           <el-upload
           class="device-import"
+          accept=".xlsx,.xls"
           :action="this.$http.adornUrl(`/inspection/inspectionitem/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
@@ -61,7 +62,7 @@
         prop="name"
         header-align="center"
         align="center"
-        width="180"
+        width="250"
         label="巡检项">
       </el-table-column>
       <el-table-column
@@ -107,29 +108,19 @@
         align="center"
         label="采样点数">
       </el-table-column>
-      <el-table-column
-        prop="upupLimit"
+            <el-table-column
+        prop="upUsed"
         header-align="center"
         align="center"
-        label="上上限">
+        width="140"
+        label="上上/上/下/下下">
       </el-table-column>
       <el-table-column
-        prop="upLimit"
+        prop="limits"
         header-align="center"
         align="center"
-        label="上限">
-      </el-table-column>
-      <el-table-column
-        prop="downdownLimit"
-        header-align="center"
-        align="center"
-        label="下下限">
-      </el-table-column>
-      <el-table-column
-        prop="downLimit"
-        header-align="center"
-        align="center"
-        label="下限">
+        width="140"
+        label="上上/上/下/下下">
       </el-table-column>
       <el-table-column
         prop="defaultRpm"
@@ -267,6 +258,7 @@
       treeSelectHandle (val) {
         if (val.type === 'device') {
           this.dataForm.deviceId = val.id
+          this.pageIndex = 1
           this.getDataList()
         } else {
           this.dataForm.deviceId = 0
@@ -296,14 +288,16 @@
       // 新增 / 修改
       addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
+        var _self = this
         this.$nextTick(() => {
-          this.$refs.addOrUpdate.dataForm.deviceId = this.dataForm.deviceId
-          this.$refs.addOrUpdate.getUnitList()
-          this.$refs.addOrUpdate.getInspectionTypeList()
-          this.$refs.addOrUpdate.getInspectionStatusList()
-          this.$refs.addOrUpdate.getFrequencyList()
-          this.$refs.addOrUpdate.getPrecisionList()
-          this.$refs.addOrUpdate.init(id)
+          _self.$refs.addOrUpdate.dataForm.deviceId = _self.dataForm.deviceId
+          _self.$refs.addOrUpdate.getUnitList()
+          _self.$refs.addOrUpdate.getInspectionTypeList()
+          _self.$refs.addOrUpdate.getInspectionStatusList()
+          _self.$refs.addOrUpdate.getFrequencyList()
+          _self.$refs.addOrUpdate.getPrecisionList()
+          _self.$refs.addOrUpdate.init(id)
+          
         })
       },
       // 删除
@@ -343,8 +337,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属设备<device_name>', '设备编码<device_code>', '巡检项<name>', '巡检类型名称<inspection_type_name>', '单位<unit>', '检时状态标记<inspection_status>', '发射率<emissivity>', '采样频率<frequency_name>', '采样点数<precision_name>', '上限<up_limit>', '上上限<upup_limit>', '下限<down_limit>', '下下限<downdown_limit>', '扩展<extras>', '扩展异常<exceptions>', '描述<remark>', '默认转速<default_rpm>']
-          const filterVal = ['deviceName', 'deviceCode', 'name', 'inspectionTypeName', 'unit', 'inspectionStatusName', 'emissivity', 'frequencyName', 'precisionName', 'upLimit', 'upupLimit', 'downLimit', 'downdownLimit', 'extras', 'extraExceptions', 'remark', 'defaultRpm']
+          const tHeader = ['所属设备<device_name>', '设备编码<device_code>', '巡检项<name>', '巡检类型名称<inspection_type_name>', '单位<unit>', '检时状态标记<inspection_status>', '发射率<emissivity>', '采样频率<frequency_name>', '采样点数<precision_name>', '上限报警<up_used>','上限<up_limit>', '上上限危险<upup_used>', '上上限<upup_limit>', '下限报警<down_used>', '下限<down_limit>', '下下限危险<downdwon_used>', '下下限<downdown_limit>', '扩展<extras>', '扩展异常<exceptions>', '描述<remark>', '默认转速<default_rpm>']
+          const filterVal = ['deviceName', 'deviceCode', 'name', 'inspectionTypeName', 'unit', 'inspectionStatusName', 'emissivity', 'frequencyName', 'precisionName', 'upUsed', 'upLimit', 'upupUsed', 'upupLimit', 'downUsed', 'downLimit', 'downdownUsed', 'downdownLimit', 'extras', 'extraExceptions', 'remark', 'defaultRpm']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

@@ -5,7 +5,32 @@
         <el-col :span="8" class="home-col-left" >
           <el-row :gutter="10" class="home-row-up">
             <div class="show-chart">
-              <chartbar :category="category" :bad="bad" :normal="normal" :all="all"></chartbar>
+                <div class="charts">
+                <div class="chart-up">
+                  <div class="chart-header">
+                    <span class="home-title">异常频度排名</span>
+                  </div>
+                   <el-table
+                    ref="table"
+                    :data="deviceList"
+                    :border="false"
+                    :show-header="false"
+                    style="width: 100%;">
+                    <el-table-column
+                      prop="deviceName"
+                      header-align="center"
+                      align="center"
+                      label="">
+                    </el-table-column>
+                    <el-table-column
+                      prop="zone"
+                      header-align="center"
+                      align="center"
+                      label="">
+                    </el-table-column>
+                    </el-table>
+                </div>
+              </div>
             </div>
           </el-row>
           <el-row :gutter="10" class="home-row-down">
@@ -22,7 +47,7 @@
           </el-row>
           <el-row :gutter="10" class="home-row-down">
             <div class="show-chart">
-              <chartline></chartline>
+              <chartline :category="category" :series="series"></chartline>
             </div>
           </el-row>
         </el-col>
@@ -41,7 +66,7 @@
 <script>
   import chartbar from '@/components/charts/bar'
   import chartpie from '@/components/charts/pie'
-  import chartline from '@/components/charts/line'
+  import chartline from '@/components/charts/lines'
   import chartcolumn from '@/components/charts/column'
   import chartlink from '@/components/charts/link'
 export default {
@@ -49,11 +74,12 @@ export default {
       return {
         hasData: false,
         statusList: [],
-        series: [],
+        series: [320, 332, 301, 334, 390],
         category: ['2012', '2013', '2014', '2015', '2016'],
         bad: [320, 332, 301, 334, 390],
         normal: [320, 332, 301, 334, 390],
-        all: [320, 332, 301, 334, 390]
+        all: [320, 332, 301, 334, 390],
+        deviceList: [{'deviceName':'1#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'2#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'3#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'4#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'5#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'6#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'7#真空泵[ZKB01','zone':'锅炉车间'}]
       }
     },
     components: {

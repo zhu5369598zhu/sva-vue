@@ -10,7 +10,7 @@
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
         <el-row class="device-pic">
           <el-col :span="16">
-            <el-form-item label="设备图片:" >
+            <el-form-item label="设备图片:" style="margin-bottom: 5px;" >
               <el-upload
                 :action="this.$http.adornUrl(`/inspection/devicepic/upload?token=${this.$cookie.get('token')}`)"
                 list-type="picture-card"
@@ -31,7 +31,7 @@
                   <img class="device-qrcode" :src="getQrcode(dataForm.deviceId)"></img>
                 </a>
                 <div class="gen-qrcode" align="center">
-                  <el-button type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px;">生成二维码</el-button>
+                  <el-button type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px; width: 110px;">生成二维码</el-button>
                 </div>
               </div>
             </el-form-item>
@@ -40,12 +40,12 @@
         <el-row class="device-info">
           <el-col :span="8">
             <el-form-item label="设备名称:" prop="deviceName">
-              <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceName" placeholder="设备名称" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="设备等级:" prop="deviceLevel">
-              <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" clearable style="width:140px;">
+              <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" :disabled="!isModify" clearable style="width:140px;">
                 <el-option
                   v-for="item in deviceLevelList"
                   :key="item.id"
@@ -68,58 +68,58 @@
                   node-key="deptId"
                   ref="deptListTree"
                   @current-change="deptListTreeCurrentChangeHandle"
-                  :default-expand-all="true"
+                  :default-expand-all="false"
                   :highlight-current="true"
                   :expand-on-click-node="false" clearable style="width:140px;">
                 </el-tree>
               </el-popover>
-              <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="生产日期:" prop="manufactureDate">
-              <el-date-picker v-model="dataForm.manufactureDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择生产日期" @change="handleDateChange" clearable style="width:140px;"></el-date-picker>
+              <el-date-picker v-model="dataForm.manufactureDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择生产日期" @change="handleDateChange" :disabled="!isModify" clearable style="width:140px;"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="设备编号:" prop="deviceNum">
-              <el-input v-model="dataForm.deviceNum" placeholder="设备编号" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceNum" placeholder="设备编号" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="设备编码:" prop="deviceCode">
-              <el-input v-model="dataForm.deviceCode" placeholder="设备编码" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceCode" placeholder="设备编码" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="设备规格:" prop="deviceUnit">
-              <el-input v-model="dataForm.deviceUnit" placeholder="设备规格" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceUnit" placeholder="设备规格" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="生产厂家:" prop="deviceManufacturer">
-              <el-input v-model="dataForm.deviceManufacturer" placeholder="生产厂家" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceManufacturer" placeholder="生产厂家" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="供货商:" prop="deviceSupplier">
-              <el-input v-model="dataForm.deviceSupplier" placeholder="供货商" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceSupplier" placeholder="供货商" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="设备模型:" prop="deviceModel">
-              <el-input v-model="dataForm.deviceModel" placeholder="设备模型" clearable style="width:140px;"></el-input>
+              <el-input v-model="dataForm.deviceModel" placeholder="设备模型" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="责任人:" prop="deviceMaster">
-              <el-input v-model="dataForm.deviceMaster" placeholder="责任人" clearable style="width:140px;"></el-input>
+            <el-form-item label="责任人:" prop="deviceMaster" :readonly="isModify">
+              <el-input v-model="dataForm.deviceMaster" placeholder="责任人" :disabled="!isModify" clearable style="width:140px;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -129,12 +129,12 @@
         <el-row>  
           <el-col :span="6">
             <el-form-item label="是否巡检:" prop="isInspect">
-              <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" clearable style="width:140px;"></el-switch>
+              <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" :disabled="!isModify" clearable style="width:140px;"></el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="看板显示:" prop="isShowDashboard">
-              <el-switch v-model="dataForm.isShowDashboard" clearable style="width:140px;"></el-switch>
+              <el-switch v-model="dataForm.isShowDashboard" :disabled="!isModify" clearable style="width:140px;"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -142,7 +142,7 @@
           <el-col :span="24">
             <el-form-item>
               <div align="center">
-                <el-button type="primary" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>
+                <el-button type="primary" v-if="this.isModify===true" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>
               </div>
             </el-form-item>
           </el-col>
@@ -164,7 +164,6 @@
         <el-tab-pane label="故障维修资料" name="trouble" actived="true">
           <deviceDocument ref="documentTrouble" :deviceId="dataForm.deviceId"></deviceDocument>
         </el-tab-pane>
-
       </el-tabs>
     </el-tab-pane>
   </el-tabs>
@@ -177,6 +176,7 @@
   export default {
     data () {
       return {
+        isModify: true,
         isHttp: false,
         visible: false,
         isShowDeptTree: false,
@@ -288,13 +288,14 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.init(deviceId)
+            this.init(deviceId,this.isModify)
           } else {
             this.$message.error(data.msg)
           }
         })
       },
       getPicList () {
+        this.filelist = []
         this.$http({
           url: this.$http.adornUrl('/inspection/devicepic/list'),
           method: 'get',
@@ -312,7 +313,6 @@
           } else {
             this.fileList = []
           }
-          console.log('fileList %o', this.fileList)
         })
       },
        // 获取设备级别
@@ -335,7 +335,9 @@
           this.deptList = treeDataTranslate(data, 'deptId')
         })
       },
-      init (id) {
+      init (id,isModify) {
+        this.fileList = []
+        this.isModify = isModify
         this.dataForm.deviceId = id || 0
         this.uploadParams.deviceId = this.dataForm.deviceId
         this.visible = true
@@ -442,6 +444,7 @@
                   duration: 1500,
                   onClose: () => {
                     this.visible = false
+                    
                     this.$emit('refreshDataList')
                   }
                 })
@@ -458,12 +461,12 @@
 <style>
   .device-info {
     border-top: 1px dashed #c0ccda;
-    margin-top: 30px;
+    margin-top: 5px;
     padding-top: 10px;
   }
   .device-qrcode-contain {
-    width: 148px;
-    height: 148px;
+    width: 110px;
+    height: 110px;
     border: 1px dashed #c0ccda;
   }
   .device-qrcode {

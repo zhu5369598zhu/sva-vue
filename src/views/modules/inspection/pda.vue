@@ -178,6 +178,7 @@
       },
       handleDeptSelect (val) {
         this.dataForm.deptId = val
+        this.pageIndex = 1
         this.getDataList()
       },
       // 每页数
