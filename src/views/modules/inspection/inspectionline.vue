@@ -109,7 +109,7 @@
               label="操作">
               <template slot-scope="scope" sytle="z-index=1;">
                 <el-button v-if="isAuth('inspection:inspectionline:save') && scope.row.isPublish===0" type="text" size="small" @click="lineAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                <el-button v-if="isAuth('inspection:inspectionline:delete')" type="text" size="small" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionline:delete') && scope.row.isPublish===0" type="text" size="small" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -905,9 +905,15 @@
         this.periodList = []
         this.lineForm.lineId = 0
         this.lineForm.deptId = val
+        this.linePageIndex = 1
         this.getLineList(this.lineForm.deptId)
       },
       tabSelectChangeHandle (val) {
+        this.classGroupPageIndex = 1
+        this.periodPageIndex = 1
+        this.turnPageIndex = 1
+        this.lineZonePageIndex = 1
+        this.linePdaPageIndex = 1
         this.getDataList()
       },
       rowStyle ({row, rowIndex}) {

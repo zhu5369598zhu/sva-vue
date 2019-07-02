@@ -14,7 +14,7 @@
       <div v-show="hasData===true" class="chart-container">
         <div class="remark" v-html="fftRemark"></div>
         <div :id="fftChartId" style="width:100%;height:260px;">
-          <chartline ref="FftDomainChart" :category="fftXData" :series="fftYData" title="频域图" yAxisMin="1.0"></chartline>
+          <chartline ref="FftDomainChart" :category="fftXData" :series="fftYData" title="频域图"></chartline>
         </div>
       </div>
       <div class="no-data" align="center" v-show="hasData===false" style="width:400px;height:400px;">{{tip}}</div>
@@ -46,7 +46,7 @@
       chartline
     },
     methods: {
-      init (inspectionType, guid) {
+      init (inspectionType, guid,inspection) {
         this.fftChartId = 'fft-domain-' + guid
         console.log(this.fftChartId)
         this.timeChartId = 'time-domain-' + guid
@@ -58,8 +58,14 @@
         this.timeYData = []
         this.fftXData = []
         this.fftYData = []
+        var requestUrl = ''
+        if (inspection !== 'random'){
+          requestUrl = `/inspection/inspectionresultmedia/${inspectionType}/${guid}`
+        } else {
+          requestUrl = `/inspection/inspectionrondomresultmedia/${inspectionType}/${guid}`
+        }
         this.$http({
-          url: this.$http.adornUrl(`/inspection/inspectionresultmedia/${inspectionType}/${guid}`),
+          url: this.$http.adornUrl(requestUrl),
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {

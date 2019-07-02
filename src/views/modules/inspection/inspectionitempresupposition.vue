@@ -34,6 +34,25 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="exceptionName"
+        header-align="center"
+        align="center"
+        label="扩展内容">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isSet">
+            <el-select placeholder="异常级别" v-model="scope.row.exceptionId">
+              <el-option
+                v-for="item in exceptionList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </span>
+          <span v-else>{{scope.row.exceptionName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
               fixed="right"
               header-align="center"
               align="center"
@@ -58,6 +77,7 @@
       return {
         itemId: 0,
         visible: false,
+        exceptionList: [],
         presupposition: []
       }
     },
@@ -75,10 +95,18 @@
       presuppositionSelectionChangeHandle (val) {
       },
       presuppositionAddHandle () {
-        let row = {id: 0, 'name': '', 'guid': '', 'isSet': true, 'itemId': this.itemId}
+        let row = {id: 0, 'name': '', 'exceptionId': '', 'exceptionName': '', 'guid': '', 'isSet': true, 'itemId': this.itemId}
         this.presupposition.push(row)
       },
       presuppositionUpdateHandle (index) {
+        if (this.presupposition[index].isSet) {
+          let exceptionId = this.presupposition[index].exceptionId
+          for (let i = 0; i < this.exceptionList.length; i++) {
+            if (exceptionId === this.exceptionList[i].id) {
+              this.presupposition[index].exceptionName = this.exceptionList[i].name
+            }
+          }
+        }
         this.presupposition[index].isSet = !this.presupposition[index].isSet
         var tmp = this.presupposition[index]
         this.$set(this.presupposition, index, tmp)
@@ -86,9 +114,25 @@
       presuppositionDeleteHandle (val) {
         this.presupposition.splice(val, 1)
       },
+      getExceptionList () {
+        if (this.exceptionList <= 0) {
+          this.$http({
+            url: this.$http.adornUrl('/setting/exception/list'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            this.exceptionList = data.page.list
+          })
+        }
+      },
       dataFormSubmit () {
         for (let j = 0; j < this.presupposition.length; j++) {
           if (this.presupposition[j].isSet === true) {
+            for (let i = 0; i < this.exceptionList.length; i++) {
+              if (this.presupposition[j].exceptionId === this.exceptionList[i].id) {
+                this.presupposition[j].exceptionName = this.exceptionList[i].name
+              }
+            }
             this.presupposition[j].isSet = false
           }
         }

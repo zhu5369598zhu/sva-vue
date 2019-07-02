@@ -35,7 +35,7 @@
                 node-key="deptId"
                 ref="deptListTree"
                 @current-change="deptListTreeCurrentChangeHandle"
-                :default-expand-all="true"
+                :default-expand-all="false"
                 :highlight-current="true"
                 :expand-on-click-node="false" clearable style="width:140px;">
               </el-tree>
@@ -296,14 +296,3 @@
     }
   }
 </script>
-<style>
-  .device-pic {
-    border-bottom: 1px dashed #c0ccda;
-    margin-bottom: 20px;
-  }
-  .device-qrcode {
-    width: 148px;
-    height: 148px;
-    border: 1px dashed #c0ccda;
-  }
-</style>

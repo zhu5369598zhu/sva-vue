@@ -26,6 +26,7 @@
       <el-form-item>
           <el-upload
           class="device-import"
+          accept=".xlsx,.xls"
           :action="this.$http.adornUrl(`/sys/user/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">

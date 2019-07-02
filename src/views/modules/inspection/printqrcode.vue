@@ -307,7 +307,7 @@
         setTimeout(function () {
           printWin.print()
           printWin.close()
-        }, 100)
+        }, 5000)
       }
     },
     mounted: function () {

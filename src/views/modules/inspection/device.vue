@@ -35,6 +35,7 @@
       <el-form-item>
         <el-upload
         class="device-import"
+        accept=".xlsx,.xls"
         :action="this.$http.adornUrl(`/inspection/device/upload?token=${this.$cookie.get('token')}`)"
         :file-list="importFileList"
         :on-success="UploadSuccessHandle">
@@ -138,6 +139,7 @@
         <template slot-scope="scope">
           <el-button v-if="isAuth('inspection:device:save')" type="text" size="small" @click="deviceUpdateHandle(scope.row.deviceId)">修改</el-button>
           <el-button v-if="isAuth('inspection:device:delete')" type="text" size="small" @click="deleteHandle(scope.row.deviceId)">删除</el-button>
+          <el-button v-if="isAuth('inspection:device:save')" type="text" size="small" @click="deviceViewHandle(scope.row.deviceId)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -253,6 +255,7 @@
         this.dataList = []
         this.deviceList = []
         this.dataForm.deptId = val
+        this.pageIndex = 1
         this.getDataList()
       },
       // 每页数
@@ -293,7 +296,17 @@
           this.$refs.deviceUpdate.dataForm.deviceDept = this.dataForm.deptId
           this.$refs.deviceUpdate.getDeviceLevelList()
           this.$refs.deviceUpdate.getDeptList()
-          this.$refs.deviceUpdate.init(id)
+          this.$refs.deviceUpdate.init(id, true)
+        })
+      },
+      // 查看
+      deviceViewHandle (id) {
+        this.deviceUpdateVisible = true
+        this.$nextTick(() => {
+          this.$refs.deviceUpdate.dataForm.deviceDept = this.dataForm.deptId
+          this.$refs.deviceUpdate.getDeviceLevelList()
+          this.$refs.deviceUpdate.getDeptList()
+          this.$refs.deviceUpdate.init(id,false)
         })
       },
        // 导入结果

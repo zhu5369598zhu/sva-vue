@@ -192,7 +192,10 @@
           downUsed: false,
           upUsed: false,
           downdownUsed: false,
-          upupUsed: false
+          upupUsed: false,
+          createTime: '',
+          isDelete: 0,
+          guid: ''
         },
         dataRule: {
           name: [
@@ -322,6 +325,7 @@
         })
       },
       presuppositionChange (val) {
+        console.log(val)
         this.dataForm.presuppositionList = val
       },
       setting () {
@@ -337,6 +341,7 @@
           this.presuppositionSettingVisible = true
           this.$nextTick(() => {
             this.$refs.presuppositionSetting.itemId = this.dataForm.id
+            this.$refs.presuppositionSetting.getExceptionList()
             console.log(' setting this.dataForm %o', this.dataForm)
             this.$refs.presuppositionSetting.init(this.dataForm.presuppositionList)
           })
@@ -382,6 +387,12 @@
                 this.dataForm.upUsed = data.inspectionItem.upUsed === 1
                 this.dataForm.downdownUsed = data.inspectionItem.downdownUsed === 1
                 this.dataForm.downUsed = data.inspectionItem.downUsed === 1
+                this.dataForm.isDelete = data.inspectionItem.isDelete
+                this.dataForm.createTime = data.inspectionItem.createTime
+                this.dataForm.guid = data.inspectionItem.guid
+                this.dataForm.deviceId = data.inspectionItem.deviceId
+                this.dataForm.inspectionUnit = data.inspectionItem.unit
+                console.log(this.dataForm)
               }
             })
           }
@@ -417,7 +428,11 @@
                 'upupUsed': this.dataForm.upupUsed === true ? 1 : 0,
                 'upUsed': this.dataForm.upUsed === true ? 1 : 0,
                 'downdownUsed': this.dataForm.downdownUsed === true ? 1 : 0,
-                'downUsed': this.dataForm.downUsed === true ? 1 : 0
+                'downUsed': this.dataForm.downUsed === true ? 1 : 0,
+                'isDelete': this.dataForm.isDelete,
+                'createTime': this.dataForm.createTime,
+                'deviceId': this.dataForm.deviceId,
+                'guid': this.dataForm.guid
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
@@ -440,7 +455,7 @@
     },
     watch: {
       'dataForm.inspectionType': function (newVal, oldVal) {
-        this.dataForm.inspectionUnit = ''
+        console.log('watch')
         if (newVal) {
           if (newVal === 3) {
             this.inspectionUnitList = this.unitList
@@ -453,10 +468,36 @@
           }
           if (newVal === 2 || newVal === 8 || newVal === 9) {
             this.dataForm.inspectionUnit = ''
+            this.dataForm.upUsed = false
             this.dataForm.upLimit = ''
+            this.dataForm.upipUsed = false
             this.dataForm.upupLimit = ''
+            this.dataForm.downUsed = false
             this.dataForm.downLimit = ''
+            this.dataForm.downdownUsed = false
             this.dataForm.downdownLimit = ''
+          }
+          if(newVal !== 1) {
+            this.dataForm.emissivity = ''
+          }else{
+            if(this.dataForm.emissivity === '') {
+              this.dataForm.emissivity = '0.950'
+            }
+          }
+          if(newVal !== 4 && newVal !== 5 && newVal !== 6) {
+            this.dataForm.defaultRpm = ''
+            this.dataForm.precision = ''
+            this.dataForm.frequency = ''
+          } else {
+            if(this.dataForm.defaultRpm === '') {
+              this.dataForm.defaultRpm = 1
+            }
+            if(this.dataForm.frequency === '') {
+              this.dataForm.frequency = 4
+            }
+            if(this.dataForm.precision === '') {
+              this.dataForm.precision = 3
+            }
           }
         }
         console.log(this.dataForm.inspectionUnit)

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.zoneId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
@@ -36,7 +36,7 @@
               node-key="deptId"
               ref="deptListTree"
               @current-change="deptListTreeCurrentChangeHandle"
-              :default-expand-all="true"
+              :default-expand-all="false"
               :highlight-current="true"
               :expand-on-click-node="false">
             </el-tree>
@@ -55,8 +55,16 @@
 
 <script>
   import { treeDataTranslate } from '@/utils'
+  import { isRfid } from '@/utils/validate'
   export default {
     data () {
+        var validateRfid = (rule, value, callback) => {
+        if (!isRfid(value)) {
+          callback(new Error('编码错误'))
+        } else {
+          callback()
+        }
+      }
       return {
         timer: 0,
         isHttp: false,
@@ -83,7 +91,7 @@
             { required: true, message: '巡区名称不能为空', trigger: 'change' }
           ],
           zoneCode: [
-            { required: true, message: '巡区编码不能为空', trigger: 'change' }
+            { required: true, validator: validateRfid, trigger: 'change' }
           ]
         }
       }

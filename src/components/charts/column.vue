@@ -124,12 +124,6 @@
     width: 100%;
     height: 85%;
   }
-  .chart-header {
-    padding-bottom:14px;
-    border-bottom:1px solid #E1E1E1;
-    padding: 14px;
-    margin-bottom: 30px;
-  }
   .chart-column {
     width: 100%;
     height: 100%;

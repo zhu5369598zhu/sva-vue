@@ -41,7 +41,7 @@
           color: ['#77d5ff', '#257ae2'],
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            formatter: '{b} : {c} ({d}%)'
           },
           legend: {
             orient: 'vertical',
@@ -83,21 +83,11 @@
                   labelLine: {
                     show: false
                   }
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    position: 'center',
-                    textStyle: {
-                      fontSize: '30',
-                      fontWeight: 'bold'
-                    }
-                  }
                 }
               },
               data: [
-                {value: 335, name: '直接访问'},
-                {value: 310, name: '邮件营销'}
+                {value: 335, name: '已完成'},
+                {value: 310, name: '未完成'}
               ]
             }
           ]

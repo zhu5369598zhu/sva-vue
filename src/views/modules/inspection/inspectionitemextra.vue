@@ -90,6 +90,7 @@
             i.isSet = false
           })
           this.extra = extraList
+          console.log('this.extra %o', this.extra)
         }
       },
       extraSelectionChangeHandle (val) {

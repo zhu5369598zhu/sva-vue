@@ -224,17 +224,6 @@
         label="轮次">
       </el-table-column>
       <el-table-column
-        prop="isCheck"
-        header-align="center"
-        align="center"
-        width="50"
-        label="跳过">
-        <template slot-scope="scope">
-          <span v-if="scope.row.isCheck === 0" style="color:red;">是</span>
-          <span v-if="scope.row.isCheck === 1" style="color:darkgreen">否</span>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="remark"
         header-align="center"
         align="left"
@@ -544,6 +533,7 @@
         return 'padding:0'
       },
       handleDeptSelect (val) {
+        this.pageIndex = 1
         this.dataForm.deptId = val
         this.getDataList()
       },

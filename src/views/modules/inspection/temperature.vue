@@ -29,16 +29,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="巡检类型:" prop="inspectionTypeId">
-          <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
-            <el-option
-              v-for="item in inspectionTypeList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="设备等级:" prop="statusId">
           <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
             <el-option
@@ -103,6 +93,7 @@
               prop="itemName"
               header-align="center"
               align="center"
+              width="250"
               label="巡检内容">
             </el-table-column>
             <el-table-column
@@ -147,7 +138,7 @@
               header-align="center"
               align="center"
               width="140"
-              label="上/上上/下/下下">
+              label="上上/上/下/下下">
             </el-table-column>
             <el-table-column
               prop="inspectionType"
@@ -219,17 +210,6 @@
               header-align="center"
               align="center"
               label="轮次">
-            </el-table-column>
-            <el-table-column
-              prop="isCheck"
-              header-align="center"
-              align="center"
-              width="50"
-              label="跳过">
-              <template slot-scope="scope">
-                <span v-if="scope.row.isCheck === 0" style="color:red;">是</span>
-                <span v-if="scope.row.isCheck === 1" style="color:darkgreen">否</span>
-              </template>
             </el-table-column>
             <el-table-column
               prop="remark"
@@ -445,6 +425,10 @@
         }
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
+        }
+        if(endTime !=='' && endTime<startTime) {
+          this.$message.error('结束时间不能小于开始时间')
+          return
         }
         this.dataListLoading = true
         this.$http({
@@ -725,6 +709,7 @@
         if (val.type === 'item') {
           this.dataForm.itemId = val.id
         }
+        this.pageIndex = 1
         this.getChartData()
       },
       drawChart () {

@@ -29,16 +29,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="巡检类型:" prop="inspectionTypeId">
-          <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
-            <el-option
-              v-for="item in inspectionTypeList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="设备等级:" prop="statusId">
           <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
             <el-option
@@ -219,17 +209,6 @@
               header-align="center"
               align="center"
               label="轮次">
-            </el-table-column>
-            <el-table-column
-              prop="isCheck"
-              header-align="center"
-              align="center"
-              width="50"
-              label="跳过">
-              <template slot-scope="scope">
-                <span v-if="scope.row.isCheck === 0" style="color:red;">是</span>
-                <span v-if="scope.row.isCheck === 1" style="color:darkgreen">否</span>
-              </template>
             </el-table-column>
             <el-table-column
               prop="remark"
@@ -736,6 +715,7 @@
         if (val.type === 'item') {
           this.dataForm.itemId = val.id
         }
+        this.pageIndex = 1
         this.getChartData()
       },
       drawChart () {

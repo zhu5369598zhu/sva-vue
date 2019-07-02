@@ -25,7 +25,7 @@
             prop="itemName"
             header-align="center"
             align="center"
-            width="150"
+            width="250"
             label="巡检内容">
           </el-table-column>
           <el-table-column
@@ -64,6 +64,13 @@
             align="center"
             width="80"
             label="单位">
+          </el-table-column>
+          <el-table-column
+            prop="limits"
+            header-align="center"
+            align="center"
+            width="140"
+            label="上上/上/下/下下">
           </el-table-column>
           <el-table-column
             prop="inspectionType"

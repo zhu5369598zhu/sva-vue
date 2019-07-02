@@ -14,22 +14,22 @@
     <div class="show-data-table">
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item lable="设备名称:" prop="deviceName">
+      <el-form-item lable="" prop="deviceName">
         <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="巡检内容:" prop="itemName">
+      <el-form-item lable="" prop="itemName">
         <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="巡检人员:" prop="username">
+      <el-form-item lable="" prop="username">
         <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item label="是否正常:" prop="isOk">
+      <el-form-item label="" prop="isOk">
         <el-select v-model="dataForm.isOk" placeholder="是否正常" clearable style="width:100px;">
           <el-option label="是" value="1"></el-option>
           <el-option label="否" value="0"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="检时状态:" prop="statusId">
+      <el-form-item label="" prop="statusId">
         <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;">
           <el-option
             v-for="item in deviceStatusList"
@@ -39,7 +39,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="异常等级:" prop="statusId">
+      <el-form-item label="" prop="statusId">
         <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable style="width:100px;">
           <el-option
             v-for="item in exceptionList"
@@ -49,7 +49,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="巡检类型:" prop="inspectionTypeId">
+      <el-form-item label="" prop="inspectionTypeId">
         <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
           <el-option
             v-for="item in inspectionTypeList"
@@ -59,7 +59,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设备等级:" prop="statusId">
+      <el-form-item label="" prop="statusId">
         <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
           <el-option
             v-for="item in deviceLevelList"
@@ -69,11 +69,11 @@
           </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="巡检时间从:" prop="startTime">
-      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+    <el-form-item label="巡检时间" prop="startTime">
+      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:130px;"></el-date-picker>
     </el-form-item>
     <el-form-item label="到:" prop="endTime">
-      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:130px;"></el-date-picker>
     </el-form-item>
     <el-form-item>
       <el-button @click="search()">查询</el-button>
@@ -110,6 +110,7 @@
         prop="itemName"
         header-align="center"
         align="center"
+        width="250"
         label="巡检内容">
       </el-table-column>
       <el-table-column
@@ -154,7 +155,7 @@
         header-align="center"
         align="center"
         width="140"
-        label="上/上上/下/下下">
+        label="上上/上/下/下下">
       </el-table-column>
       <el-table-column
         prop="inspectionType"
@@ -226,17 +227,6 @@
         header-align="center"
         align="center"
         label="轮次">
-      </el-table-column>
-      <el-table-column
-        prop="isCheck"
-        header-align="center"
-        align="center"
-        width="50"
-        label="跳过">
-        <template slot-scope="scope">
-          <span v-if="scope.row.isCheck === 0" style="color:red;">是</span>
-          <span v-if="scope.row.isCheck === 1" style="color:darkgreen">否</span>
-        </template>
       </el-table-column>
       <el-table-column
         prop="remark"
@@ -443,6 +433,10 @@
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
         }
+        if(endTime !=='' && endTime<startTime) {
+          this.$message.error('结束时间不能小于开始时间')
+          return
+        }
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectionresult/query'),
@@ -553,6 +547,7 @@
         })
       },
       handleDeptSelect (val) {
+        this.pageIndex = 1
         this.dataForm.deptId = val
         this.getDataList()
       },
