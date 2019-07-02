@@ -20,12 +20,12 @@
           align="center"
           label="消息名称">
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="newsTypeName"
           header-align="center"
           align="center"
           label="消息类型名称">
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           prop="newsNumber"
           header-align="center"
