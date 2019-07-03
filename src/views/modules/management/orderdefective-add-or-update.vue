@@ -5,7 +5,7 @@
     :append-to-body='true'
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
-    <el-form-item label="工单编号" prop="defectiveNumber">
+    <el-form-item label="缺陷单编号" prop="defectiveNumber">
       {{dataForm.defectiveNumber}}
     </el-form-item>
     <el-form-item label="缺陷单主题" prop="defectiveTheme">
@@ -39,14 +39,14 @@
       </el-form-item>
       </el-col>
     </el-row>
-    <el-form-item label="工单内容" prop="orderContent">
+    <el-form-item label="归属设备" prop="defectiveDevice">
+      <el-input v-model="dataForm.defectiveDevice"></el-input>
+    </el-form-item>
+    <el-form-item label="缺陷单内容" prop="orderContent">
       <el-input
         type="textarea"
         autosize
         v-model="dataForm.orderContent" placeholder="工单内容"></el-input>
-    </el-form-item>
-    <el-form-item label="归属设备" prop="defectiveDevice">
-        <el-input v-model="dataForm.defectiveDevice"></el-input>
     </el-form-item>
     <el-form-item label="缺陷填报人" prop="defectiveName">
       <el-input v-model="dataForm.defectiveName" placeholder="缺陷填报人"></el-input>

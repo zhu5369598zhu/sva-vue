@@ -48,7 +48,7 @@
               <img src="~@/assets/img/avatar.png" :alt="userName">{{ userName }}
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="totalPage" @click.native="newsHandle()">待处理的消息</el-dropdown-item>
+              <!--<el-dropdown-item v-if="totalPage" @click.native="newsHandle()">待处理的消息</el-dropdown-item>-->
               <el-dropdown-item @click.native="updatePasswordHandle()">修改密码</el-dropdown-item>
               <el-dropdown-item @click.native="logoutHandle()">退出</el-dropdown-item>
             </el-dropdown-menu>

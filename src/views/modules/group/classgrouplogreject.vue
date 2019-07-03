@@ -2,7 +2,6 @@
   <div class="mod-group">
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item label="日志列表"></el-form-item>
       <el-form-item prop="logNumber">
         <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
       </el-form-item>
@@ -56,12 +55,6 @@
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
-      <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
       <el-table-column
         prop="classId"
         header-align="center"
@@ -137,7 +130,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
+          <el-button type="text" size="small" v-if="scope.row.newsCounts > 0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
+          <el-button type="text" size="small" v-if="scope.row.newsCounts ===0" :disabled="scope.row.newsCounts ===0" style="color: #8c939d;">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -229,7 +223,8 @@
             'baseTurnId': this.dataForm.baseTurnId,
             'logType': this.logType,
             'logUserStatus': this.logUserStatus,
-            'user_id': this.dataForm.user_id
+            'user_id': this.dataForm.user_id,
+            'userid': this.loginuserId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

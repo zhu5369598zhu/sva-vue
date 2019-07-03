@@ -73,9 +73,9 @@
                           <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
                         </span>
         </el-input>
-        <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
+        <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
           <div style="display: flex;justify-content: space-around;align-items: center;">
-            <div style="width:400px;height: 500px;overflow: scroll;">
+            <div style="width:400px;height: 500px;">
               <el-form :model="deptFrom">
                 <el-row>
                   <el-col :span="13">
@@ -94,7 +94,7 @@
                 :data="dataDeptList"
                 highlight-current-row
                 @current-change="depteHandle"
-                style="width: 100%;">
+                style="width: 100%;height: 440px;overflow: scroll;">
                 <el-table-column
                   type="index"
                   header-align="center"
@@ -111,7 +111,7 @@
                 </table-tree-column>
               </el-table>
             </div>
-            <div style="width:400px;height: 500px;overflow: scroll;">
+            <div style="width:400px;height: 500px;">
               <el-form :inline="true" :model="datauserForm" >
                 <el-row>
                   <el-col :span="8">
@@ -138,7 +138,7 @@
               </el-form>
               <el-table
                 :data="UserdataList"
-                style="width: 100%;"
+                style="width: 100%;height: 440px;overflow: scroll;"
                 @selection-change="selectionChangeHandle"
               >
                 <el-table-column
