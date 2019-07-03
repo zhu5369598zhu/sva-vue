@@ -49,7 +49,7 @@
         <el-button @click="search()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
       </el-form>
       <el-tabs type="border-card" value="chart" ref="tabs">

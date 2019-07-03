@@ -7,7 +7,7 @@
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
-        <linetree inspectionType="1" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
+        <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
       </template>
    <template slot="paneR">
@@ -49,7 +49,7 @@
         <el-button @click="search()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
       </el-form>
       <el-tabs type="border-card" value="chart" ref="tabs">
@@ -317,7 +317,7 @@
       this.getDeviceLevelList()
       this.getInspectionTypeList()
       this.getDeviceStatusList()
-      this.getDataList()
+      this.search()
     },
     methods: {
       beginDate () {
@@ -328,10 +328,6 @@
         }
       },
       search () {
-        this.dataForm.deptId = null
-        this.dataForm.lineId = null
-        this.dataForm.deviceId = null
-        this.dataForm.itemId = null
         this.getDataList()
         this.getChartData()
       },

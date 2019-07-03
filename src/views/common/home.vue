@@ -8,24 +8,26 @@
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="home-title">异常频度排名</span>
+                    <span class="title">异常频度排名</span>
                   </div>
                    <el-table
                     ref="table"
-                    :data="deviceList"
+                    :data="deviceExceptionTopList"
                     :border="false"
                     :show-header="false"
+                    :cell-style="cellStyle"
+                    :row-style="rowStyle"
                     style="width: 100%;">
                     <el-table-column
                       prop="deviceName"
                       header-align="center"
-                      align="center"
+                      align="left"
                       label="">
                     </el-table-column>
-                    <el-table-column
-                      prop="zone"
+                    <el-table-column 
+                      prop="exceptionCount"
                       header-align="center"
-                      align="center"
+                      align="right"
                       label="">
                     </el-table-column>
                     </el-table>
@@ -79,7 +81,7 @@ export default {
         bad: [320, 332, 301, 334, 390],
         normal: [320, 332, 301, 334, 390],
         all: [320, 332, 301, 334, 390],
-        deviceList: [{'deviceName':'1#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'2#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'3#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'4#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'5#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'6#真空泵[ZKB01','zone':'锅炉车间'},{'deviceName':'7#真空泵[ZKB01','zone':'锅炉车间'}]
+        deviceExceptionTopList: []
       }
     },
     components: {
@@ -94,9 +96,10 @@ export default {
     },
     methods: {
       getDataList () {
-        this.getChartStatus()
+        this.getDeviceStatus()
+        this.getDeviceExceptionTop()
       },
-      getChartStatus () {
+      getDeviceStatus () {
         this.$http({
           url: this.$http.adornUrl(`/inspection/device/getstatus`),
           method: 'get',
@@ -116,6 +119,20 @@ export default {
           }
         })
       },
+      getDeviceExceptionTop () {
+        this.$http({
+          url: this.$http.adornUrl(`/inspection/device/getexceptiontop`),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          console.log(data)
+          if (data && data.code === 0) {
+            this.deviceExceptionTopList = data.topList
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      },
       drawChart () {
         if (this.hasData === true) {
           this.$nextTick(() => {
@@ -123,6 +140,12 @@ export default {
             console.log('draw')
           })
         }
+      },
+      rowStyle ({row, rowIndex}) {
+        return 'height:25px'
+      },
+      cellStyle () {
+        return 'padding:0'
       }
     }
 }
@@ -174,6 +197,47 @@ export default {
     height: 100%;
     background-color: white;
     padding-bottom: 10px;
+  }
+
+  .charts {
+    width: 100%;
+    height: 100%;
+  }
+  .char-up {
+    width: 100%;
+    height: 15%;
+  }
+  .char-down {
+    width: 100%;
+    height: 85%;
+  }
+  .chart-header {
+    padding-bottom:14px;
+    border-bottom:1px solid #E1E1E1;
+    padding: 14px;
+    margin-bottom: 30px;
+  }
+  .chart-line {
+    width: 100%;
+    height: 100%;
+    padding: 14px;
+  }
+  .title {
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.14px;
+    text-align: center;
+    padding-bottom:14px;
+    border-bottom:2px solid #2097F2
+  }
+  .date {
+    float: right;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0.14px;
+    text-align: center;
   }
 </style>
 

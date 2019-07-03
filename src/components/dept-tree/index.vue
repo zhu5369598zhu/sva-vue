@@ -6,7 +6,7 @@
       node-key="deptId"
       ref="deptListTree"
       @current-change="deptListTreeCurrentChangeHandle"
-      :default-expand-all="true"
+      :default-expand-all="false"
       :highlight-current="true"
       :expand-on-click-node="false">
     </el-tree>

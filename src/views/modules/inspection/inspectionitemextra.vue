@@ -143,6 +143,9 @@
         for (let i = 0; i < this.extra.length; i++) {
           if (this.extra[i].name !== '' && this.extra[i].id !== '' && this.extra[i].exceptionName !== '') {
             extras.push(this.extra[i])
+          } else {
+            this.$message.error('扩展项设置错误')
+            return
           }
         }
         console.log(extras)

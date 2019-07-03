@@ -113,14 +113,14 @@
         }
       }
       var validateEmail = (rule, value, callback) => {
-        if (value!=='' && !isEmail(value)) {
+        if (value!=='' && value!==null && !isEmail(value)) {
           callback(new Error('邮箱格式错误'))
         } else {
           callback()
         }
       }
       var validateMobile = (rule, value, callback) => {
-        if (value!=='' && !isMobile(value)) {
+        if (value!=='' && value!==null && !isMobile(value)) {
           callback(new Error('手机号格式错误'))
         } else {
           callback()

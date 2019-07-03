@@ -12,7 +12,7 @@
     :props="deviceTreeProps"
     node-key="deptId"
     @current-change="selectTreeCurrentChangeHandle"
-    :default-expand-all="true"
+    :default-expand-all="false"
     :highlight-current="true"
     :expand-on-click-node="false">
     <span class="custom-tree-node" slot-scope="{ node, data }">

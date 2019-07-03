@@ -94,7 +94,7 @@
         </el-col>
       </el-row>
       <el-row>  
-        <el-col :span="6">
+        <el-col :span="8">
           <el-form-item label="是否巡检:" prop="isInspect">
             <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" clearable style="width:140px;"></el-switch>
           </el-form-item>

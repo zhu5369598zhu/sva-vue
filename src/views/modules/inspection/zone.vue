@@ -19,8 +19,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="search()">查询</el-button>
-        <el-button v-if="isAuth('inspection:zone:save')" type="primary" @click="zoneAddOrUpdateHandle()">新增</el-button>
-        <el-button type="success" @click="exportExcelHandle()">导出</el-button>
+        <el-button v-if="isAuth('inspection:zone:save')" @click="zoneAddOrUpdateHandle()">新增</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
       <el-form-item>
           <el-upload
@@ -29,7 +29,7 @@
           :action="this.$http.adornUrl(`/inspection/zone/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button type="success">导入</el-button>
+          <el-button>导入</el-button>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -99,8 +99,8 @@
   <div class="show-data-down">
     <el-form :inline="true" :model="dataForm">
       <el-form-item>
-        <el-button v-if="isAuth('inspection:zonedevice:save')" type="primary" @click="deviceAddOrUpdateHandle()" :disabled="dataForm.zoneId <= 0">绑定设备</el-button>
-        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="danger" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('inspection:zonedevice:save')" @click="deviceAddOrUpdateHandle()" :disabled="dataForm.zoneId <= 0">绑定设备</el-button>
+        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="warning" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table

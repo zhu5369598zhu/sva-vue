@@ -19,6 +19,7 @@
                 :on-error="uploadErrorHandle"
                 :before-remove="uploadBeforeRemoveHandle"
                 :file-list="fileList"
+                :disabled="!isModify"
                 :data="uploadParams">
                 <i class="el-icon-plus"></i>
               </el-upload>
@@ -31,7 +32,7 @@
                   <img class="device-qrcode" :src="getQrcode(dataForm.deviceId)"></img>
                 </a>
                 <div class="gen-qrcode" align="center">
-                  <el-button type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px; width: 110px;">生成二维码</el-button>
+                  <el-button :disabled="!isModify" type="success" @click="createQrcode(dataForm.deviceId)" style="margin-bottom: 5px; width: 110px;">生成二维码</el-button>
                 </div>
               </div>
             </el-form-item>
@@ -127,7 +128,7 @@
           </el-col>
         </el-row>
         <el-row>  
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="是否巡检:" prop="isInspect">
               <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" :disabled="!isModify" clearable style="width:140px;"></el-switch>
             </el-form-item>
@@ -142,6 +143,7 @@
           <el-col :span="24">
             <el-form-item>
               <div align="center">
+                <el-button v-if="this.isModify===true" @click="visible = false">取消</el-button>
                 <el-button type="primary" v-if="this.isModify===true" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>
               </div>
             </el-form-item>
@@ -153,16 +155,16 @@
     <el-tab-pane label="设备资料" name="document">
       <el-tabs type="border-card" v-model="activeTab" ref="documentTabs" @tab-click="documentTabsClickHandle">
         <el-tab-pane label="出厂资料" name="birth" actived="true">
-          <deviceDocument ref="documentBirth" :deviceId="dataForm.deviceId"></deviceDocument>
+          <deviceDocument :disabled="!isModify" ref="documentBirth" :deviceId="dataForm.deviceId"></deviceDocument>
         </el-tab-pane>
         <el-tab-pane label="调试资料" name="debug" actived="true">
-          <deviceDocument ref="documentDebug" :deviceId="dataForm.deviceId"></deviceDocument>
+          <deviceDocument :disabled="!isModify" ref="documentDebug" :deviceId="dataForm.deviceId"></deviceDocument>
         </el-tab-pane>
         <el-tab-pane label="维护保养资料" name="maintain" actived="true">
-          <deviceDocument ref="documentMaintain" :deviceId="dataForm.deviceId"></deviceDocument>
+          <deviceDocument :disabled="!isModify" ref="documentMaintain" :deviceId="dataForm.deviceId"></deviceDocument>
         </el-tab-pane>
         <el-tab-pane label="故障维修资料" name="trouble" actived="true">
-          <deviceDocument ref="documentTrouble" :deviceId="dataForm.deviceId"></deviceDocument>
+          <deviceDocument :disabled="!isModify" ref="documentTrouble" :deviceId="dataForm.deviceId"></deviceDocument>
         </el-tab-pane>
       </el-tabs>
     </el-tab-pane>
@@ -459,6 +461,9 @@
   }
 </script>
 <style>
+  .device-pic {
+    margin-bottom: 5px;
+  }
   .device-info {
     border-top: 1px dashed #c0ccda;
     margin-top: 5px;

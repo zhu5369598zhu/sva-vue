@@ -70,16 +70,16 @@
       </el-select>
     </el-form-item>
     <el-form-item label="巡检时间" prop="startTime">
-      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:130px;"></el-date-picker>
+      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
     </el-form-item>
     <el-form-item label="到:" prop="endTime">
-      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:130px;"></el-date-picker>
+      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
     </el-form-item>
     <el-form-item>
       <el-button @click="search()">查询</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button @click="exportExcelHandle()">导出excel</el-button>
+      <el-button @click="exportExcelHandle()">导出</el-button>
     </el-form-item>
     </el-form>
     <el-table
@@ -121,7 +121,7 @@
         label="正常">
         <template slot-scope="scope">
           <span v-if="scope.row.isOk === 0" style="color:red;">否</span>
-          <span v-if="scope.row.isOk === 1" style="color:darkgreen">是</span>
+          <span v-if="scope.row.isOk === 1">是</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -322,7 +322,6 @@
         }
       },
       search () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       view (type, url, inspectionTypeId) {

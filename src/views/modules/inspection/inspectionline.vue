@@ -19,8 +19,8 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="search()">查询</el-button>
-              <el-button v-if="isAuth('inspection:inspectionline:save')" type="primary" @click="lineAddOrUpdateHandle()" icon="el-icon-plus">新增</el-button>
-              <el-button v-if="isAuth('inspection:inspectionline:publish')" type="success" @click="linePublish()" :icon="publishIcon">{{publishName}}</el-button>
+              <el-button v-if="isAuth('inspection:inspectionline:save')" @click="lineAddOrUpdateHandle()">新增</el-button>
+              <el-button v-if="isAuth('inspection:inspectionline:publish')" @click="linePublish()" :icon="publishIcon">{{publishName}}</el-button>
             </el-form-item>
           </el-form>
           <el-table
@@ -110,6 +110,7 @@
               <template slot-scope="scope" sytle="z-index=1;">
                 <el-button v-if="isAuth('inspection:inspectionline:save') && scope.row.isPublish===0" type="text" size="small" @click="lineAddOrUpdateHandle(scope.row.id)">修改</el-button>
                 <el-button v-if="isAuth('inspection:inspectionline:delete') && scope.row.isPublish===0" type="text" size="small" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
+                <el-button v-if="scope.row.isPublish===1" type="text" size="small" @click="viewPublish(scope.row.id)">下载详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -124,6 +125,7 @@
           </el-pagination>
           <!-- 弹窗, 新增 / 修改 -->
           <LineAddOrUpdate v-if="lineAddOrUpdateVisible" ref="lineAddOrUpdate" @refreshDataList="getLineList(lineForm.deptId)"></LineAddOrUpdate>
+          <viewPublish v-if="viewPublishVisible" ref="viewPublish"></viewPublish>
       </div>
       <div class="show-data-down">
       <el-tabs type="border-card" v-model="activeTab" @tab-click="tabSelectChangeHandle">
@@ -131,8 +133,8 @@
           <div class="mod-class-group">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0" type="primary" @click="classGroupAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="danger" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0"  @click="classGroupAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
+                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-table height="210"
@@ -195,8 +197,8 @@
          <div class="mod-turn">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" type="primary" @click="turnAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="danger" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" @click="turnAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
+                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-table height="210"
@@ -271,8 +273,8 @@
           <div class="mod-period">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" type="primary" @click="periodAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="danger" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" @click="periodAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
+                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="warning" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
             <div class="data-period">
@@ -376,8 +378,8 @@
           <div class="mod-line-zone">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:linezone:save') && isPublish===0" type="primary" @click="zoneBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
-                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="danger" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:linezone:save') && isPublish===0" @click="zoneBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
+                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="warning" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-scrollbar>
@@ -441,8 +443,8 @@
           <div class="mod-line-pda">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:inspectionlinepublish:save') && isPublish===0" type="primary" @click="pdaBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
-                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="danger" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionlinepublish:save') && isPublish===0" @click="pdaBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
+                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="warning" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-scrollbar>
@@ -519,6 +521,7 @@
   import ClassGroupAddOrUpdate from './classgroup-add-or-update'
   import PeriodAddOrUpdate from './inspectionperiod-add-or-update'
   import ZoneBindAddOrUpdate from './zonebind-add-or-update'
+  import ViewPublish from './inspectionlinepublish'
   import splitPane from '@/components/split-pane'
   export default {
     data () {
@@ -574,6 +577,7 @@
         linePdaListSelections: [],
         lineAddOrUpdateVisible: false,
         turnAddOrUpdateVisible: false,
+        viewPublishVisible: false,
         classGroupAddOrUpdateVisible: false,
         periodAddOrUpdateVisible: false,
         lineZoneAddOrUpdateVisible: false,
@@ -589,6 +593,7 @@
       ClassGroupAddOrUpdate,
       PeriodAddOrUpdate,
       ZoneBindAddOrUpdate,
+      ViewPublish,
       splitPane
     },
     activated () {
@@ -812,7 +817,6 @@
       lineSelectionChangeHandle (val) {
         if (val != null) {
           this.isPublish = val.isPublish
-          console.log('isPublish %o', this.isPublish)
           if (val.isPublish === 0) {
             this.publishIcon = 'el-icon-circle-check-outline'
             this.publishName = '发布计划'
@@ -866,6 +870,13 @@
           this.$refs.turnAddOrUpdate.init(id)
         })
       },
+      viewPublish (lineId) {
+        this.viewPublishVisible = true
+        this.$nextTick(() => {
+          this.$refs.viewPublish
+          this.$refs.viewPublish.getDataList(lineId)
+        })
+      },
       classGroupAddOrUpdateHandle (id) {
         this.classGroupAddOrUpdateVisible = true
         this.$nextTick(() => {
@@ -894,7 +905,6 @@
         this.linePdaAddOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.pdaBindAddOrUpdate.dataForm.inspectionLineId = this.lineForm.lineId
-          console.log('lineId %o', this.lineForm.lineId)
           this.$refs.pdaBindAddOrUpdate.init(this.lineForm.deptId)
         })
       },
@@ -1123,7 +1133,6 @@
         var zoneIds = val.map(item => {
           return item.zoneId
         })
-        console.log('zoneIds %o', zoneIds)
         if (zoneIds.length > 0) {
           this.$http({
             url: this.$http.adornUrl('/inspection/linezone/bind'),

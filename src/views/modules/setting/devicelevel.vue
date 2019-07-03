@@ -4,8 +4,8 @@
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm">
       <el-form-item>
-        <el-button v-if="isAuth('setting:devicelevel:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('setting:devicelevel:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('setting:devicelevel:save')" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('setting:devicelevel:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table

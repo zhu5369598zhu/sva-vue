@@ -1,41 +1,19 @@
 <template>
-  <div class="mod-config">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
-      </el-form-item>
-    </el-form>
+  <el-dialog
+    :title="'下载详情'"
+    :close-on-click-modal="false"
+    :visible.sync="visible"
+    append-to-body>
     <el-table
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
       style="width: 100%;">
-      <el-table-column
-        type="index"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="id">
-      </el-table-column>
-      <el-table-column
-        prop="lineName"
-        header-align="center"
-        align="center"
-        label="线路">
-      </el-table-column>
       <el-table-column
         prop="pdaName"
         header-align="center"
         align="center"
+        width="240"
         label="PDA名称">
       </el-table-column>
       <el-table-column
@@ -48,6 +26,7 @@
         prop="isDownload"
         header-align="center"
         align="center"
+        width="100"
         label="是否已下载">
         <template slot-scope="scope">
           <span v-if="scope.row.isDownload === 0" style="color:red;">否</span>
@@ -61,22 +40,25 @@
         label="下载时间">
       </el-table-column>
     </el-table>
-    <el-pagination
-      @size-change="sizeChangeHandle"
-      @current-change="currentChangeHandle"
-      :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
-      :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
-  </div>
+    <div align="right" style="margin-top:15px;margin-bottom:15px;">
+      <el-pagination
+        @size-change="sizeChangeHandle"
+        @current-change="currentChangeHandle"
+        :current-page="pageIndex"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="pageSize"
+        :total="totalPage"
+        layout="total, sizes, prev, pager, next, jumper">
+      </el-pagination>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
   export default {
     data () {
       return {
+        visible: false,
         dataForm: {
           key: ''
         },
@@ -96,7 +78,8 @@
     },
     methods: {
       // 获取数据列表
-      getDataList () {
+      getDataList (lineId) {
+        this.visible = true
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectionlinepublish/list'),
@@ -104,7 +87,7 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'key': this.dataForm.key
+            'lineId': lineId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

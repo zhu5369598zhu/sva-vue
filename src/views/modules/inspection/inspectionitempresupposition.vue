@@ -136,7 +136,18 @@
             this.presupposition[j].isSet = false
           }
         }
-        this.$emit('presuppositionChange', this.presupposition)
+        
+        var presuppositions = []
+        for (let i = 0; i < this.presupposition.length; i++) {
+          if (this.presupposition[i].name !== '' && this.presupposition[i].id !== '' && this.presupposition[i].exceptionName !== '') {
+            presuppositions.push(this.presupposition[i])
+          } else {
+            this.$message.error('预设项设置错误，请检查!')
+            return
+          }
+        }
+        
+        this.$emit('presuppositionChange', presuppositions)
         this.visible = false
       }
     }

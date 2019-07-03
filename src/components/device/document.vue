@@ -39,7 +39,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button icon="el-icon-download" v-if="isAuth('inspection:device:delete')" type="text" size="small" @click="downloadHandle(scope.row.guid)">下载</el-button>
-          <el-button icon="el-icon-delete" v-if="isAuth('inspection:device:delete')" type="text" size="small" @click="deleteHandle(scope.row.guid)">删除</el-button>
+          <el-button icon="el-icon-delete" v-if="isAuth('inspection:device:delete') && !disabled" type="text" size="small" @click="deleteHandle(scope.row.guid)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +64,7 @@
             :on-success="uploadSuccessHandle"
             :on-error="uploadErrorHandle"
             :data="uploadParams">
-            <el-button size="small" type="primary">上传</el-button>
+            <el-button size="small" type="primary" v-if="!disabled">上传</el-button>
           </el-upload>
         </div>
       </el-form-item>
@@ -77,6 +77,9 @@
     props: {
       deviceId: {
         type: Number
+      },
+      disabled: {
+        type: Boolean
       }
     },
     data () {

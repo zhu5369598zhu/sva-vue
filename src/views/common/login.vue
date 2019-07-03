@@ -3,7 +3,7 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">智能巡检管理系统</h2>
+          <span class="brand-info__text">HcoAladin智慧云点巡检管理系统</span>
         </div>
         <div class="login-main">
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
@@ -134,18 +134,16 @@
       background-color: transparent;
     }
     .site-content {
-      min-height: 100%;
       padding: 0px 500px 30px 30px;
     }
     .brand-info {
-      margin: 20px 110px 0px 222px;
+      margin: 20px 110px 0px 0px;
       color: #fff;
     }
     .brand-info__text {
       margin:  0 0 22px 0;
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 400;
-      text-transform : uppercase;
     }
     .brand-info__intro {
       margin: 10px 0;

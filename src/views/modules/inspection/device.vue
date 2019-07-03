@@ -28,9 +28,9 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="search()">查询</el-button>
-        <el-button v-if="isAuth('inspection:device:save')" type="primary" @click="deviceAddHandle()">新增</el-button>
-        <el-button v-if="isAuth('inspection:device:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button type="success" @click="exportExcelHandle()">导出</el-button>
+        <el-button v-if="isAuth('inspection:device:save')" @click="deviceAddHandle()">新增</el-button>
+        <el-button v-if="isAuth('inspection:device:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
       <el-form-item>
         <el-upload
@@ -39,7 +39,7 @@
         :action="this.$http.adornUrl(`/inspection/device/upload?token=${this.$cookie.get('token')}`)"
         :file-list="importFileList"
         :on-success="UploadSuccessHandle">
-        <el-button type="success">导入</el-button>
+        <el-button>导入</el-button>
       </el-upload>
     </el-form-item>
     </el-form>

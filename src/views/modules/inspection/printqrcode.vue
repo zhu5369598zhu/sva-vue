@@ -28,8 +28,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="search()">查询</el-button>
-        <el-button type="success" @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0">打印已选</el-button>
-        <el-button type="success" @click="printAllHandle()" :disabled="dataList.length <= 0">打印全部</el-button>
+        <el-button @click="printAllHandle()" :disabled="dataList.length <= 0">打印全部</el-button>
+        <el-button @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0">打印已选</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -160,6 +160,9 @@
       this.getDataList()
     },
     methods: {
+      test () {
+        window.print()
+      },
       getDownload (deviceId) {
         return this.$http.adornUrl(`/inspection/deviceqrcode/download?deviceId=${deviceId}&token=${this.$cookie.get('token')}`)
       },
