@@ -633,6 +633,7 @@
             this.isHttp = true
             this.dataForm.logStatus = '2'
             this.dataForm.logUserStatus = '2'
+            this.dataForm.rejectReason = ''
             this.dataForm.successorId = this.loginuserId
             this.$http({
               url: this.$http.adornUrl(`/group/classgrouplogreject/${!this.dataForm.classId ? 'save' : 'update'}`),
@@ -677,7 +678,8 @@
                 'teamMembers': this.dataForm.teamMembers,
                 'teamMembersIds': this.dataForm.teamMembersIds,
                 'workSummary': this.dataForm.workSummary,
-                'personCharge': this.dataForm.personCharge
+                'personCharge': this.dataForm.personCharge,
+                'rejectReason': this.dataForm.rejectReason
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

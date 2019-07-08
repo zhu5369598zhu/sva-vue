@@ -322,6 +322,7 @@
           baseTurnId: '',
           logType: '2',
           logStatus: '1',
+          logUserStatus: '',
           noteTaker: '',
           handoverPerson: '',
           handoverPersonId: '',
@@ -655,10 +656,12 @@
       // 保存
       datasave () {
         this.dataForm.logStatus = '1'
+        this.dataForm.logUserStatus = '1'
         this.dataFormSubmit()
       },
       submit () {
         this.dataForm.logStatus = '2'
+        this.dataForm.logUserStatus = '2'
         this.dataFormSubmit()
       },
       // 表单提交
@@ -678,6 +681,7 @@
                 'baseTurnId': this.dataForm.baseTurnId,
                 'logType': this.dataForm.logType,
                 'logStatus': this.dataForm.logStatus,
+                'logUserStatus': this.dataForm.logUserStatus,
                 'noteTaker': this.dataForm.noteTaker,
                 'handoverPerson': this.dataForm.handoverPerson,
                 'handoverPersonId': this.dataForm.handoverPersonId,

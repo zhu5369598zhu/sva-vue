@@ -157,6 +157,15 @@
           } else if (newsType === 8) {
             this.$router.push('/management-ordermanagementreported')
             this.visible = false
+          } else if (newsType === 9) {
+            this.$router.push('/management-ordermanagement')
+            this.visible = false
+          } else if (newsType === 11) {
+            this.$router.push('/management-orderdefective')
+            this.visible = false
+          } else if (newsType === 12) {
+            this.$router.push('/management-orderdefect')
+            this.visible = false
           }
         },
         newsexist () {

@@ -577,7 +577,7 @@
         deptList: [],
         TurnList: [],
         GroupList: [{id: '1', name: '班长日志'}, {id: '2', name: '班前日志'}, {id: '3', name: '班后日志'}],
-        LogStatusList: [{id: '1', name: '拟制中'}, {id: '2', name: '待确认'}, {id: '3', name: '已确认'}],
+        LogStatusList: [{id: '1', name: '拟制中'}, {id: '2', name: '待确认'}, {id: '3', name: '已确认'}, {id: '4', name: '待确认有驳回'}],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,

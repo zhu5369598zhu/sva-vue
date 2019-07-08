@@ -49,65 +49,89 @@
         prop="orderId"
         header-align="center"
         align="center"
+        width="80"
         label="序号">
       </el-table-column>
       <el-table-column
         prop="orderNumber"
         header-align="center"
         align="center"
+        width="120"
         label="工单编号">
         <template slot-scope="scope">
           <a href="#"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
         </template>
       </el-table-column>
       <el-table-column
+        prop="defectiveNumber"
+        header-align="center"
+        align="center"
+        width="120"
+        label="缺陷单编号">
+      </el-table-column>
+      <el-table-column
+        prop="orderTypeName"
+        header-align="center"
+        align="center"
+        width="100"
+        label="工单类型">
+      </el-table-column>
+      <el-table-column
+        prop="orderStatusName"
+        header-align="center"
+        align="center"
+        width="100"
+        label="工单状态">
+      </el-table-column>
+      <el-table-column
         prop="orderName"
         header-align="center"
         align="center"
+        width="150"
         label="工单主题">
       </el-table-column>
       <el-table-column
         prop="deptName"
         header-align="center"
         align="center"
+        width="100"
         label="所属机构">
       </el-table-column>
       <el-table-column
         prop="defectiveName"
         header-align="center"
         align="center"
-        label="缺陷确认人(填报)人">
+        width="100"
+        label="缺陷操作人">
       </el-table-column>
       <el-table-column
-        prop="orderConfirmer"
+        prop="orderApplicant"
         header-align="center"
         align="center"
-        label="工单确认人">
-      </el-table-column>
-      <el-table-column
-        prop="confirmedTime"
-        header-align="center"
-        align="center"
-        label="确认时间">
-      </el-table-column>
-      <el-table-column
-        prop="orderStatusName"
-        header-align="center"
-        align="center"
-        label="工单状态">
+        width="100"
+        label="工单操作人">
       </el-table-column>
       <el-table-column
         prop="orderAcceptor"
         header-align="center"
         align="center"
+        width="100"
         label="工单受理人">
       </el-table-column>
       <el-table-column
-        prop="defectiveNumber"
+        prop="orderConfirmer"
         header-align="center"
         align="center"
-        label="缺陷单编号">
+        width="100"
+        label="工单审核人">
       </el-table-column>
+      <el-table-column
+        prop="confirmedTime"
+        header-align="center"
+        align="center"
+        label="审核时间">
+      </el-table-column>
+
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -132,15 +156,16 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="工单状态" prop="orderStatus">
-                <el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+              <el-form-item label="工单状态" prop="orderStatusName">
+                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
                   <el-option
                     v-for="item in orderStatusList"
                     :key="item.id"
                     :label="item.name"
                     :value="item.id">
                   </el-option>
-                </el-select>
+                </el-select>-->
+                {{orderDataForm.orderStatusName}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -192,12 +217,30 @@
             <!--<el-input v-model="orderDataForm.orderTypeName"></el-input>-->
             {{orderDataForm.orderTypeName}}
           </el-form-item>
-
-          <el-form-item label="确认人" prop="orderConfirmer">
-            <el-input v-model="orderDataForm.orderConfirmer">
-            <span slot="suffix">
+          <el-form-item label="工单主题" prop="orderName">
+            {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="处理结果" prop="processingResult">
+            <el-input
+              :rows="6"
+              type="textarea"
+              v-model="orderDataForm.processingResult"></el-input>
+          </el-form-item>
+          <el-form-item label="是否使用备件">
+            <el-switch
+              v-model="orderDataForm.value1"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
+            <el-input v-model="orderDataForm.orderDevice"></el-input>
+          </el-form-item>
+          <el-form-item label="审核人" prop="orderConfirmer">
+            <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
+            <!--<span slot="suffix">
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-            </span>
+            </span>-->
             </el-input>
             <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
             <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
@@ -299,38 +342,21 @@
               </div>
             </el-dialog>
           </el-form-item>
-
-          <el-form-item label="工单主题" prop="orderName">
-            {{orderDataForm.orderName}}
-          </el-form-item>
-          <el-form-item label="处理结果" prop="processingResult">
-            <el-input
-              :rows="6"
-              type="textarea"
-              v-model="orderDataForm.processingResult"></el-input>
-          </el-form-item>
-          <el-form-item label="是否使用备件">
-            <el-switch
-              v-model="orderDataForm.value1"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </el-form-item>
-          <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
-            <el-input v-model="orderDataForm.orderDevice"></el-input>
-          </el-form-item>
-          <el-form-item label="结论" prop="orderAcceptorOpinion">
+          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
             {{orderDataForm.orderAcceptorOpinion}}
-          </el-form-item>
-          <el-form-item label="申请延期时间" prop="delayTime">
-            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
-          </el-form-item>
+          </el-form-item>-->
 
+          <el-form-item label="申请延期时间" prop="delayTime">
+            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
+          </el-form-item>
+          <el-form-item v-if="orderDataForm.orderStatus===7&&orderDataForm.delayTime===null" label="审核人结论" prop="orderConfirmerOpinion">
+            {{orderDataForm.orderConfirmerOpinion}}
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogtwovisible = false">取消</el-button>
-        <el-button type="warning" @click="reJect()">申请延期</el-button>
-        <el-button type="primary" @click="accepTance()">上报</el-button>
+        <el-button type="warning" v-if="orderDataForm.delayTime !=null " @click="reJect()">申请延期</el-button>
+        <el-button type="primary" v-if="orderDataForm.delayTime ===null " @click="accepTance()">上报</el-button>
       </span>
       </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
@@ -404,6 +430,7 @@
           delayTime: '',
           processingResult: '',
           orderStatus: '',
+          orderStatusName: '',
           orderType: '',
           orderTypeName: '',
           levelId: '',
@@ -435,7 +462,7 @@
         dialogtwovisible: false,
         dataRule: {
           orderConfirmer: [
-            {required: true, message: '确认人不能为空', trigger: 'blur'}
+            {required: true, message: '审核人不能为空', trigger: 'blur'}
           ],
           processingResult: [
             {required: true, message: '处理结果不能为空', trigger: 'blur'}
@@ -566,7 +593,7 @@
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
-          this.$alert('确认人只能选择一个')
+          this.$alert('审核人只能选择一个')
         } else {
           this.orderDataForm.orderConfirmer = userNames.toString()
           this.orderDataForm.orderConfirmerId = userId.toString()
@@ -613,11 +640,13 @@
             this.orderDataForm.delayTime = data.ordermanagement.delayTime
             this.orderDataForm.processingResult = data.ordermanagement.processingResult
             this.orderDataForm.orderStatus = data.ordermanagement.orderStatus
+            this.orderDataForm.orderStatusName = data.ordermanagement.orderStatusName
             this.orderDataForm.orderType = data.ordermanagement.orderType
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
+          console.log(this.orderDataForm.orderStatusName)
           if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
             this.dialogtwovisible = true
           }
@@ -637,8 +666,9 @@
       // 已受理待上报状态 提交到 已上报待确认
       accepTance () {
         if (this.orderDataForm.orderConfirmerId === 0) {
-          this.$alert('确认人不能为空')
+          this.$alert('审核人不能为空')
         } else {
+          this.orderDataForm.orderConfirmerOpinion = ''
           this.orderDataForm.orderStatus = 3
           this.orderConfirm()
         }
@@ -746,8 +776,8 @@
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['工单编号', '工单主题', '所属机构', '缺陷确认人(填报人)', '工单确认人', '确认时间', '工单状态', '工单受理人', '缺陷单编号']
-          const filterVal = ['orderNumber', 'orderName', 'deptName', 'defectiveName', 'orderConfirmer', 'confirmedTime', 'orderStatusName', 'orderAcceptor', 'defectiveNumber']
+          const tHeader = ['工单编号', '缺陷单编号', '工单类型', '工单状态', '工单主题', '所属机构', '缺陷操作人', '工单操作人', '工单受理人', '工单审核人', '审核时间']
+          const filterVal = ['orderNumber', 'defectiveNumber', 'orderTypeName', 'orderStatusName', 'orderName', 'deptName', 'defectiveName', 'orderApplicant', 'orderAcceptor', 'orderConfirmer', 'confirmedTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

@@ -317,6 +317,7 @@
           baseTurnId: '',
           logType: '3',
           logStatus: '1',
+          logUserStatus: '',
           noteTaker: '',
           handoverPerson: '',
           handoverPersonId: '',
@@ -530,6 +531,7 @@
                 this.dataForm.logStatus = data.classgrouplog.logStatus
                 this.dataForm.noteTaker = data.classgrouplog.noteTaker
                 this.dataForm.handoverPerson = data.classgrouplog.handoverPerson
+                this.dataForm.handoverPersonId = data.classgrouplog.handoverPersonId
                 this.dataForm.successor = data.classgrouplog.successor
                 this.dataForm.createTime = data.classgrouplog.createTime
                 this.dataForm.monitor = data.classgrouplog.monitor
@@ -695,10 +697,12 @@
       // 保存
       datasave () {
         this.dataForm.logStatus = '1'
+        this.dataForm.logUserStatus = '1'
         this.dataFormSubmit()
       },
       submit () {
         this.dataForm.logStatus = '2'
+        this.dataForm.logUserStatus = '2'
         this.dataFormSubmit()
       },
       // 表单提交
@@ -718,6 +722,7 @@
                 'baseTurnId': this.dataForm.baseTurnId,
                 'logType': this.dataForm.logType,
                 'logStatus': this.dataForm.logStatus,
+                'logUserStatus': this.dataForm.logUserStatus,
                 'noteTaker': this.dataForm.noteTaker,
                 'handoverPerson': this.dataForm.handoverPerson,
                 'handoverPersonId': this.dataForm.handoverPersonId,
