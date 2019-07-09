@@ -1,16 +1,16 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '数据列表' : '修改'"
+    :title="!dataForm.id ? '数据列表' : '数据列表'"
     :close-on-click-modal="false"
     :append-to-body='true'
     :visible.sync="visible">
     <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <div>
-        <span class="span-a">拟制中</span><span class="span-b">已下发</span><span class="span-c">已受理</span><span class="span-d">已审核</span><span class="span-e">已完结</span>
+      <div >
+        <span class="span-a">拟制中</span><span class="span-b">已下发</span><span class="span-c">已受理</span><span class="span-d">已审核</span>
         <el-progress :text-inside="true"  :stroke-width="28" :show-text="true"  :percentage="progressNum" ></el-progress>
       </div>
-      <div style="display: flex;justify-content: space-around;align-items: center; ">
-        <div  style="width:200px;height: 160px;">
+      <div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px; ">
+        <div  style="width:200px;height: 160px;border-left: 8px solid #8c939d;">
           <el-form-item label="工单主题" prop="orderName">
             {{dataForm.orderName}}
           </el-form-item>
@@ -22,19 +22,16 @@
           </el-form-item>
         </div>
         <div  style="width:200px;height: 160px;">
-          <el-form-item></el-form-item>
           <el-form-item label="工单类型" prop="orderType">
             {{dataForm.orderTypeName}}
           </el-form-item>
-
           <el-form-item label="工单状态" prop="orderStatus">
             {{dataForm.orderStatusName}}
           </el-form-item>
-
         </div>
         <div  style="width:200px;height: 160px;">
           <el-form-item label="缺陷单主题" prop="orderName">
-            {{dataForm.orderName}}
+            {{dataForm.defectiveTheme}}
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
             {{dataForm.defectiveNumber}}
@@ -44,7 +41,6 @@
           </el-form-item>
         </div>
         <div  style="width:200px;height: 160px;">
-          <el-form-item></el-form-item>
           <el-form-item label="缺陷类型" prop="orderTypeName">
             {{dataForm.orderTypeName}}
           </el-form-item>
@@ -53,14 +49,12 @@
           </el-form-item>
         </div>
       </div>
-      <p>流程记录</p>
+      <p style="border-left: 10px solid #8c939d; padding-left: 8px;">流程记录</p>
       <div v-for="item in recordList" :key="item.recordId">
-
-          <el-form-item :label="item.orderPeopleName">
+          <el-form-item :label="item.orderPeopleName" style="border-left: 8px solid #8c939d">
               {{item.orderPeople}}:{{item.orderOpinion}} <br>
              {{item.nowTime}}
           </el-form-item>
-
       </div>
 
     </el-form>
@@ -82,6 +76,7 @@
           orderNumber: '',
           defectiveId: '',
           defectiveNumber: '',
+          defectiveTheme: '',
           orderName: '',
           deptId: '',
           deptName: '',
@@ -110,7 +105,6 @@
           {orderId: 0, orderPeopleName: '', orderPeople: '', orderOpinion: '', nowTime: ''}
         ],
         proName: '拟制中'
-
       }
     },
     methods: {
@@ -128,6 +122,7 @@
               this.dataForm.orderNumber = data.ordermanagement.orderNumber
               this.dataForm.defectiveId = data.ordermanagement.defectiveId
               this.dataForm.defectiveNumber = data.ordermanagement.defectiveNumber
+              this.dataForm.defectiveTheme = data.ordermanagement.defectiveTheme
               this.dataForm.orderName = data.ordermanagement.orderName
               this.dataForm.deptId = data.ordermanagement.deptId
               this.dataForm.deptName = data.ordermanagement.deptName
@@ -184,8 +179,7 @@
 </script>
 <style>
   .span-a{ float:left;}
-  .span-b{ float:left;margin-left:10%;}
-  .span-c{ float:left;margin-left:20%;}
-  .span-d{ float:left;margin-left:20%;}
-  .span-e{ float:left;margin-left:20%;}
+  .span-b{ float:left;margin-left:15%;}
+  .span-c{ float:left;margin-left:25%;}
+  .span-d{ float:left;margin-left:25%;}
 </style>

@@ -157,15 +157,16 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="工单状态" prop="orderStatus">
-                <el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+              <el-form-item label="工单状态" prop="orderStatusName">
+                {{orderDataForm.orderStatusName}}
+                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
                   <el-option
                     v-for="item in orderStatusList"
                     :key="item.id"
                     :label="item.name"
                     :value="item.id">
                   </el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -195,8 +196,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -204,7 +206,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -367,6 +369,7 @@
           defectiveNumber: '',
           orderName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           defectiveName: '',
@@ -387,6 +390,7 @@
           delayTime: '',
           processingResult: '',
           orderStatus: '',
+          orderStatusName: '',
           orderType: '',
           orderTypeName: '',
           levelId: '',
@@ -475,6 +479,7 @@
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
+            this.orderDataForm.deptName = data.ordermanagement.deptName
             this.orderDataForm.exceptionId = data.ordermanagement.exceptionId
             this.orderDataForm.execptionName = data.ordermanagement.exceptionName
             this.orderDataForm.defectiveName = data.ordermanagement.defectiveName
@@ -495,6 +500,7 @@
             this.orderDataForm.delayTime = data.ordermanagement.delayTime
             this.orderDataForm.processingResult = data.ordermanagement.processingResult
             this.orderDataForm.orderStatus = data.ordermanagement.orderStatus
+            this.orderDataForm.orderStatusName = data.ordermanagement.orderStatusName
             this.orderDataForm.orderType = data.ordermanagement.orderType
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId

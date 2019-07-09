@@ -31,8 +31,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="缺陷异常等级" prop="exceptionId">
-            <el-select v-model="dataForm.exceptionId">
+          <el-form-item label="缺陷异常等级" prop="exceptionId" style="margin-left: 50px;">
+            <el-select v-model="dataForm.exceptionId" style="width: 120px">
               <el-option
                 v-for="item in dataExceptionList"
                 :key="item.id"
@@ -405,14 +405,6 @@
           // this.dataForm.orderConfirmer = this.loginuserName
           // this.dataForm.orderConfirmerId = this.loginuserId
           this.dataForm.resultId = id
-          /*this.$http({
-            url: this.$http.adornUrl('/management/orderdefective/managementNumber'),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            this.dataForm.defectiveNumber = data.managementNumber
-            this.dataForm.defectiveId = 0
-          })*/
         }
       },
       // 详情页 开始

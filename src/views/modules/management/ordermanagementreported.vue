@@ -183,8 +183,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-            <el-form-item label="所属机构" prop="deptId">
-              <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+            <el-form-item label="所属机构" prop="deptName">
+              {{orderDataForm.deptName}}
+              <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
               >
                 <el-option
                   v-for="item in deptList"
@@ -192,7 +193,7 @@
                   :label="item.name"
                   :value="item.deptId"
                 ></el-option>
-              </el-select>
+              </el-select>-->
             </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -410,6 +411,7 @@
           defectiveNumber: '',
           orderName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           defectiveName: '',
@@ -620,6 +622,7 @@
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
+            this.orderDataForm.deptName = data.ordermanagement.deptName
             this.orderDataForm.exceptionId = data.ordermanagement.exceptionId
             this.orderDataForm.exceptionName = data.ordermanagement.exceptionName
             this.orderDataForm.defectiveName = data.ordermanagement.defectiveName
@@ -646,7 +649,6 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-          console.log(this.orderDataForm.orderStatusName)
           if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
             this.dialogtwovisible = true
           }

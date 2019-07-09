@@ -204,6 +204,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="工单状态" prop="orderStatus">
+                  {{orderDataForm.orderStatusName}}
                   <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
                     <el-option
                       v-for="item in orderStatusList"
@@ -212,7 +213,6 @@
                       :value="item.id">
                     </el-option>
                   </el-select>-->
-                  <el-input v-model="orderDataForm.orderStatusName" :disabled="true"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -221,8 +221,9 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="所属机构" prop="deptId">
-              <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+            <el-form-item label="所属机构" prop="deptName">
+              {{orderDataForm.deptName}}
+              <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
               >
                 <el-option
                   v-for="item in deptList"
@@ -230,7 +231,7 @@
                   :label="item.name"
                   :value="item.deptId"
                 ></el-option>
-              </el-select>
+              </el-select>-->
             </el-form-item>
             <el-row>
               <el-col span="8">
@@ -253,7 +254,7 @@
             <el-form-item label="工单填报人意见" prop="orderApplicantOpinion" label-width="100px">
               {{orderDataForm.orderApplicantOpinion}}
             </el-form-item>
-            <el-form-item v-if="orderDataForm.orderAcceptorOpinion!=''" label="受理人意见" prop="orderAcceptorOpinion">
+            <el-form-item v-if="orderDataForm.orderAcceptorOpinion!=null" label="受理人意见" prop="orderAcceptorOpinion">
               {{orderDataForm.orderAcceptorOpinion}}
             </el-form-item>
           </el-form>
@@ -908,6 +909,7 @@
           delayTime: '',
           processingResult: '',
           orderStatus: '',
+          orderStatusName: '',
           orderType: '',
           orderTypeName: '',
           levelId: '',
@@ -1159,59 +1161,63 @@
       },
       // 拟制中变 成 待受理 (确认并派单)
       orderConfirm () {
-        // 提交
-        if (this.orderDataForm.orderApplicantId === this.loginuserId) {
-          this.orderDataForm.orderStatus = 1
-          this.orderDataForm.orderAcceptorOpinion = ''
-          this.$http({
-            url: this.$http.adornUrl(`/management/ordermanagement/orderupdate`),
-            method: 'post',
-            data: this.$http.adornData({
-              'orderId': this.orderDataForm.orderId,
-              'orderNumber': this.orderDataForm.orderNumber,
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'orderName': this.orderDataForm.orderName,
-              'deptId': this.orderDataForm.deptId,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'orderContent': this.orderDataForm.orderContent,
-              'orderApplicant': this.orderDataForm.orderApplicant,
-              'orderApplicantId': this.orderDataForm.orderApplicantId,
-              'orderApplicantOpinion': this.orderDataForm.orderApplicantOpinion,
-              'orderAcceptor': this.orderDataForm.orderAcceptor,
-              'orderAcceptorId': this.orderDataForm.orderAcceptorId,
-              'orderAcceptorOpinion': this.orderDataForm.orderAcceptorOpinion,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'requirementTime': this.orderDataForm.requirementTime,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'actualTime': this.orderDataForm.actualTime,
-              'delayTime': this.orderDataForm.delayTime,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderType': this.orderDataForm.orderType,
-              'levelId': this.orderDataForm.levelId,
-              'orderDevice': this.orderDataForm.orderDevice
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.dialogzerovisible = false
-                  this.dialogNinevisible = false
-                  this.$emit('refreshDataList')
-                }
+        if (this.orderDataForm.orderAcceptorId !== 0) {
+          // 提交
+          if (this.orderDataForm.orderApplicantId === this.loginuserId) {
+            this.orderDataForm.orderStatus = 1
+            this.orderDataForm.orderAcceptorOpinion = ''
+            this.$http({
+              url: this.$http.adornUrl(`/management/ordermanagement/orderupdate`),
+              method: 'post',
+              data: this.$http.adornData({
+                'orderId': this.orderDataForm.orderId,
+                'orderNumber': this.orderDataForm.orderNumber,
+                'defectiveId': this.orderDataForm.defectiveId,
+                'defectiveNumber': this.orderDataForm.defectiveNumber,
+                'orderName': this.orderDataForm.orderName,
+                'deptId': this.orderDataForm.deptId,
+                'defectiveName': this.orderDataForm.defectiveName,
+                'orderContent': this.orderDataForm.orderContent,
+                'orderApplicant': this.orderDataForm.orderApplicant,
+                'orderApplicantId': this.orderDataForm.orderApplicantId,
+                'orderApplicantOpinion': this.orderDataForm.orderApplicantOpinion,
+                'orderAcceptor': this.orderDataForm.orderAcceptor,
+                'orderAcceptorId': this.orderDataForm.orderAcceptorId,
+                'orderAcceptorOpinion': this.orderDataForm.orderAcceptorOpinion,
+                'orderConfirmer': this.orderDataForm.orderConfirmer,
+                'orderConfirmerId': this.orderDataForm.orderConfirmerId,
+                'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+                'requirementTime': this.orderDataForm.requirementTime,
+                'confirmedTime': this.orderDataForm.confirmedTime,
+                'actualTime': this.orderDataForm.actualTime,
+                'delayTime': this.orderDataForm.delayTime,
+                'orderStatus': this.orderDataForm.orderStatus,
+                'orderType': this.orderDataForm.orderType,
+                'levelId': this.orderDataForm.levelId,
+                'orderDevice': this.orderDataForm.orderDevice
               })
-              this.search()
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                this.$message({
+                  message: '操作成功',
+                  type: 'success',
+                  duration: 1500,
+                  onClose: () => {
+                    this.dialogzerovisible = false
+                    this.dialogNinevisible = false
+                    this.$emit('refreshDataList')
+                  }
+                })
+                this.search()
+              } else {
+                this.$message.error(data.msg)
+              }
+            })
+          } else {
+            this.$alert('必须由填报用户来确认派单')
+          }
         } else {
-          this.$alert('必须由填报用户来确认派单')
+          this.$alert('受理人不能为空')
         }
       },
       // 获取数据列表
@@ -1359,7 +1365,6 @@
           var ids = id ? [id] : this.dataListSelections.map(item => {
             return item.orderId
           })
-          console.log(ids)
           this.$confirm(`确定进行[${ids ? '删除' : '批量删除'}]操作?`, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

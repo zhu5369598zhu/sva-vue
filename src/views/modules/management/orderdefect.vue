@@ -14,6 +14,9 @@
           <div class="show-data-table">
             <div class="show-data-up" id="data-up">
               <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+                <el-form-item>
+                  <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
+                </el-form-item>
                 <el-form-item label="缺陷确认状态:" prop="orderStatus">
                   <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;">
                     <el-option label="待确认" value="0"></el-option>
@@ -272,6 +275,7 @@
       return {
         dataForm: {
           deptId: '',
+          defectiveNumber: '',
           orderStatus: '',
           startTime: '',
           endTime: ''
@@ -376,9 +380,7 @@
           this.$alert('待确认的才能挂起')
         } else {
           this.orderDataForm.defectiveId = row.defectiveId
-          console.log(row.id)
           this.orderDataForm.resultId = row.id
-          console.log(this.orderDataForm.resultId)
           this.dialoghangupvisible = true
         }
       },
@@ -474,6 +476,7 @@
             'page': this.pageIndex,
             'limit': this.pageSize,
             'deptId': this.dataForm.deptId,
+            'defectiveNumber': this.dataForm.defectiveNumber,
             'orderStatus': this.dataForm.orderStatus,
             'startTime': startTime,
             'endTime': endTime

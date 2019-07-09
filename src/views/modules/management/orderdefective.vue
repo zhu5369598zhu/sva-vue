@@ -171,8 +171,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -180,7 +181,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -241,8 +242,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -250,7 +252,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -457,8 +459,9 @@
           </el-row>
           <el-row>
           <el-col :span="8">
-          <el-form-item label="所属机构" prop="deptId">
-            <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+          <el-form-item label="所属机构" prop="deptName">
+            {{orderDataForm.deptName}}
+            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
             >
               <el-option
                 v-for="item in deptList"
@@ -466,7 +469,7 @@
                 :label="item.name"
                 :value="item.deptId"
               ></el-option>
-            </el-select>
+            </el-select>-->
           </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -751,6 +754,7 @@
           defectiveType: '',
           defectiveTypeName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           orderContent: '',
@@ -801,6 +805,9 @@
           ],
           orderConfirmerOpinion: [
             {required: true, message: '确认人意见不为空', trigger: 'blur'}
+          ],
+          orderConfirmer: [
+            {required: true, message: '工单确认人不为空', trigger: 'blur'}
           ]
         }
       }
@@ -1095,6 +1102,7 @@
             this.orderDataForm.defectiveType = data.orderdefective.defectiveType
             this.orderDataForm.defectiveTypeName = data.orderdefective.defectiveTypeName
             this.orderDataForm.deptId = data.orderdefective.deptId
+            this.orderDataForm.deptName = data.orderdefective.deptName
             this.orderDataForm.exceptionId = data.orderdefective.exceptionId
             this.orderDataForm.exceptionName = data.orderdefective.exceptionName
             this.orderDataForm.orderContent = data.orderdefective.orderContent
