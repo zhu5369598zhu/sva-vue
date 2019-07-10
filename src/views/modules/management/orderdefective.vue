@@ -57,18 +57,20 @@
           type="selection"
           header-align="center"
           align="center"
-          width="50">
+          width="30">
         </el-table-column>
         <el-table-column
           prop="defectiveId"
           header-align="center"
           align="center"
+          width="50"
           label="序号">
         </el-table-column>
         <el-table-column
           prop="defectiveNumber"
           header-align="center"
           align="center"
+          width="120"
           label="缺陷单编号">
           <template slot-scope="scope">
             <a href="#" style="text-decoration: none;" @click="clickRow(scope.row)"><p  >{{scope.row.defectiveNumber}}</p></a>
@@ -134,8 +136,8 @@
           width="120"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.orderStatus)">修改</el-button>
-            <el-button type="text" size="small" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.orderStatus)">修改</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -169,8 +171,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -178,7 +181,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -215,7 +218,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmation()" >确认缺陷单</el-button>
+        <el-button type="primary" :disabled="orderDataForm.defectiveNameId != loginuserId" @click="confirmation()" >确认缺陷单</el-button>
       </span>
       </el-dialog>
       <!-- 已确认待派单 dialog -->
@@ -239,8 +242,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -248,7 +252,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -269,127 +273,8 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="8">
-            <el-form-item label="缺陷等级" prop="exceptionName">
-              {{orderDataForm.exceptionName}}
-            </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item
-                label="要求完成时间"
-                prop="requirementTime"
-              >
-                <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-form-item
-            label="受理人"
-            prop="orderAcceptor"
-          >
-            <el-input v-model="orderDataForm.orderAcceptor" :disabled="true">
-                <span slot="suffix">
-                  <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-                </span>
-            </el-input>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-              <div style="display: flex;justify-content: space-around;align-items: center;">
-                <div style="width:400px;height: 500px;overflow: scroll;">
-                  <el-form :model="deptFrom">
-                    <el-row>
-                      <el-col :span="13">
-                        <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getDeptDataList()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="dataDeptList"
-                    highlight-current-row
-                    @current-change="depteHandle"
-                    style="width: 100%;">
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="80">
-                    </el-table-column>
-                    <table-tree-column style="width: auto"
-                                       prop="name"
-                                       header-align="center"
-                                       treeKey="deptId"
-                                       label="机构名称"
-                    >
-                    </table-tree-column>
-                  </el-table>
-                </div>
-                <div style="width:400px;height: 500px;overflow: scroll;">
-                  <el-form :inline="true" :model="datauserForm" >
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="query()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取消</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="UserdataList"
-                    style="width: 100%;"
-                    :row-style="rowStyle"
-                    @selection-change="selectionChangeHandle"
-                  >
-                    <el-table-column
-                      type="selection"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="username"
-                      header-align="center"
-                      align="center"
-                      label="用户名">
-                    </el-table-column>
-                    <el-table-column
-                      prop="deptName"
-                      header-align="center"
-                      align="center"
-                      label="机构名称">
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </div>
-            </el-dialog>
+          <el-form-item label="缺陷等级" prop="exceptionName">
+            {{orderDataForm.exceptionName}}
           </el-form-item>
           <el-form-item label="缺陷单主题" prop="defectiveTheme">
             {{orderDataForm.defectiveTheme}}
@@ -403,10 +288,130 @@
               :rows="3"
               v-model="orderDataForm.orderConfirmerOpinion"></el-input>
           </el-form-item>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item
+                label="要求完成时间"
+                prop="requirementTime"
+              >
+                <el-date-picker v-model="orderDataForm.requirementTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item
+              label="工单确认人"
+              style="margin-left: 50px"
+              prop="orderConfirmer"
+            >
+              <el-input v-model="orderDataForm.orderConfirmer" :disabled="true" style="width: 150px">
+                  <span slot="suffix">
+                    <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
+                  </span>
+              </el-input>
+              <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+                <div style="display: flex;justify-content: space-around;align-items: center;">
+                  <div style="width:400px;height: 500px;">
+                    <el-form :model="deptFrom">
+                      <el-row>
+                        <el-col :span="13">
+                          <el-form-item>
+                            <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                          <el-form-item>
+                            <el-button @click="getDeptDataList()">查询</el-button>
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                    </el-form>
+                    <el-table
+                      :data="dataDeptList"
+                      highlight-current-row
+                      @current-change="depteHandle"
+                      style="width: 100%;height: 440px;overflow: scroll;">
+                      <el-table-column
+                        type="index"
+                        header-align="center"
+                        align="center"
+                        width="80">
+                      </el-table-column>
+                      <table-tree-column
+                        style="width: auto"
+                        prop="name"
+                        header-align="center"
+                        treeKey="deptId"
+                        label="机构名称"
+                      >
+                      </table-tree-column>
+                    </el-table>
+                  </div>
+                  <div style="width:400px;height: 500px;">
+                    <el-form :inline="true" :model="datauserForm" >
+                      <el-row>
+                        <el-col :span="8">
+                          <el-form-item>
+                            <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                          <el-form-item>
+                            <el-button @click="query()">查询</el-button>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                          <el-form-item>
+                            <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                          <el-form-item>
+                            <el-button @click="dialogFormVisible = false">取消</el-button>
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                    </el-form>
+                    <el-table
+                      :data="UserdataList"
+                      style="width: 100%;height: 440px;overflow: scroll;"
+                      :row-style="rowStyle"
+                      @selection-change="selectionChangeHandle"
+                    >
+                      <el-table-column
+                        type="selection"
+                        header-align="center"
+                        align="center"
+                        width="50">
+                      </el-table-column>
+                      <el-table-column
+                        type="index"
+                        header-align="center"
+                        align="center"
+                        width="50">
+                      </el-table-column>
+                      <el-table-column
+                        prop="username"
+                        header-align="center"
+                        align="center"
+                        label="用户名">
+                      </el-table-column>
+                      <el-table-column
+                        prop="deptName"
+                        header-align="center"
+                        align="center"
+                        label="机构名称">
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </div>
+              </el-dialog>
+            </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogonevisible = false">取消</el-button>
-        <el-button type="primary" @click="orderConfirm()">确认并派单</el-button>
+        <el-button type="primary" :disabled="orderDataForm.defectiveNameId != loginuserId" @click="orderConfirm()">确认转工单</el-button>
       </span>
       </el-dialog>
       <!-- 已转单 -->
@@ -454,8 +459,9 @@
           </el-row>
           <el-row>
           <el-col :span="8">
-          <el-form-item label="所属机构" prop="deptId">
-            <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+          <el-form-item label="所属机构" prop="deptName">
+            {{orderDataForm.deptName}}
+            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
             >
               <el-option
                 v-for="item in deptList"
@@ -463,7 +469,7 @@
                 :label="item.name"
                 :value="item.deptId"
               ></el-option>
-            </el-select>
+            </el-select>-->
           </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -748,6 +754,7 @@
           defectiveType: '',
           defectiveTypeName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           orderContent: '',
@@ -798,6 +805,9 @@
           ],
           orderConfirmerOpinion: [
             {required: true, message: '确认人意见不为空', trigger: 'blur'}
+          ],
+          orderConfirmer: [
+            {required: true, message: '工单确认人不为空', trigger: 'blur'}
           ]
         }
       }
@@ -844,10 +854,10 @@
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
-          this.$alert('受理人只能选择一个')
+          this.$alert('工单确认人只能选择一个')
         } else {
-          this.orderDataForm.orderAcceptor = userNames.toString()
-          this.orderDataForm.orderAcceptorId = userId.toString()
+          this.orderDataForm.orderConfirmer = userNames.toString()
+          this.orderDataForm.orderConfirmerId = userId.toString()
           this.dialogFormVisible = false
         }
       },
@@ -1092,6 +1102,7 @@
             this.orderDataForm.defectiveType = data.orderdefective.defectiveType
             this.orderDataForm.defectiveTypeName = data.orderdefective.defectiveTypeName
             this.orderDataForm.deptId = data.orderdefective.deptId
+            this.orderDataForm.deptName = data.orderdefective.deptName
             this.orderDataForm.exceptionId = data.orderdefective.exceptionId
             this.orderDataForm.exceptionName = data.orderdefective.exceptionName
             this.orderDataForm.orderContent = data.orderdefective.orderContent
@@ -1135,117 +1146,109 @@
       },
       // 确认缺陷单
       confirmation () {
-        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
-          this.orderDataForm.orderStatus = 1
-          this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-          this.$http({
-            url: this.$http.adornUrl(`/management/orderdefective/update`),
-            method: 'post',
-            data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'defectiveTheme': this.orderDataForm.defectiveTheme,
-              'defectiveType': this.orderDataForm.defectiveType,
-              'deptId': this.orderDataForm.deptId,
-              'exceptionId': this.orderDataForm.exceptionId,
-              'orderContent': this.orderDataForm.orderContent,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'defectiveNameId': this.orderDataForm.defectiveNameId,
-              'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
-              'createTime': this.orderDataForm.createTime,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'defectiveDevice': this.orderDataForm.defectiveDevice
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.search()
-                  this.dialogzerovisible = false
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
+        this.orderDataForm.orderStatus = 1
+        this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        this.$http({
+          url: this.$http.adornUrl(`/management/orderdefective/update`),
+          method: 'post',
+          data: this.$http.adornData({
+            'defectiveId': this.orderDataForm.defectiveId,
+            'defectiveNumber': this.orderDataForm.defectiveNumber,
+            'defectiveTheme': this.orderDataForm.defectiveTheme,
+            'defectiveType': this.orderDataForm.defectiveType,
+            'deptId': this.orderDataForm.deptId,
+            'exceptionId': this.orderDataForm.exceptionId,
+            'orderContent': this.orderDataForm.orderContent,
+            'defectiveName': this.orderDataForm.defectiveName,
+            'defectiveNameId': this.orderDataForm.defectiveNameId,
+            'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
+            'createTime': this.orderDataForm.createTime,
+            'orderStatus': this.orderDataForm.orderStatus,
+            'orderConfirmer': this.orderDataForm.orderConfirmer,
+            'orderConfirmerId': this.orderDataForm.orderConfirmerId,
+            'confirmedTime': this.orderDataForm.confirmedTime,
+            'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+            'defectiveDevice': this.orderDataForm.defectiveDevice
           })
-        } else {
-          this.$alert('需要确认人来确认')
-        }
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.search()
+                this.dialogzerovisible = false
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
       },
       handleStartTimeChange (val) {
         this.orderDataForm.requirementTime = val
       },
       // 确认并派单
       orderConfirm () {
-        if (this.orderDataForm.orderAcceptor === '') {
-          this.$alert('受理人不能为空')
+        if (this.orderDataForm.orderConfirmer === '') {
+          this.$alert('工单确认人不能为空')
           return
         }
         if (this.orderDataForm.requirementTime === null) {
           this.$alert('要求完成时间不能为空')
           return
         }
-        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
-          this.orderDataForm.orderStatus = 2
-          this.$http({
-            url: this.$http.adornUrl(`/management/orderdefective/orderupdate`),
-            method: 'post',
-            data: this.$http.adornData({
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'defectiveTheme': this.orderDataForm.defectiveTheme,
-              'defectiveType': this.orderDataForm.defectiveType,
-              'deptId': this.orderDataForm.deptId,
-              'exceptionId': this.orderDataForm.exceptionId,
-              'orderContent': this.orderDataForm.orderContent,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'defectiveNameId': this.orderDataForm.defectiveNameId,
-              'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
-              'createTime': this.orderDataForm.createTime,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'orderAcceptor': this.orderDataForm.orderAcceptor,
-              'orderAcceptorId': this.orderDataForm.orderAcceptorId,
-              'requirementTime': this.orderDataForm.requirementTime
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.search()
-                  this.dialogonevisible = false
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
+        this.orderDataForm.orderStatus = 2
+        this.$http({
+          url: this.$http.adornUrl(`/management/orderdefective/orderupdate`),
+          method: 'post',
+          data: this.$http.adornData({
+            'defectiveId': this.orderDataForm.defectiveId,
+            'defectiveNumber': this.orderDataForm.defectiveNumber,
+            'defectiveTheme': this.orderDataForm.defectiveTheme,
+            'defectiveType': this.orderDataForm.defectiveType,
+            'deptId': this.orderDataForm.deptId,
+            'exceptionId': this.orderDataForm.exceptionId,
+            'orderContent': this.orderDataForm.orderContent,
+            'defectiveName': this.orderDataForm.defectiveName,
+            'defectiveNameId': this.orderDataForm.defectiveNameId,
+            'defectiveNameOpinion': this.orderDataForm.defectiveNameOpinion,
+            'createTime': this.orderDataForm.createTime,
+            'orderStatus': this.orderDataForm.orderStatus,
+            'orderConfirmer': this.orderDataForm.orderConfirmer,
+            'orderConfirmerId': this.orderDataForm.orderConfirmerId,
+            'confirmedTime': this.orderDataForm.confirmedTime,
+            'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+            'orderAcceptor': this.orderDataForm.orderAcceptor,
+            'orderAcceptorId': this.orderDataForm.orderAcceptorId,
+            'requirementTime': this.orderDataForm.requirementTime
           })
-        } else {
-          this.$alert('需要确认人来确认并派单')
-        }
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.search()
+                this.dialogonevisible = false
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }
+    },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       }
     },
     mounted: function () {
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-
-        let self = this
-        window.onresize = function () {
-          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
-        }
       })
     }
   }

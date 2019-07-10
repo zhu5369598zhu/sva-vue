@@ -50,65 +50,89 @@
         prop="orderId"
         header-align="center"
         align="center"
+        width="80"
         label="序号">
       </el-table-column>
       <el-table-column
         prop="orderNumber"
         header-align="center"
         align="center"
+        width="120"
         label="工单编号">
         <template slot-scope="scope">
           <a href="#" style="text-decoration: none;"><p  @click=clickRow(scope.row)>{{scope.row.orderNumber}}</p></a>
         </template>
       </el-table-column>
       <el-table-column
+        prop="defectiveNumber"
+        header-align="center"
+        align="center"
+        width="120"
+        label="缺陷单编号">
+      </el-table-column>
+      <el-table-column
+        prop="orderTypeName"
+        header-align="center"
+        align="center"
+        width="100"
+        label="工单类型">
+      </el-table-column>
+      <el-table-column
+        prop="orderStatusName"
+        header-align="center"
+        align="center"
+        width="100"
+        label="工单状态">
+      </el-table-column>
+      <el-table-column
         prop="orderName"
         header-align="center"
         align="center"
+        width="150"
         label="工单主题">
       </el-table-column>
       <el-table-column
         prop="deptName"
         header-align="center"
         align="center"
+        width="100"
         label="所属机构">
       </el-table-column>
       <el-table-column
         prop="defectiveName"
         header-align="center"
         align="center"
-        label="缺陷确认人(填报)人">
+        width="100"
+        label="缺陷操作人">
       </el-table-column>
       <el-table-column
-        prop="orderConfirmer"
+        prop="orderApplicant"
         header-align="center"
         align="center"
-        label="工单确认人">
-      </el-table-column>
-      <el-table-column
-        prop="confirmedTime"
-        header-align="center"
-        align="center"
-        label="确认时间">
-      </el-table-column>
-      <el-table-column
-        prop="orderStatusName"
-        header-align="center"
-        align="center"
-        label="工单状态">
+        width="100"
+        label="工单操作人">
       </el-table-column>
       <el-table-column
         prop="orderAcceptor"
         header-align="center"
         align="center"
+        width="100"
         label="工单受理人">
       </el-table-column>
       <el-table-column
-        prop="defectiveNumber"
+        prop="orderConfirmer"
         header-align="center"
         align="center"
-        label="缺陷单编号">
+        width="100"
+        label="工单审核人">
       </el-table-column>
+      <el-table-column
+        prop="confirmedTime"
+        header-align="center"
+        align="center"
+        label="审核时间">
+      </el-table-column>
+
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -134,15 +158,16 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="工单状态" prop="orderStatus">
-                <el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+              <el-form-item label="工单状态" prop="orderStatusName">
+                {{orderDataForm.orderStatusName}}
+                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
                   <el-option
                     v-for="item in orderStatusList"
                     :key="item.id"
                     :label="item.name"
                     :value="item.id">
                   </el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -160,8 +185,9 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="deptId">
-                <el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
                 >
                   <el-option
                     v-for="item in deptList"
@@ -169,7 +195,7 @@
                     :label="item.name"
                     :value="item.deptId"
                   ></el-option>
-                </el-select>
+                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -208,24 +234,35 @@
           <el-form-item label="处理结果" prop="processingResult">
             {{orderDataForm.processingResult}}
           </el-form-item>
-          <el-form-item label="是否使用备件">
+          <!--<el-form-item label="是否使用备件">
             <el-switch
               v-model="orderDataForm.value1"
               active-color="#13ce66"
               inactive-color="#ff4949">
             </el-switch>
-          </el-form-item>
-          <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
+          </el-form-item>-->
+          <el-form-item label="备件" prop="orderDevice" >
             {{orderDataForm.orderDevice}}
           </el-form-item>
-          <el-form-item label="结论" prop="orderAcceptorOpinion">
+          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
             {{orderDataForm.orderAcceptorOpinion}}
+          </el-form-item>-->
+          <el-form-item v-if="orderDataForm.delayTime!=null" label="申请时间" prop="delayTime">
+            {{orderDataForm.delayTime}}
+          </el-form-item>
+          <el-form-item label="审核人意见" prop="orderConfirmerOpinion">
+            <el-input v-model="orderDataForm.orderConfirmerOpinion"
+                autosize
+                type="textarea"
+            ></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogthreevisible = false">取消</el-button>
-        <el-button type="warning" @click="reJect()">打回</el-button>
-          <el-button type="primary" @click="accepTance()">确认</el-button>
+        <el-button v-if="orderDataForm.delayTime!=null" type="primary" @click="agreeDelay()">同意延期申请</el-button>
+        <el-button v-if="orderDataForm.delayTime!=null" type="warning" @click="disagreeDelay()">不同意延期申请</el-button>
+        <el-button v-if="orderDataForm.delayTime===null" type="warning" @click="reJect()">拒绝</el-button>
+        <el-button v-if="orderDataForm.delayTime===null" type="primary" @click="accepTance()">确认</el-button>
       </span>
       </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
@@ -356,13 +393,13 @@
         },
         deptList: [],
         orderDataForm: {
-          value1: true,
           orderId: 0,
           orderNumber: '',
           defectiveId: '',
           defectiveNumber: '',
           orderName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           defectiveName: '',
@@ -383,6 +420,7 @@
           delayTime: '',
           processingResult: '',
           orderStatus: '',
+          orderStatusName: '',
           orderType: '',
           orderTypeName: '',
           levelId: '',
@@ -427,6 +465,9 @@
       },
       loginuserId: {
         get () { return this.$store.state.user.id }
+      },
+      documentClientHeight: {
+        get () { return this.$store.state.common.documentClientHeight }
       }
     },
     methods: {
@@ -470,6 +511,7 @@
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
+            this.orderDataForm.deptName = data.ordermanagement.deptName
             this.orderDataForm.exceptionId = data.ordermanagement.exceptionId
             this.orderDataForm.exceptionName = data.ordermanagement.exceptionName
             this.orderDataForm.defectiveName = data.ordermanagement.defectiveName
@@ -490,6 +532,7 @@
             this.orderDataForm.delayTime = data.ordermanagement.delayTime
             this.orderDataForm.processingResult = data.ordermanagement.processingResult
             this.orderDataForm.orderStatus = data.ordermanagement.orderStatus
+            this.orderDataForm.orderStatusName = data.ordermanagement.orderStatusName
             this.orderDataForm.orderType = data.ordermanagement.orderType
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
@@ -511,9 +554,22 @@
           })
         }
       },
+      // 同意延期申请
+      agreeDelay () {
+        this.orderDataForm.orderStatus = 7
+        this.orderDataForm.requirementTime = this.orderDataForm.delayTime
+        this.orderDataForm.delayTime = null
+        this.orderConfirm()
+      },
+      // 不同意延期申请
+      disagreeDelay () {
+        this.orderDataForm.orderStatus = 7
+        this.orderDataForm.requirementTime = ''
+        this.orderConfirm()
+      },
       // 已上报待确认 提交到 已确认待完结
       accepTance () {
-        this.orderDataForm.orderStatus = 4
+        this.orderDataForm.orderStatus = 5
         this.orderConfirm()
       },
       // 已上报待确认 =》已上报被打回
@@ -621,8 +677,8 @@
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['工单编号', '工单主题', '所属机构', '缺陷确认人(填报人)', '工单确认人', '确认时间', '工单状态', '工单受理人', '缺陷单编号']
-          const filterVal = ['orderNumber', 'orderName', 'deptName', 'defectiveName', 'orderConfirmer', 'confirmedTime', 'orderStatusName', 'orderAcceptor', 'defectiveNumber']
+          const tHeader = ['工单编号', '缺陷单编号', '工单类型', '工单状态', '工单主题', '所属机构', '缺陷操作人', '工单操作人', '工单受理人', '工单审核人', '审核时间']
+          const filterVal = ['orderNumber', 'defectiveNumber', 'orderTypeName', 'orderStatusName', 'orderName', 'deptName', 'defectiveName', 'orderApplicant', 'orderAcceptor', 'orderConfirmer', 'confirmedTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
@@ -704,14 +760,14 @@
         this.getDataList()
       }
     },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+      }
+    },
     mounted: function () {
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-
-        let self = this
-        window.onresize = function () {
-          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
-        }
       })
     }
   }

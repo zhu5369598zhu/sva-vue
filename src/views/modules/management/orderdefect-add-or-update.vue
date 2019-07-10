@@ -5,16 +5,16 @@
     :append-to-body='true'
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
-      <el-form-item label="巡检缺陷工单编号" prop="defectiveNumber">
+      <!--<el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
         {{dataForm.defectiveNumber}}
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
         <el-input v-model="dataForm.defectiveTheme" placeholder="巡检缺陷单主题"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="8">
           <el-form-item label="所属机构" prop="deptId">
-            <el-select v-model="dataForm.deptId" placeholder="所属机构" clearable
+            <!--<el-select v-model="dataForm.deptId" placeholder="所属机构" clearable
             >
               <el-option
                 v-for="item in deptList"
@@ -22,12 +22,17 @@
                 :label="item.name"
                 :value="item.deptId"
               ></el-option>
-            </el-select>
+            </el-select>-->
+            <el-input v-model="dataForm.deptName"  placeholder="部门" :disabled="true" style="width: 160px">
+              <span slot="suffix">
+                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickdept()" ></a>
+              </span>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="缺陷异常等级" prop="exceptionId">
-            <el-select v-model="dataForm.exceptionId">
+          <el-form-item label="缺陷异常等级" prop="exceptionId" style="margin-left: 50px;">
+            <el-select v-model="dataForm.exceptionId" style="width: 120px">
               <el-option
                 v-for="item in dataExceptionList"
                 :key="item.id"
@@ -54,26 +59,7 @@
           type="textarea"
           autosize
           v-model="dataForm.defectiveNameOpinion" placeholder="缺陷操作人意见"></el-input>
-      </el-form-item>
-      <!--<el-form-item label="工单确认人" prop="orderConfirmer">
-        <el-input v-model="dataForm.orderConfirmer" placeholder="工单确认人"></el-input>
-      </el-form-item>-->
-      <el-form-item
-        label="要求完成时间"
-        prop="requirementTime"
-      >
-        <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
-      </el-form-item>
-      <el-form-item
-        label="受理人"
-        prop="orderAcceptor"
-      >
-        <el-input v-model="dataForm.orderAcceptor" :disabled="true">
-                        <span slot="suffix">
-                          <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-                        </span>
-        </el-input>
-        <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+        <el-dialog title="选择部门" :visible.sync="dialogDeptVisible" v-if="dialogDeptVisible" :append-to-body="true" width="400px">
           <div style="display: flex;justify-content: space-around;align-items: center;">
             <div style="width:400px;height: 500px;">
               <el-form :model="deptFrom">
@@ -93,7 +79,6 @@
               <el-table
                 :data="dataDeptList"
                 highlight-current-row
-                @current-change="depteHandle"
                 style="width: 100%;height: 440px;overflow: scroll;">
                 <el-table-column
                   type="index"
@@ -107,69 +92,145 @@
                   header-align="center"
                   treeKey="deptId"
                   label="机构名称"
-                >
-                </table-tree-column>
-              </el-table>
-            </div>
-            <div style="width:400px;height: 500px;">
-              <el-form :inline="true" :model="datauserForm" >
-                <el-row>
-                  <el-col :span="8">
-                    <el-form-item>
-                      <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button @click="search">查询</el-button>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button @click="dialogFormVisible = false">取消</el-button>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <el-table
-                :data="UserdataList"
-                style="width: 100%;height: 440px;overflow: scroll;"
-                @selection-change="selectionChangeHandle"
-              >
+                ></table-tree-column>
                 <el-table-column
-                  type="selection"
                   header-align="center"
                   align="center"
-                  width="50">
-                </el-table-column>
-                <el-table-column
-                  type="index"
-                  header-align="center"
-                  align="center"
-                  width="50">
-                </el-table-column>
-                <el-table-column
-                  prop="username"
-                  header-align="center"
-                  align="center"
-                  label="用户名">
-                </el-table-column>
-                <el-table-column
-                  prop="deptName"
-                  header-align="center"
-                  align="center"
-                  label="机构名称">
+                  width="150"
+                  label="操作">
+                  <template slot-scope="scope">
+                    <el-button  type="text" size="small" @click="deptHandle(scope.row.deptId, scope.row.name)">选中</el-button>
+                  </template>
                 </el-table-column>
               </el-table>
             </div>
           </div>
         </el-dialog>
+
       </el-form-item>
+      <!--<el-form-item label="工单确认人" prop="orderConfirmer">
+        <el-input v-model="dataForm.orderConfirmer" placeholder="工单确认人"></el-input>
+      </el-form-item>-->
+      <el-row>
+        <el-col :span="8">
+          <el-form-item
+            label="要求完成时间"
+            prop="requirementTime"
+          >
+            <el-date-picker v-model="dataForm.requirementTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item
+            label="工单确认人"
+            prop="orderConfirmer"
+            style="margin-left: 50px"
+          >
+            <el-input v-model="dataForm.orderConfirmer" :disabled="true" style="width: 160px; ">
+            <span slot="suffix">
+              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
+            </span>
+            </el-input>
+            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+              <div style="display: flex;justify-content: space-around;align-items: center;">
+                <div style="width:400px;height: 500px;">
+                  <el-form :model="deptFrom">
+                    <el-row>
+                      <el-col :span="13">
+                        <el-form-item>
+                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-button @click="getDeptDataList()">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="dataDeptList"
+                    highlight-current-row
+                    @current-change="depteHandle"
+                    style="width: 100%;height: 440px;overflow: scroll;">
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="80">
+                    </el-table-column>
+                    <table-tree-column
+                      style="width: auto"
+                      prop="name"
+                      header-align="center"
+                      treeKey="deptId"
+                      label="机构名称"
+                    >
+                    </table-tree-column>
+                  </el-table>
+                </div>
+                <div style="width:400px;height: 500px;">
+                  <el-form :inline="true" :model="datauserForm" >
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item>
+                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button @click="search">查询</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item>
+                          <el-button @click="dialogFormVisible = false">取消</el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                  <el-table
+                    :data="UserdataList"
+                    style="width: 100%;height: 440px;overflow: scroll;"
+                    @selection-change="selectionChangeHandle"
+                  >
+                    <el-table-column
+                      type="selection"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      type="index"
+                      header-align="center"
+                      align="center"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="username"
+                      header-align="center"
+                      align="center"
+                      label="用户名">
+                    </el-table-column>
+                    <el-table-column
+                      prop="deptName"
+                      header-align="center"
+                      align="center"
+                      label="机构名称">
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+            </el-dialog>
+
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
 
     <span slot="footer" class="dialog-footer">
@@ -195,6 +256,7 @@
           defectiveTheme: '',
           defectiveType: '0',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           orderContent: '',
           defectiveName: '',
@@ -221,6 +283,8 @@
         deptFrom: {
           name: ''
         },
+        pageIndex: 1,
+        limit: 2000,
         dataListSelections: [],
         dialogFormVisible: false,
         dataRule: {
@@ -275,7 +339,8 @@
           orderAcceptor: [
             { required: true, message: '受理人不能为空', trigger: 'blur' }
           ]
-        }
+        },
+        dialogDeptVisible: false
       }
     },
     components: {
@@ -327,6 +392,7 @@
                 this.dataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
                 this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
                 this.dataForm.resultId = data.orderdefective.resultId
+                this.dataForm.requirementTime = data.orderdefective.requirementTime
               }
             })
           }
@@ -336,17 +402,9 @@
           // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
           this.dataForm.defectiveName = this.loginuserName
           this.dataForm.defectiveNameId = this.loginuserId
-          this.dataForm.orderConfirmer = this.loginuserName
-          this.dataForm.orderConfirmerId = this.loginuserId
+          // this.dataForm.orderConfirmer = this.loginuserName
+          // this.dataForm.orderConfirmerId = this.loginuserId
           this.dataForm.resultId = id
-          this.$http({
-            url: this.$http.adornUrl('/management/orderdefective/managementNumber'),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            this.dataForm.defectiveNumber = data.managementNumber
-            this.dataForm.defectiveId = 0
-          })
         }
       },
       // 详情页 开始
@@ -365,10 +423,10 @@
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
-          this.$alert('受理人只能选择一个')
+          this.$alert('工单确认人只能选择一个')
         } else {
-          this.dataForm.orderAcceptor = userNames.toString()
-          this.dataForm.orderAcceptorId = userId.toString()
+          this.dataForm.orderConfirmer = userNames.toString()
+          this.dataForm.orderConfirmerId = userId.toString()
           this.dialogFormVisible = false
         }
       },
@@ -445,7 +503,7 @@
       },
       getExeption () {
         this.$http({
-          url: this.$http.adornUrl('/setting/exception/list'),
+          url: this.$http.adornUrl('/setting/orderexception/list'),
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {
@@ -459,19 +517,28 @@
       handleRequirementTimeChange (val) {
         this.dataForm.requirementTime = val
       },
+      clickdept () {
+        this.getDeptDataList()
+        this.dialogDeptVisible = true
+      },
+      deptHandle (deptId, name) {
+        this.dataForm.deptId = deptId
+        this.dataForm.deptName = name
+        this.dialogDeptVisible = false
+      },
       // 表单提交
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            if (this.dataForm.orderAcceptor === '') {
-              this.$alert('受理人不能为空')
+            if (this.dataForm.orderConfirmer === '') {
+              this.$alert('工单确认人不能为空')
               return
             }
             if (this.dataForm.requirementTime === null) {
               this.$alert('要求完成时间不能为空')
               return
             }
-            this.dataForm.orderStatus = 1
+            this.dataForm.orderStatus = 2
             this.isHttp = true
             this.$http({
               url: this.$http.adornUrl(`/management/orderdefect/orderupdate`),

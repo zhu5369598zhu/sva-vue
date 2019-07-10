@@ -14,6 +14,9 @@
           <div class="show-data-table">
             <div class="show-data-up" id="data-up">
               <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+                <el-form-item>
+                  <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
+                </el-form-item>
                 <el-form-item label="缺陷确认状态:" prop="orderStatus">
                   <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;">
                     <el-option label="待确认" value="0"></el-option>
@@ -60,11 +63,18 @@
                   align="center"
                   width="150"
                   label="巡点名称">
-                  <!--<template slot-scope="scope" >
-                    <a href="#"><p   @click=clickRow(scope.row)>{{scope.row.deviceName}}</p></a>
-                  </template>-->
                   <template slot-scope="scope">
-                    <span>{{scope.row.deviceName}}</span>
+                    <a href="#"><span v-if="scope.row.hangUp!=''"  @click=clickHangup(scope.row)>{{scope.row.deviceName}}</span></a>
+                    <span v-if="scope.row.hangUp ===''">{{scope.row.deviceName}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="defectiveNumber"
+                  header-align="center"
+                  align="center"
+                  label="缺陷单编号">
+                  <template slot-scope="scope">
+                    <a href="#" style="text-decoration: none;" @click="clickRow(scope.row)"><span  >{{scope.row.defectiveNumber}}</span></a>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -155,8 +165,8 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
-                   <el-button type="text" size="small" @click="hangup(scope.row.id, scope.row.orderStatus)">挂起</el-button>
+                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
+                   <el-button type="text" size="small"  @click="hangup(scope.row)">挂起</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -169,6 +179,81 @@
                 :total="totalPage"
                 layout="total, sizes, prev, pager, next, jumper">
               </el-pagination>
+              <el-dialog
+                :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '确认缺陷页'"
+                :append-to-body='true'
+                :visible.sync="defectivevisible"
+                >
+                <el-form :model="orderDataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
+                  <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
+                    {{orderDataForm.defectiveNumber}}
+                  </el-form-item>
+                  <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
+                    {{orderDataForm.defectiveTheme}}
+                  </el-form-item>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="所属机构" prop="deptName">
+                        {{orderDataForm.deptName}}
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="缺陷异常等级" prop="exceptionName">
+                        {{orderDataForm.exceptionName}}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-form-item label="巡检缺陷单内容" prop="orderContent">
+                    {{orderDataForm.orderContent}}
+                  </el-form-item>
+                  <el-form-item label="缺陷操作人意见" prop="defectiveNameOpinion">
+                    {{orderDataForm.defectiveNameOpinion}}
+                  </el-form-item>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item
+                        label="要求完成时间"
+                        prop="requirementTime"
+                      >
+                        {{orderDataForm.requirementTime}}
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item
+                        label="工单确认人"
+                        prop="orderConfirmer">
+                        {{orderDataForm.orderConfirmer}}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </el-dialog>
+              <el-dialog
+                :title="!this.orderDataForm.hangUp ? '挂起原因' : '挂起原因'"
+                :visible.sync="dialoghangupvisible"
+                :append-to-body='true'>
+                <el-form :model="orderDataForm" ref="orderDataForm" label-width="80px">
+                  <el-form-item label="挂起原因" prop="hangUp" >
+                    <el-input v-model="orderDataForm.hangUp" placeholder="请输入挂起原因"></el-input>
+                  </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialoghangupvisible = false">取消</el-button>
+                    <el-button type="primary" @click="dialogHangup()">确定</el-button>
+                  </span>
+              </el-dialog>
+              <el-dialog
+                :title="!this.hangUpFrom.hangUp ? '挂起原因' : '挂起原因'"
+                :visible.sync="dialogUpdatehangUpvisible"
+                :append-to-body='true'>
+                <el-form :model="hangUpFrom" ref="hangUpFrom" label-width="80px">
+                  <el-form-item label="挂起原因" prop="hangUp" >{{hangUpFrom.hangUp}}
+                  </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogUpdatehangUpvisible = false">取消</el-button>
+                </span>
+              </el-dialog>
               <!-- 弹窗, 新增 / 修改 -->
               <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
             </div>
@@ -190,6 +275,7 @@
       return {
         dataForm: {
           deptId: '',
+          defectiveNumber: '',
           orderStatus: '',
           startTime: '',
           endTime: ''
@@ -202,13 +288,19 @@
         deptFrom: {
           name: ''
         },
+        hangUpFrom: {
+          hangUp: ''
+        },
+        dialogUpdatehangUpvisible: false,
         orderDataForm: {
+          hangUp: '',
           defectiveId: '',
           defectiveNumber: '',
           defectiveTheme: '',
           defectiveType: '',
           defectiveTypeName: '',
           deptId: '',
+          deptName: '',
           exceptionId: '',
           exceptionName: '',
           orderContent: '',
@@ -225,8 +317,11 @@
           orderAcceptor: '',
           orderAcceptorId: '',
           requirementTime: '',
-          defectiveDevice: ''
+          defectiveDevice: '',
+          defectiveHangup: '',
+          resultId: ''
         },
+        defectivevisible: false,
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
@@ -243,7 +338,8 @@
         dataListLoading: false,
         dataListSelections: [],
         viewMediaVisible: false,
-        startDatePicker: this.beginDate()
+        startDatePicker: this.beginDate(),
+        dialoghangupvisible: false
       }
     },
     components: {
@@ -267,21 +363,6 @@
           }
         }
       },
-      handle (username, userid) {
-        var userNames = username ? [username] : this.dataListSelections.map(item => {
-          return item.username
-        })
-        var userId = userid ? [userid] : this.dataListSelections.map(item => {
-          return item.userId
-        })
-        if (this.dataListSelections.length >= 2) {
-          this.$alert('受理人只能选择一个')
-        } else {
-          this.orderDataForm.orderAcceptor = userNames.toString()
-          this.orderDataForm.orderAcceptorId = userId.toString()
-          this.dialogFormVisible = false
-        }
-      },
       getDeptList () {
         if (this.deptList <= 0) {
           this.$http({
@@ -294,15 +375,26 @@
         }
       },
       // 挂起
-      hangup (resultId, orderStatus) {
-        if (orderStatus > 0) {
+      hangup (row) {
+        if (row.orderStatus > 0) {
           this.$alert('待确认的才能挂起')
+        } else {
+          this.orderDataForm.defectiveId = row.defectiveId
+          this.orderDataForm.resultId = row.id
+          this.dialoghangupvisible = true
+        }
+      },
+      // 挂起
+      dialogHangup () {
+        if (this.orderDataForm.hangUp === '') {
+          this.$alert('挂起原因不能为空')
         } else {
           this.$http({
             url: this.$http.adornUrl(`/management/orderdefect/hangup`),
             method: 'get',
             params: this.$http.adornParams({
-              'resultId': resultId
+              'resultId': this.orderDataForm.resultId,
+              'hangup': this.orderDataForm.hangUp
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
@@ -311,6 +403,9 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
+                  this.getDataList()
+                  this.orderDataForm.hangUp = ''
+                  this.dialoghangupvisible = false
                 }
               })
             } else {
@@ -318,6 +413,11 @@
             }
           })
         }
+      },
+      // 挂起原因
+      clickHangup (row) {
+        this.dialogUpdatehangUpvisible = true
+        this.hangUpFrom.hangUp = row.hangUp
       },
       beginDate () {
         return {
@@ -376,6 +476,7 @@
             'page': this.pageIndex,
             'limit': this.pageSize,
             'deptId': this.dataForm.deptId,
+            'defectiveNumber': this.dataForm.defectiveNumber,
             'orderStatus': this.dataForm.orderStatus,
             'startTime': startTime,
             'endTime': endTime
@@ -389,6 +490,38 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
+        })
+      },
+      clickRow (row) {
+        this.$http({
+          url: this.$http.adornUrl(`/management/orderdefective/info/` + row.defectiveId),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.orderDataForm.defectiveNumber = data.orderdefective.defectiveNumber
+            this.orderDataForm.defectiveTheme = data.orderdefective.defectiveTheme
+            this.orderDataForm.defectiveType = data.orderdefective.defectiveType
+            this.orderDataForm.deptId = data.orderdefective.deptId
+            this.orderDataForm.deptName = data.orderdefective.deptName
+            this.orderDataForm.exceptionId = data.orderdefective.exceptionId
+            this.orderDataForm.exceptionName = data.orderdefective.exceptionName
+            this.orderDataForm.orderContent = data.orderdefective.orderContent
+            this.orderDataForm.defectiveName = data.orderdefective.defectiveName
+            this.orderDataForm.defectiveNameId = data.orderdefective.defectiveNameId
+            this.orderDataForm.defectiveNameOpinion = data.orderdefective.defectiveNameOpinion
+            this.orderDataForm.createTime = data.orderdefective.createTime
+            this.orderDataForm.orderStatus = data.orderdefective.orderStatus
+            this.orderDataForm.orderConfirmer = data.orderdefective.orderConfirmer
+            this.orderDataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
+            this.orderDataForm.confirmedTime = data.orderdefective.confirmedTime
+            this.orderDataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
+            this.orderDataForm.defectiveDevice = data.orderdefective.defectiveDevice
+            this.orderDataForm.resultId = data.orderdefective.resultId
+            this.orderDataForm.requirementTime = data.orderdefective.requirementTime
+            this.orderDataForm.defectivevisible = true
+          }
+          this.defectivevisible = true
         })
       },
       // 导出
