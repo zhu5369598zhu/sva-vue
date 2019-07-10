@@ -158,8 +158,20 @@
     },
     activated () {
       this.getDataList()
+      this.getDeviceLevelList()
     },
     methods: {
+      getDeviceLevelList () {
+        if (this.deviceLevelList <= 0) {
+          this.$http({
+            url: this.$http.adornUrl('/setting/devicelevel/list'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            this.deviceLevelList = data.page.list.map(item=>item.name)
+          })
+        }
+      },
       test () {
         window.print()
       },

@@ -178,7 +178,7 @@
       timer () {
         return setTimeout(() => {
           this.newsexist()
-        }, 5000)
+        }, 1000*60*5)
       }
     },
     // 最终销毁

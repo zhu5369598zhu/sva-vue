@@ -1,14 +1,4 @@
 <template>
-  <div class="charts">
-    <div class="chart-up">
-      <div class="chart-header">
-        <span class="title">主要设备指标</span>
-      </div>
-    </div>
-    <div class="chart-down">
-      <div class="chart-line" align="center"></div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -19,9 +9,6 @@
   require('echarts/lib/component/legend')
   export default {
     props: {
-      title: {
-        type: String
-      },
       category: {
         type: Array
       },
@@ -37,11 +24,8 @@
     components: {
       echarts
     },
-    mounted () {
-      this.initChart()
-    },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var option = {
           title: {
             text: this.title,
@@ -115,7 +99,7 @@
             }
           ]
         }
-        this.Chart = echarts.init(document.querySelector('.chart-line'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
 
         window.addEventListener('resize', function () {

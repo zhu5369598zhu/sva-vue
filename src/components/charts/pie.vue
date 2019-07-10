@@ -1,14 +1,4 @@
 <template>
-  <div class="charts">
-    <div class="chart-up">
-      <div class="chart-header">
-        <span class="title">巡检完成率</span><span class="date" v-model="today">{{today}}</span>
-      </div>
-    </div>
-    <div class="chart-down">
-      <div ref="chartPie" class="chart-pie" align="center"></div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -26,18 +16,24 @@
         y: ''
       }
     },
-    activated () {
-      this.initChart()
-    },
     components: {
       echarts
     },
-    mounted () {
-      this.initChart()
-    },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var option = {
+          title: {
+            text: '已完成91.78%',
+            x: 'center',
+            y: 'center',
+            itemGap: 10,
+            textStyle : {
+              color : '#77d5ff',
+              fontFamily : '微软雅黑',
+              fontSize : 18,
+              fontWeight : 'bolder'
+            }
+          },
           color: ['#77d5ff', '#257ae2'],
           tooltip: {
             trigger: 'item',
@@ -72,13 +68,12 @@
           calculable: true,
           series: [
             {
-              name: '访问来源',
               type: 'pie',
               radius: ['50%', '70%'],
               itemStyle: {
                 normal: {
                   label: {
-                    show: false
+                    show: false,
                   },
                   labelLine: {
                     show: false
@@ -87,12 +82,12 @@
               },
               data: [
                 {value: 335, name: '已完成'},
-                {value: 310, name: '未完成'}
+                {value: 30, name: '未完成'}
               ]
             }
           ]
         }
-        this.Chart = echarts.init(document.querySelector('.chart-pie'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
 
         window.addEventListener('resize', function () {

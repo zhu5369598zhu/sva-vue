@@ -646,7 +646,7 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.ids = data.data.ids
-            this.category = data.data.category
+            this.category = data.data.category.map(item=>formatDate(new Date(item),'yyyy-MM-dd hh:mm:ss'))
             this.series = data.data.series
             if (this.series.length > 0) {
               this.hasData = true

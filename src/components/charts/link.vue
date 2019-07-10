@@ -1,15 +1,5 @@
 <template>
-  <div class="charts">
-    <div class="exception-chart-up">
-      <div class="chart-header">
-        <span class="title">设备状态分布</span>
-      </div>
-    </div>
-    <div class="exception-chart-down">
-      <div id="chartDevice" class="chart-link" align="center">
-      </div>
-    </div>
-  </div>
+
 </template>
 
 <script>

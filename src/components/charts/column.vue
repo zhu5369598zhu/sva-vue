@@ -1,14 +1,4 @@
 <template>
-  <div class="charts">
-    <div class="chart-up">
-      <div class="chart-header">
-        <span class="title">异常分布</span>
-      </div>
-    </div>
-    <div class="chart-down">
-      <div class="chart-column" align="center"></div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -18,6 +8,23 @@
   require('echarts/lib/component/tooltip')
   require('echarts/lib/component/legend')
   export default {
+    props: {
+      legend: {
+        type: Array
+      },
+      category: {
+        type: Array
+      },
+      seriesA: {
+        type: Array
+      },
+      seriesB: {
+        type: Array
+      },
+      seriesC: {
+        type: Array
+      }
+    },
     data () {
       return {
         chart: null
@@ -26,11 +33,8 @@
     components: {
       echarts
     },
-    mounted () {
-      this.initChart()
-    },
     methods: {
-      initChart () {
+      initChart (chartElement) {
         var labelOption = {
           normal: {
             show: true,
@@ -57,7 +61,7 @@
             }
           },
           legend: {
-            data: ['A类', 'B类', 'C类']
+            data: this.legend
           },
           toolbox: {
             show: true,
@@ -70,7 +74,7 @@
             {
               type: 'category',
               axisTick: {show: false},
-              data: ['2012', '2013', '2014', '2015', '2016']
+              data: this.category
             }
           ],
           yAxis: [
@@ -84,23 +88,25 @@
               type: 'bar',
               barGap: 0,
               label: labelOption,
-              data: [320, 332, 301, 334, 390]
+              data: this.seriesA
             },
             {
               name: 'B类',
               type: 'bar',
+              barGap: 0,
               label: labelOption,
-              data: [220, 182, 191, 234, 290]
+              data: this.seriesB
             },
             {
               name: 'C类',
               type: 'bar',
+              barGap: 0,
               label: labelOption,
-              data: [150, 232, 201, 154, 190]
+              data: this.seriesC
             }
           ]
         }
-        this.Chart = echarts.init(document.querySelector('.chart-column'))
+        this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
 
         window.addEventListener('resize', function () {
