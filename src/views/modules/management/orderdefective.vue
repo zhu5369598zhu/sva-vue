@@ -22,7 +22,7 @@
           <el-input v-model="dataForm.defectiveTheme" placeholder="请输入缺陷单主题" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="dataForm.exceptionId" placeholder="请选择缺陷等级">
+          <el-select v-model="dataForm.exceptionId" placeholder="缺陷等级" style="width: 100px" clearable>
             <el-option v-for="item in dataExceptionList"
               :key="item.id"
               :label="item.name"
@@ -500,223 +500,7 @@
       <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
 
     </div>
-    <!--<div class="show-data-down" id="data-down">
-     &lt;!&ndash; <p style="height: 30px; background-image: url(./../../../../static/img/close.jpg);background-size: 30px"><</p>&ndash;&gt;
-      <span style="float: right;position: absolute; right: 20px;"><img @click="close()" alt="" style="height: 25px;width: 25px" src="./../../../../static/img/close.jpg" ></span>
-      <div class="new_1" id="did" style="display: none; margin-left: 14px;">
-        <h5> 缺陷单详情</h5>
-        <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-        <div class="div-a">
-            <el-form-item label="缺陷单编号" prop="defectiveNumber">
-              <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-            </el-form-item>
-            <el-form-item label="所属机构" prop="deptId">
-              <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-              >
-                <el-option
-                  v-for="item in deptList"
-                  :key="item.deptId"
-                  :label="item.name"
-                  :value="item.deptId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="缺陷填报时间" prop="createTime">
-              <el-input v-model="orderDataForm.createTime"></el-input>
-            </el-form-item>
-            <el-form-item label="归属设备" prop="defectiveDevice">
-              <el-input v-model="orderDataForm.defectiveDevice"></el-input>
-            </el-form-item>
-        </div>
-        <div class="div-b">
-          <el-form-item label="缺陷类型" prop="defectiveTypeName">
-            <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-          </el-form-item>
-          <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input v-model="orderDataForm.exceptionName"></el-input>
-          </el-form-item>
-          <el-form-item label="缺陷填报人" prop="defectiveName">
-            <el-input v-model="orderDataForm.defectiveName"></el-input>
-          </el-form-item>
-        </div>
-        <div class="div-c">
-          <el-form-item label="缺陷单主题" prop="defectiveTheme">
-            <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-          </el-form-item>
-          <el-form-item >
-            <el-input
-              :rows="6"
-              type="textarea"
-              v-model="orderDataForm.orderContent"></el-input>
-          </el-form-item>
-        </div>
-        <div class="div-d">
-          <p>缺陷填报人意见</p>
-          <el-form-item  prop="defectiveNameOpinion">
-            <el-input
-              type="textarea"
-              :rows="4"
-              v-model="orderDataForm.defectiveNameOpinion"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="confirmation()" >确认缺陷单</el-button>
-          </el-form-item>
-        </div>
-        </el-form>
-      </div>
-      <div class="new_1" id="did_1" style="display: none; margin-left: 14px;">
-        &lt;!&ndash;  拟制中 &ndash;&gt;
-        <h5> 缺陷单详情</h5>
-        <el-form :inline="true"   :model="orderDataForm" ref="orderDataForm" label-width="80px;">
-          <div class="div-a">
-            <el-form-item label="缺陷单编号" prop="defectiveNumber">
-              <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-            </el-form-item>
-            <el-form-item label="所属机构" prop="deptId">
-              &lt;!&ndash;<el-input v-model="orderDataForm.deptId"></el-input>&ndash;&gt;
-              <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-              >
-                <el-option
-                  v-for="item in deptList"
-                  :key="item.deptId"
-                  :label="item.name"
-                  :value="item.deptId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="缺陷确认时间" prop="createTime">
-              <el-input v-model="orderDataForm.createTime"></el-input>
-            </el-form-item>
-            <el-form-item label="转工单状态" prop="orderStatusName">
-              <el-input v-model="orderDataForm.orderStatusName"></el-input>
-            </el-form-item>
-            <el-form-item
-              label="要求完成时间"
-              prop="requirementTime"
-            >
-              <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
-            </el-form-item>
-          </div>
-          <div class="div-b">
-            <el-form-item label="缺陷类型" prop="defectiveTypeName">
-              <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-            </el-form-item>
-            <el-form-item label="缺陷等级" prop="exceptionName">
-              <el-input v-model="orderDataForm.exceptionName"></el-input>
-            </el-form-item>
-            <el-form-item label="缺陷确认人" prop="defectiveName">
-              <el-input v-model="orderDataForm.defectiveName"></el-input>
-            </el-form-item>
-            <el-form-item
-              label="受理人"
-              prop="orderAcceptor"
 
-            >
-              <el-input v-model="orderDataForm.orderAcceptor" :disabled="true">
-                <span slot="suffix">
-                  <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-                </span>
-              </el-input>
-            </el-form-item>
-          </div>
-          <div class="div-c">
-            <el-form-item label="缺陷单主题" prop="defectiveTheme">
-              <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-            </el-form-item>
-            <el-form-item label="默认内容" prop="orderContent">
-              <el-input
-                :rows="6"
-                type="textarea"
-                v-model="orderDataForm.orderContent"></el-input>
-            </el-form-item>
-          </div>
-          <div class="div-d">
-
-             &lt;!&ndash; <p>工单确认人意见</p>&ndash;&gt;
-
-            <el-form-item label="工单确认人意见"></el-form-item><br>
-            <el-form-item  prop="orderConfirmerOpinion">
-              <el-input
-                type="textarea"
-                :rows="3"
-                v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="orderConfirm()">确认并派单</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-
-
-      </div>
-      <div class="new_1" id="did_2" style="display: none; margin-left: 14px;">
-        <h5> 缺陷单详情</h5>
-        <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-        <div class="div-a">
-          <el-form-item label="缺陷单编号" prop="defectiveNumber" >
-            <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-          </el-form-item>
-          <el-form-item label="所属机构" prop="deptId">
-            &lt;!&ndash;<el-input v-model="orderDataForm.deptId"></el-input>&ndash;&gt;
-            <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="缺陷确认时间" prop="createTime">
-            <el-input v-model="orderDataForm.createTime"></el-input>
-          </el-form-item>
-          <el-form-item label="转工单状态" prop="orderStatusName">
-            <el-input v-model="orderDataForm.orderStatusName"></el-input>
-          </el-form-item>
-          <el-form-item label="工单确认时间" prop="confirmedTime">
-            <el-input v-model="orderDataForm.confirmedTime"></el-input>
-          </el-form-item>
-        </div>
-        <div class="div-b">
-          <el-form-item label="缺陷类型" prop="defectiveTypeName">
-            <el-input v-model="orderDataForm.defectiveTypeName"></el-input>
-          </el-form-item>
-          <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input v-model="orderDataForm.exceptionName"></el-input>
-          </el-form-item>
-          <el-form-item label="缺陷填报人" prop="defectiveName">
-            <el-input v-model="orderDataForm.defectiveName"></el-input>
-          </el-form-item>
-          <el-form-item label="工单确认人" prop="orderConfirmer">
-            <el-input v-model="orderDataForm.orderConfirmer"></el-input>
-          </el-form-item>
-
-        </div>
-        <div class="div-c">
-          <el-form-item label="缺陷单主题" prop="defectiveTheme">
-            <el-input v-model="orderDataForm.defectiveTheme"></el-input>
-          </el-form-item>
-          <el-form-item label="默认内容" prop="orderContent">
-            <el-input
-              :rows="6"
-              type="textarea"
-              v-model="orderDataForm.orderContent"></el-input>
-          </el-form-item>
-        </div>
-        <div class="div-d">
-          <p>工单确认人意见</p>
-
-          <el-form-item  prop="orderConfirmerOpinion">
-            <el-input
-              type="textarea"
-              :rows="4"
-              v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-          </el-form-item>
-        </div>
-        </el-form>
-      </div>
-    </div>-->
 
   </div>
 </template>
@@ -739,7 +523,9 @@
         dataForm: {
           key: '',
           defectiveNumber: '',
-          defectiveTheme: ''
+          defectiveTheme: '',
+          defectiveName: '',
+          exceptionId: ''
         },
         datauserForm: {
           userName: ''
@@ -831,6 +617,7 @@
       this.getDataList()
       this.getDeptList()
       this.getDeptDataList()
+      this.getExeption()
     },
     methods: {
       beginDate () {
@@ -934,6 +721,7 @@
             'defectiveTheme': this.dataForm.defectiveTheme,
             'defectiveNumber': this.dataForm.defectiveNumber,
             'defectiveName': this.dataForm.defectiveName,
+            'exceptionId': this.dataForm.exceptionId,
             'page': this.pageIndex,
             'limit': this.pageSize,
             'key': this.dataForm.key
@@ -1133,7 +921,7 @@
       // 缺陷等级
       getExeption () {
         this.$http({
-          url: this.$http.adornUrl('/setting/exception/list'),
+          url: this.$http.adornUrl('/setting/orderexception/list'),
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {

@@ -110,7 +110,7 @@
         align="center"
         label="日志编号">
         <template slot-scope="scope">
-          <a href="#" style="text-decoration: none;" @click="clickRow(scope.row)"><span  >{{scope.row.logNumber}}</span></a>
+          <a href="#" style="text-decoration: none;" @click="clickRow(scope.row)"><p>{{scope.row.logNumber}}</p></a>
         </template>
       </el-table-column>
       <el-table-column
@@ -186,110 +186,90 @@
         :title="logdataForm.logNumber ? '班长日志详情' : '班长日志详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
-        :visible.sync="dialogonevisible">
+        :visible.sync="dialogonevisible"
+        v-if="dialogonevisible">
         <el-form :model="logdataForm"  ref="logdataForm"  label-width="80px">
           日志编号:{{logdataForm.logNumber}}
           <el-row>
             <el-col :span="8">
               <el-form-item label="部门(工段)" prop="deptName" >
-                <el-input v-model="logdataForm.deptName"  placeholder="部门" :disabled="true">
-                </el-input>
+                {{logdataForm.deptName}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="班组" prop="classGroupName">
-                <el-input v-model="logdataForm.classGroupName" style="width:120px;" clearable placeholder="班组"></el-input>
+                {{logdataForm.classGroupName}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="班次" prop="baseTurnId">
-                <el-select v-model="logdataForm.baseTurnId" placeholder="请选择班次" clearable style="width:120px;">
-                  <el-option
-                    v-for="item in TurnList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
+              <el-form-item label="班次" prop="baseTurnName">
+                {{logdataForm.baseTurnName}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="8">
               <el-form-item label="班长" prop="monitor">
-                <el-input v-model="logdataForm.monitor" placeholder="班长" :disabled="true"></el-input>
+                {{logdataForm.monitor}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="应出勤人数" prop="shouldAttendance">
-                <el-input v-model="logdataForm.shouldAttendance" placeholder="应出勤人数"></el-input>
+                {{logdataForm.shouldAttendance}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="实出勤人数" prop="attendance">
-                <el-input v-model="logdataForm.attendance" placeholder="实出勤人数"></el-input>
+                {{logdataForm.attendance}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="实到人员" prop="actualArrival">
-            <el-input v-model="logdataForm.actualArrival" placeholder="实到人员" :disabled="true">
-            </el-input>
+            {{logdataForm.actualArrival}}
           </el-form-item>
           <el-row>
             <el-col :span="4">
             </el-col>
             <el-col :span="8">
               <el-form-item  label="未到人员" prop="notArrived">
-                <el-input v-model="logdataForm.notArrived" placeholder="未到人员">
-                </el-input>
+                {{logdataForm.notArrived}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item  label="顶班人员" prop="topArrived">
-                <el-input v-model="logdataForm.topArrived" placeholder="顶班人员">
-
-                </el-input>
+                {{logdataForm.topArrived}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-            <el-input v-model="logdataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
+            {{logdataForm.reasonsAbsence}}
           </el-form-item>
           <el-form-item label="接班记事" prop="successionRecord">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.successionRecord" placeholder="接班记事"></el-input>
+            {{logdataForm.successionRecord}}
           </el-form-item>
           <el-form-item label="当班记事" prop="onDuty">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.onDuty" placeholder="当班记事"></el-input>
+            {{logdataForm.onDuty}}
           </el-form-item>
           <el-form-item label="上级通知" prop="superiorNotice">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.superiorNotice" placeholder="上级通知"></el-input>
+            {{logdataForm.superiorNotice}}
           </el-form-item>
           <el-form-item label="交代事项" prop="accountConfession">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.accountConfession" placeholder="交代事项"></el-input>
+            {{logdataForm.accountConfession}}
           </el-form-item>
           <el-row>
             <el-col :span="7">
               <el-form-item label="交班人"  prop="handoverPerson">
-                <el-input :disabled="true" v-model="logdataForm.handoverPerson" placeholder="交班人" ></el-input>
+                {{logdataForm.handoverPerson}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="接班人" prop="successor">
-                <el-input v-model="logdataForm.successor" :disabled="true" placeholder="接班人">
-                </el-input>
+                {{logdataForm.successor}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="交接时间" prop="createTime">
-                <el-input v-model="logdataForm.createTime"></el-input>
+                {{logdataForm.createTime}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -300,120 +280,95 @@
         :title="logdataForm.logNumber ? '班前会详情' : '班前会详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
-        :visible.sync="dialogtwovisible">
+        :visible.sync="dialogtwovisible"
+        v-if="dialogtwovisible">
         <el-form :model="logdataForm"  ref="logdataForm"  label-width="100px">
         日志编号: {{logdataForm.logNumber}}
         <el-row>
           <el-col :span="8">
             <el-form-item label="部门(工段)" prop="deptName">
-              <el-input v-model="logdataForm.deptName"  placeholder="部门" :disabled="true">
-              </el-input>
+              {{logdataForm.deptName}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="班组" prop="classGroupName">
-              <el-input v-model="logdataForm.classGroupName" placeholder="班组"></el-input>
+              {{logdataForm.classGroupName}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="班次" prop="baseTurnId">
-              <el-select v-model="logdataForm.baseTurnId" placeholder="请选择班次" clearable style="width:120px;">
-                <el-option
-                  v-for="item in TurnList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
+            <el-form-item label="班次" prop="baseTurnName">
+              {{logdataForm.baseTurnName}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="班长" prop="monitor">
-              <el-input v-model="logdataForm.monitor" placeholder="班长" :disabled="true"></el-input>
+              {{logdataForm.monitor}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="应出勤人数" prop="shouldAttendance">
-              <el-input v-model="logdataForm.shouldAttendance" placeholder="应出勤人数"></el-input>
+              {{logdataForm.shouldAttendance}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="实出勤人数" prop="attendance">
-              <el-input v-model="logdataForm.attendance" placeholder="实出勤人数"></el-input>
+              {{logdataForm.attendance}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="实到人员" prop="actualArrival">
-          <el-input v-model="logdataForm.actualArrival" placeholder="实到人员" :disabled="true">
-          </el-input>
+          {{logdataForm.actualArrival}}
         </el-form-item>
         <el-row>
           <el-col :span="8">
             <el-form-item  label="未到人员" prop="notArrived">
-              <el-input v-model="logdataForm.notArrived" placeholder="未到人员">
-              </el-input>
+              {{logdataForm.notArrived}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item  label="顶班人员" prop="topArrived">
-              <el-input v-model="logdataForm.topArrived" placeholder="顶班人员">
-              </el-input>
+              {{logdataForm.topArrived}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-          <el-input v-model="logdataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
+          {{logdataForm.reasonsAbsence}}
         </el-form-item>
-        <el-form-item label="人员精神状态" prop="personnelMentalState">
-          <el-radio v-model="logdataForm.personnelMentalState" label="1">正常</el-radio>
-          <el-radio v-model="logdataForm.personnelMentalState" label="2">异常</el-radio>
+        <el-form-item label="人员精神异常" prop="mentalException">
+          {{logdataForm.mentalException}}
         </el-form-item>
-        <el-form-item v-if="logdataForm.personnelMentalState === '2'" label="人员精神异常描述" prop="mentalException">
-          <el-input type="textarea" autosize v-model="logdataForm.mentalException" placeholder="人员精神异常描述"></el-input>
+        <el-form-item  label="劳动防护用品异常" prop="protectiveException">
+          {{logdataForm.protectiveException}}
         </el-form-item>
-        <el-form-item label="劳动防护用品" prop="laborProtectiveArticles">
-          <el-radio v-model="logdataForm.laborProtectiveArticles" label="1">正常</el-radio>
-          <el-radio v-model="logdataForm.laborProtectiveArticles" label="2">异常</el-radio>
-        </el-form-item>
-        <el-form-item v-if="logdataForm.laborProtectiveArticles ==='2'" label="劳动防护用品异常描述" prop="protectiveException">
-          <el-input type="textarea" autosize v-model="dataForm.protectiveException" placeholder="劳动防护用品异常描述"></el-input>
-        </el-form-item>
-        <el-form-item label="工器具状态" prop="tools">
-          <el-radio v-model="logdataForm.tools" label="1">正常</el-radio>
-          <el-radio v-model="logdataForm.tools" label="2">异常</el-radio>
-        </el-form-item>
-        <el-form-item v-if="logdataForm.tools === '2'" label="工器具异常描述" prop="toolsException">
-          <el-input type="textarea" autosize v-model="logdataForm.toolsException" placeholder="工器具异常描述"></el-input>
+        <el-form-item  label="工器具异常" prop="toolsException">
+          {{logdataForm.toolsException}}
         </el-form-item>
         <el-form-item label="其他异常" prop="otherException">
-          <el-input type="textarea" autosize v-model="logdataForm.otherException" placeholder="其他异常"></el-input>
+          {{logdataForm.otherException}}
         </el-form-item>
         <el-form-item label="工作安排" prop="workTask">
-          <el-input type="textarea" autosize v-model="logdataForm.workTask" placeholder="工作安排"></el-input>
+          {{logdataForm.workTask}}
         </el-form-item>
         <el-form-item label="危险点" prop="dangerousPoint">
-          <el-input type="textarea" autosize v-model="logdataForm.dangerousPoint" placeholder="危险点"></el-input>
+          {{logdataForm.dangerousPoint}}
         </el-form-item>
         <el-form-item label="防范措施" prop="preventiveMeasures">
-          <el-input type="textarea" autosize v-model="logdataForm.preventiveMeasures" placeholder="防范措施"></el-input>
+          {{logdataForm.preventiveMeasures}}
         </el-form-item>
+          <el-form-item label="班组成员" prop="teamMembers">
+            {{logdataForm.teamMembers}}
+          </el-form-item>
         <el-row>
           <el-col :span="7">
             <el-form-item label="交底人" prop="manAgreement">
-              <el-input v-model="logdataForm.manAgreement" :disabled="true" placeholder="交底人"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="班组成员" prop="teamMembers">
-              <el-input v-model="logdataForm.teamMembers" placeholder="班组成员" :disabled="true">
-              </el-input>
+              {{logdataForm.manAgreement}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="交接时间" prop="createTime">
-              <el-input v-model="logdataForm.createTime" style="width: 160px"></el-input>
+              {{logdataForm.createTime}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -421,10 +376,11 @@
       </el-dialog>
       <!-- 班后会详情-->
       <el-dialog
-        :title="logdataForm.logNumber ? '班前会详情' : '班前会详情'"
+        :title="dialogthreevisible ? '班前会详情' : '班前会详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
-        :visible.sync="dialogthreevisible">
+        :visible.sync="dialogthreevisible"
+        v-if="dialogthreevisible">
         <el-form :model="logdataForm"  ref="logdataForm"  label-width="100px">
           日志编号: {{logdataForm.logNumber}}
           <el-row>
@@ -596,6 +552,7 @@
           deptName: '',
           classGroupName: '',
           baseTurnId: '',
+          baseTurnName: '',
           logType: '',
           logStatus: '',
           noteTaker: '',
@@ -852,11 +809,13 @@
           params: this.$http.adornParams()
         }).then(({data}) => {
           if (data && data.code === 0) {
+            this.logdataForm.logType = ''
             this.logdataForm.logNumber = data.classgrouplog.logNumber
             this.logdataForm.deptId = data.classgrouplog.deptId
             this.logdataForm.deptName = data.classgrouplog.deptName
             this.logdataForm.classGroupName = data.classgrouplog.classGroupName
             this.logdataForm.baseTurnId = data.classgrouplog.baseTurnId
+            this.logdataForm.baseTurnName = data.classgrouplog.baseTurnName
             this.logdataForm.logType = data.classgrouplog.logType
             this.logdataForm.logStatus = data.classgrouplog.logStatus
             this.logdataForm.noteTaker = data.classgrouplog.noteTaker
@@ -890,15 +849,21 @@
             this.logdataForm.teamMembers = data.classgrouplog.teamMembers
             this.logdataForm.workSummary = data.classgrouplog.workSummary
             this.logdataForm.personCharge = data.classgrouplog.personCharge
+            if (this.logdataForm.logType === '1') {
+              this.dialogtwovisible = false
+              this.dialogthreevisible = false
+              this.dialogonevisible = true
+            } else if (this.logdataForm.logType === '2') {
+              this.dialogonevisible = false
+              this.dialogthreevisible = false
+              this.dialogtwovisible = true
+            } else if (this.logdataForm.logType === '3') {
+              this.dialogonevisible = false
+              this.dialogtwovisible = false
+              this.dialogthreevisible = true
+            }
           }
         })
-        if (this.logdataForm.logType === '1') {
-          this.dialogonevisible = true
-        } else if (this.logdataForm.logType === '2') {
-          this.dialogtwovisible = true
-        } else if (this.logdataForm.logType === '3') {
-          this.dialogthreevisible = true
-        }
       }
     },
     mounted: function () {

@@ -263,7 +263,6 @@
     mounted () {
       this.getTurnList()
       this.getDeptList()
-      this.getDataList()    // 部门查询
     },
     computed: {
       loginuserName: {
