@@ -2,21 +2,23 @@
   <div class="mod-home">
     <div class="show-data-content">
       <el-row :gutter="10" class="home-row-main">
-        <el-col :span="8" class="home-col-left">
+        <el-col :span="6" class="home-col-left">
           <el-row :gutter="10" class="home-row-up">
             <div class="show-chart">
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="title">异常频度排名</span>
+                    <span class="title">异常排名</span>
                     <div class="filter">
-                      <el-checkbox-group v-show="false" size="mini"  @change="topCheckboxChange" v-model="topFilter" style="display: inline;vertical-align: text-bottom;">
-                        <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
-                      </el-checkbox-group>
                       <el-radio-group size="mini" @change="topRadioChange" v-model="topPeriod" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in topPeriodList" :label="period" :key="period"></el-radio-button>
                       </el-radio-group>
                     </div>
+                  </div>
+                  <div align="center">
+                    <el-checkbox-group size="mini"  @change="topCheckboxChange" v-model="topFilter" style="display: inline;vertical-align: text-bottom;">
+                      <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
+                    </el-checkbox-group>
                   </div>
                    <el-table
                     ref="table"
@@ -130,7 +132,7 @@
             </div>
           </el-row>
         </el-col>
-        <el-col :span="4" class="home-col-right">
+        <el-col :span="6" class="home-col-right">
           <el-row :gutter="10" class="home-row-up-alert">
             <div class="show-alert" align="center">
               <el-badge :value="workLog" :max="99" class="alert">
@@ -146,7 +148,12 @@
                 <div class="charts">
                 <div class="exception-chart-up">
                   <div class="chart-header">
-                    <span class="title">设备状态分布</span>
+                    <span class="title">设备状态</span>
+                    <div class="filter">
+                      <el-radio-group size="mini" @change="statusRadioChange" v-model="statusFilter" style="display: inline;vertical-align: text-bottom;">
+                        <el-radio-button v-for="period in statusPeriodList" :label="period" :key="period"></el-radio-button>
+                      </el-radio-group>
+                    </div>
                   </div>
                 </div>
                 <div class="exception-chart-down">
@@ -184,21 +191,25 @@ export default {
         inspectionEndTime: '',
         exceptionStartTime: '',
         exceptionEndTime: '',
+        statusStartTime: '',
+        statusEndTime: '',
         deviceList: [],
         itemList: [],
         workLog: '',
         bugLog: '',
         levelIds: [],
         topFilter: ['A类', 'B类', 'C类'],
-        topPeriod: '全部',
-        topPeriodList: ['全部','本周', '本月', '本年'],
+        topPeriod: '本年',
+        topPeriodList: ['本周', '本月', '本年'],
         finishFilter: [''],
         exceptionFilterType: '',
         inspectionFilter: '全部',
         exceptionFilter: '本年',
+        statusFilter: '本年',
         deviceLevelList: ['A类','B类','C类'],
         inspectionPeriodList: ['全部','本周', '本月', '本年'],
         exceptionPeriodList: ['全部','本周', '本月', '本年'],
+        statusPeriodList: ['本周', '本月', '本年'],
         hasLinkData: false,
         hasInspectionData: false,
         hasFinishData: true,
@@ -247,8 +258,18 @@ export default {
         this.inspectionStartTime = ''
       }
       
+      if (this.stautsFilter === '本周') {
+        this.statusStartTime = getFirstDayOfWeek(today)
+      } else if (this.stautsFilter === '本月') {
+        this.statusStartTime = getFirstDayOfMonth(today)
+      } else if (this.stautsFilter === '本年') {
+        this.statusStartTime = getFirstDayOfYear(today)
+      } else if (this.stautsFilter === '全部') {
+        this.statusStartTime = ''
+      }
+      
       if (this.exceptionFilter === '本周') {
-        this.exceptionFilterType = '%w'
+        this.exceptionFilterType = '%a'
         this.exceptionStartTime = getFirstDayOfWeek(today)
       } else if (this.exceptionFilter === '本月') {
         this.exceptionFilterType = '%d'
@@ -330,6 +351,20 @@ export default {
           }
         })
       },
+      statusRadioChange (val) {
+        let today = new Date()
+        if (val === '本周') {
+          this.statusStartTime = getFirstDayOfWeek(today)
+        } else if (val === '本月') {
+          this.statusStartTime = getFirstDayOfMonth(today)
+        } else if (val === '本年') {
+          this.statusStartTime = getFirstDayOfYear(today)
+        } else if (val === '全部') {
+          this.statusStartTime = ''
+        }
+        
+        this.getDeviceStatus()
+      },
       inspectionRadioChange (val) {
         let today = new Date()
         if (val === '本周') {
@@ -347,7 +382,7 @@ export default {
       exceptionRadioChange (val) {
         let today = new Date()
         if (val === '本周') {
-          this.exceptionFilterType = '%w'
+          this.exceptionFilterType = '%a'
           this.exceptionStartTime = getFirstDayOfWeek(today)
         } else if (val === '本月') {
           this.exceptionFilterType = '%d'
@@ -397,7 +432,27 @@ export default {
             console.log(data.data)
               this.hasExceptionData = true
               this.exceptionLegend = data.data.legend
-              this.exceptionCategory = data.data.category
+              let category = []
+              for(let i = 0; i < data.data.category.length; i++) {
+                if (data.data.category[i] === 'Mon') {
+                  category.push('周一')
+                } else if (data.data.category[i] === 'Tue') {
+                  category.push('周二')
+                } else if (data.data.category[i] === 'Wed') {
+                  category.push('周三')
+                } else if (data.data.category[i] === 'Thu') {
+                  category.push('周四')
+                } else if (data.data.category[i] === 'Fri') {
+                  category.push('周五')
+                } else if (data.data.category[i] === 'Sat') {
+                  category.push('周六')
+                } else if (data.data.category[i] === 'Sun') {
+                  category.push('周日')
+                } else {
+                  category.push(data.data.category[i])
+                }
+              }
+              this.exceptionCategory = category
               if (data.data.legend.length > 0 && data.data.series.A.length > 0){
                 this.hasExceptionData = true
                 this.exceptionSeriesA = data.data.series.A
@@ -418,7 +473,10 @@ export default {
         this.$http({
           url: this.$http.adornUrl(`/inspection/device/getstatus`),
           method: 'get',
-          params: this.$http.adornParams()
+          params: this.$http.adornParams({
+            'startTime': this.statusStartTime,
+            'endTime': this.statusEndTime
+          })
         }).then(({data}) => {
           if (data && data.code === 0) {
             if (data.status.length > 0) {
@@ -448,7 +506,7 @@ export default {
         }
       },
       getItemsByDevice (deviceId) {
-        if (this.itemList <= 0) {
+        if (deviceId !== '') {
           this.$http({
             url: this.$http.adornUrl('/inspection/inspectionitem/getitemsbydevice'),
             method: 'get',
