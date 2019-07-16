@@ -20,12 +20,6 @@
           align="center"
           label="消息名称">
         </el-table-column>
-        <!--<el-table-column
-          prop="newsTypeName"
-          header-align="center"
-          align="center"
-          label="消息类型名称">
-        </el-table-column>-->
         <el-table-column
           prop="newsNumber"
           header-align="center"
@@ -74,18 +68,9 @@
           visible: false,
           dataList: [],
           pageIndex: 1,
-          pageSize: 100,
-          totalPage: 0
-        }
-      },
-      // 钩子函数
-      mounted () {
-        this.getDataList()
-        this.newsexist()
-      },
-      watch: {
-        dataList () {
-          this.timer()
+          pageSize: 10,
+          totalPage: 0,
+          type: ''
         }
       },
       computed: {
@@ -95,9 +80,12 @@
       },
       methods: {
         // 初始化
-        init () {
+        init (type) {
+          console.log(type)
           this.visible = true
           this.$nextTick(() => {
+            this.type = type
+            this.getDataList()
           })
         },
         // 获取数据列表
@@ -108,7 +96,8 @@
             params: this.$http.adornParams({
               'page': this.pageIndex,
               'limit': this.pageSize,
-              'user_id': this.userId
+              'user_id': this.userId,
+              'type': this.type
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
@@ -167,36 +156,7 @@
             this.$router.push('/management-orderdefect')
             this.visible = false
           }
-        },
-        newsexist () {
-          this.$http({
-            url: this.$http.adornUrl('/sys/news/list'),
-            method: 'get',
-            params: this.$http.adornParams({
-              'page': this.pageIndex,
-              'limit': this.pageSize,
-              'user_id': this.userId
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataList = data.page.list
-              this.totalPage = data.page.totalCount
-            } else {
-              this.dataList = []
-              this.totalPage = 0
-            }
-          })
-        },
-        // 这是一个定时器
-        timer () {
-          return setTimeout(() => {
-            this.newsexist()
-          }, 5000)
         }
-      },
-      // 最终销毁
-      destroyed () {
-        clearTimeout(this.timer)
       }
     }
 </script>

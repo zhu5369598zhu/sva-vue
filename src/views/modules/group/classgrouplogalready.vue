@@ -120,19 +120,8 @@
         prop="createTime"
         header-align="center"
         align="center"
-        label="交接(完成)时间">
-      </el-table-column>
-
-      <el-table-column
-        fixed="right"
-        header-align="center"
-        align="center"
         width="150"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" v-if="scope.row.newsCounts > 0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
-          <el-button type="text" size="small" v-if="scope.row.newsCounts ===0" :disabled="scope.row.newsCounts ===0" style="color: #8c939d;">修改</el-button>
-        </template>
+        label="交接(完成)时间">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -167,13 +156,12 @@
           classGroupName: '',
           baseTurnId: '',
           logStatus: '',
-          add: '新增',
-          user_id: ''
+          add: '新增'
         },
         tableHeight: 300,
-        logStatus: '4',
-        logUserStatus: '4',
-        logType: '',
+        logStatus: '3',
+        logUserStatus: '3',
+        logType: '3',
         deptList: [],
         TurnList: [],
         userList: [],
@@ -211,7 +199,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/group/classgrouplogreject/list'),
+          url: this.$http.adornUrl('/group/classgrouplogalready/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -221,10 +209,8 @@
             'deptId': this.dataForm.deptId,
             'classGroupName': this.dataForm.classGroupName,
             'baseTurnId': this.dataForm.baseTurnId,
-            'logType': this.logType,
-            'logUserStatus': this.logUserStatus,
-            'user_id': this.dataForm.user_id,
-            'userid': this.loginuserId
+            'logStatus': this.logStatus,
+            'logUserStatus': this.logUserStatus
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -263,7 +249,7 @@
       exportExcelHandle () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/group/classgrouplogreject/list'),
+          url: this.$http.adornUrl('/group/classgrouplogalready/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -273,9 +259,8 @@
             'deptId': this.dataForm.deptId,
             'classGroupName': this.dataForm.classGroupName,
             'baseTurnId': this.dataForm.baseTurnId,
-            'logType': this.logType,
-            'logUserStatus': this.logUserStatus,
-            'user_id': this.dataForm.user_id
+            'logStatus': this.logStatus,
+            'logUserStatus': this.logUserStatus
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -334,36 +319,6 @@
       },
       // 修改选择
       updateHandle (id, logStatus, logType, logNumber) {
-        this.$http({
-          url: this.$http.adornUrl('/group/classgrouplogreject/reject'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'user_id': this.loginuserId,
-            'log_number': logNumber
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            if (data.newsCounts === 0) {
-              this.$alert('您不需要修改')
-            } else {
-              if (logStatus === '1' || logStatus === '2' || logStatus === '4') { // 拟制中 待确认可以修改
-                if (logType === '1') { // 班长日志
-                  this.addOrUpdateHandle(id)
-                }
-                if (logType === '2') { // 班前日志
-                  this.addOrUpdateBanQianHandle(id)
-                }
-                if (logType === '3') { // 班后日志
-                  this.addOrUpdateBanHouHandle(id)
-                }
-              }
-              // 已确定 和已完成 不能修改
-              if (logStatus === '3') {
-                this.$alert('日志状态为 已确认的日志不能修改')
-              }
-            }
-          }
-        })
       },
       // 新增 / 修改  班长日志
       addOrUpdateHandle (id) {

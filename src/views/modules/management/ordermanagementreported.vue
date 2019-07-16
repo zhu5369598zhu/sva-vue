@@ -22,7 +22,7 @@
         <el-input v-model="dataForm.orderName" placeholder="请输入工单主题" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" @change="hangleStartTimeChangStart" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item  prop="endTime">
         <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
@@ -221,9 +221,12 @@
           <el-form-item label="工单主题" prop="orderName">
             {{orderDataForm.orderName}}
           </el-form-item>
+          <el-form-item label="工单内容" prop="orderContent">
+            {{orderDataForm.orderContent}}
+          </el-form-item>
           <el-form-item label="处理结果" prop="processingResult">
             <el-input
-              :rows="6"
+              autosize
               type="textarea"
               v-model="orderDataForm.processingResult"></el-input>
           </el-form-item>
@@ -237,120 +240,137 @@
           <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
             <el-input v-model="orderDataForm.orderDevice"></el-input>
           </el-form-item>
-          <el-form-item label="审核人" prop="orderConfirmer">
-            <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
-            <!--<span slot="suffix">
-              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-            </span>-->
-            </el-input>
-            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-              <div style="display: flex;justify-content: space-around;align-items: center;">
-                <div style="width:400px;height: 500px;overflow: scroll;">
-                  <el-form :model="deptFrom">
-                    <el-row>
-                      <el-col :span="13">
-                        <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getdeptDataList()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="deptdataList"
-                    highlight-current-row
-                    @current-change="addOrUpdateHandle"
-                    style="width: 100%;">
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="80">
-                    </el-table-column>
-                    <table-tree-column
-                      style="width: auto"
-                      prop="name"
-                      header-align="center"
-                      treeKey="deptId"
-                      label="机构名称"
-                    >
-                    </table-tree-column>
-
-                  </el-table>
-                </div>
-                <div style="width:400px;height: 500px;overflow: scroll;">
-                  <el-form :inline="true" :model="datauserForm" >
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="search">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取消</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="UserdataList"
-                    style="width: 100%;"
-                    :row-style="rowStyle"
-                    @selection-change="selectionChangeHandle"
-                  >
-                    <el-table-column
-                      type="selection"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="username"
-                      header-align="center"
-                      align="center"
-                      label="用户名">
-                    </el-table-column>
-                    <el-table-column
-                      prop="deptName"
-                      header-align="center"
-                      align="center"
-                      label="机构名称">
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </div>
-            </el-dialog>
-          </el-form-item>
           <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
             {{orderDataForm.orderAcceptorOpinion}}
           </el-form-item>-->
-
-          <el-form-item label="申请延期时间" prop="delayTime">
-            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
+          <el-form-item label="是否申请延期">
+            <el-switch
+              v-model="orderDataForm.value3"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
           </el-form-item>
-          <el-form-item v-if="orderDataForm.orderStatus===7&&orderDataForm.delayTime===null" label="审核人结论" prop="orderConfirmerOpinion">
+          <el-form-item label="申请延期时间" prop="delayTime" v-if="orderDataForm.value3">
+            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="审核人" v-if="orderDataForm.delayTime !=null" prop="orderConfirmer">
+            <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
+            <span slot="suffix" v-if="orderDataForm.delayTime ===null">
+              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
+            </span>
+            </el-input>
+            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
+          </el-form-item>
+          <el-form-item label="审核人" v-if="orderDataForm.delayTime ===null" prop="orderConfirmer">
+            <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
+            <span slot="suffix" v-if="orderDataForm.delayTime ===null">
+              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
+            </span>
+            </el-input>
+            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
+          </el-form-item>
+
+          <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+            <div style="display: flex;justify-content: space-around;align-items: center;">
+              <div style="width:400px;height: 500px;">
+                <el-form :model="deptFrom">
+                  <el-row>
+                    <el-col :span="13">
+                      <el-form-item>
+                        <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item>
+                        <el-button @click="getdeptDataList()">查询</el-button>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+                <el-table
+                  :data="deptdataList"
+                  highlight-current-row
+                  @current-change="addOrUpdateHandle"
+                  style="width: 100%;height: 440px;overflow: scroll;">
+                  <el-table-column
+                    type="index"
+                    header-align="center"
+                    align="center"
+                    width="80">
+                  </el-table-column>
+                  <table-tree-column
+                    style="width: auto"
+                    prop="name"
+                    header-align="center"
+                    treeKey="deptId"
+                    label="机构名称"
+                  >
+                  </table-tree-column>
+
+                </el-table>
+              </div>
+              <div style="width:400px;height: 500px;">
+                <el-form :inline="true" :model="datauserForm" >
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item>
+                        <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                      <el-form-item>
+                        <el-button @click="search">查询</el-button>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                      <el-form-item>
+                        <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                      <el-form-item>
+                        <el-button @click="dialogFormVisible = false">取消</el-button>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+                <el-table
+                  :data="UserdataList"
+                  style="width: 100%;height: 440px;overflow: scroll;"
+                  :row-style="rowStyle"
+                  @selection-change="selectionChangeHandle"
+                >
+                  <el-table-column
+                    type="selection"
+                    header-align="center"
+                    align="center"
+                    width="50">
+                  </el-table-column>
+                  <el-table-column
+                    type="index"
+                    header-align="center"
+                    align="center"
+                    width="50">
+                  </el-table-column>
+                  <el-table-column
+                    prop="username"
+                    header-align="center"
+                    align="center"
+                    label="用户名">
+                  </el-table-column>
+                  <el-table-column
+                    prop="deptName"
+                    header-align="center"
+                    align="center"
+                    label="机构名称">
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </el-dialog>
+
+          <el-form-item v-if="orderDataForm.orderConfirmerOpinion != null" label="审核人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
           </el-form-item>
         </el-form>
@@ -405,6 +425,7 @@
         deptList: [],
         orderDataForm: {
           value1: true,
+          value3: false,
           orderId: 0,
           orderNumber: '',
           defectiveId: '',
@@ -667,21 +688,27 @@
       },
       // 已受理待上报状态 提交到 已上报待确认
       accepTance () {
-        if (this.orderDataForm.orderConfirmerId === 0) {
-          this.$alert('审核人不能为空')
-        } else {
+        if (this.orderDataForm.processingResult !== '') {
           this.orderDataForm.orderConfirmerOpinion = ''
           this.orderDataForm.orderStatus = 3
           this.orderConfirm()
+        } else {
+          this.$alert('处理结果不能为空')
         }
       },
       // 延期申请
       reJect () {
-        this.orderConfirm()
+        if (this.orderDataForm.processingResult !== '') {
+          this.orderDataForm.orderStatus = 14
+          this.orderConfirm()
+        } else {
+          this.$alert('处理结果不能为空')
+        }
       },
       orderConfirm () {
         // 提交
         if (this.orderDataForm.orderAcceptorId === this.loginuserId) {
+          this.orderDataForm.orderConfirmerOpinion = null
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagementreported/orderupdate`),
             method: 'post',
@@ -833,6 +860,19 @@
         })
       },
       handleStartTimeChange (val) {
+        this.$http({
+          url: this.$http.adornUrl('/management/ordermanagementreported/info/' + this.orderDataForm.orderId),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.orderDataForm.orderConfirmer = data.ordermanagement.orderConfirmer
+            this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
+          }
+        })
+        this.dataForm.startTime = val
+      },
+      hangleStartTimeChangStart (val) {
         this.dataForm.startTime = val
       },
       handleEndTimeChange (val) {

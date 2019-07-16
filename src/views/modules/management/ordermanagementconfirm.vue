@@ -83,7 +83,12 @@
         align="center"
         width="100"
         label="工单状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.orderStatusName =='!已上报待审核'" style="color: #5daf34">{{scope.row.orderStatusName}}</span>
+          <span v-if="scope.row.orderStatusName !='!已上报待审核'">{{scope.row.orderStatusName}}</span>
+        </template>
       </el-table-column>
+
       <el-table-column
         prop="orderName"
         header-align="center"
@@ -230,6 +235,9 @@
           </el-row>
           <el-form-item label="工单主题" prop="orderName">
             {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="工单内容" prop="orderContent">
+            {{orderDataForm.orderContent}}
           </el-form-item>
           <el-form-item label="处理结果" prop="processingResult">
             {{orderDataForm.processingResult}}
@@ -387,7 +395,7 @@
           deptId: '',
           orderNumber: '',
           orderName: '',
-          orderStatus: '3',
+          orderStatus: '',
           startTime: null,
           endTime: null
         },
@@ -525,7 +533,6 @@
             this.orderDataForm.orderAcceptorOpinion = data.ordermanagement.orderAcceptorOpinion
             this.orderDataForm.orderConfirmer = data.ordermanagement.orderConfirmer
             this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
-            this.orderDataForm.orderConfirmerOpinion = data.ordermanagement.orderConfirmerOpinion
             this.orderDataForm.requirementTime = data.ordermanagement.requirementTime
             this.orderDataForm.confirmedTime = data.ordermanagement.confirmedTime
             this.orderDataForm.actualTime = data.ordermanagement.actualTime
@@ -539,6 +546,8 @@
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
           if (this.orderDataForm.orderStatus === 3) {
+            this.dialogthreevisible = true
+          } else if (this.orderDataForm.orderStatus === 14){
             this.dialogthreevisible = true
           }
         })
@@ -556,26 +565,42 @@
       },
       // 同意延期申请
       agreeDelay () {
-        this.orderDataForm.orderStatus = 7
-        this.orderDataForm.requirementTime = this.orderDataForm.delayTime
-        this.orderDataForm.delayTime = null
-        this.orderConfirm()
+        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+          this.orderDataForm.orderStatus = 14
+          this.orderDataForm.requirementTime = this.orderDataForm.delayTime
+          this.orderDataForm.delayTime = null
+          this.orderConfirm()
+        } else {
+          this.$alert('审核人意见不能为空')
+        }
       },
       // 不同意延期申请
       disagreeDelay () {
-        this.orderDataForm.orderStatus = 7
-        this.orderDataForm.requirementTime = ''
-        this.orderConfirm()
+        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+          this.orderDataForm.orderStatus = 15
+          this.orderDataForm.requirementTime = ''
+          this.orderConfirm()
+        } else {
+          this.$alert('审核人意见不能为空')
+        }
       },
       // 已上报待确认 提交到 已确认待完结
       accepTance () {
-        this.orderDataForm.orderStatus = 5
-        this.orderConfirm()
+        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+          this.orderDataForm.orderStatus = 5
+          this.orderConfirm()
+        } else {
+          this.$alert('审核人意见不能为空')
+        }
       },
       // 已上报待确认 =》已上报被打回
       reJect () {
-        this.orderDataForm.orderStatus = 7
-        this.orderConfirm()
+        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+          this.orderDataForm.orderStatus = 7
+          this.orderConfirm()
+        } else {
+          this.$alert('审核人意见不能为空')
+        }
       },
       orderConfirm () {
         // 提交

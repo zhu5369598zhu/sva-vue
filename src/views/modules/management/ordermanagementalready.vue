@@ -230,7 +230,7 @@
           <el-form-item label="工单主题" prop="orderName">
             {{orderDataForm.orderName}}
           </el-form-item>
-          <el-form-item label="默认内容" prop="orderContent">
+          <el-form-item label="工单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
           <el-form-item label="受理人意见" prop="orderAcceptorOpinion">

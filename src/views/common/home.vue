@@ -136,11 +136,16 @@
           <el-row :gutter="10" class="home-row-up-alert">
             <div class="show-alert" align="center">
               <el-badge :value="workLog" :max="99" class="alert">
-                <el-button type="primary">交接日志</el-button>
+                <el-button type="primary" @click.native="newsHandle(1)">交接日志</el-button>
               </el-badge>
+
               <el-badge :value="bugLog" :max="10" class="alert">
-                <el-button  type="primary">工单</el-button>
+                <el-button  type="primary" @click.native="newsHandle(2)">工单</el-button>
             </el-badge>
+              <div class="alert-span">
+                <div class="alert-span-one"><span style="font-size: 13px;color: white;">{{totalPage}}</span></div>
+                <div class="alert-span-two"><span style="font-size: 13px;color: white;">{{totalPageTwo}}</span></div>
+              </div>
             </div>
           </el-row>
           <el-row :gutter="10" class="home-row-down-alert">
@@ -165,17 +170,19 @@
           </el-row>
         </el-col>
       </el-row>
+      <news v-if="newsVisible" ref="news"></news>
     </div>
   </div>
 </template>
 
 <script>
-  import { formatDate,getFirstDayOfWeek,getFirstDayOfMonth,getFirstDayOfYear } from '@/utils'
+  import { formatDate, getFirstDayOfWeek, getFirstDayOfMonth, getFirstDayOfYear } from '@/utils'
   import chartbar from '@/components/charts/bar'
   import chartpie from '@/components/charts/pie'
   import chartline from '@/components/charts/lines'
   import chartcolumn from '@/components/charts/column'
   import chartlink from '@/components/charts/link'
+  import news from '.././main-navbar-news'
 export default {
     data () {
       return {
@@ -206,9 +213,9 @@ export default {
         inspectionFilter: '全部',
         exceptionFilter: '本年',
         statusFilter: '本年',
-        deviceLevelList: ['A类','B类','C类'],
-        inspectionPeriodList: ['全部','本周', '本月', '本年'],
-        exceptionPeriodList: ['全部','本周', '本月', '本年'],
+        deviceLevelList: ['A类', 'B类', 'C类'],
+        inspectionPeriodList: ['全部', '本周', '本月', '本年'],
+        exceptionPeriodList: ['全部', '本周', '本月', '本年'],
         statusPeriodList: ['本周', '本月', '本年'],
         hasLinkData: false,
         hasInspectionData: false,
@@ -224,7 +231,22 @@ export default {
         exceptionSeriesB: [],
         exceptionSeriesC: [],
         inspectionCategory: [],
-        inspectionSeries: []
+        inspectionSeries: [],
+        newsVisible: false,
+        totalPage: 0,
+        totalPageTwo: 0,
+        imgList: [
+          {
+            newsId: '',
+            userId: '',
+            newsName: '',
+            newsType: '',
+            newsNumber: '',
+            createTime: '',
+            updateTime: ''
+          }
+        ],
+        newstype: '1'
       }
     },
     components: {
@@ -232,7 +254,13 @@ export default {
       chartpie,
       chartline,
       chartcolumn,
-      chartlink
+      chartlink,
+      news
+    },
+    computed: {
+      userId: {
+        get () { return this.$store.state.user.id }
+      }
     },
     created () {
       let today = new Date()
@@ -247,7 +275,6 @@ export default {
       } else if (this.topFilter === '全部') {
         this.topStartTime = ''
       }
-      
       if (this.inspectionFilter === '本周') {
         this.inspectionStartTime = getFirstDayOfWeek(today)
       } else if (this.inspectionFilter === '本月') {
@@ -257,7 +284,6 @@ export default {
       } else if (this.inspectionFilter === '全部') {
         this.inspectionStartTime = ''
       }
-      
       if (this.stautsFilter === '本周') {
         this.statusStartTime = getFirstDayOfWeek(today)
       } else if (this.stautsFilter === '本月') {
@@ -267,7 +293,6 @@ export default {
       } else if (this.stautsFilter === '全部') {
         this.statusStartTime = ''
       }
-      
       if (this.exceptionFilter === '本周') {
         this.exceptionFilterType = '%a'
         this.exceptionStartTime = getFirstDayOfWeek(today)
@@ -281,19 +306,18 @@ export default {
         this.exceptionFilterType = '%y'
         this.exceptionStartTime = ''
       }
-      
       this.levelIds = []
-      for (var i=0; i<this.topFilter.length; i++) {
-      	if(this.topFilter[i] === 'A类') {
-      	  this.levelIds.push(1)
-      	} else if (this.topFilter[i] === 'B类') {
-      	  this.levelIds.push(2)
-      	} else if (this.topFilter[i] === 'C类') {
-      	  this.levelIds.push(3)
-      	}
+      for (var i = 0; i < this.topFilter.length; i++) {
+        if (this.topFilter[i] === 'A类') {
+          this.levelIds.push(1)
+        } else if (this.topFilter[i] === 'B类') {
+          this.levelIds.push(2)
+        } else if (this.topFilter[i] === 'C类') {
+          this.levelIds.push(3)
+        }
       }
-      
       this.getDataList()
+      this.newsexist()
     },
     mounted () {
       this.getDataList()
@@ -308,15 +332,15 @@ export default {
       },
       topCheckboxChange (val) {
         this.levelIds = []
-        for (var i=0; i<val.length; i++) {
-        	if(val[i] === 'A类') {
+        for (var i = 0; i < val.length; i++) {
+          if (val[i] === 'A类') {
             console.log(val[i])
-        	  this.levelIds.push(1)
-        	} else if (val[i] === 'B类') {
-        	  this.levelIds.push(2)
-        	} else if (val[i] === 'C类') {
-        	  this.levelIds.push(3)
-        	}
+            this.levelIds.push(1)
+          } else if (val[i] === 'B类') {
+            this.levelIds.push(2)
+          } else if (val[i] === 'C类') {
+            this.levelIds.push(3)
+          }
         }
         this.getDeviceExceptionTop()
       },
@@ -362,7 +386,6 @@ export default {
         } else if (val === '全部') {
           this.statusStartTime = ''
         }
-        
         this.getDeviceStatus()
       },
       inspectionRadioChange (val) {
@@ -376,7 +399,6 @@ export default {
         } else if (val === '全部') {
           this.inspectionStartTime = ''
         }
-        
         this.getDeviceInspection()
       },
       exceptionRadioChange (val) {
@@ -430,43 +452,43 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             console.log(data.data)
-              this.hasExceptionData = true
-              this.exceptionLegend = data.data.legend
-              let category = []
-              for(let i = 0; i < data.data.category.length; i++) {
-                if (data.data.category[i] === 'Mon') {
-                  category.push('周一')
-                } else if (data.data.category[i] === 'Tue') {
-                  category.push('周二')
-                } else if (data.data.category[i] === 'Wed') {
-                  category.push('周三')
-                } else if (data.data.category[i] === 'Thu') {
-                  category.push('周四')
-                } else if (data.data.category[i] === 'Fri') {
-                  category.push('周五')
-                } else if (data.data.category[i] === 'Sat') {
-                  category.push('周六')
-                } else if (data.data.category[i] === 'Sun') {
-                  category.push('周日')
-                } else {
-                  category.push(data.data.category[i])
-                }
-              }
-              this.exceptionCategory = category
-              if (data.data.legend.length > 0 && data.data.series.A.length > 0){
-                this.hasExceptionData = true
-                this.exceptionSeriesA = data.data.series.A
-                this.exceptionSeriesB = data.data.series.B
-                this.exceptionSeriesC = data.data.series.C
-                this.drawChart()
+            this.hasExceptionData = true
+            this.exceptionLegend = data.data.legend
+            let category = []
+            for (let i = 0; i < data.data.category.length; i++) {
+              if (data.data.category[i] === 'Mon') {
+                category.push('周一')
+              } else if (data.data.category[i] === 'Tue') {
+                category.push('周二')
+              } else if (data.data.category[i] === 'Wed') {
+                category.push('周三')
+              } else if (data.data.category[i] === 'Thu') {
+                category.push('周四')
+              } else if (data.data.category[i] === 'Fri') {
+                category.push('周五')
+              } else if (data.data.category[i] === 'Sat') {
+                category.push('周六')
+              } else if (data.data.category[i] === 'Sun') {
+                category.push('周日')
               } else {
-                this.hasExceptionData = false
+                category.push(data.data.category[i])
               }
+            }
+            this.exceptionCategory = category
+            if (data.data.legend.length > 0 && data.data.series.A.length > 0){
+              this.hasExceptionData = true
+              this.exceptionSeriesA = data.data.series.A
+              this.exceptionSeriesB = data.data.series.B
+              this.exceptionSeriesC = data.data.series.C
+              this.drawChart()
+            } else {
+              this.hasExceptionData = false
+            }
           } else {
             this.$message.error(data.msg)
             this.hasExceptionData = false
           }
-        }) 
+        })
       },
       getDeviceStatus () {
         this.hasLinkData = false
@@ -490,7 +512,7 @@ export default {
             this.$message.error(data.msg)
             this.hasLinkData = false
           }
-        }) 
+        })
       },
       getDevice () {
         if (this.deviceList <= 0) {
@@ -514,11 +536,11 @@ export default {
               'deviceId': deviceId
             })
           }).then(({data}) => {
-            if(data.list.length > 0) {
+            if (data.list.length > 0) {
               this.itemList = data.list
               this.dataForm.itemId = data.list[0].id
               if (this.dataForm.itemId > 0) {
-                this.$nextTick(function(){
+                this.$nextTick(function () {
                   this.getDeviceInspection()
                 })
               }
@@ -540,7 +562,7 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.ids = data.data.ids
-            this.inspectionCategory = data.data.category.map(item=>formatDate(new Date(item),'yyyy-MM-dd hh:mm:ss'))
+            this.inspectionCategory = data.data.category.map(item => formatDate (new Date(item), 'yyyy-MM-dd hh:mm:ss'))
             this.inspectionSeries = data.data.series
             if (this.inspectionSeries.length > 0) {
               this.hasInspectionData = true
@@ -580,13 +602,75 @@ export default {
       },
       cellStyle () {
         return 'padding:0'
+      },
+      // 处理消息
+      newsHandle (type) {
+        this.newsVisible = true
+        this.$nextTick(() => {
+          this.$refs.news.init(type)
+        })
+      },
+      newsexist () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/news/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'user_id': this.userId,
+            'type': '1'
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.imgList = data.page.list
+            this.totalPage = data.page.totalCount
+            this.totalPage = data.page.totalCount
+          } else {
+            this.imgList = []
+            this.totalPage = 0
+            this.totalPageTwo = 0
+          }
+        })
+        this.$http({
+          url: this.$http.adornUrl('/sys/news/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'user_id': this.userId,
+            'type': '2'
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.imgList = data.page.list
+            this.totalPageTwo = data.page.totalCount
+          } else {
+            this.imgList = []
+            this.totalPage = 0
+            this.totalPageTwo = 0
+          }
+        })
+      },
+      // 这是一个定时器
+      timer () {
+        return setTimeout(() => {
+          this.newsexist()
+        }, 5000)
       }
     },
+    // 最终销毁
+    destroyed () {
+      clearTimeout(this.timer)
+    },
     watch: {
-      'this.topFilter': function(newVal, oldVal) {
+      imgList () {
+        this.timer()
+      },
+      'this.topFilter': function (newVal, oldVal) {
         console.log(newVal, oldVal)
       }
     }
+
 }
 </script>
 
@@ -595,7 +679,35 @@ export default {
     margin-left: 10px;
     margin-top: 40px;
     margin-right: 10px;
+    z-index: 5;
+    position: relative;
 }
+  .alert-span{
+    margin-left: 66px;
+    margin-top: -14px;
+    margin-right: 36px;
+    z-index: 10;
+    position: relative;
+  }
+  .alert-span-one{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+  }
+  .alert-span-two{
+    float: left;
+    margin-left: 94px;
+    width: 20px;
+    height: 20px;
+    background-color:red;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+  }
   .no-data {
     margin-top: 80px;
     font-size: 24px;

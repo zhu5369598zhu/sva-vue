@@ -62,7 +62,7 @@
         label="序号">
       </el-table-column>
       <el-table-column
-        width="100"
+        width="120"
         prop="logNumber"
         header-align="center"
         align="center"

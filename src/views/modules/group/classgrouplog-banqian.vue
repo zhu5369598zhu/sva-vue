@@ -281,7 +281,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="datasave()" v-if="this.dataForm.logStatus ==='1'" :disabled="isHttp" >保存</el-button>
+      <el-button type="primary" @click="datasave()" :disabled="isHttp" >保存</el-button>
       <el-button type="primary" @click="submit()" :disabled="isHttp">提交</el-button>
     </span>
   </el-dialog>

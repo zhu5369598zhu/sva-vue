@@ -22,14 +22,15 @@
                     <el-option label="待确认" value="0"></el-option>
                     <el-option label="已确认" value="1"></el-option>
                     <el-option label="已挂起" value="2"></el-option>
+                    <el-option label="转工单被拒绝" value="3"></el-option>
                   </el-select>
                 </el-form-item>
 
                 <el-form-item label="巡检时间从:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" type="datetime" value-format="yyyy-MM-dd hh:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" type="datetime" value-format="yyyy-MM-dd hh:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
                   <el-button @click="ordersearch()">查询</el-button>
@@ -94,8 +95,15 @@
                   prop="result"
                   header-align="center"
                   align="center"
-                  width="80"
+                  width="100"
                   label="巡检结果">
+                </el-table-column>
+                <el-table-column
+                  prop="orderStatusName"
+                  header-align="center"
+                  align="center"
+                  width="80"
+                  label="确认状态">
                 </el-table-column>
                 <el-table-column
                   prop="unit"
@@ -143,14 +151,7 @@
                   header-align="center"
                   align="center"
                   label="轮次">
-                </el-table-column>
-                <el-table-column
-                  prop="orderStatusName"
-                  header-align="center"
-                  align="center"
-                  width="200"
-                  label="确认状态">
-                </el-table-column>
+                </el-table-column
                 <el-table-column
                   prop="confirmedTime"
                   header-align="center"
@@ -165,8 +166,8 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
-                   <el-button type="text" size="small"  @click="hangup(scope.row)">挂起</el-button>
+                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
+                   <el-button type="text" size="small"  :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="hangup(scope.row)">挂起</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -376,7 +377,7 @@
       },
       // 挂起
       hangup (row) {
-        if (row.orderStatus > 0) {
+        if (row.orderStatus > 0 && row.orderStatus < 3) {
           this.$alert('待确认的才能挂起')
         } else {
           this.orderDataForm.defectiveId = row.defectiveId
@@ -447,7 +448,7 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (defectiveId, id, orderStatus) {
-        if (orderStatus === 0 || orderStatus === null) {
+        if (orderStatus === 0 || orderStatus === null || orderStatus === 3) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(defectiveId, id)
@@ -529,8 +530,8 @@
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['巡点名称', '巡项内容', '数据类型', '巡检结果', '测量单位', '异常等级', '上/上上/下/下下', '开始巡检时间', '结束巡检时间', '巡检人', '轮次', '确认状态', '确认时间']
-          const filterVal = ['deviceName', 'itemName', 'inspectionType', 'result', 'unit', 'exceptionName', 'limits', 'startTime', 'endTime', 'username', 'turnName', 'orderStatusName', 'confirmedTime']
+          const tHeader = ['巡点名称', '缺陷单编号', '巡项内容', '数据类型', '巡检结果', '确认状态', '测量单位', '异常等级', '上/上上/下/下下', '开始巡检时间', '结束巡检时间', '巡检人', '轮次', '确认时间']
+          const filterVal = ['deviceName', 'defectiveNumber', 'itemName', 'inspectionType', 'result', 'orderStatusName', 'unit', 'exceptionName', 'limits', 'startTime', 'endTime', 'username', 'turnName', 'confirmedTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

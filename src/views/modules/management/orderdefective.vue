@@ -136,8 +136,8 @@
           width="120"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.orderStatus)">修改</el-button>
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.orderStatus)">修改</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -215,6 +215,9 @@
           <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
             {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
+          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=null" label="工单确认人意见" prop="orderConfirmerOpinion">
+            {{orderDataForm.orderConfirmerOpinion}}
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
@@ -282,19 +285,19 @@
           <el-form-item label="默认内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
-          <el-form-item label="工单确认人意见" prop="orderConfirmerOpinion">
+          <!--<el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''" label="工单确认人意见" prop="orderConfirmerOpinion">
             <el-input
               type="textarea"
               :rows="3"
               v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-          </el-form-item>
+          </el-form-item>-->
           <el-row>
             <el-col :span="8">
               <el-form-item
                 label="要求完成时间"
                 prop="requirementTime"
               >
-                <el-date-picker v-model="orderDataForm.requirementTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+                <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -487,9 +490,9 @@
           <el-form-item label="工单确认人" prop="orderConfirmer">
             {{orderDataForm.orderConfirmer}}
           </el-form-item>
-          <el-form-item label="工单确认人意见" prop="orderConfirmerOpinion">
+          <!--<el-form-item label="工单确认人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
-          </el-form-item>
+          </el-form-item>-->
 
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -915,6 +918,8 @@
             this.dialogonevisible = true
           } else if (row.orderStatus === 2) {
             this.dialogtwovisible = true
+          } else if (row.orderStatus === 3) {
+            this.dialogzerovisible = true
           }
         })
       },
@@ -936,6 +941,7 @@
       confirmation () {
         this.orderDataForm.orderStatus = 1
         this.orderDataForm.confirmedTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        this.orderDataForm.orderConfirmerOpinion = null
         this.$http({
           url: this.$http.adornUrl(`/management/orderdefective/update`),
           method: 'post',
@@ -956,6 +962,9 @@
             'orderConfirmerId': this.orderDataForm.orderConfirmerId,
             'confirmedTime': this.orderDataForm.confirmedTime,
             'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+            'orderAcceptor': this.orderDataForm.orderAcceptor,
+            'orderAcceptorId': this.orderDataForm.orderAcceptorId,
+            'requirementTime': this.orderDataForm.requirementTime,
             'defectiveDevice': this.orderDataForm.defectiveDevice
           })
         }).then(({data}) => {

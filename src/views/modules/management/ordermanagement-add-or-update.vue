@@ -148,7 +148,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="要求完成时间" prop="requirementTime" label-width="100px">
-            <el-date-picker v-model="dataForm.requirementTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -397,13 +397,6 @@
           this.dataForm.orderApplicant = this.loginuserName
           this.dataForm.orderConfirmerId = this.loginuserId
           this.dataForm.orderConfirmer = this.loginuserName
-          /*this.$http({
-            url: this.$http.adornUrl('/management/ordermanagement/managementNumber'),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            this.dataForm.orderNumber = data.managementNumber
-          })*/
         }
       },
       // 部门查询

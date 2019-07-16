@@ -117,7 +117,7 @@
             label="要求完成时间"
             prop="requirementTime"
           >
-            <el-date-picker v-model="dataForm.requirementTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -231,6 +231,9 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item v-if="dataForm.orderConfirmerOpinion!= ''" label="工单确认人意见" prop="orderConfirmerOpinion">
+        {{dataForm.orderConfirmerOpinion}}
+      </el-form-item>
     </el-form>
 
     <span slot="footer" class="dialog-footer">
@@ -304,7 +307,7 @@
             { required: true, message: '缺陷异常等级不能为空', trigger: 'blur' }
           ],
           orderContent: [
-            { required: true, message: '默认的工单内容不能为空', trigger: 'blur' }
+            { required: true, message: '巡检缺陷单内容不能为空', trigger: 'blur' }
           ],
           defectiveName: [
             { required: true, message: '缺陷确认人(填报)人不能为空', trigger: 'blur' }
@@ -330,9 +333,9 @@
           confirmedTime: [
             { required: true, message: '工单确认时间不能为空', trigger: 'blur' }
           ],
-          orderConfirmerOpinion: [
+          /*orderConfirmerOpinion: [
             { required: true, message: '工单确认人意见不能为空', trigger: 'blur' }
-          ],
+          ],*/
           requirementTime: [
             { required: true, message: '要求完成时间不能为空', trigger: 'blur' }
           ],
@@ -538,6 +541,7 @@
               this.$alert('要求完成时间不能为空')
               return
             }
+            this.dataForm.orderConfirmerOpinion = null
             this.dataForm.orderStatus = 2
             this.isHttp = true
             this.$http({
