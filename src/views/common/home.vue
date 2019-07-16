@@ -142,10 +142,6 @@
               <el-badge :value="bugLog" :max="10" class="alert">
                 <el-button  type="primary" @click.native="newsHandle(2)">工单</el-button>
             </el-badge>
-              <div class="alert-span">
-                <div class="alert-span-one"><span style="font-size: 13px;color: white;">{{totalPage}}</span></div>
-                <div class="alert-span-two"><span style="font-size: 13px;color: white;">{{totalPageTwo}}</span></div>
-              </div>
             </div>
           </el-row>
           <el-row :gutter="10" class="home-row-down-alert">
@@ -623,12 +619,12 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.imgList = data.page.list
-            this.totalPage = data.page.totalCount
-            this.totalPage = data.page.totalCount
+            if (this.workLog > 0) {
+              this.workLog = data.page.totalCount
+            }
           } else {
             this.imgList = []
-            this.totalPage = 0
-            this.totalPageTwo = 0
+            this.workLog = ''
           }
         })
         this.$http({
@@ -643,11 +639,12 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.imgList = data.page.list
-            this.totalPageTwo = data.page.totalCount
+            if (data.page.totalCount > 0) {
+              this.bugLog = data.page.totalCount
+            }
           } else {
             this.imgList = []
-            this.totalPage = 0
-            this.totalPageTwo = 0
+            this.bugLog = ''
           }
         })
       },
