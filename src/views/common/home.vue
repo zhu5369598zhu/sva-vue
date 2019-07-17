@@ -428,7 +428,6 @@ export default {
         this.getDeviceStatus()
         this.getDeviceExceptionTop()
         this.getDevice()
-        this.getItemsByDevice()
         this.getExceptionStatus()
       },
       getExceptionStatus () {
@@ -519,7 +518,9 @@ export default {
           }).then(({data}) => {
             this.deviceList = data.deviceList
             this.dataForm.deviceId = this.deviceList[0].deviceId
-            this.getItemsByDevice(this.dataForm.deviceId)
+            this.$nextTick(()=>{
+              this.getItemsByDevice(this.dataForm.deviceId)
+            })
           })
         }
       },
@@ -652,7 +653,7 @@ export default {
       timer () {
         return setTimeout(() => {
           this.newsexist()
-        }, 5000)
+        }, 1000*60*5)
       }
     },
     // 最终销毁
@@ -662,9 +663,6 @@ export default {
     watch: {
       imgList () {
         this.timer()
-      },
-      'this.topFilter': function (newVal, oldVal) {
-        console.log(newVal, oldVal)
       }
     }
 
