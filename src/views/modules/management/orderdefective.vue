@@ -136,8 +136,8 @@
           width="120"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.orderStatus)">修改</el-button>
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="deleteHandle(scope.row.defectiveId,scope.row.orderStatus)">删除</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId)">修改</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="deleteHandle(scope.row.defectiveId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -173,15 +173,6 @@
             <el-col :span="8">
               <el-form-item label="所属机构" prop="deptName">
                 {{orderDataForm.deptName}}
-                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-                >
-                  <el-option
-                    v-for="item in deptList"
-                    :key="item.deptId"
-                    :label="item.name"
-                    :value="item.deptId"
-                  ></el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -215,7 +206,7 @@
           <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
             {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
-          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=null" label="工单确认人意见" prop="orderConfirmerOpinion">
+          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion===null" label="工单确认人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
           </el-form-item>
         </el-form>
@@ -821,52 +812,44 @@
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id, orderStatus) {
-        if (orderStatus === 0 || orderStatus === undefined) {
-          this.addOrUpdateVisible = true
-          this.$nextTick(() => {
-            this.$refs.addOrUpdate.init(id)
-          })
-        } else {
-          this.$alert('拟制中状态才能修改')
-        }
+      addOrUpdateHandle (id) {
+        this.addOrUpdateVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdate.init(id)
+        })
       },
       // 删除
-      deleteHandle (id, orderStatus) {
-        if (orderStatus === 0) {
-          var ids = id ? [id] : this.dataListSelections.map(item => {
-            return item.defectiveId
+      deleteHandle (id) {
+        var ids = id ? [id] : this.dataListSelections.map(item => {
+          return item.defectiveId
+        })
+        this.$confirm(`确定对[序号=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/management/orderdefective/delete'),
+            method: 'post',
+            data: this.$http.adornData(ids, false)
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
+              var dom = document.getElementById('did')
+              dom.style.display = 'none'
+              this.search()
+            } else {
+              this.$message.error(data.msg)
+            }
           })
-          this.$confirm(`确定对[序号=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$http({
-              url: this.$http.adornUrl('/management/orderdefective/delete'),
-              method: 'post',
-              data: this.$http.adornData(ids, false)
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  duration: 1500,
-                  onClose: () => {
-                    this.getDataList()
-                  }
-                })
-                var dom = document.getElementById('did')
-                dom.style.display = 'none'
-                this.search()
-              } else {
-                this.$message.error(data.msg)
-              }
-            })
-          })
-        } else {
-          this.$alert('拟制中状态才能删除')
-        }
+        })
       },
       getDeptList () {
         if (this.deptList <= 0) {

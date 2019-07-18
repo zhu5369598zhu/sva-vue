@@ -207,6 +207,9 @@
                   <el-form-item label="巡检缺陷单内容" prop="orderContent">
                     {{orderDataForm.orderContent}}
                   </el-form-item>
+                  <el-form-item label="缺陷操作人" prop="defectiveName">
+                    {{orderDataForm.defectiveName}}
+                  </el-form-item>
                   <el-form-item label="缺陷操作人意见" prop="defectiveNameOpinion">
                     {{orderDataForm.defectiveNameOpinion}}
                   </el-form-item>

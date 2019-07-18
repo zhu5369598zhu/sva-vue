@@ -28,16 +28,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item  prop="user_id">
-        <el-select v-model="dataForm.user_id" placeholder="全部可见" clearable style="width: 130px;"  >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>

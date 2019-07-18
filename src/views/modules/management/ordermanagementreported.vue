@@ -430,6 +430,7 @@
           orderNumber: '',
           defectiveId: '',
           defectiveNumber: '',
+          defectiveTheme: '',
           orderName: '',
           deptId: '',
           deptName: '',
@@ -516,7 +517,7 @@
       beginDelayDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
+            return time.getTime() < new Date().getTime()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -641,6 +642,7 @@
             this.orderDataForm.orderNumber = data.ordermanagement.orderNumber
             this.orderDataForm.defectiveId = data.ordermanagement.defectiveId
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
+            this.orderDataForm.defectiveTheme = data.ordermanagement.defectiveTheme
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
             this.orderDataForm.deptName = data.ordermanagement.deptName
@@ -651,13 +653,13 @@
             this.orderDataForm.orderApplicant = data.ordermanagement.orderApplicant
             this.orderDataForm.orderApplicantId = data.ordermanagement.orderApplicantId
             this.orderDataForm.orderApplicantOpinion = data.ordermanagement.orderApplicantOpinion
-            this.orderDataForm.createTime = data.ordermanagement.createTime
             this.orderDataForm.orderAcceptor = data.ordermanagement.orderAcceptor
             this.orderDataForm.orderAcceptorId = data.ordermanagement.orderAcceptorId
             this.orderDataForm.orderAcceptorOpinion = data.ordermanagement.orderAcceptorOpinion
             this.orderDataForm.orderConfirmer = data.ordermanagement.orderConfirmer
             this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
             this.orderDataForm.orderConfirmerOpinion = data.ordermanagement.orderConfirmerOpinion
+            this.orderDataForm.createTime = data.ordermanagement.createTime
             this.orderDataForm.requirementTime = data.ordermanagement.requirementTime
             this.orderDataForm.confirmedTime = data.ordermanagement.confirmedTime
             this.orderDataForm.actualTime = data.ordermanagement.actualTime
@@ -688,21 +690,22 @@
       },
       // 已受理待上报状态 提交到 已上报待确认
       accepTance () {
-        if (this.orderDataForm.processingResult !== '') {
+        if (this.orderDataForm.processingResult === '' || this.orderDataForm.processingResult === null) {
+          this.$alert('处理结果不能为空')
+        } else {
           this.orderDataForm.orderConfirmerOpinion = ''
           this.orderDataForm.orderStatus = 3
           this.orderConfirm()
-        } else {
-          this.$alert('处理结果不能为空')
         }
       },
       // 延期申请
       reJect () {
-        if (this.orderDataForm.processingResult !== '') {
+        console.log(this.orderDataForm.processingResult)
+        if (this.orderDataForm.processingResult === '' || this.orderDataForm.processingResult === null) {
+          this.$alert('处理结果不能为空')
+        } else {
           this.orderDataForm.orderStatus = 14
           this.orderConfirm()
-        } else {
-          this.$alert('处理结果不能为空')
         }
       },
       orderConfirm () {
@@ -717,6 +720,7 @@
               'orderNumber': this.orderDataForm.orderNumber,
               'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
+              'defectiveTheme': this.orderDataForm.defectiveTheme,
               'orderName': this.orderDataForm.orderName,
               'deptId': this.orderDataForm.deptId,
               'exceptionId': this.orderDataForm.exceptionId,
@@ -732,6 +736,7 @@
               'orderConfirmer': this.orderDataForm.orderConfirmer,
               'orderConfirmerId': this.orderDataForm.orderConfirmerId,
               'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+              'createTime': this.orderDataForm.createTime,
               'requirementTime': this.orderDataForm.requirementTime,
               'confirmedTime': this.orderDataForm.confirmedTime,
               'actualTime': this.orderDataForm.actualTime,
@@ -870,7 +875,7 @@
             this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
           }
         })
-        this.dataForm.startTime = val
+        this.dataForm.delayTime = val
       },
       hangleStartTimeChangStart (val) {
         this.dataForm.startTime = val

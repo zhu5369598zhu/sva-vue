@@ -238,7 +238,7 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()" :disabled="isHttp">确认缺陷</el-button>
+      <el-button type="primary" @click="dataFormSubmit()" :disabled="dataForm.defectiveNameId!==loginuserId">确认缺陷</el-button>
     </span>
   </el-dialog>
 </template>
@@ -333,9 +333,6 @@
           confirmedTime: [
             { required: true, message: '工单确认时间不能为空', trigger: 'blur' }
           ],
-          /*orderConfirmerOpinion: [
-            { required: true, message: '工单确认人意见不能为空', trigger: 'blur' }
-          ],*/
           requirementTime: [
             { required: true, message: '要求完成时间不能为空', trigger: 'blur' }
           ],
@@ -382,6 +379,7 @@
                 this.dataForm.defectiveTheme = data.orderdefective.defectiveTheme
                 this.dataForm.defectiveType = data.orderdefective.defectiveType
                 this.dataForm.deptId = data.orderdefective.deptId
+                this.dataForm.deptName = data.orderdefective.deptName
                 this.dataForm.exceptionId = data.orderdefective.exceptionId
                 this.dataForm.orderContent = data.orderdefective.orderContent
                 this.dataForm.defectiveName = data.orderdefective.defectiveName

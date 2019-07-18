@@ -276,103 +276,7 @@
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
-    <!--<div class="show-data-down" >
-      <div class="new_1" id="did_3" style="display: none">
-      <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-      &lt;!&ndash;  拟制中 &ndash;&gt;
-        <h5> 工单详情</h5>
-      <div class="div-a">
-        <el-form-item label="工单编号" prop="orderNumber">
-          <el-input v-model="orderDataForm.orderNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="工单状态" prop="orderStatus">
-          <el-select v-model="orderDataForm.orderStatus"  >
-            <el-option
-              v-for="item in orderStatusList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="缺陷单编号" prop="defectiveNumber">
-          <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="下发时间" prop="createTime">
-          <el-input v-model="orderDataForm.createTime"></el-input>
-        </el-form-item>
-        <el-form-item label="要求完成时间" prop="requirementTime">
-          <el-input v-model="orderDataForm.requirementTime"></el-input>
-        </el-form-item>
-      </div>
-      <div class="div-b">
-        <el-form-item label="所属机构" prop="deptId">
-          <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-          >
-            <el-option
-              v-for="item in deptList"
-              :key="item.deptId"
-              :label="item.name"
-              :value="item.deptId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="工单类型" prop="orderTypeName">
-          <el-input v-model="orderDataForm.orderTypeName"></el-input>
-        </el-form-item>
 
-
-        <el-form-item label="缺陷等级" prop="exceptionName">
-          <el-input v-model="orderDataForm.exceptionName"></el-input>
-        </el-form-item>
-        <el-form-item label="缺陷操作人" prop="defectiveName">
-          <el-input v-model="orderDataForm.defectiveName"></el-input>
-        </el-form-item>
-        <el-form-item label="工单受理人" prop="orderAcceptor">
-          <el-input v-model="orderDataForm.orderAcceptor"></el-input>
-        </el-form-item>
-
-      </div>
-      <div class="div-c">
-        <el-form-item label="工单主题" prop="orderName">
-          <el-input v-model="orderDataForm.orderName"></el-input>
-        </el-form-item>
-        <el-form-item label="处理结果" prop="processingResult">
-          <el-input
-            :rows="6"
-            type="textarea"
-            v-model="orderDataForm.processingResult"></el-input>
-        </el-form-item>
-
-      </div>
-      <div class="div-d">
-
-        <el-form-item label="是否使用备件">
-          <el-switch
-            v-model="orderDataForm.value1"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
-        </el-form-item>
-        <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
-          <el-input v-model="orderDataForm.orderDevice"></el-input>
-        </el-form-item>
-        <el-form-item label="结论" prop="orderAcceptorOpinion">
-          <el-input
-            :rows="3"
-            type="textarea"
-            v-model="orderDataForm.orderAcceptorOpinion"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="warning" @click="reJect()">打回</el-button>
-          <el-button type="primary" @click="accepTance()">确认</el-button>
-        </el-form-item>
-
-      </div>
-      </el-form>
-    </div>
-
-    </div>-->
   </div>
 
  </template>
@@ -405,6 +309,7 @@
           orderNumber: '',
           defectiveId: '',
           defectiveNumber: '',
+          defectiveTheme: '',
           orderName: '',
           deptId: '',
           deptName: '',
@@ -517,6 +422,7 @@
             this.orderDataForm.orderNumber = data.ordermanagement.orderNumber
             this.orderDataForm.defectiveId = data.ordermanagement.defectiveId
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
+            this.orderDataForm.defectiveTheme = data.ordermanagement.defectiveTheme
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
             this.orderDataForm.deptName = data.ordermanagement.deptName
@@ -527,12 +433,13 @@
             this.orderDataForm.orderApplicant = data.ordermanagement.orderApplicant
             this.orderDataForm.orderApplicantId = data.ordermanagement.orderApplicantId
             this.orderDataForm.orderApplicantOpinion = data.ordermanagement.orderApplicantOpinion
-            this.orderDataForm.createTime = data.ordermanagement.createTime
             this.orderDataForm.orderAcceptor = data.ordermanagement.orderAcceptor
             this.orderDataForm.orderAcceptorId = data.ordermanagement.orderAcceptorId
             this.orderDataForm.orderAcceptorOpinion = data.ordermanagement.orderAcceptorOpinion
             this.orderDataForm.orderConfirmer = data.ordermanagement.orderConfirmer
             this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
+            this.orderDataForm.orderConfirmerOpinion = data.ordermanagement.orderConfirmerOpinion
+            this.orderDataForm.createTime = data.ordermanagement.createTime
             this.orderDataForm.requirementTime = data.ordermanagement.requirementTime
             this.orderDataForm.confirmedTime = data.ordermanagement.confirmedTime
             this.orderDataForm.actualTime = data.ordermanagement.actualTime
@@ -547,7 +454,7 @@
           }
           if (this.orderDataForm.orderStatus === 3) {
             this.dialogthreevisible = true
-          } else if (this.orderDataForm.orderStatus === 14){
+          } else if (this.orderDataForm.orderStatus === 14) {
             this.dialogthreevisible = true
           }
         })
@@ -565,41 +472,40 @@
       },
       // 同意延期申请
       agreeDelay () {
-        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+        if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
+          this.$alert('审核人意见不能为空')
+        } else {
           this.orderDataForm.orderStatus = 14
           this.orderDataForm.requirementTime = this.orderDataForm.delayTime
           this.orderDataForm.delayTime = null
           this.orderConfirm()
-        } else {
-          this.$alert('审核人意见不能为空')
         }
       },
       // 不同意延期申请
       disagreeDelay () {
-        if (this.orderDataForm.orderConfirmerOpinion !== '') {
-          this.orderDataForm.orderStatus = 15
-          this.orderDataForm.requirementTime = ''
-          this.orderConfirm()
-        } else {
+        if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
           this.$alert('审核人意见不能为空')
+        } else {
+          this.orderDataForm.orderStatus = 15
+          this.orderConfirm()
         }
       },
       // 已上报待确认 提交到 已确认待完结
       accepTance () {
-        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+        if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
+          this.$alert('审核人意见不能为空')
+        } else {
           this.orderDataForm.orderStatus = 5
           this.orderConfirm()
-        } else {
-          this.$alert('审核人意见不能为空')
         }
       },
       // 已上报待确认 =》已上报被打回
       reJect () {
-        if (this.orderDataForm.orderConfirmerOpinion !== '') {
+        if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
+          this.$alert('审核人意见不能为空')
+        } else {
           this.orderDataForm.orderStatus = 7
           this.orderConfirm()
-        } else {
-          this.$alert('审核人意见不能为空')
         }
       },
       orderConfirm () {
@@ -613,6 +519,7 @@
               'orderNumber': this.orderDataForm.orderNumber,
               'defectiveId': this.orderDataForm.defectiveId,
               'defectiveNumber': this.orderDataForm.defectiveNumber,
+              'defectiveTheme': this.orderDataForm.defectiveTheme,
               'orderName': this.orderDataForm.orderName,
               'deptId': this.orderDataForm.deptId,
               'exceptionId': this.orderDataForm.exceptionId,
@@ -628,6 +535,7 @@
               'orderConfirmer': this.orderDataForm.orderConfirmer,
               'orderConfirmerId': this.orderDataForm.orderConfirmerId,
               'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+              'createTime': this.orderDataForm.createTime,
               'requirementTime': this.orderDataForm.requirementTime,
               'confirmedTime': this.orderDataForm.confirmedTime,
               'actualTime': this.orderDataForm.actualTime,
@@ -647,9 +555,9 @@
                 onClose: () => {
                   this.dialogthreevisible = false
                   this.$emit('refreshDataList')
+                  this.getDataList()
                 }
               })
-              this.getDataList()
             } else {
               this.$message.error(data.msg)
             }
