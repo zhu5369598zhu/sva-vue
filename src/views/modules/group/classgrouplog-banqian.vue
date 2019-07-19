@@ -8,10 +8,23 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门(工段)" prop="deptName">
-            <el-input v-model="dataForm.deptName"  placeholder="部门" :disabled="true">
-              <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickdept()" ></a>
-              </span>
+            <el-popover
+              ref="deptListPopover"
+              placement="bottom-start"
+              trigger="click"
+              v-model="isShowDeptTree">
+              <el-tree
+                :data="dataList"
+                :props="deptListTreeProps"
+                node-key="deptId"
+                ref="deptListTree"
+                @current-change="deptListTreeCurrentChangeHandle"
+                :default-expand-all="false"
+                :highlight-current="true"
+                :expand-on-click-node="false" clearable style="width:140px;">
+              </el-tree>
+            </el-popover>
+            <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
             </el-input>
           </el-form-item>
         </el-col>
@@ -138,13 +151,13 @@
                       </el-col>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-button @click="getDataList()">查询</el-button>
+                          <el-button @click="getDeptDataList()">查询</el-button>
                         </el-form-item>
                       </el-col>
                     </el-row>
                   </el-form>
                   <el-table
-                    :data="dataList"
+                    :data="dataDeptList"
                     highlight-current-row
                     @current-change="addOrUpdateHandle"
                     style="width: 100%;height: 440px;overflow: scroll;">
@@ -223,53 +236,6 @@
                 </div>
               </div>
             </el-dialog>
-            <el-dialog title="选择部门" :visible.sync="dialogDeptVisible" v-if="dialogDeptVisible" :append-to-body="true" width="400px">
-              <div style="display: flex;justify-content: space-around;align-items: center;">
-                <div style="width:400px;height: 500px;">
-                  <el-form :model="deptFrom">
-                    <el-row>
-                      <el-col :span="13">
-                        <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getDataList()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="dataList"
-                    highlight-current-row
-                    style="width: 100%;height: 440px;overflow: scroll;">
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="80">
-                    </el-table-column>
-                    <table-tree-column
-                      style="width: auto"
-                      prop="name"
-                      header-align="center"
-                      treeKey="deptId"
-                      label="机构名称"
-                    ></table-tree-column>
-                    <el-table-column
-                      header-align="center"
-                      align="center"
-                      width="150"
-                      label="操作">
-                      <template slot-scope="scope">
-                        <el-button  type="text" size="small" @click="deptHandle(scope.row.deptId, scope.row.name)">选中</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </div>
-            </el-dialog>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -296,8 +262,13 @@
         isHttp: false,
         visible: false,
         dialogFormVisible: false,
-        dialogDeptVisible: false,
+        isShowDeptTree: false,
         dataList: [],
+        dataDeptList: [],
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         title: '',
         deptFrom: {
           name: ''
@@ -361,8 +332,8 @@
         pageSize: 2000,
         TurnList: [],
         dataRule: {
-          deptId: [
-            { required: true, message: '部门车间id不能为空', trigger: 'blur' }
+          deptName: [
+            { required: true, message: '部门车间不能为空', trigger: 'change' }
           ],
           classGroupName: [
             { required: true, message: '班组不能为空', trigger: 'blur' }
@@ -445,7 +416,8 @@
     },
     mounted () {
       this.getTurnList()
-      // this.getDataList()   // 部门查询
+      this.getDataList()   // 部门查询
+      this.getDeptDataList()
     },
     computed: {
       loginuserName: {
@@ -472,6 +444,7 @@
               if (data && data.code === 0) {
                 this.dataForm.logNumber = data.classgrouplog.logNumber
                 this.dataForm.deptId = data.classgrouplog.deptId
+                this.dataForm.deptName = data.classgrouplog.deptName
                 this.dataForm.classGroupName = data.classgrouplog.classGroupName
                 this.dataForm.baseTurnId = data.classgrouplog.baseTurnId
                 this.dataForm.logType = data.classgrouplog.logType
@@ -505,6 +478,7 @@
                 this.dataForm.teamMembers = data.classgrouplog.teamMembers
                 this.dataForm.workSummary = data.classgrouplog.workSummary
                 this.dataForm.personCharge = data.classgrouplog.personCharge
+                this.deptListTreeSetCurrentNode()
               }
             })
           }
@@ -551,25 +525,35 @@
           })
         }
       },
-      clickdept () {
-        this.getDataList()
-        this.dialogDeptVisible = true
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        console.log('1')
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
       },
-      deptHandle (deptId, name) {
-        this.dataForm.deptId = deptId
-        this.dataForm.deptName = name
-        console.log(this.dataForm.deptId)
-        console.log(this.dataForm.deptName)
-        this.dialogDeptVisible = false
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
       },
       // 查询部门
       getDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
-          params: this.$http.adornParams({'name': this.deptFrom.name})
+          params: this.$http.adornParams()
         }).then(({data}) => {
           this.dataList = treeDataTranslate(data, 'deptId')
+        })
+      },
+      getDeptDataList () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/dept/list'),
+          method: 'get',
+          params: this.$http.adornParams({'name': this.deptFrom.name})
+        }).then(({data}) => {
+          this.dataDeptList = treeDataTranslate(data, 'deptId')
         })
       },
       // 选中部门 查询用户

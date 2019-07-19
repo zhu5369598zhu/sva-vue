@@ -231,7 +231,18 @@ export default {
         newsVisible: false,
         totalPage: 0,
         totalPageTwo: 0,
-        imgList: [
+        workList: [
+          {
+            newsId: '',
+            userId: '',
+            newsName: '',
+            newsType: '',
+            newsNumber: '',
+            createTime: '',
+            updateTime: ''
+          }
+        ],
+        logList: [
           {
             newsId: '',
             userId: '',
@@ -313,7 +324,8 @@ export default {
         }
       }
       this.getDataList()
-      this.newsexist()
+      this.newsexistwork()
+      this.newsexistlog()
     },
     mounted () {
       this.getDataList()
@@ -607,7 +619,7 @@ export default {
           this.$refs.news.init(type)
         })
       },
-      newsexist () {
+      newsexistwork () {
         this.$http({
           url: this.$http.adornUrl('/sys/news/list'),
           method: 'get',
@@ -619,15 +631,27 @@ export default {
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.imgList = data.page.list
-            if (this.workLog > 0) {
+            this.workList = data.page.list
+            if (data.page.totalCount > 0) {
               this.workLog = data.page.totalCount
+            } else {
+              this.workLog = ''
             }
           } else {
-            this.imgList = []
+            this.workList = [{
+              newsId: '',
+              userId: '',
+              newsName: '',
+              newsType: '',
+              newsNumber: '',
+              createTime: '',
+              updateTime: ''
+            }]
             this.workLog = ''
           }
         })
+      },
+      newsexistlog () {
         this.$http({
           url: this.$http.adornUrl('/sys/news/list'),
           method: 'get',
@@ -639,30 +663,49 @@ export default {
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.imgList = data.page.list
+            this.logList = data.page.list
             if (data.page.totalCount > 0) {
               this.bugLog = data.page.totalCount
+            } else {
+              this.bugLog = ''
             }
           } else {
-            this.imgList = []
+            this.logList = [{
+              newsId: '',
+              userId: '',
+              newsName: '',
+              newsType: '',
+              newsNumber: '',
+              createTime: '',
+              updateTime: ''
+            }]
             this.bugLog = ''
           }
         })
       },
       // 这是一个定时器
-      timer () {
+      worktimer () {
         return setTimeout(() => {
-          this.newsexist()
+          this.newsexistwork()
+        }, 1000*60*5)
+      },
+      logtimer () {
+        return setTimeout(() => {
+          this.newsexistlog()
         }, 1000*60*5)
       }
     },
     // 最终销毁
     destroyed () {
-      clearTimeout(this.timer)
+      clearTimeout(this.worktimer)
+      clearTimeout(this.logtimer)
     },
     watch: {
-      imgList () {
-        this.timer()
+      workList () {
+        this.worktimer()
+      },
+      logList () {
+        this.logtimer()
       }
     }
 

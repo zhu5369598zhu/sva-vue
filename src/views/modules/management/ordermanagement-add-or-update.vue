@@ -11,19 +11,23 @@
       <el-input v-model="dataForm.orderName" placeholder="工单主题"></el-input>
     </el-form-item>
     <el-form-item label="所属机构" prop="deptName">
-      <!--<el-select v-model="dataForm.deptName" placeholder="所属机构" clearable
-      >
-        <el-option
-          v-for="item in deptList"
-          :key="item.deptId"
-          :label="item.name"
-          :value="item.deptId"
-        ></el-option>
-      </el-select>-->
-      <el-input v-model="dataForm.deptName" :disabled="true">
-          <span slot="suffix">
-              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickdept()" ></a>
-          </span>
+      <el-popover
+        ref="deptListPopover"
+        placement="bottom-start"
+        trigger="click"
+        v-model="isShowDeptTree">
+        <el-tree
+          :data="dataList"
+          :props="deptListTreeProps"
+          node-key="deptId"
+          ref="deptListTree"
+          @current-change="deptListTreeCurrentChangeHandle"
+          :default-expand-all="false"
+          :highlight-current="true"
+          :expand-on-click-node="false" clearable style="width:140px;">
+        </el-tree>
+      </el-popover>
+      <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:160px;" placeholder="部门" >
       </el-input>
     </el-form-item>
     <el-form-item label="工单内容" prop="orderContent">
@@ -58,7 +62,7 @@
                       </el-col>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-button @click="getDataList()">查询</el-button>
+                          <el-button @click="getDeptDataList()">查询</el-button>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -66,7 +70,7 @@
                   <el-table
                     highlight-current-row
                     @current-change="addOrUpdateHandle"
-                    :data="dataList"
+                    :data="dataDeptList"
                     style="width: 100%;height: 440px;overflow: scroll;">
                     <el-table-column
                       type="index"
@@ -152,53 +156,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-dialog title="选择部门" :visible.sync="dialogDeptVisible" v-if="dialogDeptVisible" :append-to-body="true" width="400px">
-        <div style="display: flex;justify-content: space-around;align-items: center;">
-          <div style="width:400px;height: 500px;">
-            <el-form :model="deptFrom">
-              <el-row>
-                <el-col :span="13">
-                  <el-form-item>
-                    <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item>
-                    <el-button @click="getDataList()">查询</el-button>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-            <el-table
-              :data="dataList"
-              highlight-current-row
-              style="width: 100%;height: 440px;overflow: scroll;">
-              <el-table-column
-                type="index"
-                header-align="center"
-                align="center"
-                width="80">
-              </el-table-column>
-              <table-tree-column
-                style="width: auto"
-                prop="name"
-                header-align="center"
-                treeKey="deptId"
-                label="机构名称"
-              ></table-tree-column>
-              <el-table-column
-                header-align="center"
-                align="center"
-                width="150"
-                label="操作">
-                <template slot-scope="scope">
-                  <el-button  type="text" size="small" @click="deptHandle(scope.row.deptId, scope.row.name)">选中</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </div>
-      </el-dialog>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -216,7 +173,13 @@
         isHttp: false,
         visible: false,
         dialogFormVisible: false,
+        isShowDeptTree: false,
         dataList: [],
+        dataDeptList: [],
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         deptFrom: {
           name: ''
         },
@@ -227,7 +190,6 @@
         limit: 2000,
         UserdataList: [],
         dataListSelections: [],
-        dialogDeptVisible: false,
         dataForm: {
           orderId: 0,
           orderNumber: '',
@@ -338,6 +300,7 @@
     },
     mounted () {
       this.getDataList()   // 部门查询
+      this.getDeptDataList()
     },
     computed: {
       loginuserName: {
@@ -386,6 +349,7 @@
                 this.dataForm.orderType = data.ordermanagement.orderType
                 this.dataForm.levelId = data.ordermanagement.levelId
                 this.dataForm.orderDevice = data.ordermanagement.orderDevice
+                this.deptListTreeSetCurrentNode()
               }
             })
           }
@@ -399,24 +363,35 @@
           this.dataForm.orderConfirmer = this.loginuserName
         }
       },
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
+      },
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
+      },
       // 部门查询
       getDataList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
           method: 'get',
-          params: this.$http.adornParams({'name': this.deptFrom.name})
+          params: this.$http.adornParams()
         }).then(({data}) => {
           this.dataList = treeDataTranslate(data, 'deptId')
         })
       },
-      clickdept () {
-        this.getDataList()
-        this.dialogDeptVisible = true
-      },
-      deptHandle (deptId, name) {
-        this.dataForm.deptId = deptId
-        this.dataForm.deptName = name
-        this.dialogDeptVisible = false
+      getDeptDataList () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/dept/list'),
+          method: 'get',
+          params: this.$http.adornParams({'name': this.deptFrom.name})
+        }).then(({data}) => {
+          this.dataDeptList = treeDataTranslate(data, 'deptId')
+        })
       },
       // 选中部门 查询用户
       addOrUpdateHandle (val) {

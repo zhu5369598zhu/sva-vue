@@ -5,28 +5,29 @@
     :append-to-body='true'
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
-      <!--<el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
-        {{dataForm.defectiveNumber}}
-      </el-form-item>-->
       <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
         <el-input v-model="dataForm.defectiveTheme" placeholder="巡检缺陷单主题"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="所属机构" prop="deptId">
-            <!--<el-select v-model="dataForm.deptId" placeholder="所属机构" clearable
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>-->
-            <el-input v-model="dataForm.deptName"  placeholder="部门" :disabled="true" style="width: 160px">
-              <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickdept()" ></a>
-              </span>
+          <el-form-item label="所属机构" prop="deptName">
+            <el-popover
+              ref="deptListPopover"
+              placement="bottom-start"
+              trigger="click"
+              v-model="isShowDeptTree">
+              <el-tree
+                :data="dataList"
+                :props="deptListTreeProps"
+                node-key="deptId"
+                ref="deptListTree"
+                @current-change="deptListTreeCurrentChangeHandle"
+                :default-expand-all="false"
+                :highlight-current="true"
+                :expand-on-click-node="false" clearable style="width:140px;">
+              </el-tree>
+            </el-popover>
+            <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
             </el-input>
           </el-form-item>
         </el-col>
@@ -51,66 +52,12 @@
           autosize
           v-model="dataForm.orderContent" placeholder="巡检缺陷单内容"></el-input>
       </el-form-item>
-      <!--<el-form-item label="缺陷填报人" prop="defectiveName">
-        <el-input v-model="dataForm.defectiveName" placeholder="缺陷填报人"></el-input>
-      </el-form-item>-->
       <el-form-item label="缺陷操作人意见" prop="defectiveNameOpinion">
         <el-input
           type="textarea"
           autosize
           v-model="dataForm.defectiveNameOpinion" placeholder="缺陷操作人意见"></el-input>
-        <el-dialog title="选择部门" :visible.sync="dialogDeptVisible" v-if="dialogDeptVisible" :append-to-body="true" width="400px">
-          <div style="display: flex;justify-content: space-around;align-items: center;">
-            <div style="width:400px;height: 500px;">
-              <el-form :model="deptFrom">
-                <el-row>
-                  <el-col :span="13">
-                    <el-form-item>
-                      <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item>
-                      <el-button @click="getDeptDataList()">查询</el-button>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <el-table
-                :data="dataDeptList"
-                highlight-current-row
-                style="width: 100%;height: 440px;overflow: scroll;">
-                <el-table-column
-                  type="index"
-                  header-align="center"
-                  align="center"
-                  width="80">
-                </el-table-column>
-                <table-tree-column
-                  style="width: auto"
-                  prop="name"
-                  header-align="center"
-                  treeKey="deptId"
-                  label="机构名称"
-                ></table-tree-column>
-                <el-table-column
-                  header-align="center"
-                  align="center"
-                  width="150"
-                  label="操作">
-                  <template slot-scope="scope">
-                    <el-button  type="text" size="small" @click="deptHandle(scope.row.deptId, scope.row.name)">选中</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-        </el-dialog>
-
       </el-form-item>
-      <!--<el-form-item label="工单确认人" prop="orderConfirmer">
-        <el-input v-model="dataForm.orderConfirmer" placeholder="工单确认人"></el-input>
-      </el-form-item>-->
       <el-row>
         <el-col :span="8">
           <el-form-item
@@ -251,7 +198,13 @@
       return {
         isHttp: false,
         visible: false,
+        isShowDeptTree: false,
         deptList: [],
+        dataList: [],
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         dataExceptionList: [],
         dataForm: {
           defectiveId: 0,
@@ -295,7 +248,7 @@
             { required: true, message: '缺陷工单编号不能为空', trigger: 'blur' }
           ],
           defectiveTheme: [
-            { required: true, message: '缺陷工单主题不能为空', trigger: 'blur' }
+            { required: true, message: '巡检缺陷单主题不能为空', trigger: 'blur' }
           ],
           defectiveType: [
             { required: true, message: '0 巡检缺陷异常 1 填报缺陷异常不能为空', trigger: 'blur' }
@@ -316,7 +269,7 @@
             { required: true, message: '缺陷确认人(填报)人id不能为空', trigger: 'blur' }
           ],
           defectiveNameOpinion: [
-            { required: true, message: '工单填报人意见不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷操作人意见不能为空', trigger: 'blur' }
           ],
           createTime: [
             { required: true, message: '填报时间不能为空', trigger: 'blur' }
@@ -328,7 +281,7 @@
             { required: true, message: '工单确认人不能为空', trigger: 'blur' }
           ],
           orderConfirmerId: [
-            { required: true, message: '工单确认人 id不能为空', trigger: 'blur' }
+            { required: true, message: '工单确认人不能为空', trigger: 'blur' }
           ],
           confirmedTime: [
             { required: true, message: '工单确认时间不能为空', trigger: 'blur' }
@@ -339,8 +292,7 @@
           orderAcceptor: [
             { required: true, message: '受理人不能为空', trigger: 'blur' }
           ]
-        },
-        dialogDeptVisible: false
+        }
       }
     },
     components: {
@@ -350,6 +302,7 @@
       this.getDeptList()
       this.getExeption() // 异常等级
       this.getDeptDataList()
+      this.getDataList()
     },
     computed: {
       loginuserName: {
@@ -394,6 +347,7 @@
                 this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
                 this.dataForm.resultId = data.orderdefective.resultId
                 this.dataForm.requirementTime = data.orderdefective.requirementTime
+                this.deptListTreeSetCurrentNode()
               }
             })
           }
@@ -484,6 +438,15 @@
           this.dataDeptList = treeDataTranslate(data, 'deptId')
         })
       },
+      getDataList () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/dept/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          this.dataList = treeDataTranslate(data, 'deptId')
+        })
+      },
       // 多选
       selectionChangeHandle (val) {
         this.dataListSelections = val
@@ -518,14 +481,16 @@
       handleRequirementTimeChange (val) {
         this.dataForm.requirementTime = val
       },
-      clickdept () {
-        this.getDeptDataList()
-        this.dialogDeptVisible = true
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
       },
-      deptHandle (deptId, name) {
-        this.dataForm.deptId = deptId
-        this.dataForm.deptName = name
-        this.dialogDeptVisible = false
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
       },
       // 表单提交
       dataFormSubmit () {

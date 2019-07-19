@@ -8,16 +8,8 @@
       班长日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}
       <el-row>
         <el-col :span="8">
-          <el-form-item label="部门(工段)" prop="deptId">
-            <el-select :disabled="true" v-model="dataForm.deptId"
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>
+          <el-form-item label="部门(工段)" prop="deptName">
+            <el-input v-model="dataForm.deptName" readonly ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -26,15 +18,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="班次" prop="baseTurnId">
-            <el-select v-model="dataForm.baseTurnId"  :disabled="true" clearable style="width:120px;">
-              <el-option
-                v-for="item in TurnList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
+          <el-form-item label="班次" prop="baseTurnName">
+            <el-input v-model="dataForm.baseTurnName"  readonly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -164,8 +149,10 @@
           classId: 0,
           logNumber: '',
           deptId: '',
+          deptName: '',
           classGroupName: '',
           baseTurnId: '',
+          baseTurnName: '',
           logType: '1',
           logStatus: '3',
           logUserStatus: '3',
@@ -289,8 +276,10 @@
               if (data && data.code === 0) {
                 this.dataForm.logNumber = data.classgrouplog.logNumber
                 this.dataForm.deptId = data.classgrouplog.deptId
+                this.dataForm.deptName = data.classgrouplog.deptName
                 this.dataForm.classGroupName = data.classgrouplog.classGroupName
                 this.dataForm.baseTurnId = data.classgrouplog.baseTurnId
+                this.dataForm.baseTurnName = data.classgrouplog.baseTurnName
                 this.dataForm.logType = data.classgrouplog.logType
                 this.dataForm.logStatus = data.classgrouplog.logStatus
                 this.dataForm.logUserStatus = data.classgrouplog.logUserStatus

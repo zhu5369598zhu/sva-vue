@@ -14,59 +14,25 @@
     <el-row>
       <el-col :span="8">
       <el-form-item label="所属机构" prop="deptName">
-        <el-input v-model="dataForm.deptName" :disabled="true">
-          <span slot="suffix">
-              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickdept()" ></a>
-          </span>
+        <el-popover
+          ref="deptListPopover"
+          placement="bottom-start"
+          trigger="click"
+          v-model="isShowDeptTree">
+          <el-tree
+            :data="dataList"
+            :props="deptListTreeProps"
+            node-key="deptId"
+            ref="deptListTree"
+            @current-change="deptListTreeCurrentChangeHandle"
+            :default-expand-all="false"
+            :highlight-current="true"
+            :expand-on-click-node="false" clearable style="width:140px;">
+          </el-tree>
+        </el-popover>
+        <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
         </el-input>
       </el-form-item>
-      <el-dialog title="选择部门" :visible.sync="dialogDeptVisible" v-if="dialogDeptVisible" :append-to-body="true" width="400px">
-          <div style="display: flex;justify-content: space-around;align-items: center;">
-            <div style="width:400px;height: 500px;">
-              <el-form :model="deptFrom">
-                <el-row>
-                  <el-col :span="13">
-                    <el-form-item>
-                      <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item>
-                      <el-button @click="getDeptDataList()">查询</el-button>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <el-table
-                :data="dataDeptList"
-                highlight-current-row
-                style="width: 100%;height: 440px;overflow: scroll;">
-                <el-table-column
-                  type="index"
-                  header-align="center"
-                  align="center"
-                  width="80">
-                </el-table-column>
-                <table-tree-column
-                  style="width: auto"
-                  prop="name"
-                  header-align="center"
-                  treeKey="deptId"
-                  label="机构名称"
-                ></table-tree-column>
-                <el-table-column
-                  header-align="center"
-                  align="center"
-                  width="150"
-                  label="操作">
-                  <template slot-scope="scope">
-                    <el-button  type="text" size="small" @click="deptHandle(scope.row.deptId, scope.row.name)">选中</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-        </el-dialog>
       </el-col>
       <el-col :span="8">
       <el-form-item label="缺陷异常等级" prop="exceptionId">
@@ -226,6 +192,13 @@
       return {
         isHttp: false,
         visible: false,
+        isShowDeptTree: false,
+        dataList: [],
+        dataDeptList: [],
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         dataExceptionList: [],
         dataForm: {
           defectiveId: 0,
@@ -248,6 +221,9 @@
           defectiveDevice: ''
         },
         dataRule: {
+          deptName: [
+            { required: true, message: '所属部门不能为空', trigger: 'change' }
+          ],
           defectiveNumber: [
             { required: true, message: '缺陷工单编号不能为空', trigger: 'blur' }
           ],
@@ -299,7 +275,6 @@
           name: '',
           deptId: null
         },
-        dataDeptList: [],
         dialogDeviceVisible: false,
         datadeviceForm: {
           deviceName: ''
@@ -317,6 +292,7 @@
     },
     mounted () {
       this.getExeption() // 异常等级
+      this.getDataList()
     },
     computed: {
       loginuserName: {
@@ -366,15 +342,6 @@
          // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
           this.dataForm.defectiveName = this.loginuserName
           this.dataForm.defectiveNameId = this.loginuserId
-          // this.dataForm.orderConfirmer = this.loginuserName
-          // this.dataForm.orderConfirmerId = this.loginuserId
-          /*this.$http({
-            url: this.$http.adornUrl('/management/orderdefective/managementNumber'),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            this.dataForm.defectiveNumber = data.managementNumber
-          })*/
         }
       },
       // 点击设备图标
@@ -385,6 +352,17 @@
       // 搜索设备
       search () {
         this.getDeviceList()
+      },
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
+      },
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
       },
       // 选中部门 查询设备列表
       depteHandle (val) {
@@ -420,15 +398,14 @@
       selectionChangeHandle (val) {
         this.dataListSelections = val
       },
-      // 点击部门图标
-      clickdept () {
-        this.getDeptDataList()
-        this.dialogDeptVisible = true
-      },
-      deptHandle (deptId, name) {
-        this.dataForm.deptId = deptId
-        this.dataForm.deptName = name
-        this.dialogDeptVisible = false
+      getDataList () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/dept/list'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          this.dataList = treeDataTranslate(data, 'deptId')
+        })
       },
       // 查询部门
       getDeptDataList () {

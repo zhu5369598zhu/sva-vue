@@ -243,7 +243,7 @@
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogonevisible = false">取消</el-button>
         <el-button type="warning" @click="reJect()">拒绝</el-button>
-            <el-button type="primary" @click="accepTance()">受理</el-button>
+        <el-button type="primary" @click="accepTance()">受理</el-button>
       </span>
       </el-dialog>
 
@@ -251,90 +251,6 @@
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
-    <!--<div class="show-data-down" >
-      <div class="new_1" id="did_1" style="display: none">
-      <el-form :inline="true" :model="orderDataForm" label-width="80px;">
-      &lt;!&ndash;  拟制中 &ndash;&gt;
-        <h5> 工单详情</h5>
-      <div class="div-a">
-        <el-form-item label="工单编号" prop="orderNumber">
-          <el-input v-model="orderDataForm.orderNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="工单状态" prop="orderStatus">
-          <el-select v-model="orderDataForm.orderStatus"  >
-            <el-option
-              v-for="item in orderStatusList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="缺陷单编号" prop="defectiveNumber">
-          <el-input v-model="orderDataForm.defectiveNumber"></el-input>
-        </el-form-item>
-        <el-form-item label="下发时间" prop="createTime">
-          <el-input v-model="orderDataForm.createTime"></el-input>
-        </el-form-item>
-        <el-form-item label="要求完成时间" prop="requirementTime">
-          <el-input v-model="orderDataForm.requirementTime"></el-input>
-        </el-form-item>
-      </div>
-      <div class="div-b">
-        <el-form-item label="所属机构" prop="deptId">
-          <el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-          >
-            <el-option
-              v-for="item in deptList"
-              :key="item.deptId"
-              :label="item.name"
-              :value="item.deptId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="工单类型" prop="orderTypeName">
-          <el-input v-model="orderDataForm.orderTypeName"></el-input>
-        </el-form-item>
-        <el-form-item label="缺陷单等级" prop="execptionName">
-          <el-input v-model="orderDataForm.execptionName"></el-input>
-        </el-form-item>
-        <el-form-item label="缺陷操作人" prop="defectiveName">
-          <el-input v-model="orderDataForm.defectiveName"></el-input>
-        </el-form-item>
-        <el-form-item label="工单操作人" prop="orderApplicant">
-          <el-input v-model="orderDataForm.orderApplicant"></el-input>
-        </el-form-item>
-
-      </div>
-      <div class="div-c">
-        <el-form-item label="工单主题" prop="orderName">
-          <el-input v-model="orderDataForm.orderName"></el-input>
-        </el-form-item>
-        <el-form-item label="默认内容" prop="orderContent">
-          <el-input
-            :rows="6"
-            type="textarea"
-            v-model="orderDataForm.orderContent"></el-input>
-        </el-form-item>
-
-      </div>
-      <div class="div-d">
-
-        <el-form-item label="结论" prop="orderAcceptorOpinion">
-          <el-input
-            :rows="6"
-            type="textarea"
-            v-model="orderDataForm.orderAcceptorOpinion"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="warning" @click="reJect()">拒绝</el-button>
-          <el-button type="primary" @click="accepTance()">受理</el-button>
-        </el-form-item>
-
-      </div>
-      </el-form>
-    </div>
-    </div>-->
   </div>
 
  </template>
@@ -524,13 +440,21 @@
       },
       // 已下发待受理状态 提交到 已受理待上报状态
       accepTance () {
-        this.orderDataForm.orderStatus = 2
-        this.orderConfirm()
+        if (this.orderDataForm.orderAcceptorOpinion === '' || this.orderDataForm.orderAcceptorOpinion === null) {
+          this.$alert('受理人意见不能为空')
+        } else {
+          this.orderDataForm.orderStatus = 2
+          this.orderConfirm()
+        }
       },
       // 拒绝受理  已代发待受理 提交到 已派单被打回
       reJect () {
-        this.orderDataForm.orderStatus = 6
-        this.orderConfirm()
+        if (this.orderDataForm.orderAcceptorOpinion === '' || this.orderDataForm.orderAcceptorOpinion === null) {
+          this.$alert('受理人意见不能为空')
+        } else {
+          this.orderDataForm.orderStatus = 6
+          this.orderConfirm()
+        }
       },
       orderConfirm () {
         // 提交
