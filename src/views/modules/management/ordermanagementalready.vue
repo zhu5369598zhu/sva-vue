@@ -189,8 +189,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="下发时间" prop="createTime">
-                {{orderDataForm.createTime}}
+              <el-form-item label="工单操作人" prop="orderApplicant">
+                {{orderDataForm.orderApplicant}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -198,15 +198,6 @@
             <el-col :span="8">
               <el-form-item label="所属机构" prop="deptName">
                 {{orderDataForm.deptName}}
-                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-                >
-                  <el-option
-                    v-for="item in deptList"
-                    :key="item.deptId"
-                    :label="item.name"
-                    :value="item.deptId"
-                  ></el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -222,8 +213,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="工单操作人" prop="orderApplicant">
-                {{orderDataForm.orderApplicant}}
+              <el-form-item label="工单受理人" prop="orderAcceptor">
+                {{orderDataForm.orderAcceptor}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -499,12 +490,12 @@
                 onClose: () => {
                   this.dialogonevisible = false
                   this.$emit('refreshDataList')
+                  this.getDataList()
                 }
               })
             } else {
               this.$message.error(data.msg)
             }
-            this.getDataList()
           })
         } else {
           this.$alert('必须由受理用户来操作')

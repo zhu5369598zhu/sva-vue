@@ -185,20 +185,23 @@
             <el-col :span="8">
             <el-form-item label="所属机构" prop="deptName">
               {{orderDataForm.deptName}}
-              <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-              >
-                <el-option
-                  v-for="item in deptList"
-                  :key="item.deptId"
-                  :label="item.name"
-                  :value="item.deptId"
-                ></el-option>
-              </el-select>-->
             </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="缺陷操作人" prop="defectiveName">
                 {{orderDataForm.defectiveName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单操作人" prop="orderApplicant">
+                {{orderDataForm.orderApplicant}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单受理人" prop="orderAcceptor">
+                {{orderDataForm.orderAcceptor}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -215,7 +218,6 @@
             </el-col>
           </el-row>
           <el-form-item label="工单类型" prop="orderTypeName">
-            <!--<el-input v-model="orderDataForm.orderTypeName"></el-input>-->
             {{orderDataForm.orderTypeName}}
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
@@ -240,9 +242,6 @@
           <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
             <el-input v-model="orderDataForm.orderDevice"></el-input>
           </el-form-item>
-          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
-            {{orderDataForm.orderAcceptorOpinion}}
-          </el-form-item>-->
           <el-form-item label="是否申请延期">
             <el-switch
               v-model="orderDataForm.value3"
@@ -251,7 +250,7 @@
             </el-switch>
           </el-form-item>
           <el-form-item label="申请延期时间" prop="delayTime" v-if="orderDataForm.value3">
-            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
           </el-form-item>
 
           <el-form-item label="审核人" v-if="orderDataForm.delayTime !=null" prop="orderConfirmer">

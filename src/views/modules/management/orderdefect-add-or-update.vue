@@ -64,7 +64,7 @@
             label="要求完成时间"
             prop="requirementTime"
           >
-            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -185,7 +185,7 @@
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()" :disabled="dataForm.defectiveNameId!==loginuserId">确认缺陷</el-button>
+      <el-button type="primary" @click="dataFormSubmit()" :disabled="dataForm.defectiveNameId!==loginuserId || isHttp" >确认缺陷</el-button>
     </span>
   </el-dialog>
 </template>

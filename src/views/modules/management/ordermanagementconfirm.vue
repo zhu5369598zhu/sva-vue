@@ -192,15 +192,6 @@
             <el-col :span="8">
               <el-form-item label="所属机构" prop="deptName">
                 {{orderDataForm.deptName}}
-                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-                >
-                  <el-option
-                    v-for="item in deptList"
-                    :key="item.deptId"
-                    :label="item.name"
-                    :value="item.deptId"
-                  ></el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -211,13 +202,13 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="下发时间" prop="createTime">
-                {{orderDataForm.createTime}}
+              <el-form-item label="工单操作人" prop="orderApplicant">
+                {{orderDataForm.orderApplicant}}
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="要求完成时间" prop="requirementTime">
-                {{orderDataForm.requirementTime}}
+              <el-form-item label="工单受理人" prop="orderAcceptor">
+                {{orderDataForm.orderAcceptor}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -228,8 +219,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="工单受理人" prop="orderAcceptor">
-                {{orderDataForm.orderAcceptor}}
+              <el-form-item label="要求完成时间" prop="requirementTime">
+                {{orderDataForm.requirementTime}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -242,19 +233,9 @@
           <el-form-item label="处理结果" prop="processingResult">
             {{orderDataForm.processingResult}}
           </el-form-item>
-          <!--<el-form-item label="是否使用备件">
-            <el-switch
-              v-model="orderDataForm.value1"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </el-form-item>-->
           <el-form-item label="备件" prop="orderDevice" >
             {{orderDataForm.orderDevice}}
           </el-form-item>
-          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
-            {{orderDataForm.orderAcceptorOpinion}}
-          </el-form-item>-->
           <el-form-item v-if="orderDataForm.delayTime!=null" label="申请时间" prop="delayTime">
             {{orderDataForm.delayTime}}
           </el-form-item>

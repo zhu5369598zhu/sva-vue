@@ -93,51 +93,33 @@
       <el-form-item label="缺勤原因" prop="reasonsAbsence">
         <el-input v-model="dataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
       </el-form-item>
-    <el-row>
-      <el-col :span="8">
-          <el-form-item label="人员精神状态" prop="personnelMentalState">
-          <el-radio v-model="dataForm.personnelMentalState" label="1">正常</el-radio>
-          <el-radio v-model="dataForm.personnelMentalState" label="2">异常</el-radio>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item v-if="dataForm.personnelMentalState === '2'" label="人员精神异常描述" prop="mentalException">
-          <el-input type="textarea" autosize v-model="dataForm.mentalException" placeholder="人员精神异常描述"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8">
+      <el-form-item label="人员精神状态" prop="personnelMentalState">
+        <el-radio v-model="dataForm.personnelMentalState" label="1">正常</el-radio>
+        <el-radio v-model="dataForm.personnelMentalState" label="2">异常</el-radio>
+      </el-form-item>
+      <el-form-item v-if="dataForm.personnelMentalState === '2'" label="人员精神异常描述" prop="mentalException">
+        <el-input type="textarea" autosize v-model="dataForm.mentalException" placeholder="人员精神异常描述"></el-input>
+      </el-form-item>
       <el-form-item label="劳动防护用品" prop="laborProtectiveArticles">
         <el-radio v-model="dataForm.laborProtectiveArticles" label="1">正常</el-radio>
         <el-radio v-model="dataForm.laborProtectiveArticles" label="2">异常</el-radio>
       </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item v-if="dataForm.laborProtectiveArticles ==='2'" label="劳动防护用品异常描述" prop="protectiveException">
-          <el-input type="textarea" autosize v-model="dataForm.protectiveException" placeholder="劳动防护用品异常描述"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="8">
-        <el-form-item label="工器具状态" prop="tools">
-          <el-radio v-model="dataForm.tools" label="1">正常</el-radio>
-          <el-radio v-model="dataForm.tools" label="2">异常</el-radio>
-        </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item v-if="dataForm.tools === '2'" label="工器具异常描述" prop="toolsException">
-          <el-input type="textarea" autosize v-model="dataForm.toolsException" placeholder="工器具异常描述"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-form-item label="其他异常" prop="otherException">
-      <el-input type="textarea" autosize v-model="dataForm.otherException" placeholder="其他异常"></el-input>
-    </el-form-item>
-    <el-form-item label="工作总结" prop="workSummary">
-      <el-input type="textarea" autosize v-model="dataForm.workSummary" placeholder="工作总结"></el-input>
-    </el-form-item>
+      <el-form-item v-if="dataForm.laborProtectiveArticles ==='2'" label="劳动防护用品异常描述" prop="protectiveException">
+        <el-input type="textarea" autosize v-model="dataForm.protectiveException" placeholder="劳动防护用品异常描述"></el-input>
+      </el-form-item>
+      <el-form-item label="工器具状态" prop="tools">
+        <el-radio v-model="dataForm.tools" label="1">正常</el-radio>
+        <el-radio v-model="dataForm.tools" label="2">异常</el-radio>
+      </el-form-item>
+      <el-form-item v-if="dataForm.tools === '2'" label="工器具异常描述" prop="toolsException">
+        <el-input type="textarea" autosize v-model="dataForm.toolsException" placeholder="工器具异常描述"></el-input>
+      </el-form-item>
+      <el-form-item label="其他异常" prop="otherException">
+        <el-input type="textarea" autosize v-model="dataForm.otherException" placeholder="其他异常"></el-input>
+      </el-form-item>
+      <el-form-item label="工作总结" prop="workSummary">
+        <el-input type="textarea" autosize v-model="dataForm.workSummary" placeholder="工作总结"></el-input>
+      </el-form-item>
       <el-row>
         <el-col :span="8">
           <el-form-item label="负责人" prop="personCharge">

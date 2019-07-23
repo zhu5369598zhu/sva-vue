@@ -168,7 +168,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'&&scope.row.orderStatus!='6'" @click="addOrUpdateHandle(scope.row.orderId,scope.row.orderStatus)">修改</el-button>
-          <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'&&scope.row.orderStatus!='6'" @click="deleteHandle(scope.row.orderId,scope.row.orderStatus)">删除</el-button>
+          <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'" @click="deleteHandle(scope.row.orderId,scope.row.orderStatus)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -275,35 +275,15 @@
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
             <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
-            <!--<el-select v-model="orderDataForm.orderStatus"  >
-              <el-option
-                v-for="item in orderStatusList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>-->
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
             <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
-          </el-form-item>
-          <el-form-item label="下发时间" prop="createTime">
-            <el-input v-model="orderDataForm.createTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="要求完成时间" prop="requirementTime">
             <el-input v-model="orderDataForm.requirementTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
             <el-input v-model="orderDataForm.deptName" readonly></el-input>
-            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>-->
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
             <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
@@ -325,21 +305,13 @@
           </el-form-item>
           <el-form-item label="工单内容" prop="orderContent">
             <el-input
-              :rows="6"
+              autosize
               type="textarea"
               v-model="orderDataForm.orderContent" readonly></el-input>
           </el-form-item>
-          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
-            <el-input
-              :rows="6"
-              type="textarea"
-              v-model="orderDataForm.orderAcceptorOpinion" readonly></el-input>
-          </el-form-item>-->
-
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogonevisible = false">取消</el-button>
-        <!--<el-button type="primary"  :disabled="isHttp">确定</el-button>-->
       </span>
       </el-dialog>
       <!-- 已受理待上报 -->
@@ -354,14 +326,6 @@
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
             <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
-            <!--<el-select v-model="orderDataForm.orderStatus" >
-              <el-option
-                v-for="item in orderStatusList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>-->
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
             <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
@@ -374,15 +338,6 @@
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
             <el-input v-model="orderDataForm.deptName" readonly></el-input>
-            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>-->
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
             <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
@@ -396,35 +351,18 @@
           <el-form-item label="工单操作人" prop="orderApplicant">
             <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
+          <el-form-item label="工单受理人" prop="orderAcceptor">
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
+          </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
             <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
-          <!--<el-form-item label="处理结果" prop="processingResult">
+          <el-form-item label="工单内容" prop="orderContent">
             <el-input
-              :rows="6"
+              autosize
               type="textarea"
-              v-model="orderDataForm.processingResult"></el-input>
-          </el-form-item>-->
-          <!--<el-form-item label="是否使用备件">
-            <el-switch
-              v-model="orderDataForm.value1"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </el-form-item>-->
-          <!--<el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
-            <el-input v-model="orderDataForm.orderDevice"></el-input>
-          </el-form-item>-->
-          <!--<el-form-item label="结论" prop="orderAcceptorOpinion">
-            <el-input
-              :rows="3"
-              type="textarea"
-              v-model="orderDataForm.orderAcceptorOpinion"></el-input>
+              v-model="orderDataForm.orderContent" readonly></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
-          </el-form-item>-->
-
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogtwovisible = false">取消</el-button>
@@ -455,15 +393,6 @@
           </el-form-item>
           <el-form-item label="所属机构" prop="deptId">
             <el-input v-model="orderDataForm.deptName" readonly></el-input>
-            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>-->
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
             <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
@@ -473,6 +402,9 @@
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
             <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
+          </el-form-item>
+          <el-form-item label="工单操作人" prop="orderApplicant">
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
             <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
@@ -486,21 +418,8 @@
               type="textarea"
               v-model="orderDataForm.processingResult" readonly></el-input>
           </el-form-item>
-         <!-- <el-form-item label="是否使用备件">
-            <el-switch
-              v-model="orderDataForm.value1"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </el-form-item>-->
           <el-form-item label="备件" prop="orderDevice" >
             <el-input v-model="orderDataForm.orderDevice"></el-input>
-          </el-form-item>
-          <el-form-item label="结论" prop="orderAcceptorOpinion">
-            <el-input
-              :rows="3"
-              type="textarea"
-              v-model="orderDataForm.orderAcceptorOpinion"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -574,12 +493,6 @@
           <el-form-item label="备件" prop="orderDevice" >
             <el-input v-model="orderDataForm.orderDevice" readonly></el-input>
           </el-form-item>
-          <el-form-item label="结论" prop="orderAcceptorOpinion">
-            <el-input
-              autosize
-              type="textarea"
-              v-model="orderDataForm.orderAcceptorOpinion" readonly></el-input>
-          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogfourvisible = false">取消</el-button>
@@ -638,13 +551,6 @@
           <el-form-item label="备件" prop="orderDevice" >
             <el-input v-model="orderDataForm.orderDevice" readonly></el-input>
           </el-form-item>
-          <el-form-item label="结论" prop="orderAcceptorOpinion">
-            <el-input
-              autosize
-              type="textarea"
-              v-model="orderDataForm.orderAcceptorOpinion" readonly></el-input>
-          </el-form-item>
-
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogfivevisible = false">取消</el-button>
@@ -681,9 +587,18 @@
             </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="所属机构" prop="deptId">
-            {{orderDataForm.deptName}}
-          </el-form-item>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="所属机构" prop="deptId">
+                {{orderDataForm.deptName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷等级" prop="exceptionName">
+                {{orderDataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="8">
               <el-form-item label="缺陷操作人" prop="defectiveName">
@@ -1066,7 +981,7 @@
             this.dialogfivevisible = true
           } else if (this.orderDataForm.orderStatus === 9) {
             this.dialogNinevisible = true
-          } else if (this.orderDataForm.orderStatus === 14){
+          } else if (this.orderDataForm.orderStatus === 14) {
             this.dialogtwovisible = true
           }
         })
@@ -1200,9 +1115,9 @@
                     this.dialogzerovisible = false
                     this.dialogNinevisible = false
                     this.$emit('refreshDataList')
+                    this.search()
                   }
                 })
-                this.search()
               } else {
                 this.$message.error(data.msg)
               }
@@ -1353,37 +1268,34 @@
       },
       // 删除
       deleteHandle (id, orderStatus) {
-        if (id > 0 && orderStatus > 0) {
-          this.$alert('只能删除 拟制中的工单')
-        } else {
-          var ids = id ? [id] : this.dataListSelections.map(item => {
-            return item.orderId
+        console.log(id)
+        var ids = id ? [id] : this.dataListSelections.map(item => {
+          return item.orderId
+        })
+        this.$confirm(`确定进行[${ids ? '删除' : '批量删除'}]操作?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/management/ordermanagement/delete'),
+            method: 'post',
+            data: this.$http.adornData(ids, false)
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
+            } else {
+              this.$message.error(data.msg)
+            }
           })
-          this.$confirm(`确定进行[${ids ? '删除' : '批量删除'}]操作?`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$http({
-              url: this.$http.adornUrl('/management/ordermanagement/delete'),
-              method: 'post',
-              data: this.$http.adornData(ids, false)
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  duration: 1500,
-                  onClose: () => {
-                    this.getDataList()
-                  }
-                })
-              } else {
-                this.$message.error(data.msg)
-              }
-            })
-          })
-        }
+        })
       },
       // 拒绝下发派单
       disagreeLower () {

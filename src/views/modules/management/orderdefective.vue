@@ -137,7 +137,7 @@
           label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId)">修改</el-button>
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="deleteHandle(scope.row.defectiveId)">删除</el-button>
+            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="deleteHandle(scope.row.defectiveId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -273,7 +273,7 @@
           <el-form-item label="缺陷单主题" prop="defectiveTheme">
             {{orderDataForm.defectiveTheme}}
           </el-form-item>
-          <el-form-item label="默认内容" prop="orderContent">
+          <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
           <!--<el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''" label="工单确认人意见" prop="orderConfirmerOpinion">
@@ -288,7 +288,7 @@
                 label="要求完成时间"
                 prop="requirementTime"
               >
-                <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+                <el-date-picker v-model="orderDataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -475,7 +475,7 @@
           <el-form-item label="缺陷单主题" prop="defectiveTheme">
             {{orderDataForm.defectiveTheme}}
           </el-form-item>
-          <el-form-item label="默认内容" prop="orderContent">
+          <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
           <el-form-item label="工单确认人" prop="orderConfirmer">

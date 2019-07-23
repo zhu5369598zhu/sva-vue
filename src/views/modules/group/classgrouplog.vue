@@ -417,15 +417,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="班次" prop="baseTurnId">
-                <el-select v-model="logdataForm.baseTurnId" readonly  style="width:120px;">
-                  <el-option
-                    v-for="item in TurnList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
+              <el-form-item label="班次" prop="baseTurnName">
+                <el-input v-model="logdataForm.baseTurnName" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>

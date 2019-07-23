@@ -27,10 +27,10 @@
                 </el-form-item>
 
                 <el-form-item label="巡检时间从:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="datetime" value-format="yyyy-MM-dd hh:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" type="datetime" value-format="yyyy-MM-dd HH:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="datetime" value-format="yyyy-MM-dd hh:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" type="datetime" value-format="yyyy-MM-dd HH:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
                   <el-button @click="ordersearch()">查询</el-button>
@@ -151,7 +151,7 @@
                   header-align="center"
                   align="center"
                   label="轮次">
-                </el-table-column
+                </el-table-column>
                 <el-table-column
                   prop="confirmedTime"
                   header-align="center"

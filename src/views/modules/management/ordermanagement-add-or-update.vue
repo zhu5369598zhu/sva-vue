@@ -152,7 +152,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="要求完成时间" prop="requirementTime" label-width="100px">
-            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd hh:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>

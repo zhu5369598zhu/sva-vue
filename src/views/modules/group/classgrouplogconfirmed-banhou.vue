@@ -18,7 +18,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="班次" prop="baseTurnName">
-          <el-input v-model="dataForm.baseTurnName"></el-input>
+          <el-input v-model="dataForm.baseTurnName" readonly></el-input>
         </el-form-item>
       </el-col>
     </el-row>
