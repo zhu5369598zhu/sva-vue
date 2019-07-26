@@ -224,7 +224,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item
-                        label="工单确认人"
+                        label="工单操作人"
                         prop="orderConfirmer">
                         {{orderDataForm.orderConfirmer}}
                       </el-form-item>

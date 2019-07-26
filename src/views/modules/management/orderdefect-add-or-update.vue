@@ -69,7 +69,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item
-            label="工单确认人"
+            label="工单操作人"
             prop="orderConfirmer"
             style="margin-left: 50px"
           >
@@ -178,7 +178,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item v-if="dataForm.orderConfirmerOpinion!= ''" label="工单确认人意见" prop="orderConfirmerOpinion">
+      <el-form-item v-if="dataForm.orderConfirmerOpinion!= ''" label="工单操作人意见" prop="orderConfirmerOpinion">
         {{dataForm.orderConfirmerOpinion}}
       </el-form-item>
     </el-form>
@@ -263,10 +263,10 @@
             { required: true, message: '巡检缺陷单内容不能为空', trigger: 'blur' }
           ],
           defectiveName: [
-            { required: true, message: '缺陷确认人(填报)人不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷操作人(填报)人不能为空', trigger: 'blur' }
           ],
           defectiveNameId: [
-            { required: true, message: '缺陷确认人(填报)人id不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷操作人(填报)人id不能为空', trigger: 'blur' }
           ],
           defectiveNameOpinion: [
             { required: true, message: '缺陷操作人意见不能为空', trigger: 'blur' }
@@ -278,10 +278,10 @@
             { required: true, message: '0 拟制中 1 待确认 3 已转不能为空', trigger: 'blur' }
           ],
           orderConfirmer: [
-            { required: true, message: '工单确认人不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人不能为空', trigger: 'blur' }
           ],
           orderConfirmerId: [
-            { required: true, message: '工单确认人不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人不能为空', trigger: 'blur' }
           ],
           confirmedTime: [
             { required: true, message: '工单确认时间不能为空', trigger: 'blur' }
@@ -378,7 +378,7 @@
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
-          this.$alert('工单确认人只能选择一个')
+          this.$alert('工单操作人只能选择一个')
         } else {
           this.dataForm.orderConfirmer = userNames.toString()
           this.dataForm.orderConfirmerId = userId.toString()
@@ -497,7 +497,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             if (this.dataForm.orderConfirmer === '') {
-              this.$alert('工单确认人不能为空')
+              this.$alert('工单操作人不能为空')
               return
             }
             if (this.dataForm.requirementTime === null) {

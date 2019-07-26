@@ -81,30 +81,28 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="班组成员" prop="teamMembers">
-            <el-input v-model="dataForm.teamMembers" readonly :disabled="true"></el-input>
-
-            <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
-              <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
-                <el-form-item label="驳回原因" prop="rejectReason">
-                  <el-input type="textarea"
-                            autosize
-                            v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
-                </el-form-item>
-              </el-form>
-              <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogRejectVisible = false">取消</el-button>
-            <el-button type="primary" @click="dataFormSubmit()"  :disabled="isHttp">确定</el-button>
-          </span>
-            </el-dialog>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:140px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="班组成员" prop="teamMembers">
+        <el-input v-model="dataForm.teamMembers" readonly :disabled="true"></el-input>
+
+        <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
+          <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
+            <el-form-item label="驳回原因" prop="rejectReason">
+              <el-input type="textarea"
+                        autosize
+                        v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogRejectVisible = false">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit()"  :disabled="isHttp">确定</el-button>
+          </span>
+        </el-dialog>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -182,7 +180,8 @@
           teamMembers: '',
           workSummary: '',
           personCharge: '',
-          rejectReason: ''
+          rejectReason: '',
+          rejectPeople: ''
         },
         TurnList: [],
         deptList: [],
@@ -409,6 +408,7 @@
       bohuiSubmit () {
         this.dataForm.logStatus = '4'
         this.dataForm.logUserStatus = '4'
+        this.dataForm.rejectPeople = this.loginuserName
         this.dialogRejectVisible = true
       },
       // 已确认
@@ -466,7 +466,8 @@
                 'teamMembers': this.dataForm.teamMembers,
                 'workSummary': this.dataForm.workSummary,
                 'personCharge': this.dataForm.personCharge,
-                'rejectReason': this.dataForm.rejectReason
+                'rejectReason': this.dataForm.rejectReason,
+                'rejectPeople': this.dataForm.rejectPeople
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

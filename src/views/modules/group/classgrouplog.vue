@@ -642,7 +642,7 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'key': this.dataForm.key,
+            'key': this.dataForm.key
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -660,8 +660,8 @@
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['日志编号', '车间(工段)', '班组', '班次', '日志类型', '日志状态', '记录人', '交接人', '接班人', '交接完成时间']
-          const filterVal = ['logNumber', 'deptName', 'classGroupName', 'baseTurnName', 'logTypeName', 'logStatusName', 'noteTaker', 'handoverPerson', 'successor', 'createTime']
+          const tHeader = ['日志编号', '车间(工段)', '班组', '班次', '日志类型', '日志状态', '记录人', '交接人', '接班人', '交接完成时间', '班长', '应出勤人数', '实出勤人数', '实到人员', '未到人员', '顶班人员', '缺勤原因', '接班记事', '当班记事', '上级通知', '交代事项', '人员精神异常描述', '劳动防护用品异常描述', '工器具异常描述', '其他异常', '工作安排', '危险点', '防范措施', '交底人', '班组成员', '工作总结', '负责人', '驳回原因']
+          const filterVal = ['logNumber', 'deptName', 'classGroupName', 'baseTurnName', 'logTypeName', 'logStatusName', 'noteTaker', 'handoverPerson', 'successor', 'createTime', 'monitor', 'shouldAttendance', 'attendance', 'actualArrival', 'notArrived', 'topArrived', 'reasonsAbsence', 'successionRecord', 'onDuty', 'superiorNotice', 'accountConfession', 'mentalException', 'protectiveException', 'toolsException', 'otherException', 'workTask', 'dangerousPoint', 'preventiveMeasures', 'manAgreement', 'teamMembers', 'workSummary', 'personCharge', 'rejectReason']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

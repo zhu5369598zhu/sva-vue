@@ -133,117 +133,115 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="班组成员" prop="teamMembers">
-            <el-input v-model="dataForm.teamMembers" placeholder="班组成员" :disabled="true">
-              <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('班组成员')" ></a>
-              </span>
-            </el-input>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
-              <div style="display: flex;justify-content: space-around;align-items: center;">
-                <div style="width:400px;height: 500px;">
-                  <el-form :model="deptFrom">
-                    <el-row>
-                      <el-col :span="13">
-                        <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getDeptDataList()">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="dataDeptList"
-                    highlight-current-row
-                    @current-change="addOrUpdateHandle"
-                    style="width: 100%;height: 440px;overflow: scroll;">
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="80">
-                    </el-table-column>
-                    <table-tree-column
-                      style="width: auto"
-                      prop="name"
-                      header-align="center"
-                      treeKey="deptId"
-                      label="机构名称"
-                    >
-                    </table-tree-column>
-                  </el-table>
-                </div>
-                <div style="width:400px;height: 500px;">
-                  <el-form :inline="true" :model="datauserForm" >
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="search">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取消</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </el-form>
-                  <el-table
-                    :data="UserdataList"
-                    style="width: 100%;height: 440px;overflow: scroll;"
-                    :row-style="rowStyle"
-                    @selection-change="selectionChangeHandle"
-                  >
-                    <el-table-column
-                      type="selection"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      type="index"
-                      header-align="center"
-                      align="center"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="username"
-                      header-align="center"
-                      align="center"
-                      label="用户名">
-                    </el-table-column>
-                    <el-table-column
-                      prop="deptName"
-                      header-align="center"
-                      align="center"
-                      label="机构名称">
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </div>
-            </el-dialog>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="date" value-format="yyyy-MM-dd 00:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:170px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="班组成员" prop="teamMembers">
+        <el-input v-model="dataForm.teamMembers" placeholder="班组成员" :disabled="true">
+              <span slot="suffix">
+                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('班组成员')" ></a>
+              </span>
+        </el-input>
+        <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+          <div style="display: flex;justify-content: space-around;align-items: center;">
+            <div style="width:400px;height: 500px;">
+              <el-form :model="deptFrom">
+                <el-row>
+                  <el-col :span="13">
+                    <el-form-item>
+                      <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item>
+                      <el-button @click="getDeptDataList()">查询</el-button>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+              <el-table
+                :data="dataDeptList"
+                highlight-current-row
+                @current-change="addOrUpdateHandle"
+                style="width: 100%;height: 440px;overflow: scroll;">
+                <el-table-column
+                  type="index"
+                  header-align="center"
+                  align="center"
+                  width="80">
+                </el-table-column>
+                <table-tree-column
+                  style="width: auto"
+                  prop="name"
+                  header-align="center"
+                  treeKey="deptId"
+                  label="机构名称"
+                >
+                </table-tree-column>
+              </el-table>
+            </div>
+            <div style="width:400px;height: 500px;">
+              <el-form :inline="true" :model="datauserForm" >
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item>
+                      <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="5">
+                    <el-form-item>
+                      <el-button @click="search">查询</el-button>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="5">
+                    <el-form-item>
+                      <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="5">
+                    <el-form-item>
+                      <el-button @click="dialogFormVisible = false">取消</el-button>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+              <el-table
+                :data="UserdataList"
+                style="width: 100%;height: 440px;overflow: scroll;"
+                :row-style="rowStyle"
+                @selection-change="selectionChangeHandle"
+              >
+                <el-table-column
+                  type="selection"
+                  header-align="center"
+                  align="center"
+                  width="50">
+                </el-table-column>
+                <el-table-column
+                  type="index"
+                  header-align="center"
+                  align="center"
+                  width="50">
+                </el-table-column>
+                <el-table-column
+                  prop="username"
+                  header-align="center"
+                  align="center"
+                  label="用户名">
+                </el-table-column>
+                <el-table-column
+                  prop="deptName"
+                  header-align="center"
+                  align="center"
+                  label="机构名称">
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </el-dialog>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>

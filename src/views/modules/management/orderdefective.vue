@@ -122,7 +122,7 @@
           prop="orderConfirmer"
           header-align="center"
           align="center"
-          label="工单确认人">
+          label="工单操作人">
         </el-table-column>
         <el-table-column
           prop="confirmedTime"
@@ -206,7 +206,7 @@
           <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
             {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
-          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion===null" label="工单确认人意见" prop="orderConfirmerOpinion">
+          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion ===null" label="工单操作人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
           </el-form-item>
         </el-form>
@@ -257,7 +257,7 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="缺陷确认人" prop="defectiveName">
+              <el-form-item label="缺陷操作人" prop="defectiveName">
                 {{orderDataForm.defectiveName}}
               </el-form-item>
             </el-col>
@@ -276,12 +276,6 @@
           <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
-          <!--<el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''" label="工单确认人意见" prop="orderConfirmerOpinion">
-            <el-input
-              type="textarea"
-              :rows="3"
-              v-model="orderDataForm.orderConfirmerOpinion"></el-input>
-          </el-form-item>-->
           <el-row>
             <el-col :span="8">
               <el-form-item
@@ -293,7 +287,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item
-              label="工单确认人"
+              label="工单操作人"
               style="margin-left: 50px"
               prop="orderConfirmer"
             >
@@ -478,13 +472,9 @@
           <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
-          <el-form-item label="工单确认人" prop="orderConfirmer">
+          <el-form-item label="工单操作人" prop="orderConfirmer">
             {{orderDataForm.orderConfirmer}}
           </el-form-item>
-          <!--<el-form-item label="工单确认人意见" prop="orderConfirmerOpinion">
-            {{orderDataForm.orderConfirmerOpinion}}
-          </el-form-item>-->
-
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogtwovisible = false">取消</el-button>
@@ -584,10 +574,10 @@
             {required: true, message: '受理人不为空', trigger: 'blur'}
           ],
           orderConfirmerOpinion: [
-            {required: true, message: '确认人意见不为空', trigger: 'blur'}
+            {required: true, message: '工单操作人意见不为空', trigger: 'blur'}
           ],
           orderConfirmer: [
-            {required: true, message: '工单确认人不为空', trigger: 'blur'}
+            {required: true, message: '工单操作人不为空', trigger: 'blur'}
           ]
         }
       }
@@ -635,7 +625,7 @@
           return item.userId
         })
         if (this.dataListSelections.length >= 2) {
-          this.$alert('工单确认人只能选择一个')
+          this.$alert('工单操作人只能选择一个')
         } else {
           this.orderDataForm.orderConfirmer = userNames.toString()
           this.orderDataForm.orderConfirmerId = userId.toString()
@@ -736,7 +726,7 @@
         this.dataListLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['缺陷单编号', '缺陷单主题', '缺陷类型', '所属机构', '缺陷等级', '缺陷填报人', '填报时间', '转工单状态', '工单确认人', '工单确认时间']
+          const tHeader = ['缺陷单编号', '缺陷单主题', '缺陷类型', '所属机构', '缺陷等级', '缺陷填报人', '填报时间', '转工单状态', '工单操作人', '工单确认时间']
           const filterVal = ['defectiveNumber', 'defectiveTheme', 'defectiveTypeName', 'deptName', 'exceptionName', 'defectiveName', 'createTime', 'orderStatusName', 'orderConfirmer', 'confirmedTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
@@ -972,7 +962,7 @@
       // 确认并派单
       orderConfirm () {
         if (this.orderDataForm.orderConfirmer === '') {
-          this.$alert('工单确认人不能为空')
+          this.$alert('工单操作人不能为空')
           return
         }
         if (this.orderDataForm.requirementTime === null) {

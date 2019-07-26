@@ -173,9 +173,6 @@
         autosize
         v-model="dataForm.defectiveNameOpinion" placeholder="缺陷单填报人意见"></el-input>
     </el-form-item>
-    <!--<el-form-item label="工单确认人" prop="orderConfirmer">
-      <el-input v-model="dataForm.orderConfirmer" placeholder="工单确认人"></el-input>
-    </el-form-item>-->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -243,10 +240,10 @@
             { required: true, message: '默认的工单内容不能为空', trigger: 'blur' }
           ],
           defectiveName: [
-            { required: true, message: '缺陷确认人(填报)人不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷操作人(填报)人不能为空', trigger: 'blur' }
           ],
           defectiveNameId: [
-            { required: true, message: '缺陷确认人(填报)人id不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷操作人(填报)人id不能为空', trigger: 'blur' }
           ],
           defectiveNameOpinion: [
             { required: true, message: '工单填报人意见不能为空', trigger: 'blur' }
@@ -258,16 +255,16 @@
             { required: true, message: '0 拟制中 1 待确认 3 已转不能为空', trigger: 'blur' }
           ],
           orderConfirmer: [
-            { required: true, message: '工单确认人不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人不能为空', trigger: 'blur' }
           ],
           orderConfirmerId: [
-            { required: true, message: '工单确认人 id不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人 id不能为空', trigger: 'blur' }
           ],
           confirmedTime: [
             { required: true, message: '工单确认时间不能为空', trigger: 'blur' }
           ],
           orderConfirmerOpinion: [
-            { required: true, message: '工单确认人意见不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人意见不能为空', trigger: 'blur' }
           ]
         },
         dialogDeptVisible: false,
