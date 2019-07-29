@@ -56,7 +56,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="归属设备" prop="defectiveDevice">
-          <el-input v-model="dataForm.defectiveDevice" :disabled="true" >
+          <el-input v-model="dataForm.defectiveDevice" :disabled="true" style="width: 180px">
             <span slot="suffix">
                   <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/device.jpg" @click="clickdevice()" ></a>
               </span>

@@ -97,6 +97,10 @@
         header-align="center"
         align="center"
         label="日志状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.logStatusName =='!待确认'" style="color: #5daf34">{{scope.row.logStatusName}}</span>
+          <span v-if="scope.row.logStatusName != '!待确认'" >{{scope.row.logStatusName}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="noteTaker"
@@ -131,6 +135,8 @@
         <template slot-scope="scope">
           <el-button type="text" size="small" v-if="scope.row.newsCounts >0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">去确认</el-button>
           <el-button type="text" size="small" v-if="scope.row.newsCounts ===0" :disabled="scope.row.newsCounts ===0" style="color: #8c939d;">去确认</el-button>
+          <el-button type="text" size="small" v-if="scope.row.rejectNewsCounts > 0" @click="rejectupdateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
+          <el-button type="text" size="small" v-if="scope.row.rejectNewsCounts ===0" :disabled="scope.row.rejectNewsCounts ===0" style="color: #8c939d;">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,6 +153,10 @@
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
     <banhou v-if="banhouVisible" ref="banhou" @refreshDataList="getDataList"></banhou>
     <banqian v-if="banqianVisible" ref="banqian" @refreshDataList="getDataList"></banqian>
+    <!-- 驳回修改弹框, 新增 / 修改-->
+    <rejectbanchang v-if="rejectaddOrUpdateVisible" ref="rejectbanchang" @refreshDataList="getDataList"></rejectbanchang>
+    <rejectbanhou v-if="rejectbanhouVisible" ref="rejectbanhou" @refreshDataList="getDataList"></rejectbanhou>
+    <rejectbanqian v-if="rejectbanqianVisible" ref="rejectbanqian" @refreshDataList="getDataList"></rejectbanqian>
     </div>
   </div>
 </template>
@@ -156,6 +166,9 @@
   import AddOrUpdate from './classgrouplogconfirmed-add-or-update'
   import banhou from './classgrouplogconfirmed-banhou'
   import banqian from './classgrouplogconfirmed-banqian'
+  import rejectbanchang from './classgrouplogreject-add-or-update'
+  import rejectbanqian from './classgrouplogreject-banqian'
+  import rejectbanhou from './classgrouplogreject-banhou'
   export default {
     data () {
       return {
@@ -184,7 +197,10 @@
         addOrUpdateVisible: false,
         banqianVisible: false,
         banhouVisible: false,
-        HouHandleVisable: false
+        HouHandleVisable: false,
+        rejectaddOrUpdateVisible: false,
+        rejectbanhouVisible: false,
+        rejectbanqianVisible: false
       }
     },
     computed: {
@@ -195,7 +211,10 @@
     components: {
       AddOrUpdate,
       banhou,
-      banqian
+      banqian,
+      rejectbanchang,
+      rejectbanqian,
+      rejectbanhou
     },
     activated () {
       this.getTurnList()
@@ -360,6 +379,38 @@
           }
         })
       },
+      rejectupdateHandle (id, logStatus, logType, logNumber) {
+        this.$http({
+          url: this.$http.adornUrl('/group/classgrouplogreject/reject'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'user_id': this.loginuserId,
+            'log_number': logNumber
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if (data.newsCounts === 0) {
+              this.$alert('您不需要修改')
+            } else {
+              if (logStatus === '1' || logStatus === '2' || logStatus === '4') { // 拟制中 待确认可以修改
+                if (logType === '1') { // 班长日志
+                  this.rejectbanchang(id)
+                }
+                if (logType === '2') { // 班前日志
+                  this.rejectbanqian(id)
+                }
+                if (logType === '3') { // 班后日志
+                  this.rejectbanhou(id)
+                }
+              }
+              // 已确定 和已完成 不能修改
+              if (logStatus === '3') {
+                this.$alert('日志状态为 已确认的日志不能修改')
+              }
+            }
+          }
+        })
+      },
       // 新增 / 修改  班长日志
       addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
@@ -381,6 +432,27 @@
         this.banqianVisible = true
         this.$nextTick(() => {
           this.$refs.banqian.init(id)
+        })
+      },
+      // 驳回修改 班长日志
+      rejectbanchang (id) {
+        this.rejectaddOrUpdateVisible = true
+        this.$nextTick(() => {
+          this.$refs.rejectbanchang.init(id)
+        })
+      },
+      // 驳回修改 班前日志
+      rejectbanqian (id) {
+        this.rejectbanqianVisible = true
+        this.$nextTick(() => {
+          this.$refs.rejectbanqian.init(id)
+        })
+      },
+      // 驳回修改 班后日志
+      rejectbanhou (id) {
+        this.rejectbanhouVisible = true
+        this.$nextTick(() => {
+          this.$refs.rejectbanhou.init(id)
         })
       }
     },

@@ -4,7 +4,7 @@
     :close-on-click-modal="false"
     :append-to-body='true'
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="110px">
     <!--<el-form-item label="工单编号" prop="orderNumber">{{this.dataForm.orderNumber}}
     </el-form-item>-->
     <el-form-item label="工单主题" prop="orderName">
@@ -36,11 +36,11 @@
         autosize
         v-model="dataForm.orderContent" placeholder="工单内容"></el-input>
     </el-form-item>
-    <el-form-item label="工单填报人意见" prop="orderApplicantOpinion" >
+    <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" >
       <el-input
         type="textarea"
         autosize
-        v-model="dataForm.orderApplicantOpinion" placeholder="工单填报人意见"></el-input>
+        v-model="dataForm.orderApplicantOpinion" placeholder="工单操作人意见"></el-input>
     </el-form-item>
       <el-row>
         <el-col :span="8">
@@ -231,8 +231,8 @@
           orderName: [
             { required: true, message: '工单主题不能为空', trigger: 'blur' }
           ],
-          deptId: [
-            { required: true, message: '所属机构不能为空', trigger: 'blur' }
+          deptName: [
+            { required: true, message: '所属机构不能为空', trigger: 'change' }
           ],
           defectiveName: [
             { required: true, message: '缺陷确认人(填报)人不能为空', trigger: 'blur' }
@@ -241,13 +241,13 @@
             { required: true, message: '工单内容不能为空', trigger: 'blur' }
           ],
           orderApplicant: [
-            { required: true, message: '工单填报人不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人不能为空', trigger: 'blur' }
           ],
           orderApplicantId: [
-            { required: true, message: '工单填报人用户id不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人用户id不能为空', trigger: 'blur' }
           ],
           orderApplicantOpinion: [
-            { required: true, message: '工单填报人意见不能为空', trigger: 'blur' }
+            { required: true, message: '工单操作人意见不能为空', trigger: 'blur' }
           ],
           orderAcceptor: [
             { required: true, message: '工单受理人不能为空', trigger: 'blur' }
@@ -359,8 +359,8 @@
         if (this.dataForm.orderId <= 0) {
           this.dataForm.orderApplicantId = this.loginuserId
           this.dataForm.orderApplicant = this.loginuserName
-          this.dataForm.orderConfirmerId = this.loginuserId
-          this.dataForm.orderConfirmer = this.loginuserName
+          // this.dataForm.orderConfirmerId = this.loginuserId
+          // this.dataForm.orderConfirmer = this.loginuserName
         }
       },
       // 部门树选中

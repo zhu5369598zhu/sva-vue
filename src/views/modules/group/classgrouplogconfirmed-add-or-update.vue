@@ -4,7 +4,7 @@
     :title="!dataForm.classId ? '新增' : '审核'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="90px">
       班长日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}
       <el-row>
         <el-col :span="8">
@@ -92,25 +92,26 @@
             <el-input v-model="dataForm.successor" readonly ></el-input>
           </el-form-item>
         </el-col>
-        <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
-          <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
-            <el-form-item label="驳回原因" prop="rejectReason">
-              <el-input type="textarea"
-                        autosize
-                        v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
-            </el-form-item>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogRejectVisible = false">取消</el-button>
-            <el-button type="primary" @click="dataFormSubmit()"  :disabled="isHttp">确定</el-button>
-          </span>
-        </el-dialog>
         <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:160px;"></el-date-picker>
+            <el-input v-model="dataForm.createTime" readonly style="width:150px;"></el-input>
+            <!--<el-date-picker v-model="" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:160px;"></el-date-picker>-->
           </el-form-item>
         </el-col>
       </el-row>
+      <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
+        <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
+          <el-form-item label="驳回原因" prop="rejectReason">
+            <el-input type="textarea"
+                      autosize
+                      v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogRejectVisible = false">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit()"  :disabled="isHttp">确定</el-button>
+          </span>
+      </el-dialog>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>

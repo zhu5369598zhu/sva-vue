@@ -126,7 +126,7 @@
             this.$router.push('/group-classgrouplogconfirmed')
             this.visible = false
           } else if (newsType === 2) {
-            this.$router.push('/group-classgrouplogreject')
+            this.$router.push('/group-classgrouplogconfirmed')
             this.visible = false
           } else if (newsType === 3) {
             this.$router.push('/management-ordermanagementalready')

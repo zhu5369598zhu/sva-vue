@@ -224,6 +224,9 @@
           <el-form-item label="工单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            {{orderDataForm.orderApplicantOpinion}}
+          </el-form-item>
           <el-form-item label="受理人意见" prop="orderAcceptorOpinion">
             <el-input
               autosize

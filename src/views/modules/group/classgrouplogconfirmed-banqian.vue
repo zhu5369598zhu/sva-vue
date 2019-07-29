@@ -85,7 +85,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="交接时间" prop="createTime">
+          <el-form-item label="交底时间" prop="createTime">
             <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;" readonly></el-date-picker>
           </el-form-item>
         </el-col>

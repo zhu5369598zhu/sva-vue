@@ -252,16 +252,7 @@
           <el-form-item label="申请延期时间" prop="delayTime" v-if="orderDataForm.value3">
             <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
           </el-form-item>
-
-          <el-form-item label="审核人" v-if="orderDataForm.delayTime !=null" prop="orderConfirmer">
-            <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
-            <span slot="suffix" v-if="orderDataForm.delayTime ===null">
-              <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
-            </span>
-            </el-input>
-            <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
-          </el-form-item>
-          <el-form-item label="审核人" v-if="orderDataForm.delayTime ===null" prop="orderConfirmer">
+          <el-form-item label="审核人"  prop="orderConfirmer">
             <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
             <span slot="suffix" v-if="orderDataForm.delayTime ===null">
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
@@ -375,7 +366,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogtwovisible = false">取消</el-button>
-        <el-button type="warning" v-if="orderDataForm.delayTime !=null " @click="reJect()">申请延期</el-button>
+        <el-button type="warning" v-if="orderDataForm.delayTime !=null " @click="reJect()" :disabled="isHttp">申请延期</el-button>
         <el-button type="primary" v-if="orderDataForm.delayTime ===null " @click="accepTance()">上报</el-button>
       </span>
       </el-dialog>
@@ -402,6 +393,7 @@
   export default {
     data () {
       return {
+        isHttp: false,
         dataForm: {
           key: '',
           deptId: '',
@@ -670,6 +662,10 @@
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
+            if (this.orderDataForm.orderConfirmerId === 0) {
+              this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
+              this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
+            }
           }
           if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
             this.dialogtwovisible = true
@@ -699,7 +695,6 @@
       },
       // 延期申请
       reJect () {
-        console.log(this.orderDataForm.processingResult)
         if (this.orderDataForm.processingResult === '' || this.orderDataForm.processingResult === null) {
           this.$alert('处理结果不能为空')
         } else {
@@ -864,17 +859,22 @@
         })
       },
       handleStartTimeChange (val) {
-        this.$http({
-          url: this.$http.adornUrl('/management/ordermanagementreported/info/' + this.orderDataForm.orderId),
-          method: 'get',
-          params: this.$http.adornParams({})
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.orderDataForm.orderConfirmer = data.ordermanagement.orderConfirmer
-            this.orderDataForm.orderConfirmerId = data.ordermanagement.orderConfirmerId
+        this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
+        this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
+        let startTime = new Date(this.orderDataForm.requirementTime)
+        let endTime = new Date(val)
+        if (val !== null) {
+          if (endTime.getTime() < startTime.getTime()) {
+            this.$alert('申请延期时间要大于要求完成时间,请重新选择')
+            this.isHttp = true
+            this.dataForm.delayTime = null
+          } else {
+            this.isHttp = false
+            this.dataForm.delayTime = val
           }
-        })
-        this.dataForm.delayTime = val
+        } else {
+          this.dataForm.delayTime = val
+        }
       },
       hangleStartTimeChangStart (val) {
         this.dataForm.startTime = val

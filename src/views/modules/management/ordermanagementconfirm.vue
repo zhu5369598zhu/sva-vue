@@ -84,8 +84,8 @@
         width="100"
         label="工单状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderStatusName =='!已上报待审核'" style="color: #5daf34">{{scope.row.orderStatusName}}</span>
-          <span v-if="scope.row.orderStatusName !='!已上报待审核'">{{scope.row.orderStatusName}}</span>
+          <span v-if="scope.row.orderStatusName =='!已受理待上报'" style="color: #5daf34">{{scope.row.orderStatusName}}</span>
+          <span v-if="scope.row.orderStatusName !='!已受理待上报'">{{scope.row.orderStatusName}}</span>
         </template>
       </el-table-column>
 
@@ -459,6 +459,8 @@
           this.orderDataForm.orderStatus = 14
           this.orderDataForm.requirementTime = this.orderDataForm.delayTime
           this.orderDataForm.delayTime = null
+          this.orderDataForm.orderConfirmerId = 0
+          this.orderDataForm.orderConfirmer = ''
           this.orderConfirm()
         }
       },
@@ -468,6 +470,8 @@
           this.$alert('审核人意见不能为空')
         } else {
           this.orderDataForm.orderStatus = 15
+          this.orderDataForm.orderConfirmerId = 0
+          this.orderDataForm.orderConfirmer = ''
           this.orderConfirm()
         }
       },
@@ -485,67 +489,65 @@
         if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
           this.$alert('审核人意见不能为空')
         } else {
+          this.orderDataForm.orderConfirmerId = 0
+          this.orderDataForm.orderConfirmer = ''
           this.orderDataForm.orderStatus = 7
           this.orderConfirm()
         }
       },
       orderConfirm () {
         // 提交
-        if (this.orderDataForm.orderConfirmerId === this.loginuserId) {
-          this.$http({
-            url: this.$http.adornUrl(`/management/ordermanagementconfirm/orderupdate`),
-            method: 'post',
-            data: this.$http.adornData({
-              'orderId': this.orderDataForm.orderId,
-              'orderNumber': this.orderDataForm.orderNumber,
-              'defectiveId': this.orderDataForm.defectiveId,
-              'defectiveNumber': this.orderDataForm.defectiveNumber,
-              'defectiveTheme': this.orderDataForm.defectiveTheme,
-              'orderName': this.orderDataForm.orderName,
-              'deptId': this.orderDataForm.deptId,
-              'exceptionId': this.orderDataForm.exceptionId,
-              'exceptionName': this.orderDataForm.exceptionName,
-              'defectiveName': this.orderDataForm.defectiveName,
-              'orderContent': this.orderDataForm.orderContent,
-              'orderApplicant': this.orderDataForm.orderApplicant,
-              'orderApplicantId': this.orderDataForm.orderApplicantId,
-              'orderApplicantOpinion': this.orderDataForm.orderApplicantOpinion,
-              'orderAcceptor': this.orderDataForm.orderAcceptor,
-              'orderAcceptorId': this.orderDataForm.orderAcceptorId,
-              'orderAcceptorOpinion': this.orderDataForm.orderAcceptorOpinion,
-              'orderConfirmer': this.orderDataForm.orderConfirmer,
-              'orderConfirmerId': this.orderDataForm.orderConfirmerId,
-              'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
-              'createTime': this.orderDataForm.createTime,
-              'requirementTime': this.orderDataForm.requirementTime,
-              'confirmedTime': this.orderDataForm.confirmedTime,
-              'actualTime': this.orderDataForm.actualTime,
-              'delayTime': this.orderDataForm.delayTime,
-              'processingResult': this.orderDataForm.processingResult,
-              'orderStatus': this.orderDataForm.orderStatus,
-              'orderType': this.orderDataForm.orderType,
-              'levelId': this.orderDataForm.levelId,
-              'orderDevice': this.orderDataForm.orderDevice
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.dialogthreevisible = false
-                  this.$emit('refreshDataList')
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
+        this.$http({
+          url: this.$http.adornUrl(`/management/ordermanagementconfirm/orderupdate`),
+          method: 'post',
+          data: this.$http.adornData({
+            'orderId': this.orderDataForm.orderId,
+            'orderNumber': this.orderDataForm.orderNumber,
+            'defectiveId': this.orderDataForm.defectiveId,
+            'defectiveNumber': this.orderDataForm.defectiveNumber,
+            'defectiveTheme': this.orderDataForm.defectiveTheme,
+            'orderName': this.orderDataForm.orderName,
+            'deptId': this.orderDataForm.deptId,
+            'exceptionId': this.orderDataForm.exceptionId,
+            'exceptionName': this.orderDataForm.exceptionName,
+            'defectiveName': this.orderDataForm.defectiveName,
+            'orderContent': this.orderDataForm.orderContent,
+            'orderApplicant': this.orderDataForm.orderApplicant,
+            'orderApplicantId': this.orderDataForm.orderApplicantId,
+            'orderApplicantOpinion': this.orderDataForm.orderApplicantOpinion,
+            'orderAcceptor': this.orderDataForm.orderAcceptor,
+            'orderAcceptorId': this.orderDataForm.orderAcceptorId,
+            'orderAcceptorOpinion': this.orderDataForm.orderAcceptorOpinion,
+            'orderConfirmer': this.orderDataForm.orderConfirmer,
+            'orderConfirmerId': this.orderDataForm.orderConfirmerId,
+            'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+            'createTime': this.orderDataForm.createTime,
+            'requirementTime': this.orderDataForm.requirementTime,
+            'confirmedTime': this.orderDataForm.confirmedTime,
+            'actualTime': this.orderDataForm.actualTime,
+            'delayTime': this.orderDataForm.delayTime,
+            'processingResult': this.orderDataForm.processingResult,
+            'orderStatus': this.orderDataForm.orderStatus,
+            'orderType': this.orderDataForm.orderType,
+            'levelId': this.orderDataForm.levelId,
+            'orderDevice': this.orderDataForm.orderDevice
           })
-        } else {
-          this.$alert('必须由确认人来操作')
-        }
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.dialogthreevisible = false
+                this.$emit('refreshDataList')
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
       },
       // 获取数据列表
       getDataList () {

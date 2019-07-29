@@ -251,7 +251,7 @@
             <el-form-item label="工单内容" prop="orderContent">
               {{orderDataForm.orderContent}}
             </el-form-item>
-            <el-form-item label="工单填报人意见" prop="orderApplicantOpinion" label-width="100px">
+            <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
               {{orderDataForm.orderApplicantOpinion}}
             </el-form-item>
             <el-form-item v-if="orderDataForm.orderAcceptorOpinion!=null" label="受理人意见" prop="orderAcceptorOpinion">
@@ -309,6 +309,9 @@
               type="textarea"
               v-model="orderDataForm.orderContent" readonly></el-input>
           </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            <el-input v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogonevisible = false">取消</el-button>
@@ -362,6 +365,9 @@
               autosize
               type="textarea"
               v-model="orderDataForm.orderContent" readonly></el-input>
+          </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            <el-input v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -617,6 +623,9 @@
           <el-form-item label="工单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            <el-input v-model="orderDataForm.orderApplicantOpinion" ></el-input>
+          </el-form-item>
           <el-row>
             <el-col :span="8">
               <el-form-item label="要求完成时间" prop="requirementTime">
@@ -730,23 +739,9 @@
             </div>
           </el-dialog>
         </el-form>
-        <el-dialog
-          :title="!this.orderDataForm.orderApplicantOpinion ? '拒绝原因' : '拒绝原因'"
-          :visible.sync="dialoghangupvisible"
-          :append-to-body='true'>
-          <el-form :model="orderDataForm" ref="orderDataForm" label-width="80px">
-            <el-form-item label="拒绝原因" prop="hangUp" >
-              <el-input v-model="orderDataForm.orderApplicantOpinion" placeholder="请输入拒绝原因"></el-input>
-            </el-form-item>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialoghangupvisible = false">取消</el-button>
-                    <el-button type="primary" @click="disagreeLower()">确定</el-button>
-                  </span>
-        </el-dialog>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogNinevisible = false">取消</el-button>
-          <el-button type="warning" @click="dialogHangup()"  :disabled="orderDataForm.orderApplicantId != loginuserId">拒绝派单</el-button>
+          <el-button type="warning" @click="disagreeLower()"  :disabled="orderDataForm.orderApplicantId != loginuserId">拒绝派单</el-button>
           <el-button type="primary" @click="orderConfirm()"  :disabled="orderDataForm.orderApplicantId != loginuserId">确认并派单</el-button>
         </span>
       </el-dialog>
@@ -865,8 +860,7 @@
         dialogfourvisible: false,
         dialogfivevisible: false,
         dialogNinevisible: false,
-        dialogFormVisible: false,
-        dialoghangupvisible: false
+        dialogFormVisible: false
       }
     },
     components: {
@@ -1299,7 +1293,8 @@
       },
       // 拒绝下发派单
       disagreeLower () {
-        if (this.orderDataForm.orderApplicantOpinion != '') {
+        console.log(this.orderDataForm.orderApplicantOpinion)
+        if (this.orderDataForm.orderApplicantOpinion !== null) {
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagement/disagreelower`),
             method: 'post',
@@ -1339,7 +1334,6 @@
                 onClose: () => {
                   this.dialogzerovisible = false
                   this.dialogNinevisible = false
-                  this.dialoghangupvisible = false
                   this.$emit('refreshDataList')
                 }
               })
@@ -1349,7 +1343,7 @@
             }
           })
         } else {
-          this.$alert('请填写拒绝原因')
+          this.$alert('请填写工单操作人意见')
         }
       },
       // 操作记录
@@ -1358,10 +1352,6 @@
         this.$nextTick(() => {
           this.$refs.OrderRecord.init(id, orderNumber)
         })
-      },
-      // 拒绝原因 提交
-      dialogHangup () {
-        this.dialoghangupvisible = true
       }
     },
     watch: {

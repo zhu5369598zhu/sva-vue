@@ -156,7 +156,7 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogzerovisible">
-        <el-form :model="orderDataForm"  ref="dataForm"  label-width="80px">
+        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-row>
             <el-col :span="8">
               <el-form-item label="缺陷单编号" prop="defectiveNumber">
@@ -238,15 +238,6 @@
             <el-col :span="8">
               <el-form-item label="所属机构" prop="deptName">
                 {{orderDataForm.deptName}}
-                <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-                >
-                  <el-option
-                    v-for="item in deptList"
-                    :key="item.deptId"
-                    :label="item.name"
-                    :value="item.deptId"
-                  ></el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -275,6 +266,9 @@
           </el-form-item>
           <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
+          </el-form-item>
+          <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
+            {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
           <el-row>
             <el-col :span="8">
@@ -449,15 +443,6 @@
           <el-col :span="8">
           <el-form-item label="所属机构" prop="deptName">
             {{orderDataForm.deptName}}
-            <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-            >
-              <el-option
-                v-for="item in deptList"
-                :key="item.deptId"
-                :label="item.name"
-                :value="item.deptId"
-              ></el-option>
-            </el-select>-->
           </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -471,6 +456,9 @@
           </el-form-item>
           <el-form-item label="缺陷单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
+          </el-form-item>
+          <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
+            {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
           <el-form-item label="工单操作人" prop="orderConfirmer">
             {{orderDataForm.orderConfirmer}}
