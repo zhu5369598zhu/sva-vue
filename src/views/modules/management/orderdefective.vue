@@ -206,9 +206,9 @@
           <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
             {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
-          <el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion ===null" label="工单操作人意见" prop="orderConfirmerOpinion">
+          <!--<el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion ===null" label="工单操作人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
@@ -468,6 +468,71 @@
         <el-button @click="dialogtwovisible = false">取消</el-button>
       </span>
       </el-dialog>
+      <!-- 转单被拒绝 -->
+      <el-dialog
+        :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogThreevisible">
+        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="缺陷单编号" prop="defectiveNumber">
+                {{orderDataForm.defectiveNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷类型" prop="defectiveTypeName">
+                {{orderDataForm.defectiveTypeName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷等级" prop="exceptionName">
+                {{orderDataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="缺陷填报人" prop="defectiveName">
+                {{orderDataForm.defectiveName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷填报时间" prop="createTime">
+                {{orderDataForm.createTime}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="归属设备" prop="defectiveDevice">
+            {{orderDataForm.defectiveDevice}}
+          </el-form-item>
+
+          <el-form-item label="缺陷单主题" prop="defectiveTheme">
+            {{orderDataForm.defectiveTheme}}
+          </el-form-item>
+          <el-form-item label="缺陷单内容" prop="orderContent">
+            {{orderDataForm.orderContent}}
+          </el-form-item>
+          <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
+            {{orderDataForm.defectiveNameOpinion}}
+          </el-form-item>
+          <el-form-item  label="工单操作人意见" prop="orderConfirmerOpinion">
+            {{orderDataForm.orderConfirmerOpinion}}
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogThreevisible = false">取消</el-button>
+        <el-button type="primary" :disabled="orderDataForm.defectiveNameId != loginuserId" @click="confirmation()" >确认缺陷单</el-button>
+      </span>
+      </el-dialog>
       <!-- 弹窗, 新增 / 修改 -->
       <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
 
@@ -554,6 +619,7 @@
         dialogzerovisible: false,
         dialogonevisible: false,
         dialogtwovisible: false,
+        dialogThreevisible: false,
         dataRule: {
           requirementTime: [
             {required: true, message: '要求完成时间不为空', trigger: 'blur'}
@@ -873,6 +939,7 @@
             this.orderDataForm.requirementTime = data.orderdefective.requirementTime
             this.orderDataForm.defectiveDevice = data.orderdefective.defectiveDevice
           }
+          console.log(this.orderDataForm.orderConfirmerOpinion)
           if (row.orderStatus === 0) { // 拟制中
             this.dialogzerovisible = true
           } else if (row.orderStatus === 1) {
@@ -880,7 +947,7 @@
           } else if (row.orderStatus === 2) {
             this.dialogtwovisible = true
           } else if (row.orderStatus === 3) {
-            this.dialogzerovisible = true
+            this.dialogThreevisible = true
           }
         })
       },
@@ -937,6 +1004,7 @@
               onClose: () => {
                 this.search()
                 this.dialogzerovisible = false
+                this.dialogThreevisible = false
               }
             })
           } else {

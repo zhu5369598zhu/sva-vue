@@ -3,7 +3,7 @@
     :title="!dataForm.classId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="90px">
       班长日志(修改中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}
       <el-row>
         <el-col :span="8">
@@ -118,7 +118,7 @@
                   v-model="dataForm.accountConfession" placeholder="交代事项"></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="交班人" prop="handoverPerson">
             <el-input v-model="dataForm.handoverPerson" :disabled="true" placeholder="交班人"></el-input>
           </el-form-item>
@@ -230,7 +230,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width: 180px;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
