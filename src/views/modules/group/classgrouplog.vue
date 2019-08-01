@@ -106,10 +106,9 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
       <el-table-column
-        prop="classId"
-        header-align="center"
-        align="center"
-        label="序号">
+        type="index"
+        width="50"
+        lable="">
       </el-table-column>
       <el-table-column
         width="120"
@@ -131,6 +130,7 @@
         prop="classGroupName"
         header-align="center"
         align="center"
+        width="100"
         label="班组">
       </el-table-column>
       <el-table-column
@@ -165,19 +165,20 @@
         prop="handoverPerson"
         header-align="center"
         align="center"
-        label="交接人">
+        label="交班(底)人">
       </el-table-column>
       <el-table-column
-        prop="successor"
+        prop="successorName"
         header-align="center"
         align="center"
-        label="接班人">
+        label="接班(底)人">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-        label="交接(完成)时间">
+        width="140"
+        label="交接(底)时间">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -471,6 +472,9 @@
           </el-form-item>
           <el-form-item label="其他异常" prop="otherException">
             <el-input type="textarea" autosize v-model="logdataForm.otherException" readonly></el-input>
+          </el-form-item>
+          <el-form-item label="工作安排" prop="workTask">
+            <el-input type="textarea" autosize v-model="logdataForm.workTask" readonly></el-input>
           </el-form-item>
           <el-form-item label="工作总结" prop="workSummary">
             <el-input type="textarea" autosize v-model="logdataForm.workSummary" readonly></el-input>
@@ -799,7 +803,7 @@
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.classId
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定对进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

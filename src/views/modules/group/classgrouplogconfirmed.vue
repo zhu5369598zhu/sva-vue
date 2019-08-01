@@ -42,7 +42,7 @@
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -56,10 +56,9 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
       <el-table-column
-        prop="classId"
-        header-align="center"
-        align="center"
-        label="序号">
+        type="index"
+        width="50"
+        lable="">
       </el-table-column>
       <el-table-column
         width="120"
@@ -112,19 +111,19 @@
         prop="handoverPerson"
         header-align="center"
         align="center"
-        label="交接人">
+        label="交班(底)人">
       </el-table-column>
       <el-table-column
         prop="successor"
         header-align="center"
         align="center"
-        label="接班人">
+        label="接班(底)人">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-        label="交接(完成)时间">
+        label="交接(底)时间">
       </el-table-column>
       <el-table-column
         fixed="right"

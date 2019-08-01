@@ -31,7 +31,7 @@
         <el-button @click="ordersearch()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
 
     </el-form>
@@ -527,7 +527,6 @@
       },
       // 查询
       ordersearch () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       onDrawBack () {

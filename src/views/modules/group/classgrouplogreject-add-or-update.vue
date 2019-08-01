@@ -343,7 +343,7 @@
             { required: true, message: '接班人不能为空', trigger: 'blur' }
           ],
           createTime: [
-            { required: true, message: '交接完成时间不能为空', trigger: 'blur' }
+            { required: true, message: '交接时间不能为空', trigger: 'blur' }
           ],
           monitor: [
             { required: true, message: '班长不能为空', trigger: 'blur' }

@@ -27,16 +27,16 @@
                 </el-form-item>
 
                 <el-form-item label="巡检时间从:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="datetime" value-format="yyyy-MM-dd HH:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="datetime" value-format="yyyy-MM-dd HH:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
                   <el-button @click="ordersearch()">查询</el-button>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="exportExcelHandle()">导出excel</el-button>
+                  <el-button @click="exportExcelHandle()">导出</el-button>
                 </el-form-item>
               </el-form>
               <el-table
@@ -52,10 +52,9 @@
                 style="width: 100%;">
                 <el-table-column
                   fixed
-                  prop="id"
-                  header-align="center"
-                  align="center"
-                  label="序号">
+                  type="index"
+                  width="50"
+                  lable="">
                 </el-table-column>
                 <el-table-column
                   fixed
@@ -73,6 +72,7 @@
                   prop="defectiveNumber"
                   header-align="center"
                   align="center"
+                  width="120"
                   label="缺陷单编号">
                   <template slot-scope="scope">
                     <a href="#" style="text-decoration: none;" @click="clickRow(scope.row)"><span  >{{scope.row.defectiveNumber}}</span></a>
@@ -82,6 +82,7 @@
                   prop="itemName"
                   header-align="center"
                   align="center"
+                  width="120"
                   label="巡项内容">
                 </el-table-column>
                 <el-table-column
@@ -90,6 +91,29 @@
                   align="center"
                   width="80"
                   label="数据类型">
+                </el-table-column>
+                <el-table-column
+                  prop="isOk"
+                  header-align="center"
+                  align="center"
+                  width="50"
+                  label="正常">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.isOk === 0" style="color:red;">否</span>
+                    <span v-if="scope.row.isOk === 1">是</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="exceptionName"
+                  header-align="center"
+                  align="center"
+                  width="80"
+                  label="异常等级">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.exceptionName === '危险' || scope.row.exceptionName === '紧急'" style="color:#ff7f46;">{{scope.row.exceptionName}}</span>
+                    <span v-if="scope.row.exceptionName === '报警'" style="color:#ffdc4d;">{{scope.row.exceptionName}}</span>
+                    <span v-if="scope.row.exceptionName === '正常'">{{scope.row.exceptionName}}</span>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="result"
@@ -431,7 +455,6 @@
         }
       },
       ordersearch () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       onDrawBack () {

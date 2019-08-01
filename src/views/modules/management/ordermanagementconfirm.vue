@@ -32,7 +32,7 @@
         <el-button @click="search()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
 
     </el-form>
@@ -374,7 +374,6 @@
       },
       // 查询
       search () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       onDrawBack () {
@@ -461,6 +460,7 @@
           this.orderDataForm.delayTime = null
           this.orderDataForm.orderConfirmerId = 0
           this.orderDataForm.orderConfirmer = ''
+          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },
@@ -472,6 +472,7 @@
           this.orderDataForm.orderStatus = 15
           this.orderDataForm.orderConfirmerId = 0
           this.orderDataForm.orderConfirmer = ''
+          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },
@@ -481,6 +482,7 @@
           this.$alert('审核人意见不能为空')
         } else {
           this.orderDataForm.orderStatus = 5
+          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },
@@ -489,9 +491,8 @@
         if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
           this.$alert('审核人意见不能为空')
         } else {
-          this.orderDataForm.orderConfirmerId = 0
-          this.orderDataForm.orderConfirmer = ''
           this.orderDataForm.orderStatus = 7
+          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },

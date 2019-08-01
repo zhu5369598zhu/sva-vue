@@ -178,7 +178,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item v-if="dataForm.orderConfirmerOpinion!= ''" label="工单操作人意见" prop="orderConfirmerOpinion">
+      <el-form-item v-if="dataForm.orderConfirmerOpinion!= '' || dataForm.orderConfirmerOpinion===null" label="工单操作人意见" prop="orderConfirmerOpinion">
         {{dataForm.orderConfirmerOpinion}}
       </el-form-item>
     </el-form>
@@ -253,8 +253,8 @@
           defectiveType: [
             { required: true, message: '0 巡检缺陷异常 1 填报缺陷异常不能为空', trigger: 'blur' }
           ],
-          deptId: [
-            { required: true, message: '部门id不能为空', trigger: 'blur' }
+          deptName: [
+            { required: true, message: '所属机构不能为空', trigger: 'change' }
           ],
           exceptionId: [
             { required: true, message: '缺陷异常等级不能为空', trigger: 'blur' }
@@ -357,8 +357,6 @@
           // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
           this.dataForm.defectiveName = this.loginuserName
           this.dataForm.defectiveNameId = this.loginuserId
-          // this.dataForm.orderConfirmer = this.loginuserName
-          // this.dataForm.orderConfirmerId = this.loginuserId
           this.dataForm.resultId = id
         }
       },

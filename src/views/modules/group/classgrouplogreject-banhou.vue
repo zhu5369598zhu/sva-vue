@@ -117,6 +117,9 @@
       <el-form-item label="其他异常" prop="otherException">
         <el-input type="textarea" autosize v-model="dataForm.otherException" placeholder="其他异常"></el-input>
       </el-form-item>
+      <el-form-item label="工作安排" prop="workTask">
+        <el-input type="textarea" autosize v-model="dataForm.workTask" placeholder="工作安排"></el-input>
+      </el-form-item>
       <el-form-item label="工作总结" prop="workSummary">
         <el-input type="textarea" autosize v-model="dataForm.workSummary" placeholder="工作总结"></el-input>
       </el-form-item>
@@ -341,7 +344,7 @@
             { required: true, message: '班组不能为空', trigger: 'blur' }
           ],
           baseTurnId: [
-            { required: true, message: '轮次不能为空', trigger: 'blur' }
+            { required: true, message: '班次不能为空', trigger: 'blur' }
           ],
           logType: [
             { required: true, message: '日志类型（1:班长日志，2班前日志，3班后日志）不能为空', trigger: 'blur' }
@@ -362,7 +365,7 @@
             { required: true, message: '接班人id不能为空', trigger: 'blur' }
           ],
           createTime: [
-            { required: true, message: '交接完成时间不能为空', trigger: 'blur' }
+            { required: true, message: '交底时间不能为空', trigger: 'blur' }
           ],
           monitor: [
             { required: true, message: '班长不能为空', trigger: 'blur' }

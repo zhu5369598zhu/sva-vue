@@ -44,7 +44,7 @@
         <el-button v-if="isAuth('management:ordermanagement:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出excel</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -205,14 +205,6 @@
               <el-col :span="8">
                 <el-form-item label="工单状态" prop="orderStatus">
                   {{orderDataForm.orderStatusName}}
-                  <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
-                    <el-option
-                      v-for="item in orderStatusList"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                    </el-option>
-                  </el-select>-->
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -223,15 +215,6 @@
             </el-row>
             <el-form-item label="所属机构" prop="deptName">
               {{orderDataForm.deptName}}
-              <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" :disabled="true"
-              >
-                <el-option
-                  v-for="item in deptList"
-                  :key="item.deptId"
-                  :label="item.name"
-                  :value="item.deptId"
-                ></el-option>
-              </el-select>-->
             </el-form-item>
             <el-row>
               <el-col span="8">
@@ -254,13 +237,10 @@
             <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
               {{orderDataForm.orderApplicantOpinion}}
             </el-form-item>
-            <el-form-item v-if="orderDataForm.orderAcceptorOpinion!=null" label="受理人意见" prop="orderAcceptorOpinion">
-              {{orderDataForm.orderAcceptorOpinion}}
-            </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
-        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId">确认并派单</el-button>
+        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
       </span>
       </el-dialog>
       <!-- 已派单待受理 -->
@@ -562,13 +542,77 @@
         <el-button @click="dialogfivevisible = false">取消</el-button>
       </span>
       </el-dialog>
+      <!--已派单被拒绝 -->
+      <el-dialog
+        :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogsixvisible">
+        <el-form :model="orderDataForm"  ref="dataForm"  label-width="80px">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单编号" prop="orderNumber">
+                {{orderDataForm.orderNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单类型" prop="orderTypeName" label-width="120px">
+                {{orderDataForm.orderTypeName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单状态" prop="orderStatus">
+                {{orderDataForm.orderStatusName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="要求完成时间" prop="requirementTime" label-width="120px">
+                {{orderDataForm.requirementTime}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="所属机构" prop="deptName">
+            {{orderDataForm.deptName}}
+          </el-form-item>
+          <el-row>
+            <el-col span="8">
+              <el-form-item label="工单操作人" prop="orderApplicant">
+                {{orderDataForm.orderApplicant}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单受理人" prop="orderAcceptor" label-width="120px">
+                {{orderDataForm.orderAcceptor}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="工单主题" prop="orderName">
+            {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="工单内容" prop="orderContent">
+            {{orderDataForm.orderContent}}
+          </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            {{orderDataForm.orderApplicantOpinion}}
+          </el-form-item>
+          <el-form-item label="受理人意见" prop="orderAcceptorOpinion">
+            {{orderDataForm.orderAcceptorOpinion}}
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogsixvisible = false">取消</el-button>
+        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
+      </span>
+      </el-dialog>
       <!--已转单待下发 -->
       <el-dialog
         :title="orderDataForm.orderNumber ? '已转单待下发' : '已转单待下发'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogNinevisible">
-        <el-form :model="orderDataForm" ref="dataForm"  label-width="100px">
+        <el-form :model="orderDataForm" :rules="dataRule" ref="dataForm"  label-width="100px">
           <el-row>
             <el-col :span="8">
               <el-form-item label="工单编号" prop="orderNumber">
@@ -623,7 +667,7 @@
           <el-form-item label="工单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
-          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="110px">
             <el-input v-model="orderDataForm.orderApplicantOpinion" ></el-input>
           </el-form-item>
           <el-row>
@@ -742,7 +786,7 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogNinevisible = false">取消</el-button>
           <el-button type="warning" @click="disagreeLower()"  :disabled="orderDataForm.orderApplicantId != loginuserId">拒绝派单</el-button>
-          <el-button type="primary" @click="orderConfirm()"  :disabled="orderDataForm.orderApplicantId != loginuserId">确认并派单</el-button>
+          <el-button type="primary" @click="orderConfirm()"  :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
         </span>
       </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
@@ -859,8 +903,14 @@
         dialogthreevisible: false,
         dialogfourvisible: false,
         dialogfivevisible: false,
+        dialogsixvisible: false,
         dialogNinevisible: false,
-        dialogFormVisible: false
+        dialogFormVisible: false,
+        dataRule: {
+          orderApplicantOpinion: [
+            { required: true, message: '工单操作人意见不能为空', trigger: 'blur' }
+          ]
+        }
       }
     },
     components: {
@@ -903,7 +953,6 @@
       },
       // 查询
       search () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       onDrawBack () {
@@ -961,7 +1010,7 @@
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
           }
-          if (this.orderDataForm.orderStatus === 0 || this.orderDataForm.orderStatus === 6) {
+          if (this.orderDataForm.orderStatus === 0) {
             this.dialogzerovisible = true
           } else if (this.orderDataForm.orderStatus === 1) {
             this.dialogonevisible = true
@@ -973,6 +1022,8 @@
             this.dialogfourvisible = true
           } else if (this.orderDataForm.orderStatus === 5) {
             this.dialogfivevisible = true
+          } else if (this.orderDataForm.orderStatus === 6) {
+            this.dialogsixvisible = true
           } else if (this.orderDataForm.orderStatus === 9) {
             this.dialogNinevisible = true
           } else if (this.orderDataForm.orderStatus === 14) {
@@ -1064,6 +1115,7 @@
       },
       // 拟制中变 成 待受理 (确认并派单)
       orderConfirm () {
+        this.isHttp = true
         if (this.orderDataForm.orderAcceptorId !== 0) {
           // 提交
           if (this.orderDataForm.orderApplicantId === this.loginuserId) {
@@ -1107,8 +1159,10 @@
                   duration: 1500,
                   onClose: () => {
                     this.dialogzerovisible = false
+                    this.dialogsixvisible = false
                     this.dialogNinevisible = false
                     this.$emit('refreshDataList')
+                    this.isHttp = false
                     this.search()
                   }
                 })
@@ -1293,7 +1347,6 @@
       },
       // 拒绝下发派单
       disagreeLower () {
-        console.log(this.orderDataForm.orderApplicantOpinion)
         if (this.orderDataForm.orderApplicantOpinion !== null) {
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagement/disagreelower`),

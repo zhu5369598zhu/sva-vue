@@ -198,7 +198,7 @@
             { required: true, message: '班组不能为空', trigger: 'blur' }
           ],
           baseTurnId: [
-            { required: true, message: '轮次不能为空', trigger: 'blur' }
+            { required: true, message: '班次不能为空', trigger: 'blur' }
           ],
           logType: [
             { required: true, message: '日志类型（1:班长日志，2班前日志，3班后日志）不能为空', trigger: 'blur' }
@@ -216,7 +216,7 @@
             { required: true, message: '接班人不能为空', trigger: 'blur' }
           ],
           createTime: [
-            { required: true, message: '交接完成时间不能为空', trigger: 'blur' }
+            { required: true, message: '交底时间不能为空', trigger: 'blur' }
           ],
           monitor: [
             { required: true, message: '班长不能为空', trigger: 'blur' }

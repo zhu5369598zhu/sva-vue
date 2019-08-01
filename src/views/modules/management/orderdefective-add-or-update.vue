@@ -225,7 +225,7 @@
             { required: true, message: '缺陷工单编号不能为空', trigger: 'blur' }
           ],
           defectiveTheme: [
-            { required: true, message: '缺陷工单主题不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷单主题不能为空', trigger: 'blur' }
           ],
           defectiveType: [
             { required: true, message: '0 巡检缺陷异常 1 填报缺陷异常不能为空', trigger: 'blur' }
@@ -237,7 +237,7 @@
             { required: true, message: '缺陷异常等级不能为空', trigger: 'blur' }
           ],
           orderContent: [
-            { required: true, message: '默认的工单内容不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷单内容不能为空', trigger: 'blur' }
           ],
           defectiveName: [
             { required: true, message: '缺陷操作人(填报)人不能为空', trigger: 'blur' }
@@ -246,7 +246,7 @@
             { required: true, message: '缺陷操作人(填报)人id不能为空', trigger: 'blur' }
           ],
           defectiveNameOpinion: [
-            { required: true, message: '工单填报人意见不能为空', trigger: 'blur' }
+            { required: true, message: '缺陷单填报人意见不能为空', trigger: 'blur' }
           ],
           createTime: [
             { required: true, message: '填报时间不能为空', trigger: 'blur' }

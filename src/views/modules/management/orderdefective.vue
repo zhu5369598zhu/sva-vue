@@ -39,7 +39,7 @@
           <el-button v-if="isAuth('management:orderdefective:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="exportExcelHandle()">导出excel</el-button>
+          <el-button @click="exportExcelHandle()">导出</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -60,11 +60,10 @@
           width="30">
         </el-table-column>
         <el-table-column
-          prop="defectiveId"
           header-align="center"
-          align="center"
+          type="index"
           width="50"
-          label="序号">
+          lable="">
         </el-table-column>
         <el-table-column
           prop="defectiveNumber"
@@ -745,7 +744,6 @@
       },
 
       search () {
-        this.dataForm.deptId = ''
         this.getDataList()
       },
       // 获取数据列表

@@ -337,7 +337,7 @@
             { required: true, message: '班组不能为空', trigger: 'blur' }
           ],
           baseTurnId: [
-            { required: true, message: '轮次不能为空', trigger: 'blur' }
+            { required: true, message: '班次不能为空', trigger: 'blur' }
           ],
           logType: [
             { required: true, message: '日志类型（1:班长日志，2班前日志，3班后日志）不能为空', trigger: 'blur' }
@@ -355,7 +355,7 @@
             { required: true, message: '接班人不能为空', trigger: 'blur' }
           ],
           createTime: [
-            { required: true, message: '交接完成时间不能为空', trigger: 'blur' }
+            { required: true, message: '交底时间不能为空', trigger: 'blur' }
           ],
           monitor: [
             { required: true, message: '班长不能为空', trigger: 'blur' }
@@ -485,6 +485,7 @@
         if (this.dataForm.classId <= 0) {
           // 交班人 交底人 记录人 负责人 都是 登录用户
           this.dataForm.manAgreement = this.loginuserName
+          this.dataForm.handoverPerson = this.loginuserName
           this.dataForm.handoverPersonId = this.loginuserId
           this.dataForm.noteTaker = this.loginuserName
           this.dataForm.personCharge = this.loginuserName
@@ -614,7 +615,7 @@
         if (this.title === '班组成员') {
           this.dataForm.teamMembers = userNames.toString()
           this.dataForm.teamMembersIds = userId.toString()
-          console.log(this.dataForm.teamMembersIds)
+          this.dataForm.successor = userNames.toString()
           this.dialogFormVisible = false
         }
         if (this.title === '实到人员') {
