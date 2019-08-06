@@ -83,12 +83,7 @@
         align="center"
         width="100"
         label="工单状态">
-        <template slot-scope="scope">
-          <span v-if="scope.row.orderStatusName =='!已受理待上报'" style="color: #5daf34">{{scope.row.orderStatusName}}</span>
-          <span v-if="scope.row.orderStatusName !='!已受理待上报'">{{scope.row.orderStatusName}}</span>
-        </template>
       </el-table-column>
-
       <el-table-column
         prop="orderName"
         header-align="center"
@@ -248,10 +243,10 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogthreevisible = false">取消</el-button>
-        <el-button v-if="orderDataForm.delayTime!=null" type="primary" @click="agreeDelay()">同意延期申请</el-button>
-        <el-button v-if="orderDataForm.delayTime!=null" type="warning" @click="disagreeDelay()">不同意延期申请</el-button>
-        <el-button v-if="orderDataForm.delayTime===null" type="warning" @click="reJect()">拒绝</el-button>
-        <el-button v-if="orderDataForm.delayTime===null" type="primary" @click="accepTance()">确认</el-button>
+       <!-- <el-button v-if="orderDataForm.delayTime!=null" type="primary" @click="agreeDelay()">同意延期申请</el-button>
+        <el-button v-if="orderDataForm.delayTime!=null" type="warning" @click="disagreeDelay()">不同意延期申请</el-button>-->
+        <el-button v-if="orderDataForm.delayTime===null" type="warning" :disabled="isHttp" @click="reJect()">拒绝</el-button>
+        <el-button v-if="orderDataForm.delayTime===null" type="primary" :disabled="isHttp" @click="accepTance()">确认</el-button>
       </span>
       </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
@@ -275,6 +270,7 @@
   export default {
     data () {
       return {
+        isHttp: false,
         dataForm: {
           key: '',
           deptId: '',
@@ -318,7 +314,8 @@
           orderType: '',
           orderTypeName: '',
           levelId: '',
-          orderDevice: ''
+          orderDevice: '',
+          disPlay: 0
         },
         tableHeight: 300,
         isDrawBack: false,
@@ -431,7 +428,9 @@
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
+            this.orderDataForm.disPlay = data.ordermanagement.disPlay
           }
+          this.isHttp = false
           if (this.orderDataForm.orderStatus === 3) {
             this.dialogthreevisible = true
           } else if (this.orderDataForm.orderStatus === 14) {
@@ -469,6 +468,7 @@
         if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
           this.$alert('审核人意见不能为空')
         } else {
+          this.orderDataForm.disPlay = 0
           this.orderDataForm.orderStatus = 15
           this.orderDataForm.orderConfirmerId = 0
           this.orderDataForm.orderConfirmer = ''
@@ -481,8 +481,8 @@
         if (this.orderDataForm.orderConfirmerOpinion === '' || this.orderDataForm.orderConfirmerOpinion === null) {
           this.$alert('审核人意见不能为空')
         } else {
+          this.orderDataForm.disPlay = 0
           this.orderDataForm.orderStatus = 5
-          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },
@@ -492,11 +492,11 @@
           this.$alert('审核人意见不能为空')
         } else {
           this.orderDataForm.orderStatus = 7
-          this.orderDataForm.processingResult = null
           this.orderConfirm()
         }
       },
       orderConfirm () {
+        this.isHttp = true
         // 提交
         this.$http({
           url: this.$http.adornUrl(`/management/ordermanagementconfirm/orderupdate`),
@@ -543,6 +543,7 @@
                 this.dialogthreevisible = false
                 this.$emit('refreshDataList')
                 this.getDataList()
+                this.isHttp = false
               }
             })
           } else {

@@ -179,7 +179,9 @@
           </el-form-item>
         </el-col>
       </el-row>
-
+      <el-form-item  label="工单操作人意见" prop="orderConfirmerOpinion">
+        {{dataForm.orderConfirmerOpinion}}
+      </el-form-item>
     </el-form>
 
     <span slot="footer" class="dialog-footer">
@@ -200,7 +202,6 @@
       return {
         isHttp: false,
         visible: false,
-        logvisible: false,
         isShowDeptTree: false,
         deptList: [],
         dataList: [],
@@ -320,7 +321,6 @@
         this.dataForm.defectiveId = defectiveId || 0
         this.isHttp = false
         this.visible = true
-        this.logvisible = false
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.defectiveId > 0) {

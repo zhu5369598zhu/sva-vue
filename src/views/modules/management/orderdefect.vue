@@ -284,6 +284,8 @@
               </el-dialog>
               <!-- 弹窗, 新增 / 修改 -->
               <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+              <!-- 已转单被拒绝-->
+              <add-or-updaterejcet v-if="addOrUpdateVisible" ref="AddOrUpdaterejcet" @refreshDataList="getDataList"></add-or-updaterejcet>
             </div>
           </div>
         </template>
@@ -295,6 +297,7 @@
 <script>
   import { formatDate } from '@/utils'
   import AddOrUpdate from './orderdefect-add-or-update'
+  import AddOrUpdaterejcet from './orderdefectreject-add-or-update'
   import splitPane from '@/components/split-pane'
   import depttree from '@/components/dept-tree'
   import TableTreeColumn from '@/components/table-tree-column'
@@ -374,6 +377,7 @@
       depttree,
       splitPane,
       AddOrUpdate,
+      AddOrUpdaterejcet,
       TableTreeColumn
     },
     activated () {
@@ -474,10 +478,15 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (defectiveId, id, orderStatus) {
-        if (orderStatus === 0 || orderStatus === null || orderStatus === 3) {
+        if (orderStatus === 0 || orderStatus === null) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(defectiveId, id)
+          })
+        } else if (orderStatus === 3) { // 已转单被拒绝的情况
+          this.addOrUpdateVisible = true
+          this.$nextTick(() => {
+            this.$refs.AddOrUpdaterejcet.init(defectiveId, id)
           })
         } else {
           this.$alert('待确认状态才能确认缺陷')

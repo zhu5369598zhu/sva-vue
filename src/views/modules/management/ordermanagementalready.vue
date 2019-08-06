@@ -236,8 +236,8 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogonevisible = false">取消</el-button>
-        <el-button type="warning" @click="reJect()">拒绝</el-button>
-        <el-button type="primary" @click="accepTance()">受理</el-button>
+        <el-button type="warning" :disabled="isHttp" @click="reJect()">拒绝</el-button>
+        <el-button type="primary" :disabled="isHttp" @click="accepTance()">受理</el-button>
       </span>
       </el-dialog>
 
@@ -262,6 +262,7 @@
   export default {
     data () {
       return {
+        isHttp: false,
         dataForm: {
           key: '',
           deptId: '',
@@ -450,6 +451,7 @@
         }
       },
       orderConfirm () {
+        this.isHttp = true
         // 提交
         if (this.orderDataForm.orderAcceptorId === this.loginuserId) {
           this.$http({
@@ -493,6 +495,7 @@
                   this.dialogonevisible = false
                   this.$emit('refreshDataList')
                   this.getDataList()
+                  this.isHttp = false
                 }
               })
             } else {

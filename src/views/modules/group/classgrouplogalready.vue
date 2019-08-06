@@ -48,6 +48,7 @@
       <el-table-column
         type="index"
         width="50"
+        align="center"
         lable="">
       </el-table-column>
       <el-table-column

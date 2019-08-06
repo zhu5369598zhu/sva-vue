@@ -155,6 +155,9 @@
           } else if (newsType === 12) {
             this.$router.push('/management-orderdefect')
             this.visible = false
+          } else if (newsType === 14) {
+            this.$router.push('/management-ordermanagementreported')
+            this.visible = false
           }
         }
       }

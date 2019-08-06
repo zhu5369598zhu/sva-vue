@@ -240,7 +240,7 @@
           </el-form>
           <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
-        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
+        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId || isHttp">确认并派单</el-button>
       </span>
       </el-dialog>
       <!-- 已派单待受理 -->
@@ -603,7 +603,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogsixvisible = false">取消</el-button>
-        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
+        <el-button type="primary" @click="orderConfirm()" :disabled="orderDataForm.orderApplicantId != loginuserId || isHttp">确认并派单</el-button>
       </span>
       </el-dialog>
       <!--已转单待下发 -->
@@ -786,7 +786,7 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogNinevisible = false">取消</el-button>
           <el-button type="warning" @click="disagreeLower()"  :disabled="orderDataForm.orderApplicantId != loginuserId">拒绝派单</el-button>
-          <el-button type="primary" @click="orderConfirm()"  :disabled="orderDataForm.orderApplicantId != loginuserId&&isHttp">确认并派单</el-button>
+          <el-button type="primary" @click="orderConfirm()"  :disabled="orderDataForm.orderApplicantId != loginuserId || isHttp">确认并派单</el-button>
         </span>
       </el-dialog>
     <!-- 弹窗, 新增 / 修改 -->
@@ -837,6 +837,7 @@
           exceptionId: '',
           exceptionName: '',
           defectiveName: '',
+          defectiveTheme: '',
           orderContent: '',
           orderApplicant: '',
           orderApplicantId: '',
@@ -858,7 +859,8 @@
           orderType: '',
           orderTypeName: '',
           levelId: '',
-          orderDevice: ''
+          orderDevice: '',
+          disPlay: 0
         },
         tableHeight: 300,
         isDrawBack: false,
@@ -981,6 +983,7 @@
             this.orderDataForm.orderNumber = data.ordermanagement.orderNumber
             this.orderDataForm.defectiveId = data.ordermanagement.defectiveId
             this.orderDataForm.defectiveNumber = data.ordermanagement.defectiveNumber
+            this.orderDataForm.defectiveTheme = data.ordermanagement.defectiveTheme
             this.orderDataForm.orderName = data.ordermanagement.orderName
             this.orderDataForm.deptId = data.ordermanagement.deptId
             this.orderDataForm.deptName = data.ordermanagement.deptName
@@ -1009,6 +1012,7 @@
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
+            this.orderDataForm.disPlay = data.ordermanagement.disPlay
           }
           if (this.orderDataForm.orderStatus === 0) {
             this.dialogzerovisible = true
@@ -1120,7 +1124,7 @@
           // 提交
           if (this.orderDataForm.orderApplicantId === this.loginuserId) {
             this.orderDataForm.orderStatus = 1
-            this.orderDataForm.orderAcceptorOpinion = ''
+           // this.orderDataForm.orderAcceptorOpinion = ''
             this.$http({
               url: this.$http.adornUrl(`/management/ordermanagement/orderupdate`),
               method: 'post',
@@ -1129,9 +1133,12 @@
                 'orderNumber': this.orderDataForm.orderNumber,
                 'defectiveId': this.orderDataForm.defectiveId,
                 'defectiveNumber': this.orderDataForm.defectiveNumber,
+                'defectiveTheme': this.orderDataForm.defectiveTheme,
                 'orderName': this.orderDataForm.orderName,
                 'deptId': this.orderDataForm.deptId,
+                'exceptionId': this.orderDataForm.exceptionId,
                 'defectiveName': this.orderDataForm.defectiveName,
+                'defectiveTheme': this.orderDataForm.defectiveTheme,
                 'orderContent': this.orderDataForm.orderContent,
                 'orderApplicant': this.orderDataForm.orderApplicant,
                 'orderApplicantId': this.orderDataForm.orderApplicantId,
@@ -1142,14 +1149,17 @@
                 'orderConfirmer': this.orderDataForm.orderConfirmer,
                 'orderConfirmerId': this.orderDataForm.orderConfirmerId,
                 'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+                'createTime': this.orderDataForm.createTime,
                 'requirementTime': this.orderDataForm.requirementTime,
                 'confirmedTime': this.orderDataForm.confirmedTime,
                 'actualTime': this.orderDataForm.actualTime,
                 'delayTime': this.orderDataForm.delayTime,
+                'processingResult': this.orderDataForm.processingResult,
                 'orderStatus': this.orderDataForm.orderStatus,
                 'orderType': this.orderDataForm.orderType,
                 'levelId': this.orderDataForm.levelId,
-                'orderDevice': this.orderDataForm.orderDevice
+                'orderDevice': this.orderDataForm.orderDevice,
+                'disPlay': this.orderDataForm.disPlay
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -82,6 +82,10 @@
         align="center"
         width="100"
         label="工单状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.orderStatusName =='!已受理待上报'" style="color: #5daf34">{{scope.row.orderStatusName}}</span>
+          <span v-if="scope.row.orderStatusName !='!已受理待上报'">{{scope.row.orderStatusName}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="orderName"
@@ -242,7 +246,7 @@
           <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
             <el-input v-model="orderDataForm.orderDevice"></el-input>
           </el-form-item>
-          <el-form-item label="是否申请延期">
+          <el-form-item label="是否申请延期" >
             <el-switch
               v-model="orderDataForm.value3"
               active-color="#13ce66"
@@ -252,15 +256,20 @@
           <el-form-item label="申请延期时间" prop="delayTime" v-if="orderDataForm.value3">
             <el-date-picker v-model="orderDataForm.delayTime" placeholder="申请延期时间" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDateDelayPicker" style="width:180px;"></el-date-picker>
           </el-form-item>
-          <el-form-item label="审核人"  prop="orderConfirmer">
+          <el-form-item label="工单操作人" prop="orderApplicant" v-if="orderDataForm.value3">
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
+          </el-form-item>
+          <el-form-item label="审核人"  prop="orderConfirmer" v-if="!orderDataForm.value3">
             <el-input v-model="orderDataForm.orderConfirmer" :disabled="true">
-            <span slot="suffix" v-if="orderDataForm.delayTime ===null">
+            <span slot="suffix" >
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
             </span>
             </el-input>
             <!--<el-button type="info" @click="clickTitle()" icon="el-icon-plus" circle ></el-button>-->
           </el-form-item>
-
+          <el-form-item v-if="orderDataForm.disPlay =='1'" label="工单操作人意见" prop="orderApplicantOpinion">
+            {{orderDataForm.orderApplicantOpinion}}
+          </el-form-item>
           <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
             <div style="display: flex;justify-content: space-around;align-items: center;">
               <div style="width:400px;height: 500px;">
@@ -359,17 +368,120 @@
               </div>
             </div>
           </el-dialog>
-
           <el-form-item v-if="orderDataForm.orderConfirmerOpinion != null" label="审核人意见" prop="orderConfirmerOpinion">
             {{orderDataForm.orderConfirmerOpinion}}
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogtwovisible = false">取消</el-button>
-        <el-button type="warning" v-if="orderDataForm.delayTime !=null " @click="reJect()" :disabled="isHttp">申请延期</el-button>
-        <el-button type="primary" v-if="orderDataForm.delayTime ===null " @click="accepTance()">上报</el-button>
+        <el-button type="warning" v-if="orderDataForm.value3" @click="reJect()" :disabled="isHttp || orderDataForm.delayTime===null">申请延期</el-button>
+        <el-button type="primary" v-if="!orderDataForm.value3" @click="accepTance()" :disabled="isHttp">上报</el-button>
       </span>
       </el-dialog>
+      <!-- 申请延期-->
+      <el-dialog
+        :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogthreevisible">
+        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单编号" prop="orderNumber">
+                {{orderDataForm.orderNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单状态" prop="orderStatusName">
+                {{orderDataForm.orderStatusName}}
+                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
+                  <el-option
+                    v-for="item in orderStatusList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                  </el-option>
+                </el-select>-->
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="缺陷单编号" prop="defectiveNumber">
+                {{orderDataForm.defectiveNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷等级" prop="exceptionName">
+                {{orderDataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="所属机构" prop="deptName">
+                {{orderDataForm.deptName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="缺陷操作人" prop="defectiveName">
+                {{orderDataForm.defectiveName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单操作人" prop="orderApplicant">
+                {{orderDataForm.orderApplicant}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="工单受理人" prop="orderAcceptor">
+                {{orderDataForm.orderAcceptor}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="工单类型" prop="orderTypeName">
+                {{orderDataForm.orderTypeName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="要求完成时间" prop="requirementTime">
+                {{orderDataForm.requirementTime}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="工单主题" prop="orderName">
+            {{orderDataForm.orderName}}
+          </el-form-item>
+          <el-form-item label="工单内容" prop="orderContent">
+            {{orderDataForm.orderContent}}
+          </el-form-item>
+          <el-form-item label="处理结果" prop="processingResult">
+            {{orderDataForm.processingResult}}
+          </el-form-item>
+          <el-form-item label="备件" prop="orderDevice" >
+            {{orderDataForm.orderDevice}}
+          </el-form-item>
+          <el-form-item v-if="orderDataForm.delayTime!=null" label="申请时间" prop="delayTime">
+            {{orderDataForm.delayTime}}
+          </el-form-item>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion">
+            <el-input v-model="orderDataForm.orderApplicantOpinion"
+                      autosize
+                      type="textarea"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogthreevisible = false">取消</el-button>
+        <el-button v-if="orderDataForm.orderApplicantId == loginuserId" :disabled="isHttp" type="warning" @click="disagreeDelay()">不同意延期申请</el-button>
+        <el-button v-if="orderDataForm.orderApplicantId == loginuserId" :disabled="isHttp" type="primary" @click="agreeDelay()">同意延期申请</el-button>
+      </span>
+      </el-dialog>
+
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
@@ -404,6 +516,7 @@
           endTime: null
         },
         dialogFormVisible: false,
+        dialogthreevisible: false,
         deptdataList: [],
         UserdataList: [],
         deptFrom: {
@@ -449,7 +562,8 @@
           orderType: '',
           orderTypeName: '',
           levelId: '',
-          orderDevice: ''
+          orderDevice: '',
+          disPlay: 0
         },
         tableHeight: 300,
         isDrawBack: false,
@@ -481,6 +595,9 @@
           ],
           processingResult: [
             {required: true, message: '处理结果不能为空', trigger: 'blur'}
+          ],
+          delayTime: [
+            {required: true, message: '申请延期时间不能为空', trigger: 'blur'}
           ]
         }
       }
@@ -508,7 +625,7 @@
       beginDelayDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < new Date().getTime()// 开始时间不选时，结束时间最大值小于等于当天
+            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -661,13 +778,14 @@
             this.orderDataForm.orderTypeName = data.ordermanagement.orderTypeName
             this.orderDataForm.levelId = data.ordermanagement.levelId
             this.orderDataForm.orderDevice = data.ordermanagement.orderDevice
-            if (this.orderDataForm.orderConfirmerId === 0) {
-              this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
-              this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
-            }
+            this.orderDataForm.disPlay = data.ordermanagement.disPlay
           }
           if (this.orderDataForm.orderStatus === 2 || this.orderDataForm.orderStatus === 7) {
+            this.isHttp = false
             this.dialogtwovisible = true
+          } else {
+            this.orderDataForm.orderApplicantOpinion = null
+            this.dialogthreevisible = true
           }
         })
       },
@@ -687,9 +805,13 @@
         if (this.orderDataForm.processingResult === '' || this.orderDataForm.processingResult === null) {
           this.$alert('处理结果不能为空')
         } else {
-          this.orderDataForm.orderConfirmerOpinion = ''
-          this.orderDataForm.orderStatus = 3
-          this.orderConfirm()
+          if (this.orderDataForm.orderConfirmerId !== 0) {
+            this.orderDataForm.orderStatus = 3
+            this.orderDataForm.delayTime = null
+            this.orderConfirm()
+          } else {
+            this.$alert('审核人不能为空')
+          }
         }
       },
       // 延期申请
@@ -697,14 +819,19 @@
         if (this.orderDataForm.processingResult === '' || this.orderDataForm.processingResult === null) {
           this.$alert('处理结果不能为空')
         } else {
-          this.orderDataForm.orderStatus = 14
-          this.orderConfirm()
+          if (this.orderDataForm.delayTime === '' || this.orderDataForm.delayTime === null) {
+            this.$alert('申请延期时间不能为空')
+          } else {
+            this.orderDataForm.orderStatus = 14
+            // this.orderDataForm.disPlay = 0
+            this.orderConfirm()
+          }
         }
       },
       orderConfirm () {
+        this.isHttp = true
         // 提交
         if (this.orderDataForm.orderAcceptorId === this.loginuserId) {
-          this.orderDataForm.orderConfirmerOpinion = null
           this.$http({
             url: this.$http.adornUrl(`/management/ordermanagementreported/orderupdate`),
             method: 'post',
@@ -738,7 +865,8 @@
               'orderStatus': this.orderDataForm.orderStatus,
               'orderType': this.orderDataForm.orderType,
               'levelId': this.orderDataForm.levelId,
-              'orderDevice': this.orderDataForm.orderDevice
+              'orderDevice': this.orderDataForm.orderDevice,
+              'disPlay': this.orderDataForm.disPlay
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
@@ -749,6 +877,7 @@
                 onClose: () => {
                   this.dialogtwovisible = false
                   this.$emit('refreshDataList')
+                  this.isHttp = false
                 }
               })
               this.getDataList()
@@ -759,6 +888,82 @@
         } else {
           this.$alert('必须由受理用户来操作')
         }
+      },
+      // 同意延期申请
+      agreeDelay () {
+        if (this.orderDataForm.orderApplicantOpinion === '' || this.orderDataForm.orderApplicantOpinion === null) {
+          this.$alert('工单操作人意见不能为空')
+        } else {
+          this.orderDataForm.orderStatus = 14
+          this.orderDataForm.requirementTime = this.orderDataForm.delayTime
+          this.yanqiorderConfirm()
+        }
+      },
+      // 不同意延期申请
+      disagreeDelay () {
+        if (this.orderDataForm.orderApplicantOpinion === '' || this.orderDataForm.orderApplicantOpinion === null) {
+          this.$alert('工单操作人意见不能为空')
+        } else {
+          this.orderDataForm.orderStatus = 15
+          this.yanqiorderConfirm()
+        }
+      },
+      yanqiorderConfirm () {
+        this.isHttp = true
+        // 提交
+        this.$http({
+          url: this.$http.adornUrl(`/management/ordermanagementconfirm/orderupdate`),
+          method: 'post',
+          data: this.$http.adornData({
+            'orderId': this.orderDataForm.orderId,
+            'orderNumber': this.orderDataForm.orderNumber,
+            'defectiveId': this.orderDataForm.defectiveId,
+            'defectiveNumber': this.orderDataForm.defectiveNumber,
+            'defectiveTheme': this.orderDataForm.defectiveTheme,
+            'orderName': this.orderDataForm.orderName,
+            'deptId': this.orderDataForm.deptId,
+            'exceptionId': this.orderDataForm.exceptionId,
+            'exceptionName': this.orderDataForm.exceptionName,
+            'defectiveName': this.orderDataForm.defectiveName,
+            'orderContent': this.orderDataForm.orderContent,
+            'orderApplicant': this.orderDataForm.orderApplicant,
+            'orderApplicantId': this.orderDataForm.orderApplicantId,
+            'orderApplicantOpinion': this.orderDataForm.orderApplicantOpinion,
+            'orderAcceptor': this.orderDataForm.orderAcceptor,
+            'orderAcceptorId': this.orderDataForm.orderAcceptorId,
+            'orderAcceptorOpinion': this.orderDataForm.orderAcceptorOpinion,
+            'orderConfirmer': this.orderDataForm.orderConfirmer,
+            'orderConfirmerId': this.orderDataForm.orderConfirmerId,
+            'orderConfirmerOpinion': this.orderDataForm.orderConfirmerOpinion,
+            'createTime': this.orderDataForm.createTime,
+            'requirementTime': this.orderDataForm.requirementTime,
+            'confirmedTime': this.orderDataForm.confirmedTime,
+            'actualTime': this.orderDataForm.actualTime,
+            'delayTime': this.orderDataForm.delayTime,
+            'processingResult': this.orderDataForm.processingResult,
+            'orderStatus': this.orderDataForm.orderStatus,
+            'orderType': this.orderDataForm.orderType,
+            'levelId': this.orderDataForm.levelId,
+            'orderDevice': this.orderDataForm.orderDevice,
+            'disPlay': this.orderDataForm.disPlay
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.dialogthreevisible = false
+                this.$emit('refreshDataList')
+                this.getDataList()
+                this.isHttp = false
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
       },
       // 获取数据列表
       getDataList () {
@@ -858,20 +1063,30 @@
         })
       },
       handleStartTimeChange (val) {
-        this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
-        this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
+        // this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
+        // this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
         let startTime = new Date(this.orderDataForm.requirementTime)
         let endTime = new Date(val)
+        let start = formatDate(new Date(), 'yyyy-MM-dd 00:00:00')
+        start = new Date(start)
+        let end = formatDate(new Date(), 'yyyy-MM-dd 23:00:00')
+        end = new Date(end)
         if (val !== null) {
-          if (endTime.getTime() < startTime.getTime()) {
-            this.$alert('申请延期时间要大于要求完成时间,请重新选择')
-            this.isHttp = true
-            this.dataForm.delayTime = null
-          } else {
+          if (endTime.getTime() >= start.getTime() && endTime.getTime() <= end.getTime()) {
             this.isHttp = false
             this.dataForm.delayTime = val
+          } else {
+            if (endTime.getTime() < startTime.getTime()) {
+              this.$alert('申请延期时间要大于要求完成时间,请重新选择')
+              this.isHttp = true
+              this.dataForm.delayTime = null
+            } else {
+              this.isHttp = false
+              this.dataForm.delayTime = val
+            }
           }
         } else {
+          this.isHttp = true
           this.dataForm.delayTime = val
         }
       },
