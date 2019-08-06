@@ -530,7 +530,7 @@
     data () {
       return {
         dataForm: {
-          key: '',
+          deptId: '',
           defectiveNumber: '',
           defectiveTheme: '',
           exceptionId: ''
@@ -732,8 +732,7 @@
             'defectiveNumber': this.dataForm.defectiveNumber,
             'exceptionId': this.dataForm.exceptionId,
             'page': this.pageIndex,
-            'limit': this.pageSize,
-            'key': this.dataForm.key
+            'limit': this.pageSize
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -779,8 +778,7 @@
             'defectiveTheme': this.dataForm.defectiveTheme,
             'defectiveNumber': this.dataForm.defectiveNumber,
             'page': this.pageIndex,
-            'limit': this.pageSize,
-            'key': this.dataForm.key
+            'limit': this.pageSize
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
