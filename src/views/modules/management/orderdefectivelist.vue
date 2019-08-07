@@ -722,7 +722,6 @@
       },
       // 获取数据列表
       getDataList () {
-        console.log('发送请求了。')
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/management/orderdefectivelist/list'),
@@ -736,9 +735,7 @@
             'limit': this.pageSize
           })
         }).then(({data}) => {
-          console.log(data.page.list)
           if (data && data.code === 0) {
-            console.log('返回')
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
           } else {
