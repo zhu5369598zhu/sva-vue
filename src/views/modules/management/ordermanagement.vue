@@ -71,7 +71,7 @@
         width="80"
         label="序号">
         <template slot-scope="scope" >
-          <span>{{scope.row.orderId}}</span> <a v-if="scope.row.orderStatus>0&&scope.row.orderStatus!='9'" href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/ff.jpg" @click=orderRecordHandle(scope.row.orderId,scope.row.orderNumber)></a>
+          <span>{{scope.row.orderId}}</span> <a v-if="scope.row.orderStatus>0&&scope.row.orderStatus!='9'" href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/management.png" @click=orderRecordHandle(scope.row.orderId,scope.row.orderNumber)></a>
         </template>
       </el-table-column>
       <el-table-column

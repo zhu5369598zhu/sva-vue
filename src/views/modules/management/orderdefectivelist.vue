@@ -53,12 +53,6 @@
         :cell-style="cellStyle"
         :row-style="rowStyle"
         style="width: 100%;">
-        <!--<el-table-column
-          type="selection"
-          header-align="center"
-          align="center"
-          width="30">
-        </el-table-column>-->
         <el-table-column
           header-align="center"
           type="index"
@@ -100,18 +94,13 @@
           align="center"
           label="缺陷等级">
         </el-table-column>
-        <!--<el-table-column
+        <el-table-column
           prop="defectiveName"
           header-align="center"
           align="center"
-          label="缺陷填报人">
+          label="缺陷操作人"
+        >
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          header-align="center"
-          align="center"
-          label="填报时间">
-        </el-table-column>-->
         <el-table-column
           prop="orderStatusName"
           header-align="center"
@@ -128,6 +117,7 @@
           prop="confirmedTime"
           header-align="center"
           align="center"
+          width="140"
           label="工单确认时间">
         </el-table-column>
       </el-table>
