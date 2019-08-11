@@ -244,7 +244,10 @@
             </el-switch>
           </el-form-item>
           <el-form-item label="备件" prop="orderDevice" v-if="orderDataForm.value1">
-            <el-input v-model="orderDataForm.orderDevice"></el-input>
+            <el-input
+              type="textarea"
+              autosize
+              v-model="orderDataForm.orderDevice"></el-input>
           </el-form-item>
           <el-form-item label="是否申请延期" >
             <el-switch
@@ -384,7 +387,7 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogthreevisible">
-        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
+        <el-form :model="orderDataForm" :rules="dataFormRule" ref="dataForm"  label-width="110px">
           <el-row>
             <el-col :span="8">
               <el-form-item label="工单编号" prop="orderNumber">
@@ -394,14 +397,6 @@
             <el-col :span="8">
               <el-form-item label="工单状态" prop="orderStatusName">
                 {{orderDataForm.orderStatusName}}
-                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
-                  <el-option
-                    v-for="item in orderStatusList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -599,6 +594,11 @@
           delayTime: [
             {required: true, message: '申请延期时间不能为空', trigger: 'blur'}
           ]
+        },
+        dataFormRule: {
+          orderApplicantOpinion: [
+            {required: true, message: '工单操作人意见不能为空', trigger: 'blur'}
+          ]
         }
       }
     },
@@ -625,7 +625,9 @@
       beginDelayDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            return time.getTime() < date.getTime()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -823,7 +825,6 @@
             this.$alert('申请延期时间不能为空')
           } else {
             this.orderDataForm.orderStatus = 14
-            // this.orderDataForm.disPlay = 0
             this.orderConfirm()
           }
         }
@@ -1063,8 +1064,6 @@
         })
       },
       handleStartTimeChange (val) {
-        // this.orderDataForm.orderConfirmerId = this.orderDataForm.orderApplicantId
-        // this.orderDataForm.orderConfirmer = this.orderDataForm.orderApplicant
         let startTime = new Date(this.orderDataForm.requirementTime)
         let endTime = new Date(val)
         let start = formatDate(new Date(), 'yyyy-MM-dd 00:00:00')

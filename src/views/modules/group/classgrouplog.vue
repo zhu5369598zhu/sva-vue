@@ -58,7 +58,7 @@
               <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()" style="line-height: 22px!important;">班前会</el-button>
             </el-option>
             <el-option :value="dataForm.add" v-popover:groupListPopover>
-              <el-button v-if="isAuth('group:classgrouplog:save')" type="text"    style="line-height: 22px!important;">班后会</el-button>
+              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()"   style="line-height: 22px!important;">班后会</el-button>
             </el-option>
           </el-select>
           <el-popover

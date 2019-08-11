@@ -210,16 +210,10 @@
                 :visible.sync="defectivevisible"
                 >
                 <el-form :model="orderDataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
-                  <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
-                    {{orderDataForm.defectiveNumber}}
-                  </el-form-item>
-                  <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
-                    {{orderDataForm.defectiveTheme}}
-                  </el-form-item>
                   <el-row>
-                    <el-col :span="8">
-                      <el-form-item label="所属机构" prop="deptName">
-                        {{orderDataForm.deptName}}
+                    <el-col span="8">
+                      <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
+                        {{orderDataForm.defectiveNumber}}
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -228,13 +222,19 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
+                  <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
+                    {{orderDataForm.defectiveTheme}}
+                  </el-form-item>
+                  <el-form-item label="所属机构" prop="deptName">
+                    {{orderDataForm.deptName}}
+                  </el-form-item>
                   <el-form-item label="巡检缺陷单内容" prop="orderContent">
                     {{orderDataForm.orderContent}}
                   </el-form-item>
-                  <el-form-item label="缺陷操作人" prop="defectiveName">
+                  <el-form-item label="缺陷操作人"  prop="defectiveName">
                     {{orderDataForm.defectiveName}}
                   </el-form-item>
-                  <el-form-item label="缺陷操作人意见" prop="defectiveNameOpinion">
+                  <el-form-item label="缺陷操作人意见"  prop="defectiveNameOpinion">
                     {{orderDataForm.defectiveNameOpinion}}
                   </el-form-item>
                   <el-row>
@@ -281,6 +281,45 @@
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="dialogUpdatehangUpvisible = false">取消</el-button>
                 </span>
+              </el-dialog>
+              <!-- 转工单被拒绝 详情页 -->
+              <el-dialog
+                :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '确认缺陷页'"
+                :append-to-body='true'
+                :visible.sync="defectiverejectvisible"
+              >
+                <el-form :model="orderDataForm" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
+                        {{orderDataForm.defectiveNumber}}
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="缺陷异常等级" prop="exceptionName">
+                        {{orderDataForm.exceptionName}}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
+                    {{orderDataForm.defectiveTheme}}
+                  </el-form-item>
+                  <el-form-item label="所属机构" prop="deptName">
+                    {{orderDataForm.deptName}}
+                  </el-form-item>
+                  <el-form-item label="巡检缺陷单内容" prop="orderContent">
+                    {{orderDataForm.orderContent}}
+                  </el-form-item>
+                  <el-form-item label="缺陷操作人"  prop="defectiveName">
+                    {{orderDataForm.defectiveName}}
+                  </el-form-item>
+                  <el-form-item label="缺陷操作人意见"  prop="defectiveNameOpinion">
+                    {{orderDataForm.defectiveNameOpinion}}
+                  </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="defectiverejectvisible = false">取消</el-button>
+                  </span>
               </el-dialog>
               <!-- 弹窗, 新增 / 修改 -->
               <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
@@ -353,6 +392,7 @@
           resultId: ''
         },
         defectivevisible: false,
+        defectiverejectvisible: false,
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
@@ -557,7 +597,12 @@
             this.orderDataForm.requirementTime = data.orderdefective.requirementTime
             this.orderDataForm.defectivevisible = true
           }
-          this.defectivevisible = true
+          console.log(this.orderDataForm.orderStatus)
+          if (this.orderDataForm.orderStatus === 3) {
+            this.defectiverejectvisible = true
+          } else {
+            this.defectivevisible = true
+          }
         })
       },
       // 导出

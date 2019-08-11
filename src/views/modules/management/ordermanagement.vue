@@ -188,7 +188,7 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogzerovisible">
-          <el-form :model="orderDataForm"  ref="dataForm"  label-width="80px">
+          <el-form :model="orderDataForm"  ref="dataForm"  label-width="120px">
             <el-row>
             <el-col :span="8">
             <el-form-item label="工单编号" prop="orderNumber">
@@ -196,7 +196,7 @@
             </el-form-item>
             </el-col>
             <el-col :span="8">
-            <el-form-item label="工单类型" prop="orderTypeName" label-width="120px">
+            <el-form-item label="工单类型" prop="orderTypeName">
               {{orderDataForm.orderTypeName}}
             </el-form-item>
             </el-col>
@@ -208,7 +208,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="要求完成时间" prop="requirementTime" label-width="120px">
+                <el-form-item label="要求完成时间" prop="requirementTime">
                   {{orderDataForm.requirementTime}}
                 </el-form-item>
               </el-col>
@@ -223,7 +223,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="工单受理人" prop="orderAcceptor" label-width="120px">
+                <el-form-item label="工单受理人" prop="orderAcceptor">
                   {{orderDataForm.orderAcceptor}}
                 </el-form-item>
               </el-col>
@@ -234,7 +234,7 @@
             <el-form-item label="工单内容" prop="orderContent">
               {{orderDataForm.orderContent}}
             </el-form-item>
-            <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
+            <el-form-item label="工单操作人意见" prop="orderApplicantOpinion">
               {{orderDataForm.orderApplicantOpinion}}
             </el-form-item>
           </el-form>
@@ -290,7 +290,10 @@
               v-model="orderDataForm.orderContent" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
-            <el-input v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
+            <el-input
+              type="textarea"
+              autosize
+              v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -347,7 +350,10 @@
               v-model="orderDataForm.orderContent" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="100px">
-            <el-input v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
+            <el-input
+              type="textarea"
+              autosize
+              v-model="orderDataForm.orderApplicantOpinion" readonly></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -612,7 +618,7 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogNinevisible">
-        <el-form :model="orderDataForm" :rules="dataRule" ref="dataForm"  label-width="100px">
+        <el-form :model="orderDataForm" :rules="dataRule" ref="dataForm"  label-width="110px">
           <el-row>
             <el-col :span="8">
               <el-form-item label="工单编号" prop="orderNumber">
@@ -667,8 +673,11 @@
           <el-form-item label="工单内容" prop="orderContent">
             {{orderDataForm.orderContent}}
           </el-form-item>
-          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion" label-width="110px">
-            <el-input v-model="orderDataForm.orderApplicantOpinion" ></el-input>
+          <el-form-item label="工单操作人意见" prop="orderApplicantOpinion">
+            <el-input
+              type="textarea"
+              autosize
+              v-model="orderDataForm.orderApplicantOpinion" ></el-input>
           </el-form-item>
           <el-row>
             <el-col :span="8">

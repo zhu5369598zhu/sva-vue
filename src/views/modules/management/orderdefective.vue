@@ -205,9 +205,6 @@
           <el-form-item label="缺陷填报人意见" prop="defectiveNameOpinion">
             {{orderDataForm.defectiveNameOpinion}}
           </el-form-item>
-          <!--<el-form-item v-if="orderDataForm.orderConfirmerOpinion!=''|| orderDataForm.orderConfirmerOpinion ===null" label="工单操作人意见" prop="orderConfirmerOpinion">
-            {{orderDataForm.orderConfirmerOpinion}}
-          </el-form-item>-->
         </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="dialogzerovisible = false">取消</el-button>
@@ -781,7 +778,9 @@
       beginDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值小于等于当天
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            return time.getTime() < date.getTime()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },
@@ -986,7 +985,7 @@
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.defectiveId
         })
-        this.$confirm(`确定对[序号=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

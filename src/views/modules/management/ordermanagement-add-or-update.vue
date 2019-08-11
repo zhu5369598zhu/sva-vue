@@ -469,7 +469,9 @@
       beginDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < Date.now()// 开始时间不选时，结束时间最大值大于等于当天
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            return time.getTime() < date.getTime()// 开始时间不选时，结束时间最大值大于等于当天
           }
         }
       },

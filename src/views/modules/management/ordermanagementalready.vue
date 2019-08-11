@@ -149,7 +149,7 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogonevisible">
-        <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
+        <el-form :model="orderDataForm" :rules="dataRule" ref="dataForm"  label-width="100px">
           <el-row>
             <el-col :span="8">
               <el-form-item label="工单编号" prop="orderNumber">
@@ -159,14 +159,6 @@
             <el-col :span="8">
               <el-form-item label="工单状态" prop="orderStatusName">
                 {{orderDataForm.orderStatusName}}
-                <!--<el-select v-model="orderDataForm.orderStatus"  :disabled="true">
-                  <el-option
-                    v-for="item in orderStatusList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                  </el-option>
-                </el-select>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -328,7 +320,12 @@
         dataListSelections: [],
         addOrUpdateVisible: false,
         startDatePicker: this.beginDate(),
-        dialogonevisible: false
+        dialogonevisible: false,
+        dataRule: {
+          orderAcceptorOpinion: [
+            {required: true, message: '受理人意见不能为空', trigger: 'blur'}
+          ]
+        }
       }
     },
     components: {
