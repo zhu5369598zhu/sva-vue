@@ -12,7 +12,7 @@
     :props="deviceTreeProps"
     node-key="deptId"
     @current-change="selectTreeCurrentChangeHandle"
-    :default-expand-all="false"
+    :default-expand-all="expendTree"
     :highlight-current="true"
     :expand-on-click-node="false">
     <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -31,6 +31,7 @@
   export default {
     data () {
       return {
+        expendTree: false,
         deviceName: '',
         deviceTreeProps: {
           label: 'lable',
@@ -56,6 +57,8 @@
         }).then(({data}) => {
           console.log(data)
           this.deviceList = data.deviceTree
+          this.expendTree = true
+          console.log(this.expendTree)
         })
       },
       // 部门树选中

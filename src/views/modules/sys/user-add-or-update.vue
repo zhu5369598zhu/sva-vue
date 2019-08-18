@@ -139,6 +139,7 @@
         dataForm: {
           id: 0,
           userName: '',
+          userCode: '',
           deptId: 0,
           deptName: '',
           password: '',
@@ -147,14 +148,16 @@
           email: '',
           mobile: '',
           roleIdList: [],
-          status: 1
+          status: 1,
+          wechat: '',
+          remark: ''
         },
         dataRule: {
           userName: [
             { required: true, message: '用户名不能为空', trigger: 'blur' }
           ],
           deptName: [
-            { required: true, message: '所属机构不能为空', trigger: 'change' }
+            { required: true, message: '所属机构不能为空', trigger: 'blur' }
           ],
           password: [
             { validator: validatePassword, trigger: 'blur' }
