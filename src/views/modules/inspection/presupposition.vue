@@ -364,6 +364,9 @@
         if (type === 'data') {
           return 'tubiao'
         }
+        if (type === 'video') {
+          return 'video'
+        }
       },
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack

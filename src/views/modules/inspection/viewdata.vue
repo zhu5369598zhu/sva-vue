@@ -234,6 +234,9 @@
         if (type === 'data') {
           return 'tubiao'
         }
+        if (type === 'video') {
+          return 'video'
+        }
       },
       rowStyle ({row, rowIndex}) {
         return 'height:30px'
