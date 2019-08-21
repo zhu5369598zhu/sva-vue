@@ -6,7 +6,7 @@
     :visible.sync="visible"
     append-to-body>
     <div class="view-media" align="center">
-      <div classs="view-pic" v-if="type==='jpg'">
+      <div classs="view-pic" v-if="type==='jpg' || type==='png'">
       <img 
         width="375"
         height="500"
@@ -14,6 +14,9 @@
       </div>
       <div class="view-mp3" v-if="type==='mp3'">
         <audio :src="getMp3Url(guid)" controls="controls"></audio>
+      </div>
+      <div v-if="type==='video'">
+        <video :src="getVideoUrl(guid)" controls="controls"></video>
       </div>
       <div v-if="type==='data'" style="width:400px;height:400px;">
       </div>
@@ -37,6 +40,7 @@
     },
     methods: {
       init (type, url, inspection) {
+        console.log(type)
         this.inspection = inspection
         this.type = type
         this.guid = url
@@ -54,6 +58,13 @@
           return this.$http.adornUrl(`/inspection/inspectionrondomresultmedia/mp3?uuid=${guid}`)
         } else {
           return this.$http.adornUrl(`/inspection/inspectionresultmedia/mp3?uuid=${guid}`)
+        }
+      },
+      getVideoUrl (guid) {
+        if (this.inspection === 'random') {
+          return this.$http.adornUrl(`/inspection/inspectionrondomresultmedia/mp4?uuid=${guid}`)
+        } else {
+          return this.$http.adornUrl(`/inspection/inspectionresultmedia/mp4?uuid=${guid}`)
         }
       }
     }
