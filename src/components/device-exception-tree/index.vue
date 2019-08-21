@@ -12,12 +12,12 @@
       :props="deviceTreeProps"
       node-key="deptId"
       @current-change="selectTreeCurrentChangeHandle"
-      :default-expand-all="true"
+      :default-expand-all="false"
       :highlight-current="true"
       :expand-on-click-node="false">
     <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span v-if="data.type === 'device'">
-            <icon-svg name="shezhi" style="font-size:20px;vertical-align: middle;"></icon-svg><span>&nbsp;</span><span style="font-size: 12px;vertical-align: middle;">{{ node.label }}[{{data.code}}]</span>
+        <span v-if="data.type === 'level'">
+            <span style="font-size: 12px;vertical-align: middle;">{{ node.label }}{{data.label}}</span>
         </span>
         <span >
             {{ node.label }}
@@ -31,6 +31,7 @@
   export default {
     data () {
       return {
+        deviceName: '',
         deviceTreeProps: {
           label: 'lable',
           children: 'children'
@@ -50,6 +51,7 @@
           url: this.$http.adornUrl(`/sys/deviceexception/tree`),
           method: 'get',
           params: this.$http.adornParams({
+            'deviceName': this.deviceName
           })
         }).then(({data}) => {
           this.deviceList = data.deviceTree

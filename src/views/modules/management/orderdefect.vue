@@ -518,6 +518,7 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (defectiveId, id, orderStatus) {
+        console.log(orderStatus)
         if (orderStatus === 0 || orderStatus === null) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {

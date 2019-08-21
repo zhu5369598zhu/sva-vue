@@ -49,14 +49,15 @@
           </el-form-item>
         </div>
       </div>
-      <p style="border-left: 10px solid #8c939d; padding-left: 8px;">流程记录</p>
-      <div v-for="item in recordList" :key="item.recordId">
+      <div >
+      <p style="border-left: 10px solid #8c939d;margin-left: 12px;">流程记录</p>
+      <div v-for="item in recordList" :key="item.recordId" style="margin-left: 12px;">
           <el-form-item :label="item.orderPeopleName" style="border-left: 8px solid #8c939d">
               {{item.orderPeople}}:{{item.orderOpinion}} <br>
              {{item.nowTime}}
           </el-form-item>
       </div>
-
+      </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>

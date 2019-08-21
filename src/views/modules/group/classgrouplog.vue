@@ -6,14 +6,27 @@
         <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
       </el-form-item>
       <el-form-item prop="deptId">
-        <el-select v-model="dataForm.deptId" placeholder="请输入机构名称" clearable>
-          <el-option
-            v-for="item in deptList"
-            :key="item.deptId"
-            :label="item.name"
-            :value="item.deptId"
-          ></el-option>
-        </el-select>
+        <el-popover
+          ref="deptListPopover"
+          placement="bottom-start"
+          trigger="click"
+          v-model="isShowDeptTree">
+          <div style="text-align: center; margin: 0">
+            <el-button  size="mini" type="text"  @click="pCancel()">取消</el-button>
+          </div>
+          <el-tree
+            :data="deptList"
+            :props="deptListTreeProps"
+            node-key="deptId"
+            ref="deptListTree"
+            @current-change="deptListTreeCurrentChangeHandle"
+            :default-expand-all="false"
+            :highlight-current="true"
+            :expand-on-click-node="false" clearable style="width:140px;">
+          </el-tree>
+        </el-popover>
+        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称" >
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
@@ -71,7 +84,7 @@
               left: 1247px;"
             trigger="click"
             highlight-current="true"
-            v-model="isShowDeptTree">
+            v-model="isShowTree">
             <el-table
               :data="banqiandataList"
               :cell-style="cellStyle"
@@ -520,6 +533,7 @@
   import AddOrUpdate from './classgrouplog-add-or-update'
   import banhou from './classgrouplog-banhou'
   import banqian from './classgrouplog-banqian'
+  import { treeDataTranslate } from '@/utils'
   export default {
     data () {
       return {
@@ -536,6 +550,10 @@
         tableHeight: 300,
         logStatus: '',
         deptList: [],
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         TurnList: [],
         GroupList: [{id: '1', name: '班长日志'}, {id: '2', name: '班前日志'}, {id: '3', name: '班后日志'}],
         LogStatusList: [{id: '1', name: '拟制中'}, {id: '2', name: '待确认'}, {id: '3', name: '已确认'}],
@@ -550,6 +568,7 @@
         banqianVisible: false,
         banhouVisible: false,
         HouHandleVisable: false,
+        isShowTree: false,
         isShowDeptTree: false,
         logdataForm: {
           classId: 0,
@@ -639,7 +658,7 @@
           this.dataListLoading = false
         })
       },
-      getbanqianDataList () {
+      getbanqianDataList() {
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/group/classgrouplog/banqianlist'),
@@ -661,10 +680,10 @@
         })
       },
       // 导出
-      exportToExcel (list) {
+      exportToExcel(list) {
         this.dataListLoading = true
         require.ensure([], () => {
-          const { export_json_to_excel } = require('@/vendor/Export2Excel')
+          const {export_json_to_excel} = require('@/vendor/Export2Excel')
           const tHeader = ['日志编号', '车间(工段)', '班组', '班次', '日志类型', '日志状态', '记录人', '交接人', '接班人', '交接完成时间', '班长', '应出勤人数', '实出勤人数', '实到人员', '未到人员', '顶班人员', '缺勤原因', '接班记事', '当班记事', '上级通知', '交代事项', '人员精神异常描述', '劳动防护用品异常描述', '工器具异常描述', '其他异常', '工作安排', '危险点', '防范措施', '交底人', '班组成员', '工作总结', '负责人', '驳回原因']
           const filterVal = ['logNumber', 'deptName', 'classGroupName', 'baseTurnName', 'logTypeName', 'logStatusName', 'noteTaker', 'handoverPerson', 'successor', 'createTime', 'monitor', 'shouldAttendance', 'attendance', 'actualArrival', 'notArrived', 'topArrived', 'reasonsAbsence', 'successionRecord', 'onDuty', 'superiorNotice', 'accountConfession', 'mentalException', 'protectiveException', 'toolsException', 'otherException', 'workTask', 'dangerousPoint', 'preventiveMeasures', 'manAgreement', 'teamMembers', 'workSummary', 'personCharge', 'rejectReason']
           const data = this.formatJson(filterVal, list)
@@ -679,11 +698,11 @@
           this.dataListLoading = false
         })
       },
-      formatJson (filterVal, jsonData) {
+      formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
       },
       // 获取数据列表 导出
-      exportExcelHandle () {
+      exportExcelHandle() {
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/group/classgrouplog/list'),
@@ -708,28 +727,28 @@
           this.dataListLoading = false
         })
       },
-      rowStyle ({row, rowIndex}) {
+      rowStyle({row, rowIndex}) {
         return 'height:40px'
       },
-      cellStyle () {
+      cellStyle() {
         return 'padding:0'
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
-      getTurnList () {
+      getTurnList() {
         if (this.TurnList <= 0) {
           this.$http({
             url: this.$http.adornUrl('/setting/baseturn/list'),
@@ -740,19 +759,30 @@
           })
         }
       },
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
+      },
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
+      },
       getDeptList () {
         if (this.deptList <= 0) {
           this.$http({
-            url: this.$http.adornUrl('/sys/dept/tree'),
+            url: this.$http.adornUrl('/sys/dept/list'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList = data
+            this.deptList = treeDataTranslate(data, 'deptId')
           })
         }
       },
       // 修改选择
-      updateHandle (id, logStatus, logType) {
+      updateHandle(id, logStatus, logType) {
         if (logStatus === '1') { // 拟制中 待确认可以修改
           if (logType === '1') { // 班长日志
             this.addOrUpdateHandle(id)
@@ -771,7 +801,7 @@
         }
       },
       // 新增 / 修改  班长日志
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         this.banhouVisible = false
         this.$nextTick(() => {
@@ -779,13 +809,13 @@
         })
       },
       // 选中 之前的日志
-      isokaddOrUpdateBanHouHandle (classId) {
+      isokaddOrUpdateBanHouHandle(classId) {
         var isok = true
         this.addOrUpdateBanHouHandle(classId, isok)
-        this.isShowDeptTree = false
+        this.isShowTree = false
       },
       // 新增 / 修改 班后日志
-      addOrUpdateBanHouHandle (id, isok) {
+      addOrUpdateBanHouHandle(id, isok) {
         this.addOrUpdateVisible = false
         this.banhouVisible = true
         this.$nextTick(() => {
@@ -793,14 +823,14 @@
         })
       },
       // 新增 / 修改 班前日志
-      addOrUpdateBanQianHandle (id) {
+      addOrUpdateBanQianHandle(id) {
         this.banqianVisible = true
         this.$nextTick(() => {
           this.$refs.banqian.init(id)
         })
       },
       // 删除
-      deleteHandle (id, loginStatus) {
+      deleteHandle(id, loginStatus) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.classId
         })
@@ -830,7 +860,7 @@
         })
       },
       // 点击日志编号查看 详情
-      clickRow (row) {
+      clickRow(row) {
         this.$http({
           url: this.$http.adornUrl(`/group/classgrouplog/info/` + row.classId),
           method: 'get',
@@ -892,6 +922,11 @@
             }
           }
         })
+      },
+      pCancel () {
+        this.dataForm.deptId = ''
+        this.dataForm.deptName = ''
+        this.isShowDeptTree = false
       }
     },
     mounted: function () {

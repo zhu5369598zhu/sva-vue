@@ -1128,12 +1128,11 @@
       },
       // 拟制中变 成 待受理 (确认并派单)
       orderConfirm () {
-        this.isHttp = true
         if (this.orderDataForm.orderAcceptorId !== 0) {
           // 提交
           if (this.orderDataForm.orderApplicantId === this.loginuserId) {
             this.orderDataForm.orderStatus = 1
-           // this.orderDataForm.orderAcceptorOpinion = ''
+            this.isHttp = true
             this.$http({
               url: this.$http.adornUrl(`/management/ordermanagement/orderupdate`),
               method: 'post',
@@ -1147,7 +1146,6 @@
                 'deptId': this.orderDataForm.deptId,
                 'exceptionId': this.orderDataForm.exceptionId,
                 'defectiveName': this.orderDataForm.defectiveName,
-                'defectiveTheme': this.orderDataForm.defectiveTheme,
                 'orderContent': this.orderDataForm.orderContent,
                 'orderApplicant': this.orderDataForm.orderApplicant,
                 'orderApplicantId': this.orderDataForm.orderApplicantId,
@@ -1257,6 +1255,7 @@
       },
       // 获取数据列表  导出
       exportExcelHandle () {
+        this.dataListLoading = true
         let startTime = new Date(this.dataForm.startTime)
         startTime = formatDate(startTime, 'yyyy-MM-dd hh:mm:ss')
         let endTime = new Date(this.dataForm.endTime)
@@ -1267,7 +1266,6 @@
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
         }
-        this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/management/ordermanagement/list'),
           method: 'get',
@@ -1283,6 +1281,7 @@
             'endTime': endTime
           })
         }).then(({data}) => {
+          console.log('1')
           if (data && data.code === 0) {
             this.exportToExcel(data.page.list)
           } else {
