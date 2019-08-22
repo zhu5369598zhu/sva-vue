@@ -23,7 +23,7 @@
       initChart (chartElement) {
         var option = {
           title: {
-            text: '已完成91.78%',
+            text: '已完成0.00%',
             x: 'center',
             y: 'center',
             itemGap: 10,
@@ -81,8 +81,8 @@
                 }
               },
               data: [
-                {value: 335, name: '已完成'},
-                {value: 30, name: '未完成'}
+                {value: 0, name: '已完成'},
+                {value: 0, name: '未完成'}
               ]
             }
           ]

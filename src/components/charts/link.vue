@@ -174,10 +174,10 @@
   .chart-link {
     width: 100%;
     height: 100%;
-    padding-left: 25px;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 0px;
+    padding-left: 40px;
+    padding-top: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
   }
   .title {
     font-family: MicrosoftYaHei;

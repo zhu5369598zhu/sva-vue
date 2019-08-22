@@ -1339,7 +1339,7 @@
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.orderId
         })
-        this.$confirm(`确定进行[${ids ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定删除?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
