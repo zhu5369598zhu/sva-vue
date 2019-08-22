@@ -6,14 +6,27 @@
         <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
       </el-form-item>
       <el-form-item prop="deptId">
-        <el-select v-model="dataForm.deptId" placeholder="请输入机构名称" clearable>
-          <el-option
-            v-for="item in deptList"
-            :key="item.deptId"
-            :label="item.name"
-            :value="item.deptId"
-          ></el-option>
-        </el-select>
+        <el-popover
+          ref="deptListPopover"
+          placement="bottom-start"
+          trigger="click"
+          v-model="isShowDeptTree">
+          <div style="text-align: center; margin: 0">
+            <el-button  size="mini" type="text"  @click="pCancel()">取消</el-button>
+          </div>
+          <el-tree
+            :data="deptList"
+            :props="deptListTreeProps"
+            node-key="deptId"
+            ref="deptListTree"
+            @current-change="deptListTreeCurrentChangeHandle"
+            :default-expand-all="false"
+            :highlight-current="true"
+            :expand-on-click-node="false" clearable style="width:140px;">
+          </el-tree>
+        </el-popover>
+        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称" >
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
@@ -136,6 +149,7 @@
   import AddOrUpdate from './classgrouplogreject-add-or-update'
   import banhou from './classgrouplogreject-banhou'
   import banqian from './classgrouplogreject-banqian'
+  import { treeDataTranslate } from '@/utils'
   export default {
     data () {
       return {
@@ -153,6 +167,11 @@
         logUserStatus: '3',
         logType: '3',
         deptList: [],
+        isShowDeptTree: false,
+        deptListTreeProps: {
+          label: 'name',
+          children: 'children'
+        },
         TurnList: [],
         userList: [],
         GroupList: [{id: '1', name: '班长日志'}, {id: '2', name: '班前日志'}, {id: '3', name: '班后日志'}],
@@ -296,13 +315,29 @@
       getDeptList () {
         if (this.deptList <= 0) {
           this.$http({
-            url: this.$http.adornUrl('/sys/dept/tree'),
+            url: this.$http.adornUrl('/sys/dept/list'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.deptList = data
+            this.deptList = treeDataTranslate(data, 'deptId')
           })
         }
+      },
+      // 部门树选中
+      deptListTreeCurrentChangeHandle (data, node) {
+        this.dataForm.deptId = data.deptId
+        this.dataForm.deptName = data.name
+        this.isShowDeptTree = false
+      },
+      // 部门树设置当前选中节点
+      deptListTreeSetCurrentNode () {
+        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+        this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
+      },
+      pCancel () {
+        this.dataForm.deptId = ''
+        this.dataForm.deptName = ''
+        this.isShowDeptTree = false
       },
       getUserList () {
         this.userList = [{id: '', name: '全部的人'}, {id: this.loginuserId, name: '与我相关'}]

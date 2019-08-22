@@ -15,8 +15,8 @@
             <div class="show-data-up">
               <el-form :inline="true" :model="dataForm">
                 <el-form-item>
-                  <el-button v-if="isAuth('setting:exception:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-                  <el-button v-if="isAuth('setting:exception:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+                  <el-button v-if="isAuth('setting:exception:save')" type="primary" @click="addOrUpdateHandle()" :disabled="dataListSelections.length <= 0">推送规则</el-button>
+                  <!--<el-button v-if="isAuth('setting:exception:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>-->
                 </el-form-item>
               </el-form>
               <el-table
@@ -52,17 +52,6 @@
                   align="center"
                   label="排序">
                 </el-table-column>
-                <el-table-column
-                  fixed="right"
-                  header-align="center"
-                  align="center"
-                  width="150"
-                  label="操作">
-                  <template slot-scope="scope">
-                    <el-button v-if="isAuth('setting:exception:save')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-                    <el-button v-if="isAuth('setting:exception:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
-                  </template>
-                </el-table-column>
               </el-table>
               <el-pagination
                 @size-change="sizeChangeHandle"
@@ -73,9 +62,12 @@
                 :total="totalPage"
                 layout="total, sizes, prev, pager, next, jumper">
               </el-pagination>
+              <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
             </div>
           </div>
         </template>
+        <!-- 弹窗, 新增 / 修改 -->
+
       </split-pane>
     </div>
   </div>
@@ -85,12 +77,29 @@
 <script>
   import DeviceTree from '@/components/device-exception-tree'
   import splitPane from '@/components/split-pane'
+  import addOrUpdate from './deviceexception-add-or-update'
   export default {
     data () {
       return {
+        radio: '1',
+        tabelA: [1, 2],
+        addOrUpdateVisible: false,
         dataForm: {
           name: '',
-          deviceId: null
+          deviceId: null,
+          value: '1'
+        },
+        clickForm: {
+          smsId: 0,
+          levelId: '0',
+          levelName: '',
+          deptId: '0',
+          deviceId: '0',
+          deviceName: '',
+          exceptionIds: '',
+          deviceSmsType: 1,
+          isOk: 1,
+          type: ''
         },
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
@@ -106,7 +115,8 @@
     },
     components: {
       DeviceTree,
-      splitPane
+      splitPane,
+      addOrUpdate
     },
     computed: {
       documentClientHeight: {
@@ -133,12 +143,20 @@
         this.curPercent = val
       },
       treeSelectHandle (val) {
-        if (val.type === 'device') {
-          this.dataForm.deviceId = val.id
-          this.getDataList()
-        } else {
-          this.dataForm.deviceId = 0
+        if (val.type === 'device') { // 选择设备
+          this.clickForm.deptId = val.deptId
+          this.clickForm.levelId = val.levelId
+          this.clickForm.levelName = val.levelName
+          this.clickForm.deviceId = val.id
+          this.clickForm.deviceName = val.lable
+          this.clickForm.type = val.type
+        } else if (val.type === 'level') { // 选择设备等级
+          this.clickForm.deptId = val.deptId
+          this.clickForm.levelId = val.id
+          this.clickForm.levelName = val.label
+          this.clickForm.type = val.type
         }
+        this.getDataList()
       },
       // 获取数据列表
       getDataList () {
@@ -155,11 +173,14 @@
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
+            this.clickForm.smsId = 0
           } else {
             this.dataList = []
             this.totalPage = 0
           }
           this.dataListLoading = false
+        }).then(() => {
+          this.checkList()
         })
       },
       rowStyle ({row, rowIndex}) {
@@ -183,12 +204,81 @@
       selectionChangeHandle (val) {
         this.dataListSelections = val
       },
+      // 回显 异常等级
+      checkList () {
+        this.$http({
+          url: this.$http.adornUrl('/sys/deviceexception/checklist'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'levelId': this.clickForm.levelId,
+            'levelName': this.clickForm.levelName,
+            'deviceId': this.clickForm.deviceId,
+            'deviceName': this.clickForm.deviceName,
+            'deptId': this.clickForm.deptId,
+            'type': this.clickForm.type
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0 && data.deviceException !== null) {
+            const tabel = data.deviceException.tablecheck
+            this.clickForm.smsId = data.deviceException.id
+            this.clickForm.deviceSmsType = data.deviceException.deviceSmsType
+            if (tabel !== []) {
+              tabel.forEach(item => {
+                this.dataList.forEach(v => {
+                  if (v.id === parseInt(item)) {
+                    this.$refs.table.toggleRowSelection(v)
+                  }
+                })
+              })
+            }
+          }
+        })
+      },
       // 新增 / 修改
       addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
+        if (this.clickForm.levelName === '') {
+          this.$alert('请选择设备等级或设备')
+        } else {
+          this.addOrUpdateVisible = true
+          console.log(this.clickForm.smsId)
+          this.$nextTick(() => {
+            if (this.clickForm.smsId === 0) { // 新增
+              var ids = id ? [id] : this.dataListSelections.map(item => {
+                return item.id
+              })
+              this.clickForm.exceptionIds = ids.toString()
+              this.$refs.addOrUpdate.init(
+                this.clickForm.smsId,
+                this.clickForm.deptId,
+                this.clickForm.levelId,
+                this.clickForm.levelName,
+                this.clickForm.deviceId,
+                this.clickForm.deviceName,
+                this.clickForm.exceptionIds,
+                this.clickForm.deviceSmsType,
+                this.clickForm.isOk,
+                this.clickForm.type
+              )
+            } else { // 回显
+              var idss = id ? [id] : this.dataListSelections.map(item => {
+                return item.id
+              })
+              this.clickForm.exceptionIds = idss.toString()
+              this.$refs.addOrUpdate.init(
+                this.clickForm.smsId,
+                this.clickForm.deptId,
+                this.clickForm.levelId,
+                this.clickForm.levelName,
+                this.clickForm.deviceId,
+                this.clickForm.deviceName,
+                this.clickForm.exceptionIds,
+                this.clickForm.deviceSmsType,
+                this.clickForm.isOk,
+                this.clickForm.type
+              )
+            }
+          })
+        }
       },
       // 删除
       deleteHandle (id) {
@@ -219,17 +309,17 @@
             }
           })
         })
-      },
-      watch: {
-        'documentClientHeight': function (val) {
-          this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-        }
-      },
-      mounted: function () {
-        this.$nextTick(function () {
-          this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-        })
       }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+
+        let self = this
+        window.onresize = function () {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
+        }
+      })
     }
   }
 </script>
