@@ -57,7 +57,7 @@
                   </div>
                 </div>
                 <div v-show="hasFinishData===true" class="chart-down">
-                  <chartpie id="chartFinish" ref="chartFinish" align="center" style="height:100%"></chartpie>
+                  <chartpie id="chartFinish" ref="chartFinish" align="center" :b="inspectItemSum" :a="inspectedItemSum" :title="completionRate" style="height:100%"></chartpie>
                 </div>
                 <div class="no-data" align="center" v-show="hasFinishData===false">暂无数据</div>
               </div>
@@ -185,6 +185,9 @@ export default {
           deviceId: '',
           itemId: ''
         },
+        inspectItemSum: 0,
+        inspectedItemSum: 0,
+        completionRate: '',
         finishStartTime: '',
         finishEndTime: '',
         topStartTime: '',
@@ -434,12 +437,14 @@ export default {
       },
       handleStartTimeChange (val) {
         this.finishStartTime = val
+        this.getCompletionRate()
       },
       getDataList () {
         this.getDeviceStatus()
         this.getDeviceExceptionTop()
         this.getDevice()
         this.getExceptionStatus()
+        this.getCompletionRate()
       },
       getExceptionStatus () {
         this.exceptionLegend = []
@@ -590,6 +595,27 @@ export default {
             } else {
               this.hasInspectionData = false
             }
+            this.drawChart()
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      },
+      getCompletionRate () {
+        this.$http({
+          url: this.$http.adornUrl('/inspection/inspectiontask/getStatus'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'date': this.finishStartTime
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if(data.status[0] != null){
+              this.inspectedItemSum = data.status[0].inspectedItemSum
+              this.inspectItemSum = data.status[0].inspectItemSum
+              this.completionRate = '已完成' + parseFloat(this.inspectedItemSum/this.inspectItemSum*100).toFixed(2) + '%'
+            }
+            
             this.drawChart()
           } else {
             this.$message.error(data.msg)
