@@ -12,6 +12,8 @@
       </el-form-item>
     </el-form>
     <el-table
+      ref="table"
+      :height="tableHeight"
       :data="dataList"
       border
       :cell-style="cellStyle"
@@ -77,6 +79,7 @@
         dataForm: {
           name: ''
         },
+        tableHeight: 300,
         dataList: [],
         dataListLoading: false,
         addOrUpdateVisible: false
@@ -142,6 +145,21 @@
           })
         })
       }
+    },
+    computed: {
+      documentClientHeight: {
+        get () { return this.$store.state.common.documentClientHeight }
+      }
+    },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 80 - 20
+      }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 80 - 20
+      })
     }
   }
 </script>
