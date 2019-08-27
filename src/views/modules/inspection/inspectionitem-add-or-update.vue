@@ -136,7 +136,7 @@
     </el-row>
     <el-row>
       <el-form-item label="备注" prop="remark">
-        <el-input type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注" style="width:520px;" clearable></el-input>
+        <el-input type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注" style="width:525px;" clearable></el-input>
       </el-form-item>   
     </el-row>
     <el-row>

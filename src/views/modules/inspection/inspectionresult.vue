@@ -69,7 +69,8 @@
           </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="巡检时间" prop="startTime">
+    <el-row>
+    <el-form-item label="巡检时间:" prop="startTime">
       <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
     </el-form-item>
     <el-form-item label="到:" prop="endTime">
@@ -81,6 +82,7 @@
     <el-form-item>
       <el-button @click="exportExcelHandle()">导出</el-button>
     </el-form-item>
+    </el-row>
     </el-form>
     <el-table
       ref="table"
@@ -281,8 +283,8 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 12,
-        oldPercent: 12,
+        curPercent: 16,
+        oldPercent: 16,
         inspectionTypeList: [],
         deviceStatusList: [],
         deviceLevelList: [],

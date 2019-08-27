@@ -14,17 +14,17 @@
     <div class="show-data-table">
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item lable="设备名称:" prop="deviceName">
+      <el-form-item prop="deviceName">
         <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="巡检内容:" prop="itemName">
+      <el-form-item prop="itemName">
         <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="巡检人员:" prop="username">
+      <el-form-item  prop="username">
         <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;"></el-input>
       </el-form-item>
       </el-form-item>
-      <el-form-item label="检时状态:" prop="statusId">
+      <el-form-item prop="statusId">
         <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;">
           <el-option
             v-for="item in deviceStatusList"
@@ -34,7 +34,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="异常等级:" prop="statusId">
+      <el-form-item prop="statusId">
         <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable style="width:100px;">
           <el-option
             v-for="item in exceptionList"
@@ -44,7 +44,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="巡检类型:" prop="inspectionTypeId">
+      <el-form-item prop="inspectionTypeId">
         <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
           <el-option
             v-for="item in inspectionTypeList"
@@ -54,7 +54,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设备等级:" prop="statusId">
+      <el-form-item prop="statusId">
         <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
           <el-option
             v-for="item in deviceLevelList"
@@ -64,18 +64,20 @@
           </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="巡检时间从:" prop="startTime">
-      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker"  style="width:140px;"></el-date-picker>
-    </el-form-item>
-    <el-form-item label="到:" prop="endTime">
-      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
-    </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
+    <el-row>
+      <el-form-item label="巡检时间:" prop="startTime">
+        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker"  style="width:140px;"></el-date-picker>
       </el-form-item>
-    <el-form-item>
-      <el-button @click="exportExcelHandle()">导出</el-button>
-    </el-form-item>
+      <el-form-item label="到:" prop="endTime">
+        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+      </el-form-item>
+        <el-form-item>
+          <el-button @click="getDataList()">查询</el-button>
+        </el-form-item>
+      <el-form-item>
+        <el-button @click="exportExcelHandle()">导出</el-button>
+      </el-form-item>
+    </el-row>
     </el-form>
     <el-table
       ref="table"
@@ -276,8 +278,8 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 12,
-        oldPercent: 12,
+        curPercent: 16,
+        oldPercent: 16,
         inspectionTypeList: [],
         deviceStatusList: [],
         deviceLevelList: [],

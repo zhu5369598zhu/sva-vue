@@ -13,13 +13,13 @@
    <template slot="paneR">
     <div class="show-data-table">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item lable="设备名称:" prop="deviceName">
+        <el-form-item prop="deviceName">
           <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
         </el-form-item>
-        <el-form-item lable="巡检人员:" prop="username">
+        <el-form-item prop="username">
           <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;"></el-input>
         </el-form-item>
-        <el-form-item label="检时状态:" prop="statusId">
+        <el-form-item prop="statusId">
           <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;">
             <el-option
               v-for="item in deviceStatusList"
@@ -29,7 +29,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="设备等级:" prop="statusId">
+        <el-form-item prop="statusId">
           <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
             <el-option
               v-for="item in deviceLevelList"
@@ -39,18 +39,18 @@
             </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="巡检时间从:" prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="到:" prop="endTime">
-        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="search()">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
-      </el-form-item>
+        <el-form-item label="巡检时间:" prop="startTime">
+          <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="到:" prop="endTime">
+          <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="search()">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="exportExcelHandle()">导出</el-button>
+        </el-form-item>
       </el-form>
       <el-tabs type="border-card" value="chart" ref="tabs">
       <el-tab-pane label="图表" name="chart" actived="true">
@@ -272,8 +272,8 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 20,
-        oldPercent: 20,
+        curPercent: 16,
+        oldPercent: 16,
         inspectionTypeList: [],
         deviceStatusList: [],
         deviceLevelList: [],

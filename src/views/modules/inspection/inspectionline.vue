@@ -537,8 +537,8 @@
         publishName: '发布计划',
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 12,
-        oldPercent: 12,
+        curPercent: 16,
+        oldPercent: 16,
         lineList: [],
         turnList: [],
         classGroupList: [],
@@ -1188,7 +1188,7 @@
           return
         }
         if (this.publishName === '修改计划') {
-          this.$confirm(`确定对线路[id=${this.lineForm.lineId}]由已发布状态改为编操状态作?`, '提示', {
+          this.$confirm(`确定将线路由已发布状态改为编操状态作?`, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
