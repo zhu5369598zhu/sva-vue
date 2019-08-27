@@ -99,12 +99,12 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
+      <el-dialog title="拒绝原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
         <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
-          <el-form-item label="驳回原因" prop="rejectReason">
+          <el-form-item label="拒绝原因" prop="rejectReason">
             <el-input type="textarea"
                       autosize
-                      v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
+                      v-model="dataForm.rejectReason" placeholder="拒绝原因"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -115,7 +115,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="danger" @click="bohuiSubmit()">驳回</el-button>
+      <el-button type="danger" @click="bohuiSubmit()">拒绝</el-button>
       <el-button type="primary" @click="confirmedSubmit()"  :disabled="isHttp">确定</el-button>
     </span>
   </el-dialog>
@@ -239,7 +239,7 @@
             { required: true, message: '交代事项不能为空', trigger: 'blur' }
           ],
           rejectReason: [
-            { required: true, message: '驳回原因不能为空', trigger: 'blur' }
+            { required: true, message: '拒绝原因不能为空', trigger: 'blur' }
           ]
         },
         startDatePicker: this.beginDate()
@@ -363,8 +363,8 @@
       handleStartTimeChange (val) {
         this.dataForm.createTime = val
       },
-      // 驳回
-      bohuiSubmit () { // 用户有了驳回记录
+      // 拒绝
+      bohuiSubmit () { // 用户有了拒绝记录
         this.dataForm.logStatus = '4'
         this.dataForm.logUserStatus = '4'
         this.dialogRejectVisible = true

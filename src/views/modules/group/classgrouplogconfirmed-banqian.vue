@@ -93,12 +93,12 @@
       <el-form-item label="班组成员" prop="teamMembers">
         <el-input v-model="dataForm.teamMembers" readonly></el-input>
 
-        <el-dialog title="驳回原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
+        <el-dialog title="拒绝原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
           <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
-            <el-form-item label="驳回原因" prop="rejectReason">
+            <el-form-item label="拒绝原因" prop="rejectReason">
               <el-input type="textarea"
                         autosize
-                        v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
+                        v-model="dataForm.rejectReason" placeholder="拒绝原因"></el-input>
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
@@ -110,7 +110,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="danger" @click="bohuiSubmit()">驳回</el-button>
+      <el-button type="danger" @click="bohuiSubmit()">拒绝</el-button>
       <el-button type="primary" @click="confirmedSubmit()"  :disabled="isHttp">确定</el-button>
     </span>
   </el-dialog>
@@ -396,7 +396,7 @@
           this.dataList = treeDataTranslate(data, 'deptId')
         })
       },
-      // 驳回
+      // 拒绝
       bohuiSubmit () {
         this.dataForm.logUserStatus = '4'
         this.dataForm.logStatus = '4'
@@ -414,7 +414,7 @@
           if (valid) {
             this.isHttp = true
             this.dialogRejectVisible = false
-            this.dataForm.successorId = this.loginuserId   // 驳回人 id
+            this.dataForm.successorId = this.loginuserId   // 拒绝人 id
             this.$http({
               url: this.$http.adornUrl(`/group/classgrouplogconfirmed/${!this.dataForm.classId ? 'save' : 'update'}`),
               method: 'post',

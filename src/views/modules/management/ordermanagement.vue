@@ -1255,7 +1255,6 @@
       },
       // 获取数据列表  导出
       exportExcelHandle () {
-        this.dataListLoading = true
         let startTime = new Date(this.dataForm.startTime)
         startTime = formatDate(startTime, 'yyyy-MM-dd hh:mm:ss')
         let endTime = new Date(this.dataForm.endTime)
@@ -1266,8 +1265,9 @@
         if (endTime === 'NaN-aN-aN aN:aN:aN' || endTime === '1970-01-01 08:00:00' || null) {
           endTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
         }
+        this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/management/ordermanagement/list'),
+          url: this.$http.adornUrl('/management/ordermanagement/export'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -1283,7 +1283,7 @@
         }).then(({data}) => {
           console.log('1')
           if (data && data.code === 0) {
-            this.exportToExcel(data.page.list)
+            this.exportToExcel(data.list)
           } else {
             this.$message.error(data.msg)
           }
