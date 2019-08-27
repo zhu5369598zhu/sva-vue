@@ -8,9 +8,19 @@
   require('echarts/lib/component/tooltip')
   require('echarts/lib/component/legend')
   export default {
+    props: {
+      title: {
+        type: String
+      },
+      a: {
+        type: Number
+      },
+      b: {
+        type: Number
+      }
+    },
     data () {
       return {
-        today: '',
         chart: null,
         x: '',
         y: ''
@@ -23,7 +33,7 @@
       initChart (chartElement) {
         var option = {
           title: {
-            text: '已完成91.78%',
+            text: this.title,
             x: 'center',
             y: 'center',
             itemGap: 10,
@@ -81,8 +91,8 @@
                 }
               },
               data: [
-                {value: 335, name: '已完成'},
-                {value: 30, name: '未完成'}
+                {value: this.a, name: '已完成'},
+                {value: this.b, name: '未完成'}
               ]
             }
           ]
@@ -91,15 +101,6 @@
         this.Chart.setOption(option)
 
         window.addEventListener('resize', function () {
-          this.x = this.$refs.chartPie.offsetWidth / 2
-          this.y = 0
-          var option = {
-            legend: {
-              orient: 'vertical',
-              x: this.x,
-              y: this.y
-            }
-          }
           this.Chart.setOption(option)
           this.Chart.resize()
         }.bind(this))

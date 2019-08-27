@@ -15,7 +15,7 @@
                       </el-radio-group>
                     </div>
                   </div>
-                  <div align="center">
+                  <div align="center" v-if="false">
                     <el-checkbox-group size="mini"  @change="topCheckboxChange" v-model="topFilter" style="display: inline;vertical-align: text-bottom;">
                       <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
                     </el-checkbox-group>
@@ -52,12 +52,12 @@
                   <div class="chart-header">
                     <span class="title">巡检完成率</span>
                     <div class="filter">
-                      <el-date-picker v-model="this.finishStartTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                      <el-date-picker v-model="finishStartTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                     </div>
                   </div>
                 </div>
                 <div v-show="hasFinishData===true" class="chart-down">
-                  <chartpie id="chartFinish" ref="chartFinish" align="center" style="height:100%"></chartpie>
+                  <chartpie id="chartFinish" ref="chartFinish" align="center" :b="inspectItemSum" :a="inspectedItemSum" :title="completionRate" style="height:100%"></chartpie>
                 </div>
                 <div class="no-data" align="center" v-show="hasFinishData===false">暂无数据</div>
               </div>
@@ -92,6 +92,31 @@
                   <div class="chart-header">
                     <span class="title">设备指标趋势</span>
                     <div class="filter">
+                      <div style="display: inline-block;">
+                        <el-form :inline="true" :model="dataForm" align="center">
+                          <el-form-item>
+                            <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" clearable style="width:140px;">
+                              <el-option
+                                v-for="item in deviceList"
+                                :key="item.deviceId"
+                                :label="item.deviceName"
+                                :value="item.deviceId">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                          <el-form-item>
+                            <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" clearable style="width:140px;">
+                              <el-option
+                                v-for="item in itemList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </el-form>
+                      </div>
+                      <span>&nbsp;</span>
                       <el-radio-group size="mini" @change="inspectionRadioChange" v-model="inspectionFilter" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in inspectionPeriodList" :label="period" :key="period"></el-radio-button>
                       </el-radio-group>
@@ -104,32 +129,6 @@
                 </div>
               </div>
             </div>
-            <div class="chart-filter-container">
-              <div align="center">
-                <el-form :inline="true" :model="dataForm" align="center">
-                  <el-form-item>
-                    <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" clearable style="width:140px;">
-                      <el-option
-                        v-for="item in deviceList"
-                        :key="item.deviceId"
-                        :label="item.deviceName"
-                        :value="item.deviceId">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" clearable style="width:140px;">
-                      <el-option
-                        v-for="item in itemList"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-form>
-              </div>
-            </div>
           </el-row>
         </el-col>
         <el-col :span="6" class="home-col-right">
@@ -140,7 +139,7 @@
               </el-badge>
 
               <el-badge :value="bugLog" :max="10" class="alert">
-                <el-button  type="primary" @click.native="newsHandle(2)">工单</el-button>
+                <el-button  type="primary" @click.native="newsHandle(2)">巡检工单</el-button>
             </el-badge>
             </div>
           </el-row>
@@ -186,6 +185,9 @@ export default {
           deviceId: '',
           itemId: ''
         },
+        inspectItemSum: 0,
+        inspectedItemSum: 0,
+        completionRate: '',
         finishStartTime: '',
         finishEndTime: '',
         topStartTime: '',
@@ -206,12 +208,12 @@ export default {
         topPeriodList: ['本周', '本月', '本年'],
         finishFilter: [''],
         exceptionFilterType: '',
-        inspectionFilter: '全部',
+        inspectionFilter: '本年',
         exceptionFilter: '本年',
         statusFilter: '本年',
         deviceLevelList: ['A类', 'B类', 'C类'],
-        inspectionPeriodList: ['全部', '本周', '本月', '本年'],
-        exceptionPeriodList: ['全部', '本周', '本月', '本年'],
+        inspectionPeriodList: ['本周', '本月', '本年'],
+        exceptionPeriodList: ['本周', '本月', '本年'],
         statusPeriodList: ['本周', '本月', '本年'],
         hasLinkData: false,
         hasInspectionData: false,
@@ -271,8 +273,7 @@ export default {
     },
     created () {
       let today = new Date()
-      this.finishStartTime = today
-      this.finishStartTime.setDate(this.finishStartTime.getDate() - 30)
+      this.finishStartTime = new Date()
       if (this.topFilter === '本周') {
         this.topStartTime = getFirstDayOfWeek(today)
       } else if (this.topFilter === '本月') {
@@ -435,12 +436,15 @@ export default {
         this.getDeviceInspection()
       },
       handleStartTimeChange (val) {
+        this.finishStartTime = val
+        this.getCompletionRate()
       },
       getDataList () {
         this.getDeviceStatus()
         this.getDeviceExceptionTop()
         this.getDevice()
         this.getExceptionStatus()
+        this.getCompletionRate()
       },
       getExceptionStatus () {
         this.exceptionLegend = []
@@ -462,23 +466,35 @@ export default {
             this.hasExceptionData = true
             this.exceptionLegend = data.data.legend
             let category = []
-            for (let i = 0; i < data.data.category.length; i++) {
-              if (data.data.category[i] === 'Mon') {
-                category.push('周一')
-              } else if (data.data.category[i] === 'Tue') {
-                category.push('周二')
-              } else if (data.data.category[i] === 'Wed') {
-                category.push('周三')
-              } else if (data.data.category[i] === 'Thu') {
-                category.push('周四')
-              } else if (data.data.category[i] === 'Fri') {
-                category.push('周五')
-              } else if (data.data.category[i] === 'Sat') {
-                category.push('周六')
-              } else if (data.data.category[i] === 'Sun') {
-                category.push('周日')
-              } else {
-                category.push(data.data.category[i])
+            if (this.exceptionFilterType === '%a') {
+              for (let i = 0; i < data.data.category.length; i++) {
+                if (data.data.category[i] === 'Mon') {
+                  category.push('周一')
+                } else if (data.data.category[i] === 'Tue') {
+                  category.push('周二')
+                } else if (data.data.category[i] === 'Wed') {
+                  category.push('周三')
+                } else if (data.data.category[i] === 'Thu') {
+                  category.push('周四')
+                } else if (data.data.category[i] === 'Fri') {
+                  category.push('周五')
+                } else if (data.data.category[i] === 'Sat') {
+                  category.push('周六')
+                } else if (data.data.category[i] === 'Sun') {
+                  category.push('周日')
+                } else {
+                  category.push(data.data.category[i])
+                }
+              }
+            }
+            if (this.exceptionFilterType === '%d') {
+              for (let i = 0; i < data.data.category.length; i++) {
+                  category.push(data.data.category[i] + '日')
+              }
+            }
+            if (this.exceptionFilterType === '%m') {
+              for (let i = 0; i < data.data.category.length; i++) {
+                  category.push(data.data.category[i] + '月')
               }
             }
             this.exceptionCategory = category
@@ -571,13 +587,35 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.ids = data.data.ids
-            this.inspectionCategory = data.data.category.map(item => formatDate (new Date(item), 'yyyy-MM-dd hh:mm:ss'))
+            this.inspectionCategory = data.data.category
             this.inspectionSeries = data.data.series
+            console.log(data.data.category)
             if (this.inspectionSeries.length > 0) {
               this.hasInspectionData = true
             } else {
               this.hasInspectionData = false
             }
+            this.drawChart()
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      },
+      getCompletionRate () {
+        this.$http({
+          url: this.$http.adornUrl('/inspection/inspectiontask/getStatus'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'date': this.finishStartTime
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if(data.status[0] != null){
+              this.inspectedItemSum = data.status[0].inspectedItemSum
+              this.inspectItemSum = data.status[0].inspectItemSum
+              this.completionRate = '已完成' + parseFloat(this.inspectedItemSum/this.inspectItemSum*100).toFixed(2) + '%'
+            }
+            
             this.drawChart()
           } else {
             this.$message.error(data.msg)

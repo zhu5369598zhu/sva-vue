@@ -8,6 +8,8 @@
       </el-form-item>
     </el-form>
     <el-table
+      ref="table"
+      :height="tableHeight"
       :data="dataList"
       border
       style="width: 100%;">
@@ -99,6 +101,7 @@
   export default {
     data () {
       return {
+        tableHeight: 300,
         dataForm: {},
         dataList: [],
         dataListLoading: false,
@@ -159,6 +162,21 @@
           })
         }).catch(() => {})
       }
+    },
+    computed: {
+      documentClientHeight: {
+        get () { return this.$store.state.common.documentClientHeight }
+      }
+    },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+      }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+      })
     }
   }
 </script>
