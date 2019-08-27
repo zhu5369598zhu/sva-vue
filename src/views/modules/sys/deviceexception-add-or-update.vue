@@ -9,9 +9,13 @@
       <el-radio v-model="dataForm.deviceSmsType" @change="changType(1)"  :label="1">按照用户</el-radio>
       <el-radio v-model="dataForm.deviceSmsType" @change="changType(2)" :label="2">按照角色</el-radio>
     </el-form-item>
-    <el-form-item label="状态" prop="isOk" v-if="dataForm.deviceId!=''">
+    <el-form-item label="短信状态" prop="isOk" v-if="dataForm.deviceId!=''">
       <el-radio v-model="dataForm.isOk" :label="1">正常</el-radio>
       <el-radio v-model="dataForm.isOk" :label="0">禁用</el-radio>
+    </el-form-item>
+    <el-form-item label="微信状态" prop="wxOk" >
+      <el-radio v-model="dataForm.wxOk" :label="1">正常</el-radio>
+      <el-radio v-model="dataForm.wxOk" :label="0">禁用</el-radio>
     </el-form-item>
     <el-form-item size="mini" label="授权">
       <el-tree
@@ -53,6 +57,7 @@
           deviceSmsType: 1,
           smsUserIds: '',
           isOk: 1,
+          wxOk: 1,
           type: '',
           userIdList: []
         },
@@ -120,6 +125,7 @@
                 this.dataForm.deviceSmsType = data.deviceexception.deviceSmsType
                 this.dataForm.smsUserIds = data.deviceexception.smsUserIds
                 this.dataForm.isOk = data.deviceexception.isOk
+                this.dataForm.wxOk = data.deviceexception.wxOk
                 this.dataForm.type = data.deviceexception.type
                 this.dataForm.userIdList = data.deviceexception.userIdList
                 this.$refs.userListTree.setCheckedKeys(this.dataForm.userIdList)
@@ -147,6 +153,7 @@
                 'deviceSmsType': this.dataForm.deviceSmsType,
                 'userIdList': [].concat(this.$refs.userListTree.getCheckedKeys()),
                 'isOk': this.dataForm.isOk,
+                'wxOk': this.dataForm.wxOk,
                 'type': this.dataForm.type
               })
             }).then(({data}) => {

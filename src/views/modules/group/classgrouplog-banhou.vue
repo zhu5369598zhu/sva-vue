@@ -131,7 +131,7 @@
       <el-row>
         <el-col :span="7">
           <el-form-item label="负责人" prop="personCharge">
-            <el-input v-model="dataForm.personCharge" placeholder="负责人"></el-input>
+            <el-input v-model="dataForm.personCharge" placeholder="负责人" readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
