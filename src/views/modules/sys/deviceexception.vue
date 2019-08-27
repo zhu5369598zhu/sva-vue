@@ -155,6 +155,8 @@
           this.clickForm.levelId = val.id
           this.clickForm.levelName = val.label
           this.clickForm.type = val.type
+        } else if(val.type === 'dept') {
+          this.clickForm.levelName = ''
         }
         this.getDataList()
       },

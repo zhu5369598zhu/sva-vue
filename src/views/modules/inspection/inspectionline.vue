@@ -1184,7 +1184,8 @@
         })
       },
       linePublish () {
-        if (this.lineForm.lineId === 0) {
+        if (this.lineForm.lineId === 0 || this.lineForm.lineId === null) {
+          this.$alert('请选择线路')
           return
         }
         if (this.publishName === '修改计划') {

@@ -108,13 +108,13 @@
         align="center"
         label="采样点数">
       </el-table-column>
-            <el-table-column
+            <!--<el-table-column
         prop="upUsed"
         header-align="center"
         align="center"
         width="140"
         label="上上/上/下/下下">
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column
         prop="limits"
         header-align="center"
