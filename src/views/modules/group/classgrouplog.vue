@@ -65,7 +65,7 @@
         <el-button @click="getDataList()">查询</el-button>
           <el-select v-model="dataForm.add" placeholder="新增日志"  style="width:80px;">
             <el-option :value="dataForm.add" >
-              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()" style="line-height: 22px!important;"><span style="margin-bottom: 10px;">班长日志</span></el-button>
+              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()" style="line-height: 22px!important;">班长日志</el-button>
             </el-option>
             <el-option :value="dataForm.add" >
               <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()" style="line-height: 22px!important;">班前会</el-button>
@@ -103,10 +103,8 @@
               </el-table-column>
             </el-table>
           </el-popover>
+          <el-button @click="exportExcelHandle()">导出</el-button>
     </el-form-item>
-      <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
-      </el-form-item>
     </el-form>
     <el-table
       ref="table"
