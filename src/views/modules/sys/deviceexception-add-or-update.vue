@@ -9,7 +9,7 @@
       <el-radio v-model="dataForm.deviceSmsType" @change="changType(1)"  :label="1">按照用户</el-radio>
       <el-radio v-model="dataForm.deviceSmsType" @change="changType(2)" :label="2">按照角色</el-radio>
     </el-form-item>
-    <el-form-item label="短信状态" prop="isOk" v-if="dataForm.deviceId!=''">
+    <el-form-item label="短信状态" prop="isOk">
       <el-radio v-model="dataForm.isOk" :label="1">正常</el-radio>
       <el-radio v-model="dataForm.isOk" :label="0">禁用</el-radio>
     </el-form-item>
@@ -139,6 +139,9 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.isHttp = true
+            console.log(this.dataForm.deviceId)
+            console.log(this.dataForm.deviceName)
+            console.log('等级' + this.dataForm.deviceLevelName)
             this.$http({
               url: this.$http.adornUrl(`/sys/deviceexception/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',

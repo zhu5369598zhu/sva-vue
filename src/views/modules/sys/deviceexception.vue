@@ -143,6 +143,7 @@
         this.curPercent = val
       },
       treeSelectHandle (val) {
+        console.log(val)
         if (val.type === 'device') { // 选择设备
           this.clickForm.deptId = val.deptId
           this.clickForm.levelId = val.levelId
@@ -154,8 +155,10 @@
           this.clickForm.deptId = val.deptId
           this.clickForm.levelId = val.id
           this.clickForm.levelName = val.label
+          this.clickForm.deviceId = 0
+          this.clickForm.deviceName = ''
           this.clickForm.type = val.type
-        } else if(val.type === 'dept') {
+        } else if (val.type === 'dept') {
           this.clickForm.levelName = ''
         }
         this.getDataList()
