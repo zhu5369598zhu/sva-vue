@@ -63,47 +63,51 @@
 
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-          <el-select v-model="dataForm.add" placeholder="新增日志"  style="width:80px;">
-            <el-option :value="dataForm.add" >
-              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()" style="line-height: 22px!important;">班长日志</el-button>
-            </el-option>
-            <el-option :value="dataForm.add" >
-              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()" style="line-height: 22px!important;">班前会</el-button>
-            </el-option>
-            <el-option :value="dataForm.add" v-popover:groupListPopover>
-              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()"   style="line-height: 22px!important;">班后会</el-button>
-            </el-option>
-          </el-select>
-          <el-popover
-            ref="groupListPopover"
-            placement="
-              transform-origin:center bottom;
-              z-index: 2058;
-              position: absolute;
-              top: 100px;
-              left: 1247px;"
-            trigger="click"
-            highlight-current="true"
-            v-model="isShowTree">
-            <el-table
-              :data="banqiandataList"
-              :cell-style="cellStyle"
-              :default-expand-all="true"
-              v-loading="dataListLoading"
-              >
-              <el-table-column
-                width="130"
-                prop="logNumber"
-                header-align="center"
-                align="center"
-                label="请选择班前会编号">
-                <template slot-scope="scope">
-                  <span @click="isokaddOrUpdateBanHouHandle(scope.row.classId)">{{scope.row.logNumber}}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-popover>
-          <el-button @click="exportExcelHandle()">导出</el-button>
+
+        <el-button-group >
+        <el-select v-model="dataForm.add" style="width:80px;">
+          <el-option :value="dataForm.add" >
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()" style="line-height: 22px!important;">班长日志</el-button>
+          </el-option>
+          <el-option :value="dataForm.add" >
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()" style="line-height: 22px!important;">班前会</el-button>
+          </el-option>
+          <el-option :value="dataForm.add" v-popover:groupListPopover>
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()"   style="line-height: 22px!important;">班后会</el-button>
+          </el-option>
+        </el-select>
+        </el-button-group>
+
+        <el-popover
+          ref="groupListPopover"
+          placement="
+            transform-origin:center bottom;
+            z-index: 2058;
+            position: absolute;
+            top: 100px;
+            left: 1247px;"
+          trigger="click"
+          highlight-current="true"
+          v-model="isShowTree">
+          <el-table
+            :data="banqiandataList"
+            :cell-style="cellStyle"
+            :default-expand-all="true"
+            v-loading="dataListLoading"
+            >
+            <el-table-column
+              width="130"
+              prop="logNumber"
+              header-align="center"
+              align="center"
+              label="请选择班前会编号">
+              <template slot-scope="scope">
+                <span @click="isokaddOrUpdateBanHouHandle(scope.row.classId)">{{scope.row.logNumber}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-popover>
+        <el-button @click="exportExcelHandle()">导出</el-button>
     </el-form-item>
     </el-form>
     <el-table
