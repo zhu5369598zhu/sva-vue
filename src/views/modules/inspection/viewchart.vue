@@ -2,8 +2,9 @@
   <el-dialog style="z-index:1"
     :close-on-click-modal="true"
     :modal=false
-    width="50%"
-    :visible.sync="visible">
+    v-dialog-drag
+    :visible.sync="visible"
+    >
     <div class="view-chart" align="center" style="height:520px;">
       <div v-show="hasData===true" class="chart-container">
         <div class="remark" v-html="timeRemark"></div>
