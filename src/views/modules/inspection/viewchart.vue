@@ -3,6 +3,7 @@
     :close-on-click-modal="true"
     :modal=false
     v-dialog-drag
+    v-if="visible"
     :visible.sync="visible"
     >
     <div class="view-chart" align="center" style="height:520px;">
