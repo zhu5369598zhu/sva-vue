@@ -3,7 +3,7 @@
   <el-form :inline="true" @keyup.enter.native="getDeviceList()">
     <div class="search">
       <el-input v-model="deviceName">
-        <el-button slot="append" icon="el-icon-search" @click="getDeviceList"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="getDeviceList()"></el-button>
       </el-input>
     </div>
   </el-form>
@@ -31,7 +31,7 @@
   export default {
     data () {
       return {
-        expendTree: false,
+        expendTree: true,
         deviceName: '',
         deviceTreeProps: {
           label: 'lable',

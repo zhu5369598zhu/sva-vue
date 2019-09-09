@@ -11,8 +11,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="设备等级:" prop="deviceLevel">
-            <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" clearable style="width:140px;">
+          <el-form-item label="设备等级" prop="deviceLevel" >
+            <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" style="width:140px;">
               <el-option
                 v-for="item in deviceLevelList"
                 :key="item.id"

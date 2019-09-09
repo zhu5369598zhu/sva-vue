@@ -95,7 +95,7 @@
                       <div style="display: inline-block;">
                         <el-form :inline="true" :model="dataForm" align="center">
                           <el-form-item>
-                            <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" clearable style="width:140px;">
+                            <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" style="width:140px;">
                               <el-option
                                 v-for="item in deviceList"
                                 :key="item.deviceId"
@@ -105,7 +105,7 @@
                             </el-select>
                           </el-form-item>
                           <el-form-item>
-                            <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" clearable style="width:140px;">
+                            <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" style="width:140px;">
                               <el-option
                                 v-for="item in itemList"
                                 :key="item.id"
@@ -602,6 +602,8 @@ export default {
         })
       },
       getCompletionRate () {
+        this.inspectedItemSum = 0
+        this.inspectItemSum = 0
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectiontask/getStatus'),
           method: 'get',
@@ -611,9 +613,17 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             if(data.status[0] != null){
+              let tmpRate = 0
               this.inspectedItemSum = data.status[0].inspectedItemSum
               this.inspectItemSum = data.status[0].inspectItemSum
-              this.completionRate = '已完成' + parseFloat(this.inspectedItemSum/this.inspectItemSum*100).toFixed(2) + '%'
+              if(this.inspectItemSum === 0){
+                tmpRate = 0.00
+              }else{
+                tmpRate = this.inspectedItemSum/this.inspectItemSum
+              }
+              this.completionRate = '已完成' + parseFloat(tmpRate*100).toFixed(2) + '%'
+            }else{
+              this.completionRate = '已完成0.00%'
             }
             
             this.drawChart()

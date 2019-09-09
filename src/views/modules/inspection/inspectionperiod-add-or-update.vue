@@ -115,7 +115,9 @@
       beginDate () {
         return {
           disabledDate (time) {
-            return time.getTime() < Date.now() // 开始时间不选时，结束时间最大值小于等于当天
+            let now = new Date()
+            now.setDate(now.getDate() - 1)
+            return time.getTime() < now.getTime() // 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       },

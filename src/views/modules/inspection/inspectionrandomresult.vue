@@ -3,25 +3,25 @@
     <div class="show-data-content">
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item lable="工厂名称:" prop="factory">
+      <el-form-item prop="factory">
         <el-input v-model="dataForm.factory" placeholder="工厂名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="部门名称:" prop="dept">
+      <el-form-item prop="dept">
         <el-input v-model="dataForm.dept" placeholder="部门名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="车间名称:" prop="workshop">
+      <el-form-item prop="workshop">
         <el-input v-model="dataForm.workshop" placeholder="车间名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="设备名称:" prop="deviceName">
+      <el-form-item prop="deviceName">
         <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="设备编码:" prop="deviceCode">
+      <el-form-item prop="deviceCode">
         <el-input v-model="dataForm.deviceCode" placeholder="设备编码" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item lable="巡检人:" prop="username">
+      <el-form-item prop="username">
         <el-input v-model="dataForm.username" placeholder="巡检人" clearable style="width:100px;"></el-input>
       </el-form-item>
-      <el-form-item label="巡检类型:" prop="inspectionTypeId">
+      <el-form-item prop="inspectionTypeId">
         <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
           <el-option
             v-for="item in inspectionTypeList"
@@ -31,7 +31,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-    <el-form-item label="巡检时间从:" prop="startTime">
+    <el-row>
+    <el-form-item label="巡检时间:" prop="startTime">
       <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" style="width:140px;"></el-date-picker>
     </el-form-item>
     <el-form-item label="到:" prop="endTime">
@@ -43,6 +44,7 @@
     <el-form-item>
       <el-button @click="exportExcelHandle()">导出</el-button>
     </el-form-item>
+    </el-row>
     </el-form>
     <el-table
       ref="table"
