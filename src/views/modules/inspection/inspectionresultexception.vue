@@ -174,7 +174,7 @@
         label="附件">
         <template slot-scope="scope" style="display: inline-block;white-space:normal;">
           <template v-for="item in scope.row.medias">
-            <i style="cursor:pointer" @click="view(item.type, item.guid)">
+            <i style="cursor:pointer" @click="view(item.type, item.guid, scope.row.inspectionTypeId)">
               <icon-svg
                 :name="changeImg(item.type)"
                 style="font-size:16px;"></icon-svg>
@@ -316,16 +316,26 @@
           }
         }
       },
-      view (type, url) {
+      view (type, url, inspectionTypeId) {
+        console.log(inspectionTypeId)
         if (type !== 'data') {
           this.viewMediaVisible = true
           this.$nextTick(() => {
             this.$refs.viewMedia.init(type, url)
           })
         } else {
+          var inspectionType = 'acc'
+          if (inspectionTypeId === 4) {
+            inspectionType = 'acc'
+          } else if (inspectionTypeId === 5) {
+            inspectionType = 'speed'
+          } else if (inspectionTypeId === 6) {
+            inspectionType = 'distance'
+          }
           this.viewChartVisible = true
           this.$nextTick(() => {
-            this.$refs.viewChart.init(type, url)
+            console.log(inspectionType)
+            this.$refs.viewChart.init(inspectionType, url)
           })
         }
       },

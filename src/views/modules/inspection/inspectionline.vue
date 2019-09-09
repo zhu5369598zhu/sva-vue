@@ -110,7 +110,7 @@
               <template slot-scope="scope" sytle="z-index=1;">
                 <el-button v-if="isAuth('inspection:inspectionline:save') && scope.row.isPublish===0" type="text" size="small" @click="lineAddOrUpdateHandle(scope.row.id)">修改</el-button>
                 <el-button v-if="isAuth('inspection:inspectionline:delete') && scope.row.isPublish===0" type="text" size="small" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
-                <el-button v-if="scope.row.isPublish===1" type="text" size="small" @click="viewPublish(scope.row.id)">下载详情</el-button>
+                <el-button v-if="scope.row.isPublish===1" type="text" size="small" @click="viewPublish(scope.row.id)" >下载详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -125,7 +125,7 @@
           </el-pagination>
           <!-- 弹窗, 新增 / 修改 -->
           <LineAddOrUpdate v-if="lineAddOrUpdateVisible" ref="lineAddOrUpdate" @refreshDataList="getLineList(lineForm.deptId)"></LineAddOrUpdate>
-          <viewPublish v-if="viewPublishVisible" ref="viewPublish"></viewPublish>
+          <viewPublish v-if="viewPublishVisible" ref="viewPublish" @refreshDataList="getLineList(lineForm.deptId)" v-on:closeMain="closeMain"></viewPublish>
       </div>
       <div class="show-data-down">
       <el-tabs type="border-card" v-model="activeTab" @tab-click="tabSelectChangeHandle">
@@ -618,6 +618,12 @@
       },
       resize (val) {
         this.curPercent = val
+        console.log(val)
+      },
+      // 关闭下载详情
+      closeMain () {
+        console.log(this.viewPublishVisible)
+        this.viewPublishVisible = false
       },
       // 获取数据列表
       getLineList (deptId) {
@@ -1209,6 +1215,7 @@
                   duration: 1500,
                   onClose: () => {
                     this.getLineList(this.lineForm.deptId)
+                    this.isPublish = 0
                   }
                 })
               } else {
@@ -1230,6 +1237,7 @@
                 duration: 1500,
                 onClose: () => {
                   this.getLineList(this.lineForm.deptId)
+                  this.isPublish = 1
                 }
               })
             } else {

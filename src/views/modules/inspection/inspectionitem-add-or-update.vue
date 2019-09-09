@@ -188,6 +188,7 @@
           upLimit: '',
           downdownLimit: '',
           downLimit: '',
+          remark: '',
           orderNum: false,
           downUsed: false,
           upUsed: false,

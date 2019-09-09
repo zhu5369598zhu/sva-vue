@@ -3,6 +3,7 @@
     :title="'下载详情'"
     :close-on-click-modal="false"
     :visible.sync="visible"
+    @close='closeDialog'
     append-to-body>
     <el-table
       :data="dataList"
@@ -59,6 +60,7 @@
     data () {
       return {
         visible: false,
+        lineId: 0,
         dataForm: {
           key: ''
         },
@@ -81,13 +83,14 @@
       getDataList (lineId) {
         this.visible = true
         this.dataListLoading = true
+        this.lineId = lineId
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectionlinepublish/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'lineId': lineId
+            'lineId': this.lineId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -100,16 +103,20 @@
           this.dataListLoading = false
         })
       },
+      // dialog 关闭事件
+      closeDialog () {
+        this.$emit('closeMain')
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
-        this.getDataList()
+        this.getDataList(this.lineId)
       },
       // 当前页
       currentChangeHandle (val) {
         this.pageIndex = val
-        this.getDataList()
+        this.getDataList(this.lineId)
       }
     }
   }

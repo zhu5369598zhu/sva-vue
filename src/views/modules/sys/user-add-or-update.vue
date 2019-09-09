@@ -3,6 +3,7 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
+    v-dialog-drag
     append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
       <el-row>
@@ -23,6 +24,7 @@
                 :props="deptListTreeProps"
                 node-key="deptId"
                 ref="deptListTree"
+                class="tree"
                 @current-change="deptListTreeCurrentChangeHandle"
                 :default-expand-all="false"
                 :highlight-current="true"
@@ -285,3 +287,15 @@
     }
   }
 </script>
+<style>
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
+  }
+  .el-tree {
+    min-width: 100%;
+    display:inline-block !important;
+  }
+
+</style>

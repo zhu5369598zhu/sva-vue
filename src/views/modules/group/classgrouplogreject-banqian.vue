@@ -70,26 +70,21 @@
           </span>
         </el-input>
       </el-form-item>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item  label="未到人员" prop="notArrived">
-            <el-input v-model="dataForm.notArrived" placeholder="未到人员">
-              <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
-              </span>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item  label="顶班人员" prop="topArrived">
-            <el-input v-model="dataForm.topArrived" placeholder="顶班人员">
-              <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
-              </span>
-            </el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+
+      <el-form-item  label="未到人员" prop="notArrived">
+        <el-input v-model="dataForm.notArrived" placeholder="未到人员">
+          <span slot="suffix">
+            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
+          </span>
+        </el-input>
+      </el-form-item>
+      <el-form-item  label="顶班人员" prop="topArrived">
+        <el-input v-model="dataForm.topArrived" placeholder="顶班人员">
+          <span slot="suffix">
+            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
+          </span>
+        </el-input>
+      </el-form-item>
       <el-form-item  label="缺勤原因" prop="reasonsAbsence">
         <el-input v-model="dataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
       </el-form-item>
@@ -148,102 +143,6 @@
                 <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('班组成员')" ></a>
               </span>
         </el-input>
-        <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible"  :append-to-body='true'>
-          <div style="display: flex;justify-content: space-around;align-items: center;">
-            <div style="width:400px;height: 500px;">
-              <el-form :model="deptFrom">
-                <el-row>
-                  <el-col :span="13">
-                    <el-form-item>
-                      <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item>
-                      <el-button @click="getDeptDateList()">查询</el-button>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <el-table
-                :data="dataDeptList"
-                highlight-current-row
-                @current-change="addOrUpdateHandle"
-                style="width: 100%;height: 440px;overflow: scroll;">
-                <el-table-column
-                  type="index"
-                  header-align="center"
-                  align="center"
-                  width="80">
-                </el-table-column>
-                <table-tree-column style="width: auto"
-                                   prop="name"
-                                   header-align="center"
-                                   treeKey="deptId"
-                                   label="机构名称"
-                >
-                </table-tree-column>
-              </el-table>
-            </div>
-            <div style="width:400px;height: 500px;">
-              <el-form :inline="true" :model="datauserForm" >
-                <el-row>
-                  <el-col :span="8">
-                    <el-form-item>
-                      <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button @click="search">查询</el-button>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="5">
-                    <el-form-item>
-                      <el-button @click="dialogFormVisible = false">取消</el-button>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <el-table
-                :data="UserdataList"
-                style="width: 100%;height: 440px;overflow: scroll;"
-                :row-style="rowStyle"
-                @selection-change="selectionChangeHandle"
-              >
-                <el-table-column
-                  type="selection"
-                  header-align="center"
-                  align="center"
-                  width="50">
-                </el-table-column>
-                <el-table-column
-                  type="index"
-                  header-align="center"
-                  align="center"
-                  width="50">
-                </el-table-column>
-                <el-table-column
-                  prop="username"
-                  header-align="center"
-                  align="center"
-                  label="用户名">
-                </el-table-column>
-                <el-table-column
-                  prop="deptName"
-                  header-align="center"
-                  align="center"
-                  label="机构名称">
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-        </el-dialog>
       </el-form-item>
       <el-form-item label="驳回人" prop="rejectPeople">
         <el-input v-model="dataForm.rejectPeople" readonly></el-input>
@@ -254,6 +153,7 @@
                   v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
       </el-form-item>
     </el-form>
+    <Transerf v-if="transVisible" ref="Transerf" v-on:closeMain="closeMain"></Transerf>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmit()" :disabled="isHttp">确定</el-button>
@@ -264,12 +164,13 @@
 <script>
   import { treeDataTranslate } from '@/utils'
   import TableTreeColumn from '@/components/table-tree-column'
+  import Transerf from './transfer'
   export default {
     data () {
       return {
         isHttp: false,
         visible: false,
-        dialogFormVisible: false,
+        transVisible: false,
         isShowDeptTree: false,
         dataList: [],
         dataDeptList: [],
@@ -278,12 +179,6 @@
           children: 'children'
         },
         title: '',
-        deptFrom: {
-          name: ''
-        },
-        datauserForm: {
-          userName: ''
-        },
         currentRow: '',
         pageIndex: 1,
         pageSize: 2000,
@@ -420,11 +315,11 @@
       }
     },
     components: {
-      TableTreeColumn
+      TableTreeColumn,
+      Transerf
     },
     mounted () {
       this.getTurnList()
-      this.getDeptDateList()
       this.getDataList()    // 部门查询
     },
     computed: {
@@ -543,15 +438,6 @@
         this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
         this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
       },
-      getDeptDateList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/dept/list'),
-          method: 'get',
-          params: this.$http.adornParams({'name': this.deptFrom.name})
-        }).then(({data}) => {
-          this.dataDeptList = treeDataTranslate(data, 'deptId')
-        })
-      },
       // 查询部门
       getDataList () {
         this.$http({
@@ -562,62 +448,23 @@
           this.dataList = treeDataTranslate(data, 'deptId')
         })
       },
-      // 选中部门 查询用户
-      addOrUpdateHandle (val) {
-        this.currentRow = val
-        var deptId = this.currentRow.deptId
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'username': '',
-            'deptId': deptId
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
+      clickTitle (title) {
+        this.title = title
+        this.transVisible = true
+        this.$nextTick(() => {
+          this.$refs.Transerf.init(title)
         })
       },
-      // 部门用户查询
-      search () {
-        this.getUserDataList()
-      },
-      // 查询用户
-      getUserDataList () {
-        this.$http({
-          url: this.$http.adornUrl('/sys/user/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'username': this.datauserForm.userName,
-            'deptId': ''
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.UserdataList = data.page.list
-          } else {
-            this.UserdataList = []
-          }
-        })
-      },
-      // 多选
-      selectionChangeHandle (val) {
+      // 父组件接收子组件传递来的参数
+      closeMain (val) {
         this.dataListSelections = val
-      },
-
-      // 点击人员的确定
-      handle (username, userid) {
+        var username
+        var userid
         var userNames = username ? [username] : this.dataListSelections.map(item => {
-          return item.username
+          return item.label
         })
         var userId = userid ? [userid] : this.dataListSelections.map(item => {
-          return item.userId
+          return item.id
         })
         if (this.title === '班组成员') {
           this.dataForm.teamMembers = userNames.toString()
@@ -636,10 +483,6 @@
           this.dataForm.topArrived = userNames.toString()
           this.dialogFormVisible = false
         }
-      },
-      clickTitle (title) {
-        this.title = title
-        this.dialogFormVisible = true
       },
       // 表单提交
       dataFormSubmit () {

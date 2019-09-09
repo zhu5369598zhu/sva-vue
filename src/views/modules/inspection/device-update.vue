@@ -13,7 +13,9 @@
             <el-form-item label="设备图片:" style="margin-bottom: 5px;" >
               <el-upload
                 :action="this.$http.adornUrl(`/inspection/devicepic/upload?token=${this.$cookie.get('token')}`)"
+                accept="image/jpeg,image/gif,image/png"
                 list-type="picture-card"
+                :before-upload="onBeforeUpload"
                 :on-remove="uploadRemoveHandle"
                 :on-success="uploadSuccessHandle"
                 :on-error="uploadErrorHandle"
@@ -229,6 +231,13 @@
       deviceDocument
     },
     methods: {
+      onBeforeUpload (file) {
+        const isIMAGE = file.type === 'image/jpeg' || 'image/gif' || 'image/png'
+        if (!isIMAGE) {
+          this.$message.error('上传文件只能是图片格式!')
+        }
+        return isIMAGE
+      },
       TabsClickHandle (tab) {
         if (tab.label === '设备资料') {
           this.activeTab = 'birth'
