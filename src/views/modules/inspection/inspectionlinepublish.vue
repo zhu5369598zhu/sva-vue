@@ -35,7 +35,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="updateTime"
         header-align="center"
         align="center"
         label="下载时间">

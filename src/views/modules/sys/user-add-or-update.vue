@@ -159,7 +159,7 @@
             { required: true, message: '用户名不能为空', trigger: 'blur' }
           ],
           deptName: [
-            { required: true, message: '所属机构不能为空', trigger: 'blur' }
+            { required: true, message: '所属机构不能为空', trigger: 'change' }
           ],
           password: [
             { validator: validatePassword, trigger: 'blur' }

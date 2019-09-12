@@ -54,6 +54,9 @@
           name: [
             { required: true, message: '轮次不能为空', trigger: 'blur' }
           ],
+          classGroup: [
+            { required: true, message: '班组不能为空', trigger: 'blur' }
+          ],
           startTime: [
             { required: true, message: '开始时间不能为空', trigger: 'blur' }
           ],

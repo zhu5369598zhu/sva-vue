@@ -35,6 +35,7 @@
     </el-form>
     <el-table
       :data="zoneList"
+      :height="tableHeight"
       border
       v-loading="zoneListLoading"
       highlight-current-row
@@ -88,7 +89,7 @@
       @size-change="zoneSizeChangeHandle"
       @current-change="zoneCurrentChangeHandle"
       :current-page="zonePageIndex"
-      :page-sizes="[5]"
+      :page-sizes="[5, 10, 20, 50]"
       :page-size="zonePageSize"
       :total="zoneTotalPage"
       layout="total, sizes, prev, pager, next, jumper">
@@ -106,6 +107,7 @@
     <el-table
       ref="table"
       :data="deviceList"
+      :height="tableHeight"
       border
       v-loading="deviceListLoading"
       @selection-change="deviceSelectionChangeHandle"
@@ -175,7 +177,7 @@
           zoneId: null,
           deptId: 0
         },
-        tableHeight: 300,
+        tableHeight: 210,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
         curPercent: 16,
@@ -419,7 +421,7 @@
         })
       },
       rowStyle ({row, rowIndex}) {
-        return 'height:40px'
+        return 'height:25px'
       },
       cellStyle () {
         return 'padding:0'
@@ -504,6 +506,12 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
+                  this.deviceTotalPage = (parseInt(this.deviceTotalPage) - ids.length)
+                  this.devicePageIndex = this.deviceTotalPage / parseInt(this.devicePageSize)
+                  if (this.devicePageIndex % 1 === 0) {
+                  } else {
+                    this.devicePageIndex = parseInt(this.devicePageIndex) + 1
+                  }
                   this.getDeviceList()
                 }
               })

@@ -43,6 +43,7 @@
     },
     methods: {
       init (title) {
+        console.log('进入方法')
         this.tranvisible = true
         this.toData = []
         this.dataListSelections = []
@@ -54,6 +55,7 @@
             params: this.$http.adornParams()
           }).then(({data}) => {
             if (data && data.code === 0) {
+              console.log(data.userTreeList)
               this.fromData = data.userTreeList
               this.clicktitle = title
             }
