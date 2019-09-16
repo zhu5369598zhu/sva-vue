@@ -8,7 +8,7 @@
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="title">异常排名</span>
+                    <span class="char-title">异常排名</span>
                     <div class="filter">
                       <el-radio-group size="mini" @change="topRadioChange" v-model="topPeriod" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in topPeriodList" :label="period" :key="period"></el-radio-button>
@@ -41,6 +41,9 @@
                       label="频次">
                     </el-table-column>
                     </el-table>
+                    <div class="more" v-if="deviceExceptionTopList.length >=10 ">
+                      <router-link to="inspection-inspectionresultexception">更多>></router-link>
+                    </div>
                 </div>
               </div>
             </div>
@@ -50,9 +53,9 @@
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="title">巡检完成率</span>
+                    <span class="char-title">巡检完成率</span>
                     <div class="filter">
-                      <el-date-picker v-model="finishStartTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                      <el-date-picker v-model="finishStartTime" type="date" value-format="yyyy-MM-dd" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                     </div>
                   </div>
                 </div>
@@ -70,7 +73,7 @@
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="title">异常分布</span>
+                    <span class="char-title">异常分布</span>
                     <div class="filter">
                       <el-radio-group size="mini" @change="exceptionRadioChange" v-model="exceptionFilter" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in exceptionPeriodList" :label="period" :key="period"></el-radio-button>
@@ -90,7 +93,7 @@
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
-                    <span class="title">设备指标趋势</span>
+                    <span class="char-title">设备指标趋势</span>
                     <div class="filter">
                       <div style="display: inline-block;">
                         <el-form :inline="true" :model="dataForm" align="center">
@@ -148,7 +151,7 @@
                 <div class="charts">
                 <div class="exception-chart-up">
                   <div class="chart-header">
-                    <span class="title">设备状态</span>
+                    <span class="char-title">设备状态</span>
                     <div class="filter">
                       <el-radio-group size="mini" @change="statusRadioChange" v-model="statusFilter" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in statusPeriodList" :label="period" :key="period"></el-radio-button>
@@ -274,6 +277,8 @@ export default {
     created () {
       let today = new Date()
       this.finishStartTime = new Date()
+      this.finishStartTime.setDate(this.finishStartTime.getDate() - 1)
+      this.finishStartTime = formatDate(this.finishStartTime, 'yyyy-MM-dd')
       if (this.topFilter === '本周') {
         this.topStartTime = getFirstDayOfWeek(today)
       } else if (this.topFilter === '本月') {
@@ -343,7 +348,6 @@ export default {
         this.levelIds = []
         for (var i = 0; i < val.length; i++) {
           if (val[i] === 'A类') {
-            console.log(val[i])
             this.levelIds.push(1)
           } else if (val[i] === 'B类') {
             this.levelIds.push(2)
@@ -462,7 +466,6 @@ export default {
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            console.log(data.data)
             this.hasExceptionData = true
             this.exceptionLegend = data.data.legend
             let category = []
@@ -589,7 +592,6 @@ export default {
             this.ids = data.data.ids
             this.inspectionCategory = data.data.category
             this.inspectionSeries = data.data.series
-            console.log(data.data.category)
             if (this.inspectionSeries.length > 0) {
               this.hasInspectionData = true
             } else {
@@ -655,7 +657,7 @@ export default {
         }
       },
       rowStyle ({row, rowIndex}) {
-        return 'height:40px'
+        return 'height:34px'
       },
       cellStyle () {
         return 'padding:0'
@@ -882,7 +884,7 @@ export default {
     height: 100%;
     padding: 14px;
   }
-  .title {
+  .char-title {
     font-family: MicrosoftYaHei;
     font-size: 16px;
     color: #333333;
@@ -905,6 +907,13 @@ export default {
   }
   .filter {
     display: inline;
+    float: right;
+  }
+  .more {
+    margin-top: 8px;
+    margin-right: 5px;
+    display: inline-block;
+    cursor: pointer;
     float: right;
   }
   .chart-filter-container {
