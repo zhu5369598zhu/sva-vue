@@ -70,6 +70,7 @@
                   :props="deptListTreeProps"
                   node-key="deptId"
                   ref="deptListTree"
+                  class="tree"
                   @current-change="deptListTreeCurrentChangeHandle"
                   :default-expand-all="false"
                   :highlight-current="true"
@@ -499,5 +500,10 @@
     padding-top: 20px;
     padding-right: 0px;
     padding-bottom: 0px;
+  }
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
   }
 </style>

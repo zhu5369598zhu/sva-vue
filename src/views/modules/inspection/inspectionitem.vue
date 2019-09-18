@@ -356,7 +356,8 @@
           url: this.$http.adornUrl('/inspection/inspectionitem/export'),
           method: 'get',
           params: this.$http.adornParams({
-            'name': this.dataForm.name
+            'name': this.dataForm.name,
+            'deviceId': this.dataForm.deviceId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

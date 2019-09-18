@@ -5,7 +5,7 @@
     :visible.sync="visible"
     append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="机构名称" prop="Name">
+      <el-form-item label="机构名称" prop="name">
         <el-input v-model="dataForm.name" placeholder="机构名称"></el-input>
       </el-form-item>
       <el-form-item label="机构编码" prop="deptCode">
@@ -22,6 +22,7 @@
             :props="deptListTreeProps"
             node-key="deptId"
             ref="deptListTree"
+            class="tree"
             @current-change="deptListTreeCurrentChangeHandle"
             :default-expand-all="false"
             :highlight-current="true"
@@ -158,11 +159,16 @@
 </script>
 
 <style lang="scss">
-    .el-tree-node__content {
+    /*.el-tree-node__content {
     height: 46px;
     Border-bottom: 1px solid #ebeef5;
   }
   .el-tree-node:focus>.el-tree-node__content{
     background-color: rgb(231, 247, 251);
+  }*/
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
   }
 </style>

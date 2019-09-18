@@ -24,6 +24,7 @@
             :props="menuListTreeProps"
             node-key="menuId"
             ref="menuListTree"
+            class="tree"
             @current-change="menuListTreeCurrentChangeHandle"
             :default-expand-all="false"
             :highlight-current="true"
@@ -262,5 +263,10 @@
       color: #e6a23c;
       cursor: pointer;
     }
+  }
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
   }
 </style>

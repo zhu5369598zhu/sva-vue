@@ -147,7 +147,9 @@
         deviceAddVisible: false,
         deviceUpdateVisible: false,
         toPrintQrcodeVisible: false,
-        printDataList: []
+        printDataList: [],
+        timer: null,
+        html: null
       }
     },
     components: {
@@ -274,6 +276,7 @@
       // 打印已选
       printSelectedHandle () {
         this.printQrcode(this.dataListSelections)
+        this.worktimer()
       },
       printAllHandle () {
         this.$http({
@@ -291,6 +294,20 @@
             this.$message.error(data.msg)
           }
         })
+        this.worktimer()
+      },
+      // 监控图片加载完成 定时任务
+      worktimer () {
+        const that = this
+        that.worktimer = setInterval(function () {
+          console.log('运行了')
+          this.timer += 1000
+          if (document.readyState === 'complete') {
+            console.log('加载完成')
+            console.log('最后的时间' + this.timer)
+            window.clearInterval(that.worktimer)
+          }
+        }, 1000)
       },
       printQrcode (printDataList) {
         let pLength = printDataList.length
@@ -322,7 +339,7 @@
         setTimeout(function () {
           printWin.print()
           printWin.close()
-        }, 15000)
+        }, this.timer)
       }
     },
     mounted: function () {

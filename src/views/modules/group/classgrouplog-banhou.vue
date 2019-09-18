@@ -19,10 +19,11 @@
               :props="deptListTreeProps"
               node-key="deptId"
               ref="deptListTree"
+              class="tree"
               @current-change="deptListTreeCurrentChangeHandle"
               :default-expand-all="false"
               :highlight-current="true"
-              :expand-on-click-node="false" clearable style="width:140px;">
+              :expand-on-click-node="false" clearable >
             </el-tree>
           </el-popover>
           <el-input v-model="dataForm.deptName"  v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门">
@@ -607,3 +608,10 @@
     }
   }
 </script>
+<style>
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
+  }
+</style>

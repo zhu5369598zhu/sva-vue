@@ -34,6 +34,7 @@
                 :props="deptListTreeProps"
                 node-key="deptId"
                 ref="deptListTree"
+                class="tree"
                 @current-change="deptListTreeCurrentChangeHandle"
                 :default-expand-all="false"
                 :highlight-current="true"
@@ -296,3 +297,10 @@
     }
   }
 </script>
+<style>
+  .tree{
+    overflow-y: scroll;
+    width:280px;
+    height: 200px;
+  }
+</style>

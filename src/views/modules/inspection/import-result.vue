@@ -1,6 +1,6 @@
 <template>
   <el-dialog style="z-index:1"
-    :close-on-click-modal="true"
+    :close-on-click-modal="false"
     :modal=true
     width="30%"
     :visible.sync="visible">
