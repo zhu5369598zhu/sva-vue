@@ -52,7 +52,7 @@
       <el-input type="textarea"  row="2" v-model="dataForm.remark" placeholder="备注"></el-input>
     </el-form-item>
     <el-form-item label="排序" prop="orderNum">
-      <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0.00" :precision="3" label="排序"></el-input-number>
+      <el-input-number v-model="dataForm.orderNum" controls-position="right" label="排序"></el-input-number>
     </el-form-item>    
     </el-form>
     <span slot="footer" class="dialog-footer">

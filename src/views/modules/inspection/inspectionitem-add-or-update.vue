@@ -45,7 +45,7 @@
         </el-col>
         <el-col :span="10" v-if="dataForm.inspectionType===1 || dataForm.inspectionType===3 || dataForm.inspectionType===4 || dataForm.inspectionType===5 || dataForm.inspectionType===6 || dataForm.inspectionType===7">
           <el-form-item label="单位" prop="inspectionUnit">
-            <el-select v-model="dataForm.inspectionUnit" placeholder="" :disabled="this.inspectionUnitList.length===0" clearable style="width:155px;">
+            <el-select ref="unit" v-model="dataForm.inspectionUnit" placeholder="" :disabled="dataForm.inspectionType===1||dataForm.inspectionType===4||dataForm.inspectionType===5||dataForm.inspectionType===6||dataForm.inspectionType===7" clearable style="width:155px;">
               <el-option
                 v-for="item in inspectionUnitList"
                 :key="item.id"
@@ -460,10 +460,12 @@
         if (newVal) {
           if (newVal === 3) {
             this.inspectionUnitList = this.unitList
+            this.$refs.unit.disabled = true
           } else {
             for (var i = 0; i < this.inspectionTypeList.length; i++) {
               if (this.inspectionTypeList[i].id === newVal) {
                 this.dataForm.inspectionUnit = this.inspectionTypeList[i].unit
+                this.$refs.unit.disabled = false
               }
             }
           }
