@@ -137,7 +137,8 @@
                 <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
-            <el-table height="210"
+            <el-table
+              height="360"
               :data="classGroupList"
               border
               v-loading="classGroupListLoading"
@@ -201,7 +202,7 @@
                 <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0">批量删除</el-button>
               </el-form-item>
             </el-form>
-            <el-table height="210"
+            <el-table height="360"
               :data="turnList"
               border
               v-loading="turnListLoading"
@@ -279,7 +280,7 @@
             </el-form>
             <div class="data-period">
             <el-scrollbar wrap-class="data-period">
-            <el-table height="210"
+            <el-table height="360"
               :data="periodList"
               border
               v-loading="periodListLoading"
@@ -383,7 +384,7 @@
               </el-form-item>
             </el-form>
             <el-scrollbar>
-            <el-table height="210"
+            <el-table height="360"
               :data="lineZoneList"
               border
               v-loading="lineZoneListLoading"
@@ -448,7 +449,8 @@
               </el-form-item>
             </el-form>
             <el-scrollbar>
-            <el-table height="210"
+            <el-table
+              height="360"
               :data="linePdaList"
               border
               v-loading="linePdaListLoading"
@@ -1249,3 +1251,8 @@
     }
   }
 </script>
+<style>
+  .site-content .show-data-down{
+    height: 500px;
+  }
+</style>

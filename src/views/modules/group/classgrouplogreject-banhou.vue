@@ -325,7 +325,6 @@
     },
     mounted () {
       this.getTurnList()
-      this.getDeptDateList()
       this.getDataList()      // 部门查询
     },
     computed: {

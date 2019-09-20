@@ -107,7 +107,7 @@
     <el-table
       ref="table"
       :data="deviceList"
-      :height="tableHeight"
+      :height="400"
       border
       v-loading="deviceListLoading"
       @selection-change="deviceSelectionChangeHandle"
@@ -147,7 +147,7 @@
       @size-change="deviceSizeChangeHandle"
       @current-change="deviceCurrentChangeHandle"
       :current-page="devicePageIndex"
-      :page-sizes="[5]"
+      :page-sizes="[5, 10, 20, 50]"
       :page-size="devicePageSize"
       :total="deviceTotalPage"
       layout="total, sizes, prev, pager, next, jumper">
@@ -506,11 +506,11 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.deviceTotalPage = (parseInt(this.deviceTotalPage) - ids.length)
-                  this.devicePageIndex = this.deviceTotalPage / parseInt(this.devicePageSize)
-                  if (this.devicePageIndex % 1 === 0) {
-                  } else {
-                    this.devicePageIndex = parseInt(this.devicePageIndex) + 1
+                  var num = (this.deviceTotalPage - ids.length) % this.devicePageSize
+                  if (num === 0) {
+                    if (this.devicePageIndex > 1) {
+                      this.devicePageIndex = this.devicePageIndex - 1
+                    }
                   }
                   this.getDeviceList()
                 }
@@ -532,5 +532,8 @@
   }
 
   .down {
+  }
+  .site-content .show-data-down{
+    height: 500px;
   }
 </style>

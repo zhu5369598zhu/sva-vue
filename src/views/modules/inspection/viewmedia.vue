@@ -3,6 +3,7 @@
     :close-on-click-modal="false"
     :modal=true
     width="30%"
+    v-if="visible"
     :visible.sync="visible"
     append-to-body>
     <div class="view-media" align="center">

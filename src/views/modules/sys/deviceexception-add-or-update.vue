@@ -17,6 +17,10 @@
       <el-radio v-model="dataForm.wxOk" :label="1">正常</el-radio>
       <el-radio v-model="dataForm.wxOk" :label="0">禁用</el-radio>
     </el-form-item>
+    <el-form-item label="钉钉状态" prop="ddOk">
+      <el-radio v-model="dataForm.ddOk" :label="1">正常</el-radio>
+      <el-radio v-model="dataForm.ddOk" :label="0">禁用</el-radio>
+    </el-form-item>
     <el-form-item size="mini" label="授权">
       <el-tree
         :data="messageList"
@@ -58,6 +62,7 @@
           smsUserIds: '',
           isOk: 1,
           wxOk: 1,
+          ddOk: 1,
           type: '',
           userIdList: []
         },
@@ -126,6 +131,7 @@
                 this.dataForm.smsUserIds = data.deviceexception.smsUserIds
                 this.dataForm.isOk = data.deviceexception.isOk
                 this.dataForm.wxOk = data.deviceexception.wxOk
+                this.dataForm.ddOk = data.deviceexception.ddOk
                 this.dataForm.type = data.deviceexception.type
                 this.dataForm.userIdList = data.deviceexception.userIdList
                 this.$refs.userListTree.setCheckedKeys(this.dataForm.userIdList)
@@ -157,6 +163,7 @@
                 'userIdList': [].concat(this.$refs.userListTree.getCheckedKeys()),
                 'isOk': this.dataForm.isOk,
                 'wxOk': this.dataForm.wxOk,
+                'ddOk': this.dataForm.ddOk,
                 'type': this.dataForm.type
               })
             }).then(({data}) => {
