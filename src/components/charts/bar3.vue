@@ -21,13 +21,10 @@
       category: {
         type: Array
       },
-      unNormal: {
+      inspect: {
         type: Array
       },
-      normal: {
-        type: Array
-      },
-      all: {
+      inspected: {
         type: Array
       }
     },
@@ -88,26 +85,19 @@
           ],
           series: [
             {
-              name: '异常',
+              name: '应检',
               type: 'bar',
               barGap: 0,
               barWidth: 30,
               label: labelOption,
-              data: this.unNormal
+              data: this.inspect
             },
             {
-              name: '正常',
+              name: '已检',
               type: 'bar',
               barWidth: 30,
               label: labelOption,
-              data: this.normal
-            },
-            {
-              name: '全部',
-              type: 'bar',
-              barWidth: 30,
-              label: labelOption,
-              data: this.all
+              data: this.inspected
             }
           ]
         }

@@ -21,14 +21,7 @@
       category: {
         type: Array
       },
-      unNormal: {
-        type: Array
-      },
-      normal: {
-        type: Array
-      },
-      all: {
-        type: Array
+      series: {
       }
     },
     data () {
@@ -62,11 +55,6 @@
               fontSize: 22
             }
           },
-          legend: {
-            data: this.legend,
-            x: 'center',
-            y: '40px'
-          },
           toolbox: {
             show: true,
             feature: {
@@ -88,26 +76,11 @@
           ],
           series: [
             {
-              name: '异常',
-              type: 'bar',
-              barGap: 0,
-              barWidth: 30,
-              label: labelOption,
-              data: this.unNormal
-            },
-            {
-              name: '正常',
+              name: '次数',
               type: 'bar',
               barWidth: 30,
               label: labelOption,
-              data: this.normal
-            },
-            {
-              name: '全部',
-              type: 'bar',
-              barWidth: 30,
-              label: labelOption,
-              data: this.all
+              data: this.series
             }
           ]
         }

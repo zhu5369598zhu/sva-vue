@@ -21,13 +21,13 @@
       category: {
         type: Array
       },
-      unNormal: {
+      inspect: {
         type: Array
       },
-      normal: {
+      inspected: {
         type: Array
       },
-      all: {
+      inspectMiss: {
         type: Array
       }
     },
@@ -47,7 +47,7 @@
           }
         }
         var option = {
-          color: ['#e3724e', '#30a231', '#257ae2'],
+          color: ['#e3724e', '#30a231', '#224190'],
           tooltip: {
             trigger: 'axis'
           },
@@ -88,26 +88,26 @@
           ],
           series: [
             {
-              name: '异常',
+              name: '漏检',
+              type: 'bar',
+              barWidth: 30,
+              label: labelOption,
+              data: this.inspectMiss
+            },
+            {
+              name: '已检',
+              type: 'bar',
+              barWidth: 30,
+              label: labelOption,
+              data: this.inspected
+            },
+            {
+              name: '应检',
               type: 'bar',
               barGap: 0,
               barWidth: 30,
               label: labelOption,
-              data: this.unNormal
-            },
-            {
-              name: '正常',
-              type: 'bar',
-              barWidth: 30,
-              label: labelOption,
-              data: this.normal
-            },
-            {
-              name: '全部',
-              type: 'bar',
-              barWidth: 30,
-              label: labelOption,
-              data: this.all
+              data: this.inspect
             }
           ]
         }

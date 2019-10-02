@@ -607,7 +607,7 @@ export default {
         this.inspectedItemSum = 0
         this.inspectItemSum = 0
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontask/getStatus'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getstatus'),
           method: 'get',
           params: this.$http.adornParams({
             'date': this.finishStartTime
