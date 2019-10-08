@@ -1,28 +1,28 @@
 <template>
-  <div class="mod-result-exception">
+  <div class="mod-result-exception" style="height: 100%;">
     <div class="show-data-content">
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item prop="factory">
-        <el-input v-model="dataForm.factory" placeholder="工厂名称" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.factory" placeholder="工厂名称" clearable></el-input>
       </el-form-item>
       <el-form-item prop="dept">
-        <el-input v-model="dataForm.dept" placeholder="部门名称" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.dept" placeholder="部门名称" clearable></el-input>
       </el-form-item>
       <el-form-item prop="workshop">
-        <el-input v-model="dataForm.workshop" placeholder="车间名称" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.workshop" placeholder="车间名称" clearable></el-input>
       </el-form-item>
       <el-form-item prop="deviceName">
-        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable></el-input>
       </el-form-item>
       <el-form-item prop="deviceCode">
-        <el-input v-model="dataForm.deviceCode" placeholder="设备编码" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.deviceCode" placeholder="设备编码" clearable></el-input>
       </el-form-item>
       <el-form-item prop="username">
-        <el-input v-model="dataForm.username" placeholder="巡检人" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.username" placeholder="巡检人" clearable></el-input>
       </el-form-item>
       <el-form-item prop="inspectionTypeId">
-        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
+        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable>
           <el-option
             v-for="item in inspectionTypeList"
             :key="item.id"
@@ -31,24 +31,20 @@
           </el-option>
         </el-select>
       </el-form-item>
-    <el-row>
-    <el-form-item label="巡检时间:" prop="startTime">
-      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" style="width:140px;"></el-date-picker>
+    <el-form-item label="巡检时间:" prop="startTime" class="choose-time">
+      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange"></el-date-picker>
     </el-form-item>
-    <el-form-item label="到:" prop="endTime">
-      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" style="width:140px;"></el-date-picker>
+    <el-form-item label="到:" prop="endTime" class="choose-time1">
+      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange"></el-date-picker>
     </el-form-item>
-    <el-form-item>
+    <el-form-item class="search-buttons" style="margin-right: 0px !important;">
       <el-button @click="getDataList()">查询</el-button>
+      <el-button @click="exportExcelHandle()" size="small">导出</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-button @click="exportExcelHandle()">导出</el-button>
-    </el-form-item>
-    </el-row>
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 304px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -472,3 +468,54 @@
     }
   }
 </script>
+
+<style scoped="" lang="scss">
+  .el-form{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /deep/ .el-form-item{
+      min-width: 80px;
+      margin-right: 5px;
+      flex: 1;
+    }
+  }
+  .choose-time{
+    display: flex;
+    min-width: auto !important;
+    /deep/ label{
+      width: 70px;
+    }
+    /deep/ .el-form-item__content{
+      flex: 1;
+      .el-date-editor{
+        width: auto;
+        min-width: 130px;
+      }
+    }
+  }
+  .choose-time1{
+    display: flex;
+    min-width: auto !important;
+    margin-right: 10px;
+    /deep/ label{
+      width: 35px;
+    }
+    /deep/ .el-form-item__content{
+      flex: 1;
+      .el-date-editor{
+        width: auto;
+        min-width: 130px;
+      }
+    }
+  }
+  .search-buttons{
+    min-width: 146px !important;
+    display: flex;
+  }
+  @media screen and (max-width: 1360px){
+    .el-table{
+      height: calc(100vh - 320px) !important;
+    }
+  }
+</style>

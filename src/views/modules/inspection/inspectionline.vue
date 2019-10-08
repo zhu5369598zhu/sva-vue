@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-inspection-line">
+  <div class="mod-inspection-line" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -12,21 +12,21 @@
       </template>
    <template slot="paneR">
     <div class="show-data-table">
-      <div class="show-data-up">
+      <div class="show-data-up" style="flex: 1;">
           <el-form :inline="true" :model="lineForm" @keyup.enter.native="search()">
             <el-form-item>
-              <el-input v-model="lineForm.name" placeholder="线路名称" clearable></el-input>
+              <el-input v-model="lineForm.name" placeholder="线路名称" clearable size="mini"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="search()">查询</el-button>
-              <el-button v-if="isAuth('inspection:inspectionline:save')" @click="lineAddOrUpdateHandle()">新增</el-button>
-              <el-button v-if="isAuth('inspection:inspectionline:publish')" @click="linePublish()" :icon="publishIcon">{{publishName}}</el-button>
+              <el-button @click="search()" size="mini">查询</el-button>
+              <el-button v-if="isAuth('inspection:inspectionline:save')" @click="lineAddOrUpdateHandle()" size="mini">新增</el-button>
+              <el-button v-if="isAuth('inspection:inspectionline:publish')" @click="linePublish()" :icon="publishIcon" size="mini">{{publishName}}</el-button>
             </el-form-item>
           </el-form>
           <el-table
-            height="210"
-            :data="lineList"
+            height="calc(100% - 50px) !important"
             border
+            :data="lineList"
             v-loading="lineListLoading"
             highlight-current-row
             @current-change="lineSelectionChangeHandle"
@@ -42,6 +42,7 @@
             <el-table-column
               fixed
               prop="name"
+              min-width="180"
               header-align="center"
               align="center"
               label="线路名称">
@@ -92,6 +93,7 @@
               prop="updateTime"
               header-align="center"
               align="center"
+              width="150"
               label="修改时间">
             </el-table-column>
             <el-table-column
@@ -102,7 +104,6 @@
               label="排序">
             </el-table-column>
             <el-table-column
-              fixed="right"
               header-align="center"
               align="center"
               width="150"
@@ -127,18 +128,17 @@
           <LineAddOrUpdate v-if="lineAddOrUpdateVisible" ref="lineAddOrUpdate" @refreshDataList="getLineList(lineForm.deptId)"></LineAddOrUpdate>
           <viewPublish v-if="viewPublishVisible" ref="viewPublish" @refreshDataList="getLineList(lineForm.deptId)" v-on:closeMain="closeMain"></viewPublish>
       </div>
-      <div class="show-data-down">
-      <el-tabs type="border-card" v-model="activeTab" @tab-click="tabSelectChangeHandle">
+      <div class="show-data-down" style="flex: 1;display: flex;flex-direction: column;">
+      <el-tabs type="border-card" v-model="activeTab" @tab-click="tabSelectChangeHandle" class="xunxian" style="height: 100%;">
       <el-tab-pane label="班组" name="class">
-          <div class="mod-class-group">
+          <div class="mod-class-group bottom_data">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0"  @click="classGroupAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0"  @click="classGroupAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
+                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0" size="mini">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-table
-              height="360"
               :data="classGroupList"
               border
               v-loading="classGroupListLoading"
@@ -195,11 +195,11 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="轮次" name="turn">
-         <div class="mod-turn">
+         <div class="mod-turn bottom_data">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" @click="turnAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" @click="turnAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
+                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0" size="mini">批量删除</el-button>
               </el-form-item>
             </el-form>
             <el-table height="360"
@@ -271,15 +271,13 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="周期" name="period">
-          <div class="mod-period">
+          <div class="mod-period bottom_data">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" @click="periodAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">新增</el-button>
-                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="warning" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" @click="periodAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
+                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="warning" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0" size="mini">批量删除</el-button>
               </el-form-item>
             </el-form>
-            <div class="data-period">
-            <el-scrollbar wrap-class="data-period">
             <el-table height="360"
               :data="periodList"
               border
@@ -360,8 +358,6 @@
                 </template>
               </el-table-column>
             </el-table>
-            </el-scrollbar>
-            </div>
             <el-pagination
               @size-change="periodSizeChangeHandle"
               @current-change="periodCurrentChangeHandle"
@@ -376,14 +372,13 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="巡区" name="zone">
-          <div class="mod-line-zone">
+          <div class="mod-line-zone bottom_data">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:linezone:save') && isPublish===0" @click="zoneBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
-                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="warning" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:linezone:save') && isPublish===0" @click="zoneBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">绑定</el-button>
+                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="warning" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0" size="mini">批量删除</el-button>
               </el-form-item>
             </el-form>
-            <el-scrollbar>
             <el-table height="360"
               :data="lineZoneList"
               border
@@ -426,7 +421,6 @@
                 </template>
               </el-table-column>
             </el-table>
-            </el-scrollbar>
             <el-pagination
               @size-change="lineZoneSizeChangeHandle"
               @current-change="lineZoneCurrentChangeHandle"
@@ -441,14 +435,13 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="PDA" name="pda">
-          <div class="mod-line-pda">
+          <div class="mod-line-pda bottom_data">
             <el-form :inline="true">
               <el-form-item>
-                <el-button v-if="isAuth('inspection:inspectionlinepublish:save') && isPublish===0" @click="pdaBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0">绑定</el-button>
-                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="warning" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionlinepublish:save') && isPublish===0" @click="pdaBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">绑定</el-button>
+                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="warning" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0" size="mini">批量删除</el-button>
               </el-form-item>
             </el-form>
-            <el-scrollbar>
             <el-table
               height="360"
               :data="linePdaList"
@@ -492,7 +485,6 @@
                 </template>
               </el-table-column>
             </el-table>
-            </el-scrollbar>
             <el-pagination
               @size-change="linePdaSizeChangeHandle"
               @current-change="linePdaCurrentChangeHandle"
@@ -539,7 +531,7 @@
         publishName: '发布计划',
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         lineList: [],
         turnList: [],
@@ -1251,8 +1243,52 @@
     }
   }
 </script>
-<style>
-  .site-content .show-data-down{
-    height: 500px;
+
+<style scoped="" lang="scss">
+  .mod-inspection-line{
+    .el-form{
+      /deep/ .el-form-item{
+        margin-bottom: 5px;
+      }
+    }
+    .el-tabs{
+      /deep/ .el-tabs__item{
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+    .bottom_data{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .el-table{
+        flex: 1;
+        // /deep/ .cell{
+        //   min-height: 32px;
+        // }
+      }
+    }
+    /deep/ .el-table--medium th{
+      padding: 4px 0;
+    }
+  }
+  .show-data-up{
+    margin: 0 !important;
+  }
+  .site-content .show-data-table{
+    padding: 10px;
+  }
+  .site-wrapper .el-pagination{
+    margin-top: 8px;
+  }
+  .xunxian{
+    /deep/ .el-tabs__content{
+      height: calc(100% - 29px);
+      .el-tab-pane{
+        height: 100%;
+      }
+    }
   }
 </style>
+
+

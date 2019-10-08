@@ -103,6 +103,9 @@
 </script>
 
 <style lang="scss">
+  body{
+    background-color: #fff;
+  }
   .site-wrapper.site-page--login {
     position: absolute;
     top: 0;
@@ -129,8 +132,8 @@
       left: 0;
       padding: 0;
       margin: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
+     /* overflow-x: hidden;
+      overflow-y: hidden;*/
       background-color: transparent;
     }
     .site-content {
@@ -173,6 +176,9 @@
     .login-btn-submit {
       width: 100%;
       margin-top: 38px;
+    }
+    /deep/ .el-form-item{
+      margin-top: 20px;
     }
   }
 </style>

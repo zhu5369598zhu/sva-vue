@@ -1,10 +1,10 @@
 <template>
 
-  <div class="mod-item"><!-- mod-pda-->
+  <div class="mod-item" style="height: 100%;"><!-- mod-pda-->
     <div class="show-data-content">
       <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
         <template slot="paneL" >
-          <div class="show-left">
+          <div class="show-left" style="height: calc(100% - 18px);">
             <div class="org_title">
               <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span ><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
             </div>
@@ -34,7 +34,7 @@
           <el-input v-model="dataForm.defectiveName" placeholder="请输入填报人" clearable></el-input>
         </el-form-item>-->
         <el-form-item>
-          <el-button @click="search()">查询</el-button>
+          <el-button @click="search()" style="margin-left: 10px;">查询</el-button>
           <!--<el-button v-if="isAuth('management:orderdefective:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
           <el-button v-if="isAuth('management:orderdefective:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>-->
         </el-form-item>
@@ -44,7 +44,7 @@
       </el-form>
       <el-table
         ref="table"
-        :height="tableHeight"
+        height="calc(100vh - 254px)"
         :data="dataList"
         border
         v-loading="dataListLoading"
@@ -1045,4 +1045,10 @@
     }
   }
 </script>
-
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 273px) !important;
+    }
+  }
+</style>

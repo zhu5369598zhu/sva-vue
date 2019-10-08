@@ -29,10 +29,10 @@
         <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
 
     </el-form>

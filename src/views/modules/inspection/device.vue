@@ -1,11 +1,11 @@
 <template>
-  <div class="mod-device">
+  <div class="mod-device" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
-        <div class="show-left">
+        <div class="show-left" style="height: calc(100% - 18px);">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <depttree @deptSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></depttree>
         </div>
@@ -45,7 +45,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 254px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -137,9 +137,9 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('inspection:device:save')" type="text" size="small" @click="deviceUpdateHandle(scope.row.deviceId)">修改</el-button>
-          <el-button v-if="isAuth('inspection:device:delete')" type="text" size="small" @click="deleteHandle(scope.row.deviceId)">删除</el-button>
-          <el-button v-if="isAuth('inspection:device:save')" type="text" size="small" @click="deviceViewHandle(scope.row.deviceId)">查看</el-button>
+          <el-button v-if="isAuth('inspection:device:save')" type="text" @click="deviceUpdateHandle(scope.row.deviceId)">修改</el-button>
+          <el-button v-if="isAuth('inspection:device:delete')" type="text" @click="deleteHandle(scope.row.deviceId)">删除</el-button>
+          <el-button v-if="isAuth('inspection:device:save')" type="text" @click="deviceViewHandle(scope.row.deviceId)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -180,7 +180,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         key: '',
         select: 'deviceName',
@@ -440,4 +440,11 @@
       width: 110px;
 
     }
+</style>
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 273px) !important;
+    }
+  }
 </style>

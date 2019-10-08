@@ -13,7 +13,7 @@
             :dynamicMenuRoutes="dynamicMenuRoutes">
           </sub-menu>
         </el-menu>
-    </div>
+      </div>
   </aside>
 </template>
 
@@ -96,3 +96,4 @@
     }
   }
 </script>
+

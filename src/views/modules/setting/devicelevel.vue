@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-devicelevel">
+  <div class="mod-devicelevel" style="height: 100%;">
     <div class="show-data-content">
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm">
@@ -10,7 +10,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 240px)"
       :data="dataList"
       border
       :cell-style="cellStyle"
@@ -187,4 +187,11 @@
     }
   }
 </script>
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-table{
+      height: calc(100vh - 260px) !important;
+    }
+  }
+</style>
 

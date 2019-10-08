@@ -38,22 +38,22 @@
         var labelOption = {
           normal: {
             show: true,
-            position: 'insideBottom',
+            position: 'top',
             distance: 15,
-            align: 'left',
+            align: 'center',
             verticalAlign: 'middle',
-            rotate: 90,
-            formatter: '{c}  {name|{a}}',
+            formatter: '{c}\n{name|{a}}',
             fontSize: 16,
+            lineHeight: 18,
             rich: {
               name: {
-                textBorderColor: '#fff'
+                // textBorderColor: '#fff'
               }
             }
           }
         }
         var option = {
-          color: ['#224190', '#257ae2', '#77d5ff'],
+          color: ['#10348f', '#0769e1', '#03affc'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {

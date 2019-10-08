@@ -27,7 +27,7 @@
   -moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
-	background: #f1f4f5;
+	background: #e0e0e0;
 	position: absolute;
 	z-index: 3;
 	-moz-background-clip: padding;
@@ -45,7 +45,7 @@
 }
 
 .splitter-pane-resizer.vertical {
-  width: 17px;
+  width: 14px;
 	height: 100%;
 	margin-left: -5px;
 	border-left: 5px solid rgba(255, 255, 255, 0);

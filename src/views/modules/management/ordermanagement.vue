@@ -1,10 +1,10 @@
  <template>
 
-   <div class="mod-item"><!-- mod-pda-->
+   <div class="mod-item" style="height: 100%;"><!-- mod-pda-->
      <div class="show-data-content">
        <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
          <template slot="paneL" >
-           <div class="show-left">
+           <div class="show-left" style="height: calc(100% - 18px);">
              <div class="org_title">
                <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span ><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
              </div>
@@ -49,7 +49,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 300px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -167,8 +167,8 @@
         width="100"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'&&scope.row.orderStatus!='6'" @click="addOrUpdateHandle(scope.row.orderId,scope.row.orderStatus)">修改</el-button>
-          <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0'" @click="deleteHandle(scope.row.orderId,scope.row.orderStatus)">删除</el-button>
+          <el-button type="text" :disabled="scope.row.orderStatus!='0'&&scope.row.orderStatus!='6'" @click="addOrUpdateHandle(scope.row.orderId,scope.row.orderStatus)">修改</el-button>
+          <el-button type="text" :disabled="scope.row.orderStatus!='0'" @click="deleteHandle(scope.row.orderId,scope.row.orderStatus)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -1437,4 +1437,10 @@
     }
   }
 </script>
-
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 273px) !important;
+    }
+  }
+</style>

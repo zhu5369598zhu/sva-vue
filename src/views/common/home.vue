@@ -1,8 +1,8 @@
 <template>
   <div class="mod-home">
-    <div class="show-data-content">
+    <div class="show-data-content" style="height: 100%;">
       <el-row :gutter="10" class="home-row-main">
-        <el-col :span="6" class="home-col-left">
+        <el-col :span="6" class="home-col home-col-left">
           <el-row :gutter="10" class="home-row-up">
             <div class="show-chart">
                 <div class="charts">
@@ -20,7 +20,15 @@
                       <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
                     </el-checkbox-group>
                   </div>
-                   <el-table
+                  
+                </div>
+                <ul class="yichang">
+                  <li v-for="(item, key) in deviceExceptionTopList">
+                    <span>{{ item.deviceName }}</span>
+                    <span>{{ item.exceptionCount }}</span>
+                  </li>
+                </ul>
+<!--                 <el-table
                     ref="table"
                     :data="deviceExceptionTopList"
                     :border="false"
@@ -40,11 +48,10 @@
                       align="right"
                       label="频次">
                     </el-table-column>
-                    </el-table>
-                    <div class="more" v-if="deviceExceptionTopList.length >=10 ">
+                    </el-table> -->
+                    <div class="more" v-if="deviceExceptionTopList.length >=6 ">
                       <router-link to="inspection-inspectionresultexception">更多>></router-link>
                     </div>
-                </div>
               </div>
             </div>
           </el-row>
@@ -60,14 +67,14 @@
                   </div>
                 </div>
                 <div v-show="hasFinishData===true" class="chart-down">
-                  <chartpie id="chartFinish" ref="chartFinish" align="center" :b="inspectItemSum" :a="inspectedItemSum" :title="completionRate" style="height:100%"></chartpie>
+                  <chartpie id="chartFinish" ref="chartFinish" align="center" :b="inspectItemSum" :a="inspectedItemSum" :title="completionRate" style="height:100%;"></chartpie>
                 </div>
                 <div class="no-data" align="center" v-show="hasFinishData===false">暂无数据</div>
               </div>
             </div>
           </el-row>
         </el-col>
-        <el-col :span="12" class="home-col-middle">
+        <el-col :span="12" class="home-col home-col-middle">
           <el-row :gutter="10" class="home-row-up">
             <div class="show-chart">
                 <div class="charts">
@@ -89,52 +96,49 @@
             </div>
           </el-row>
           <el-row :gutter="10" class="home-row-down">
-            <div class="show-chart">
+            <div class="show-chart" style="padding-bottom: 0px;">
                 <div class="charts">
                 <div class="chart-up">
                   <div class="chart-header">
                     <span class="char-title">设备指标趋势</span>
+                    <el-form :inline="true" :model="dataForm" align="center" class="shebie" id="shebiex">
+                      <el-form-item>
+                        <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" style="width:140px;">
+                          <el-option
+                            v-for="item in deviceList"
+                            :key="item.deviceId"
+                            :label="item.deviceName"
+                            :value="item.deviceId">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item>
+                        <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" style="width:140px;">
+                          <el-option
+                            v-for="item in itemList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-form>
                     <div class="filter">
-                      <div style="display: inline-block;">
-                        <el-form :inline="true" :model="dataForm" align="center">
-                          <el-form-item>
-                            <el-select v-model="dataForm.deviceId" placeholder="巡检设备" @change="deviceSelectChange" style="width:140px;">
-                              <el-option
-                                v-for="item in deviceList"
-                                :key="item.deviceId"
-                                :label="item.deviceName"
-                                :value="item.deviceId">
-                              </el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item>
-                            <el-select v-model="dataForm.itemId" placeholder="巡检项" @change="itemSelectChange" style="width:140px;">
-                              <el-option
-                                v-for="item in itemList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                              </el-option>
-                            </el-select>
-                          </el-form-item>
-                        </el-form>
-                      </div>
-                      <span>&nbsp;</span>
                       <el-radio-group size="mini" @change="inspectionRadioChange" v-model="inspectionFilter" style="display: inline;vertical-align: text-bottom;">
                         <el-radio-button v-for="period in inspectionPeriodList" :label="period" :key="period"></el-radio-button>
                       </el-radio-group>
                     </div>
                   </div>
                 </div>
-                <div class="chart-down">
-                  <chartline v-show="hasInspectionData===true" id="chartInspection" ref="chartInspection" align="center" :category="inspectionCategory" :series="inspectionSeries" style="height:100%;"></chartline>
+                <div class="chart-down chartInspection">
+                  <chartline v-show="hasInspectionData===true" id="chartInspection" ref="chartInspection" align="center" :category="inspectionCategory" :series="inspectionSeries"></chartline>
                   <div class="no-data" align="center" v-show="hasInspectionData===false">暂无数据</div>
                 </div>
               </div>
             </div>
           </el-row>
         </el-col>
-        <el-col :span="6" class="home-col-right">
+        <el-col :span="6" class="home-col home-col-right">
           <el-row :gutter="10" class="home-row-up-alert">
             <div class="show-alert" align="center">
               <el-badge :value="workLog" :max="99" class="alert">
@@ -146,8 +150,8 @@
             </el-badge>
             </div>
           </el-row>
-          <el-row :gutter="10" class="home-row-down-alert">
-            <div class="show-chart">
+          <el-row :gutter="10" class="home-row-down-alert" style="margin-bottom: 0px;">
+            <div class="show-chart" style="padding-bottom: 0px;">
                 <div class="charts">
                 <div class="exception-chart-up">
                   <div class="chart-header">
@@ -765,11 +769,11 @@ export default {
 <style>
   .alert {
     margin-left: 10px;
-    margin-top: 40px;
+    /* margin-top: 40px; */
     margin-right: 10px;
     z-index: 5;
     position: relative;
-}
+  }
   .alert-span{
     margin-left: 66px;
     margin-top: -14px;
@@ -797,8 +801,7 @@ export default {
     -webkit-border-radius: 50%;
   }
   .no-data {
-    margin-top: 80px;
-    font-size: 24px;
+    font-size: 20px;
   }
   .mod-home {
     position: relative;
@@ -810,63 +813,84 @@ export default {
   }
   .home-row-main {
     width: 100%;
+    margin-left: 0px !important;
     height: 100%;
   }
   .home-row-up {
     width: 100%;
     height: 50%;
+    margin-left: 0px !important;
     margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .home-row-up .el-table{
+    /* height: calc(100% - 105px); */
+    flex: 1;
+    overflow-y: auto;
   }
   .home-row-up-alert {
-    width: 100%;
-    height: 15%;
+    width: calc(100% + 5px);
     margin-bottom: 10px;
+    margin-right: 0px;
+    height: 15%;
+    overflow: hidden;
+  }
+  .home-row-up-alert .show-alert{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .home-row-down-alert {
     position: relative;
-    width: 100%;
+    width: calc(100% + 5px);
     height: 85%;
     margin-bottom: 10px;
   }
   .home-row-down {
+    flex: 1;
     position: relative;
     width: 100%;
-    height: 50%;
-    margin-bottom: 10px;
+    height: calc(100% - 435px);
+    margin-left: 0px !important;
   }
   .home-col-left{
     position: relative;
     height: 100%;
+    padding-left: 0px !important;
   }
   .home-col-middle{
     position: relative;
     height: 100%;
+    padding-right: 10px !important;
   }
   .home-col-right{
     position: relative;
     height: 100%;
+    padding-right: 0px !important;
   }
   .show-chart {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: white;
-    padding-bottom: 10px;
   }
   .show-alert {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: white;
-    padding-bottom: 10px;
   }
   .charts {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
   .chart-up {
     width: 100%;
     height: 15%;
+    min-height: 56px;
   }
   .chart-down {
     width: 100%;
@@ -878,6 +902,9 @@ export default {
     border-bottom:1px solid #E1E1E1;
     padding: 14px;
     margin-bottom: 30px;
+    min-width: 200px;
+    display: flex;
+    justify-content: space-between;
   }
   .chart-line {
     width: 100%;
@@ -910,8 +937,7 @@ export default {
     float: right;
   }
   .more {
-    margin-top: 8px;
-    margin-right: 5px;
+    margin: 10px;
     display: inline-block;
     cursor: pointer;
     float: right;
@@ -924,5 +950,118 @@ export default {
     width: 100%;
     text-align: left;
   }
+  #chartException{
+    margin-top:  15px !important;
+    height: 100% !important;
+  }
+  #chartFinish{
+
+  }
+  #chartInspection{
+    height: calc(100% + 50px);
+    width: 100%;
+  }
+  .chartInspection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shebie{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    min-height: 100%;
+  }
+  .shebie .el-form-item{
+    margin: 3px 5px;
+  }
+  .shebie .el-form-item .el-form-item__content{
+    width: 100%;
+  }
+  .shebie .el-form-item .el-form-item__content .el-select{
+   width: 118px !important;
+  }
+  .home-col{
+    display: flex;
+    flex-direction: column;
+  }
+  .chartInspection::-webkit-scrollbar{
+    height: 0;
+  }
+  .chartInspection:hover::-webkit-scrollbar{
+    height: 4px;
+  }
+  .chartInspection:hover::-webkit-scrollbar-track {
+      background-color: transparent;
+/*         -webkit-border-radius: 2em;
+      -moz-border-radius: 2em;
+      border-radius: 2em */
+  }
+  .chartInspection:hover::-webkit-scrollbar-thumb {
+      background-color: #42ADFF;
+/*         -webkit-border-radius: 2em;
+      -moz-border-radius: 2em;
+      border-radius: 2em */
+  }
+
 </style>
 
+<style scoped="" lang="scss">
+  .yichang{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    li{
+      list-style:none;
+      display: flex;
+      padding: 0px 10px;
+      justify-content: space-between;
+      flex: 1;
+      align-items: center;
+      border-bottom: 1px solid #ebeef5;
+      max-height: 40px;
+      &:hover{
+        background-color: #eee;
+      }
+    }
+  }
+</style>
+
+<style>
+  @media screen and (max-height: 850px) {
+    #chartFinish{
+
+    }
+    .home-row-up .el-table::-webkit-scrollbar{
+      width: 0;
+      transition: 0.2s;
+    }
+    .home-row-up .el-table:hover::-webkit-scrollbar{
+      width: 4px;
+    }
+    .home-row-up .el-table:hover::-webkit-scrollbar-track {
+        background-color: transparent;
+/*         -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+        border-radius: 2em */
+    }
+    .home-row-up .el-table:hover::-webkit-scrollbar-thumb {
+        background-color: #42ADFF;
+/*         -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+        border-radius: 2em */
+    }
+    #chartInspection{
+      /* height: 100%; */
+      min-height: 200px;
+      /* margin-top: 0px; */
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="mod-group">
-    <div class="show-data-table">
+  <div class="mod-group" style="height: 100%;">
+    <div class="show-data-table" style="height: 100% !important;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item prop="logNumber">
         <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
@@ -26,14 +26,14 @@
             :expand-on-click-node="false" clearable >
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称" >
+        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称">
         </el-input>
       </el-form-item>
       <el-form-item>
         <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="baseTurnId">
-        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;">
+        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" >
           <el-option
             v-for="item in TurnList"
             :key="item.id"
@@ -43,7 +43,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="logType">
-        <el-select v-model="dataForm.logType" placeholder="请选择日志类型" clearable style="width:135px;">
+        <el-select v-model="dataForm.logType" placeholder="请选择日志类型" clearable style="width: 135px;" >
           <el-option
             v-for="item in GroupList"
             :key="item.id"
@@ -52,7 +52,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="logStatus">
-        <el-select v-model="dataForm.logStatus" placeholder="请选择日志状态" clearable style="width: 135px;">
+        <el-select v-model="dataForm.logStatus" placeholder="请选择日志状态" clearable style="width: 135px;" >
           <el-option
             v-for="item in LogStatusList"
             :key="item.id"
@@ -63,18 +63,18 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
+        <el-button @click="getDataList()" style="margin-right: 10px;">查询</el-button>
 
         <el-button-group >
-        <el-select v-model="dataForm.add" style="width:80px;">
+        <el-select v-model="dataForm.add" style="width:80px;margin-right: 10px;">
           <el-option :value="dataForm.add" >
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()" style="line-height: 22px!important;">班长日志</el-button>
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()">班长日志</el-button>
           </el-option>
           <el-option :value="dataForm.add" >
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()" style="line-height: 22px!important;">班前会</el-button>
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()">班前会</el-button>
           </el-option>
           <el-option :value="dataForm.add" v-popover:groupListPopover>
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()"   style="line-height: 22px!important;">班后会</el-button>
+            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()">班后会</el-button>
           </el-option>
         </el-select>
         </el-button-group>
@@ -113,7 +113,6 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
       :data="dataList"
       border
       :cell-style="cellStyle"
@@ -204,10 +203,10 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" v-if="scope.row.logStatus == '1'" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType)">修改</el-button>
-          <el-button type="text" size="small" v-if="scope.row.logStatus != '1'" :disabled="scope.row.logStatus != '1'" style="color: #8c939d;">修改</el-button>
-          <el-button type="text" size="small" v-if="scope.row.logStatus == '1'" @click="deleteHandle(scope.row.classId,scope.row.logStatus)">删除</el-button>
-          <el-button type="text" size="small" v-if="scope.row.logStatus != '1'" :disabled="scope.row.logStatus != '1'" style="color: #8c939d;">删除</el-button>
+          <el-button type="text" v-if="scope.row.logStatus == '1'" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType)">修改</el-button>
+          <el-button type="text" v-if="scope.row.logStatus != '1'" :disabled="scope.row.logStatus != '1'" style="color: #8c939d;">修改</el-button>
+          <el-button type="text" v-if="scope.row.logStatus == '1'" @click="deleteHandle(scope.row.classId,scope.row.logStatus)">删除</el-button>
+          <el-button type="text" v-if="scope.row.logStatus != '1'" :disabled="scope.row.logStatus != '1'" style="color: #8c939d;">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -944,7 +943,7 @@
     }
   }
 </script>
-<style>
+<style scoped="" lang="scss">
  .el-table__expanded-cell[class*=cell] {
    padding: 0px 50px;
  }
@@ -956,5 +955,24 @@
     width:280px;
     height: 200px;
   }
+  .show-data-table{
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 104px);
+  }
+  .show-data-table .el-table{
+    flex: 1;
+  }
+  /deep/ .el-select-dropdown__item span{
+    line-height: normal !important;
+  }
 </style>
-
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .show-data-table{
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 114px);
+    }
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-role">
+  <div class="mod-role" style="height: 100%;">
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-result-exception">
+  <div class="mod-result-exception" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -14,23 +14,24 @@
     <div class="show-data-table">
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <el-row style="display: flex;">
       <el-form-item lable="" prop="deviceName">
-        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable size="small"></el-input>
       </el-form-item>
       <el-form-item lable="" prop="itemName">
-        <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable size="small"></el-input>
       </el-form-item>
       <el-form-item lable="" prop="username">
-        <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;"></el-input>
+        <el-input v-model="dataForm.username" placeholder="巡检人员" clearable size="small"></el-input>
       </el-form-item>
       <el-form-item label="" prop="isOk">
-        <el-select v-model="dataForm.isOk" placeholder="是否正常" clearable style="width:100px;">
+        <el-select v-model="dataForm.isOk" placeholder="是否正常" clearable size="small">
           <el-option label="是" value="1"></el-option>
           <el-option label="否" value="0"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="statusId">
-        <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;">
+        <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable size="small">
           <el-option
             v-for="item in deviceStatusList"
             :key="item.id"
@@ -40,7 +41,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="statusId">
-        <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable style="width:100px;">
+        <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable size="small">
           <el-option
             v-for="item in exceptionList"
             :key="item.id"
@@ -50,7 +51,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="inspectionTypeId">
-        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable style="width:100px;">
+        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable size="small">
           <el-option
             v-for="item in inspectionTypeList"
             :key="item.id"
@@ -60,7 +61,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="statusId">
-        <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
+        <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable size="small">
           <el-option
             v-for="item in deviceLevelList"
             :key="item.id"
@@ -69,24 +70,25 @@
           </el-option>
       </el-select>
     </el-form-item>
+  </el-row>
     <el-row>
     <el-form-item label="巡检时间:" prop="startTime">
-      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+      <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
     </el-form-item>
     <el-form-item label="到:" prop="endTime">
-      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+      <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
     </el-form-item>
     <el-form-item>
-      <el-button @click="search()">查询</el-button>
+      <el-button @click="search()" size="small">查询</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button @click="exportExcelHandle()">导出</el-button>
+      <el-button @click="exportExcelHandle()" size="small">导出</el-button>
     </el-form-item>
     </el-row>
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 300px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -283,7 +285,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         inspectionTypeList: [],
         deviceStatusList: [],
@@ -588,3 +590,11 @@
     }
   }
 </script>
+
+<style lang="scss" scoped="">
+  @media screen and (max-width: 1360px){
+    .el-table{
+      height: calc(100vh - 320px) !important;
+    }
+  }
+</style>

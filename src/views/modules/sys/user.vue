@@ -1,9 +1,9 @@
 <template>
-  <div class="mod-user">
+  <div class="mod-user" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
-        <div class="show-left">
+        <div class="show-left" style="height: calc(100% - 18px);">
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
@@ -29,7 +29,7 @@
           :action="this.$http.adornUrl(`/sys/user/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button @click="exportExcelHandle()">导出</el-button>
+          <el-button @click="exportExcelHandle()" size="small">导出</el-button>
           <el-button >导入</el-button>
         </el-upload>
       </el-form-item>
@@ -147,7 +147,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         dataList: [],
         pageIndex: 1,

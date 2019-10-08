@@ -89,8 +89,8 @@
 
 <style>
   .common-device-tree {
-    mini-height: 300px;
-    Border: 1px solid #ebeef5;
+    min-height: 300px;
+    border: 1px solid #ebeef5;
   }
   .search {
     width:100%;

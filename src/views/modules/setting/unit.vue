@@ -10,7 +10,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 240px)"
       :data="dataList"
       border
       :cell-style="cellStyle"

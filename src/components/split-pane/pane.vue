@@ -25,7 +25,7 @@
   position: absolute;
   left: 0px;
   height: 100%;
-  padding-right: 3px;
+/*   padding-right: 3px; */
 }
 
 .splitter-pane.vertical.splitter-paneR {
