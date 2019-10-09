@@ -228,6 +228,7 @@
           orderConfirmerId: '',
           confirmedTime: '',
           orderConfirmerOpinion: '',
+          deviceId: '',
           defectiveDevice: '',
           resultId: '',
           requirementTime: '',
@@ -317,7 +318,7 @@
       }
     },
     methods: {
-      init (defectiveId, id) {
+      init (defectiveId, id, deviceId) {
         this.dataForm.defectiveId = defectiveId || 0
         this.isHttp = false
         this.visible = true
@@ -349,6 +350,7 @@
                 this.dataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
                 this.dataForm.confirmedTime = data.orderdefective.confirmedTime
                 this.dataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
+                this.dataForm.deviceId = data.orderdefective.deviceId
                 this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
                 this.dataForm.resultId = data.orderdefective.resultId
                 this.dataForm.requirementTime = data.orderdefective.requirementTime
@@ -356,6 +358,7 @@
               }
             })
           }
+          this.dataForm.deviceId = deviceId
         })
         // 新增  工单编号  managementNumber
         if (this.dataForm.defectiveId <= 0) {
@@ -533,6 +536,7 @@
                 'orderConfirmerId': this.dataForm.orderConfirmerId,
                 'confirmedTime': this.dataForm.confirmedTime,
                 'orderConfirmerOpinion': this.dataForm.orderConfirmerOpinion,
+                'deviceId': this.dataForm.deviceId,
                 'defectiveDevice': this.dataForm.defectiveDevice,
                 'resultId': this.dataForm.resultId,
                 'orderAcceptor': this.dataForm.orderAcceptor,

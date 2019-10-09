@@ -5,7 +5,9 @@
     :show-close="true"
     append-to-body>
     <el-tabs type="border-card" value="device" ref="tabs" @tab-click="TabsClickHandle">
-    <el-tab-pane label="设备台账" name="device" actived="true">
+    <el-tab-pane label="设备台账" name="device" actived="true" >
+    <el-tabs type="border-card" value="devicepane"  >
+      <el-tab-pane label="设备资料" name="devicepane" actived="true">
       <div class="device-form">
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
         <el-row class="device-pic">
@@ -130,7 +132,7 @@
             <span>&nbsp;</span>
           </el-col>
         </el-row>
-        <el-row>  
+        <el-row>
           <el-col :span="8">
             <el-form-item label="是否巡检:" prop="isInspect">
               <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" :disabled="!isModify" clearable style="width:140px;"></el-switch>
@@ -154,6 +156,11 @@
         </el-row>
       </el-form>
      </div>
+      </el-tab-pane>
+      <el-tab-pane label="日常维护" name="maintain">
+        <order-device :disabled="!isModify" ref="orderDevice" :deviceId="dataForm.deviceId"></order-device>
+      </el-tab-pane>
+    </el-tabs>
     </el-tab-pane>
     <el-tab-pane label="设备资料" name="document">
       <el-tabs type="border-card" v-model="activeTab" ref="documentTabs" @tab-click="documentTabsClickHandle">
@@ -178,6 +185,7 @@
 <script>
   import { treeDataTranslate } from '@/utils'
   import deviceDocument from '@/components/device/document'
+  import orderDevice from '@/components/device/orderdevice'
   export default {
     data () {
       return {
@@ -212,6 +220,7 @@
           createTime: ''
         },
         activeTab: 'birth',
+        deviceTab: 'device',
         uploadParams: {
           deviceId: null
         },
@@ -229,7 +238,8 @@
       }
     },
     components: {
-      deviceDocument
+      deviceDocument,
+      orderDevice
     },
     methods: {
       onBeforeUpload (file) {
@@ -243,6 +253,10 @@
         if (tab.label === '设备资料') {
           this.activeTab = 'birth'
           this.$refs.documentBirth.getDataList(0)
+        }
+        if (tab.label === '设备台账'){
+          this.activeTab = 'device'
+          this.$refs.orderDevice.getDataList(this.dataForm.deviceId)
         }
       },
       documentTabsClickHandle (tab) {
@@ -456,7 +470,7 @@
                   duration: 1500,
                   onClose: () => {
                     this.visible = false
-                    
+
                     this.$emit('refreshDataList')
                   }
                 })
