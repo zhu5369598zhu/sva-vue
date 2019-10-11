@@ -91,6 +91,7 @@
       height="calc(100vh - 300px)"
       :data="dataList"
       border
+      :fit="true"
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       :cell-style="cellStyle"

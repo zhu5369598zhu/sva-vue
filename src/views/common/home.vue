@@ -20,7 +20,7 @@
                       <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
                     </el-checkbox-group>
                   </div>
-                  
+
                 </div>
                 <ul class="yichang">
                   <li v-for="(item, key) in deviceExceptionTopList">
@@ -42,7 +42,7 @@
                       align="left"
                       label="设备">
                     </el-table-column>
-                    <el-table-column 
+                    <el-table-column
                       prop="exceptionCount"
                       header-align="center"
                       align="right"
@@ -575,7 +575,11 @@ export default {
                 this.$nextTick(function () {
                   this.getDeviceInspection()
                 })
+              } else { // 没有巡检项
+                this.hasInspectionData = false
               }
+            } else {
+              this.hasInspectionData = false
             }
           })
         }
@@ -631,7 +635,7 @@ export default {
             }else{
               this.completionRate = '已完成0.00%'
             }
-            
+
             this.drawChart()
           } else {
             this.$message.error(data.msg)
@@ -809,7 +813,7 @@ export default {
     line-height: 1.5;
     background-color: #f1f4f5;
     overflow: hidden;
-    
+
   }
   .home-row-main {
     width: 100%;
