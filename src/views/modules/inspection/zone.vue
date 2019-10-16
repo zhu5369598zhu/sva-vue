@@ -380,7 +380,7 @@
       deviceSizeChangeHandle (val) {
         this.devicePageSize = val
         this.devicePageIndex = 1
-        this.getDataList()
+        this.getDeviceList()
       },
       // 当前页
       deviceCurrentChangeHandle (val) {

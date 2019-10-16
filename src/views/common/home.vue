@@ -416,7 +416,9 @@ export default {
         } else if (val === '全部') {
           this.inspectionStartTime = ''
         }
-        this.getDeviceInspection()
+        if (this.dataForm.itemId !== '') {
+          this.getDeviceInspection()
+        }
       },
       exceptionRadioChange (val) {
         let today = new Date()
@@ -621,9 +623,11 @@ export default {
             'date': this.finishStartTime
           })
         }).then(({data}) => {
+          console.log(data.status)
           if (data && data.code === 0) {
             if(data.status[0] != null){
               let tmpRate = 0
+
               this.inspectedItemSum = data.status[0].inspectedItemSum
               this.inspectItemSum = data.status[0].inspectItemSum
               if(this.inspectItemSum === 0){
@@ -633,6 +637,8 @@ export default {
               }
               this.completionRate = '已完成' + parseFloat(tmpRate*100).toFixed(2) + '%'
             }else{
+              this.inspectedItemSum = 0
+              this.inspectItemSum = 100
               this.completionRate = '已完成0.00%'
             }
 
