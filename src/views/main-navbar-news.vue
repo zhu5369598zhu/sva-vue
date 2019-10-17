@@ -35,7 +35,7 @@
           width="150"
           label="操作">
           <template slot-scope="scope">
-            <el-button  type="primary"  @click="toNewsHandle(scope.row.newsType)">去处理</el-button>
+            <el-button  type="primary"  @click="toNewsHandle(scope.row.newsType, scope.row.newsNumber)">去处理</el-button>
           </template>
         </el-table-column>
       <el-pagination
@@ -81,7 +81,6 @@
       methods: {
         // 初始化
         init (type) {
-          console.log(type)
           this.visible = true
           this.$nextTick(() => {
             this.type = type
@@ -120,84 +119,85 @@
           this.pageIndex = val
           this.getDataList()
         },
-        toNewsHandle (newsType) {
+        toNewsHandle (newsType, newsNumber) {
+          console.log(newsType)
           // 待处理的 确认班组日志
           if (newsType === 1) {
             if (this.isAuth('group:classgrouplogconfirmed:list')) {
-              this.$router.push('/group-classgrouplogconfirmed')
+              this.$router.push({name: 'group-classgrouplogconfirmed', params:{logNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 2) {
             if (this.isAuth('group:classgrouplogconfirmed:list')) {
-              this.$router.push('/group-classgrouplogconfirmed')
+              this.$router.push({name: 'group-classgrouplogconfirmed', params:{logNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 3) {
             if (this.isAuth('management:ordermanagementalready:list')) {
-              this.$router.push('/management-ordermanagementalready')
+              this.$router.push({name: 'management-ordermanagementalready', params:{orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 4) {
-            if (isAuth('management:ordermanagement:list')) {
-              this.$router.push('/management-ordermanagement')
+            if (this.isAuth('management:ordermanagement:list')) {
+              this.$router.push({name: 'management-ordermanagement', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 5) {
-            if (isAuth('management:ordermanagementreported:list')) {
-              this.$router.push('/management-ordermanagementreported')
+            if (this.isAuth('management:ordermanagementreported:list')) {
+              this.$router.push({name: 'management-ordermanagementreported', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 6) {
-            if (isAuth('management:ordermanagementconfirm:list')) {
-              this.$router.push('/management-ordermanagementconfirm')
+            if (this.isAuth('management:ordermanagementconfirm:list')) {
+              this.$router.push({name: 'management-ordermanagementconfirm', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 7) {
-            this.$router.push('/management-ordermanagementfinished')
+            this.$router.push({name: 'management-ordermanagementfinished', params: {orderNumber: newsNumber}})
             this.visible = false
           } else if (newsType === 8) {
-            if (isAuth('management:ordermanagementreported:list')) {
-              this.$router.push('/management-ordermanagementreported')
+            if (this.isAuth('management:ordermanagementreported:list')) {
+              this.$router.push({name: 'management-ordermanagementreported', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 9) {
-            if (isAuth('management:ordermanagement:list')) {
-              this.$router.push('/management-ordermanagement')
+            if (this.isAuth('management:ordermanagement:list')) {
+              this.$router.push({name: 'management-ordermanagement', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 11) {
-            if (isAuth('management:orderdefective:list')) {
-              this.$router.push('/management-orderdefective')
+            if (this.isAuth('management:orderdefective:list')) {
+              this.$router.push({name: 'management-orderdefective', params: {defectiveNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 12) {
-            if (isAuth('management:orderdefect:list')) {
-              this.$router.push('/management-orderdefect')
+            if (this.isAuth('management:orderdefect:list')) {
+              this.$router.push({name: 'management-orderdefect', params: {defectiveNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')
             }
           } else if (newsType === 14) {
-            if (isAuth('management:ordermanagementreported:list')) {
-              this.$router.push('/management-ordermanagementreported')
+            if (this.isAuth('management:ordermanagementreported:list')) {
+              this.$router.push({name: 'management-ordermanagementreported', params: {orderNumber: newsNumber}})
               this.visible = false
             } else {
               this.$alert('您没有开通页面权限')

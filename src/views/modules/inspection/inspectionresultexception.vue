@@ -393,7 +393,10 @@
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            this.exceptionList = data.page.list
+            this.exceptionList = data.page.list.filter(function(item){
+              return item.name !== '正常'
+            })
+            //this.exceptionList = data.page.list
           })
         }
       },

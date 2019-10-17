@@ -710,6 +710,7 @@
       }
     },
     mounted: function () {
+      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })

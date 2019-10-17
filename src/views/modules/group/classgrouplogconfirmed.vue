@@ -245,6 +245,7 @@
 
       // 获取数据列表
       getDataList () {
+        this.logNumber = this.$route.params.logNumber
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/group/classgrouplogconfirmed/list'),
@@ -492,6 +493,8 @@
       }
     },
     mounted: function () {
+      this.dataForm.logNumber = this.$route.params.logNumber
+
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
 

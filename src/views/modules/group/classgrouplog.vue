@@ -673,10 +673,8 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.banqiandataList = data.page.list
-            this.totalPage = data.page.totalCount
           } else {
             this.banqiandataList = []
-            this.totalPage = 0
           }
           this.dataListLoading = false
         })

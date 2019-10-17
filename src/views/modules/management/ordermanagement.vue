@@ -1431,6 +1431,7 @@
       }
     },
     mounted: function () {
+      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })
