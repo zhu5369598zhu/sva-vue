@@ -11,13 +11,14 @@
     :data="deviceList"
     :props="deviceTreeProps"
     node-key="deptId"
+    :indent="12"
     @current-change="selectTreeCurrentChangeHandle"
     :default-expand-all="expendTree"
     :highlight-current="true"
     :expand-on-click-node="false">
     <span class="custom-tree-node" slot-scope="{ node, data }">
         <span v-if="data.type === 'device'">
-            <icon-svg name="shezhi" style="font-size:20px;vertical-align: middle;"></icon-svg><span>&nbsp;</span><span style="font-size: 12px;vertical-align: middle;">{{ node.label }}[{{data.code}}]</span>
+            <icon-svg name="shezhi" style="font-size:14px;vertical-align: middle;"></icon-svg><span>&nbsp;</span><span style="font-size: 12px;vertical-align: middle;">{{ node.label }}[{{data.code}}]</span>
         </span>  
         <span v-if="data.type === 'dept'">
             {{ node.label }}
@@ -78,13 +79,13 @@
 
 <style>
   .common-device-tree {
-    mini-height: 300px;
-    Border: 1px solid #ebeef5;
+    min-height: 300px;
+    border: 1px solid #ebeef5;
   }
   .search {
     width:100%;
-    padding: 3px 0px 3px;
     Border-bottom: 1px solid #ebeef5;
+    padding: 5px;
   }
   .el-tree-node:focus>.el-tree-node__content{
     background-color: rgb(231, 247, 251);

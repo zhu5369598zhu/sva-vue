@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-presupposition">
+  <div class="mod-presupposition" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -12,15 +12,16 @@
       </template>
    <template slot="paneR">
     <div class="show-data-table">
+      <div class="showform">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item lable="设备名称:" prop="deviceName">
-          <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;"></el-input>
+          <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:100px;" size="small"></el-input>
         </el-form-item>
         <el-form-item lable="巡检人员:" prop="username">
-          <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;"></el-input>
+          <el-input v-model="dataForm.username" placeholder="巡检人员" clearable style="width:100px;" size="small"></el-input>
         </el-form-item>
         <el-form-item label="检时状态:" prop="statusId">
-          <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;">
+          <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable style="width:100px;" size="small">
             <el-option
               v-for="item in deviceStatusList"
               :key="item.id"
@@ -30,7 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="设备等级:" prop="statusId">
-          <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;">
+          <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable style="width:100px;" size="small">
             <el-option
               v-for="item in deviceLevelList"
               :key="item.id"
@@ -40,18 +41,20 @@
         </el-select>
       </el-form-item>
       <el-form-item label="巡检时间从:" prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
       </el-form-item>
       <el-form-item label="到:" prop="endTime">
-        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
       </el-form>
+    </div>
+    <div class="tabs">
       <el-tabs type="border-card" value="chart" ref="tabs">
       <el-tab-pane label="图表" name="chart" actived="true">
         <div v-show="hasData===true&&chartType==='chartbar'" id="chartbar" :style="{ 'height': chartHeight + 'px' }">
@@ -234,6 +237,7 @@
       </el-tab-pane>
     </el-tabs>
   </div>
+  </div>
   </template>
   </split-pane>
   </div>
@@ -273,7 +277,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 20,
+        curPercent: 12,
         oldPercent: 20,
         inspectionTypeList: [],
         deviceStatusList: [],

@@ -3,13 +3,13 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
-    append-to-body>    
+    append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
       <el-row>
         <el-col :span="10">
           <el-form-item label="巡检项" prop="name">
             <el-input v-model="dataForm.name" placeholder="巡检项" clearable style="width:155px;"></el-input>
-          </el-form-item> 
+          </el-form-item>
         </el-col>
         <el-col :span="3">
           <span>&nbsp;</span>
@@ -24,7 +24,7 @@
                 :value="item.id">
               </el-option>
             </el-select>
-          </el-form-item>          
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -53,7 +53,7 @@
                 :value="item.id">
               </el-option>
             </el-select>
-          </el-form-item>          
+          </el-form-item>
         </el-col>
       </el-row>
     <el-row v-if="dataForm.inspectionType===1 || dataForm.inspectionType===4 || dataForm.inspectionType===5 || dataForm.inspectionType===6 || dataForm.inspectionType===7">
@@ -68,7 +68,7 @@
        <el-col :span="10" v-if="dataForm.inspectionType===4 || dataForm.inspectionType===5 || dataForm.inspectionType===6 || dataForm.inspectionType===7">
         <el-form-item label="默认转速" prop="defaultRpm">
           <el-input-number v-model="dataForm.defaultRpm" controls-position="right" :min="1" :step="1" clearable style="width:155px;"></el-input-number>
-        </el-form-item> 
+        </el-form-item>
       </el-col>
     </el-row>
     <el-row v-if="dataForm.inspectionType===4 || dataForm.inspectionType===5 || dataForm.inspectionType===6 || dataForm.inspectionType===7">
@@ -104,7 +104,7 @@
        <el-col :span="10">
          <el-form-item label="上限" prop="upLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.upUsed">报警</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.upUsed" v-model="dataForm.upLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:95px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.upUsed" v-model="dataForm.upLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
        <el-col :span="3">
@@ -113,7 +113,7 @@
        <el-col :span="10">
         <el-form-item label="上上限" prop="upupLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
           <el-checkbox v-model="dataForm.upupUsed">危险</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-          <el-input-number :disabled="!dataForm.upupUsed" v-model="dataForm.upupLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:95px;"></el-input-number>
+          <el-input-number :disabled="!dataForm.upupUsed" v-model="dataForm.upupLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:125px;"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
@@ -121,7 +121,7 @@
        <el-col :span="10">
          <el-form-item label="下限" prop="downLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.downUsed">报警</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.downUsed" v-model="dataForm.downLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:95px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.downUsed" v-model="dataForm.downLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
        <el-col :span="3">
@@ -130,14 +130,14 @@
        <el-col :span="10">
          <el-form-item label="下下限" prop="downdownLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.downdownUsed">危险</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.downdownUsed" v-model="dataForm.downdownLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:95px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.downdownUsed" v-model="dataForm.downdownLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="0" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-form-item label="备注" prop="remark">
         <el-input type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注" style="width:525px;" clearable></el-input>
-      </el-form-item>   
+      </el-form-item>
     </el-row>
     <el-row>
       <el-form-item label="排序号" prop="orderNum">

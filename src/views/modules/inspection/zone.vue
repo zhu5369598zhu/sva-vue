@@ -1,9 +1,9 @@
 <template>
-  <div class="mod-zone">
+  <div class="mod-zone" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
-        <div class="show-left">
+        <div class="show-left" style="height: calc(100% - 15px);">
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
@@ -12,15 +12,15 @@
       </template>
    <template slot="paneR">
     <div class="show-data-table">
-      <div class="show-data-up">
+      <div class="show-data-up" style="flex: 1;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getZoneList()">
       <el-form-item>
-        <el-input v-model="dataForm.zoneName" placeholder="巡区名称" clearable></el-input>
+        <el-input v-model="dataForm.zoneName" size="mini" placeholder="巡区名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
-        <el-button v-if="isAuth('inspection:zone:save')" @click="zoneAddOrUpdateHandle()">新增</el-button>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button v-if="isAuth('inspection:zone:save')" size="mini" @click="zoneAddOrUpdateHandle()">新增</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
       <el-form-item>
           <el-upload
@@ -29,14 +29,14 @@
           :action="this.$http.adornUrl(`/inspection/zone/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button>导入</el-button>
+          <el-button size="mini">导入</el-button>
         </el-upload>
       </el-form-item>
     </el-form>
     <el-table
       :data="zoneList"
-      :height="tableHeight"
       border
+      :height="tableHeight"
       v-loading="zoneListLoading"
       highlight-current-row
       @current-change="zoneSelectionChangeHandle"
@@ -74,7 +74,6 @@
         label="创建时间">
       </el-table-column>
       <el-table-column
-        fixed="right"
         header-align="center"
         align="center"
         width="150"
@@ -97,18 +96,19 @@
     <!-- 弹窗, 新增 / 修改 -->
     <ZoneAddOrUpdate v-if="zoneAddOrUpdateVisible" ref="zoneAddOrUpdate" @refreshDataList="getZoneList"></ZoneAddOrUpdate>
   </div>
-  <div class="show-data-down">
+  <div class="show-data-down" style="flex: 1;display: flex;flex-direction: column;">
     <el-form :inline="true" :model="dataForm">
       <el-form-item>
-        <el-button v-if="isAuth('inspection:zonedevice:save')" @click="deviceAddOrUpdateHandle()" :disabled="dataForm.zoneId <= 0">绑定设备</el-button>
-        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="warning" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('inspection:zonedevice:save')" @click="deviceAddOrUpdateHandle()" :disabled="dataForm.zoneId <= 0" size="mini">绑定设备</el-button>
+        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="warning" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0" size="mini">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
+      border
+      class="bottom-table"
       ref="table"
       :data="deviceList"
-      :height="400"
-      border
+      height="calc(100vh - 590px)"
       v-loading="deviceListLoading"
       @selection-change="deviceSelectionChangeHandle"
       :cell-style="cellStyle"
@@ -133,7 +133,6 @@
         label="巡检排序">
       </el-table-column>
       <el-table-column
-        fixed="right"
         header-align="center"
         align="center"
         width="150"
@@ -180,7 +179,7 @@
         tableHeight: 210,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         zoneList: [],
         zonePageIndex: 1,
@@ -381,7 +380,7 @@
       deviceSizeChangeHandle (val) {
         this.devicePageSize = val
         this.devicePageIndex = 1
-        this.getDataList()
+        this.getDeviceList()
       },
       // 当前页
       deviceCurrentChangeHandle (val) {
@@ -526,14 +525,33 @@
 </script>
 
 
-<style>
+<style scoped="">
   .up {
     float: top;
   }
 
   .down {
   }
+  .site-content .show-data-table{
+  }
+    /deep/ .el-table--medium th{
+      padding: 6px 0;
+    }
+  .site-content .show-data-up{
+    margin: 0px;
+  }
+  .el-form-item{
+    margin-bottom: 10px;
+  }
+  .site-wrapper .el-pagination{
+    margin-top: 8px;
+  }
   .site-content .show-data-down{
     height: 500px;
+  }
+  @media screen and (max-width: 1360px){
+    .bottom-table{
+      height: calc(100vh - 600px) !important;
+    }
   }
 </style>

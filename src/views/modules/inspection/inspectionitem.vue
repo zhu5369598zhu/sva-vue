@@ -1,9 +1,9 @@
 <template>
-  <div class="mod-item">
+  <div class="mod-item" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
-        <div class="show-left">
+        <div class="show-left" style="height: calc(100% - 15px);">
         <div class="org_title">
           <span v-if="this.isDrawBack===false">设备选择</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
@@ -18,10 +18,10 @@
         <el-input v-model="dataForm.name" placeholder="巡检项" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
         <el-button v-if="isAuth('inspection:inspectionitem:save')" @click="addOrUpdateHandle()" :disabled="dataForm.deviceId <= 0">新增</el-button>
         <el-button v-if="isAuth('inspection:inspectionitem:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
       <el-form-item>
           <el-upload
@@ -36,7 +36,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 256px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -189,7 +189,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         dataList: [],
         pageIndex: 1,
@@ -423,3 +423,11 @@
     }
   }
 </script>
+
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 272px) !important;
+    }
+  }
+</style>

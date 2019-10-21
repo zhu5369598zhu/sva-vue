@@ -165,6 +165,7 @@
   .exception-chart-down {
     width: 100%;
     height: 93%;
+    margin-top: 4%;
   }
   .chart-header {
     padding-bottom:14px;

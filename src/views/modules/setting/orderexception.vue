@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-config">
+  <div class="mod-config" style="padding: 15px;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <!--<el-form-item>
         <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
@@ -12,7 +12,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 240px)"
       :data="dataList"
       border
       :cell-style="cellStyle"

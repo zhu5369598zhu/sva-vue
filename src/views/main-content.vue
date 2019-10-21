@@ -6,7 +6,9 @@
       v-model="mainTabsActiveName"
       :closable="false"
       @tab-click="selectedTabHandle"
-      @tab-remove="removeTabHandle">
+      @tab-remove="removeTabHandle"
+      style="height: 100%;"
+    >
       
       <el-dropdown class="site-tabs__tools" :show-timeout="0">
         <i class="el-icon-arrow-down el-icon--right"></i>

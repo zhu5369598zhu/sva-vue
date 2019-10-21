@@ -5,6 +5,7 @@
       :props="deptListTreeProps"
       node-key="deptId"
       ref="deptListTree"
+      :indent="12"
       @current-change="deptListTreeCurrentChangeHandle"
       :default-expand-all="false"
       :highlight-current="true"
@@ -70,9 +71,9 @@
 
 <style>
   .common-dept {
-    mini-height: 300px;
+    min-height: 300px;
     width: 100%;
-    Border: 1px solid #ebeef5;
+    border-top: 1px solid #ebeef5;
   }
   .el-tree-node:focus>.el-tree-node__content{
     background-color: rgb(231, 247, 251);

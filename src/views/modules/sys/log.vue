@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-log">
+  <div class="mod-log" style="height: 100%;">
     <div class="show-data-content">
     <div class="show-data-table">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">

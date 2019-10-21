@@ -26,6 +26,7 @@
     },
     methods: {
       initChart (chartElement) {
+        console.log(this.category)
         var option = {
           title: {
             text: this.title,
@@ -50,7 +51,7 @@
               axisLine: {
                 lineStyle: {
                   type: 'solid',
-                  color: '#218ae2',
+                  color: '#000',
                   width: '1'
                 }
               },
@@ -59,7 +60,7 @@
                   color: 'black'
                 }
               },
-              boundaryGap: false,
+              boundaryGap: true,
               data: this.category
             }
           ],
@@ -69,7 +70,7 @@
               axisLine: {
                 lineStyle: {
                   type: 'solid',
-                  color: '#218ae2',
+                  color: '#000',
                   width: '1'
                 }
               },
@@ -86,7 +87,7 @@
               smooth: true,
               itemStyle: {
                 normal: {
-                  color: '#72cdff',
+                  color: '#257ae2',
                   label: {
                     show: false
                   },

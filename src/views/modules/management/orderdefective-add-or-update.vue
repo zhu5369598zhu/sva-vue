@@ -216,6 +216,7 @@
           orderConfirmerId: '',
           confirmedTime: '',
           orderConfirmerOpinion: '',
+          deviceId: '',
           defectiveDevice: ''
         },
         dataRule: {
@@ -330,6 +331,7 @@
                 this.dataForm.orderConfirmerId = data.orderdefective.orderConfirmerId
                 this.dataForm.confirmedTime = data.orderdefective.confirmedTime
                 this.dataForm.orderConfirmerOpinion = data.orderdefective.orderConfirmerOpinion
+                this.dataForm.deviceId = data.orderdefective.deviceId
                 this.dataForm.defectiveDevice = data.orderdefective.defectiveDevice
               }
             })
@@ -368,12 +370,20 @@
         this.deptFrom.deptId = this.currentRow.deptId
         this.getDeviceList()
       },
-      handle (deviceName) {
+      handle (deviceId ,deviceName) {
         var userName = deviceName ? [deviceName] : this.dataListSelections.map(item => {
           return item.deviceName
         })
-        this.dataForm.defectiveDevice = userName.toString()
-        this.dialogDeviceVisible = false
+        var deviceId = deviceId ? [userid] : this.dataListSelections.map(item => {
+          return item.deviceId
+        })
+        if (this.dataListSelections.length >= 2) {
+          this.$alert('只能选择一个归属设备')
+        } else{
+          this.dataForm.deviceId = deviceId.toString()
+          this.dataForm.defectiveDevice = userName.toString()
+          this.dialogDeviceVisible = false
+        }
       },
       getDeviceList () {
         this.$http({
@@ -454,6 +464,7 @@
                 'orderConfirmerId': this.dataForm.orderConfirmerId,
                 'confirmedTime': this.dataForm.confirmedTime,
                 'orderConfirmerOpinion': this.dataForm.orderConfirmerOpinion,
+                'deviceId': this.dataForm.deviceId,
                 'defectiveDevice': this.dataForm.defectiveDevice
               })
             }).then(({data}) => {

@@ -1,10 +1,10 @@
 <template>
 
-  <div class="mod-item"><!-- mod-pda-->
+  <div class="mod-item" style="height: 100%;"><!-- mod-pda-->
     <div class="show-data-content">
       <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
         <template slot="paneL" >
-          <div class="show-left">
+          <div class="show-left" style="height: calc(100% - 18px);">
             <div class="org_title">
               <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span ><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
             </div>
@@ -22,7 +22,7 @@
           <el-input v-model="dataForm.defectiveTheme" placeholder="请输入缺陷单主题" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="dataForm.exceptionId" placeholder="缺陷等级" style="width: 100px" clearable>
+          <el-select v-model="dataForm.exceptionId" placeholder="缺陷等级" style="width: 100px; margin-right: 10px;" clearable>
             <el-option v-for="item in dataExceptionList"
               :key="item.id"
               :label="item.name"
@@ -44,7 +44,7 @@
       </el-form>
       <el-table
         ref="table"
-        :height="tableHeight"
+        height="calc(100vh - 254px)"
         :data="dataList"
         border
         v-loading="dataListLoading"
@@ -135,8 +135,8 @@
           width="120"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId)">修改</el-button>
-            <el-button type="text" size="small" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="deleteHandle(scope.row.defectiveId)">删除</el-button>
+            <el-button type="text" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined && scope.row.orderStatus != 3" @click="addOrUpdateHandle(scope.row.defectiveId)">修改</el-button>
+            <el-button type="text" :disabled="scope.row.orderStatus != 0 && scope.row.orderStatus != undefined" @click="deleteHandle(scope.row.defectiveId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -1197,10 +1197,17 @@
       }
     },
     mounted: function () {
+      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })
     }
   }
 </script>
-
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 273px) !important;
+    }
+  }
+</style>

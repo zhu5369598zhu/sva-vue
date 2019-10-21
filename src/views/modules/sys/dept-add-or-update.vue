@@ -58,7 +58,7 @@
           orderNum: 0
         },
         dataRule: {
-          Name: [
+          name: [
             { required: true, message: '机构名称不能为空', trigger: 'change' }
           ],
           parentName: [

@@ -1,6 +1,6 @@
 <template>
-  <div class="mod-group">
-    <div class="show-data-table">
+  <div class="mod-group" style="height: 100%;">
+    <div class="show-data-table" style="height: 100% !important;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item prop="logNumber">
         <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
@@ -32,7 +32,7 @@
         <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="baseTurnId">
-        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;">
+        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" >
           <el-option
             v-for="item in TurnList"
             :key="item.id"
@@ -50,7 +50,7 @@
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 248px)"
       :data="dataList"
       border
       :cell-style="cellStyle"
@@ -381,3 +381,11 @@
     }
   }
 </script>
+
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 260px) !important;
+    }
+  }
+</style>

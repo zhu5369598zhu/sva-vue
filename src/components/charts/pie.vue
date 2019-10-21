@@ -38,13 +38,13 @@
             y: 'center',
             itemGap: 10,
             textStyle : {
-              color : '#77d5ff',
+              color : '#06aef9',
               fontFamily : '微软雅黑',
               fontSize : 18,
               fontWeight : 'bolder'
             }
           },
-          color: ['#77d5ff', '#257ae2'],
+          color: ['#06aef9', '#0366df'],
           tooltip: {
             trigger: 'item',
             formatter: '{b} : {c} ({d}%)'

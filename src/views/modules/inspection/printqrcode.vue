@@ -1,9 +1,9 @@
 <template>
-  <div class="mod-device">
+  <div class="mod-device" style="height: 100%;">
     <div class="show-data-content" id="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
-        <div class="show-left">
+        <div class="show-left" style="height: calc(100% - 18px);">
         <div class="org_title">
           <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>

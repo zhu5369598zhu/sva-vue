@@ -1,9 +1,9 @@
 <template>
-  <div class="mod-orderdefect">
+  <div class="mod-orderdefect" style="height: 100%;">
     <div class="show-data-content">
       <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
         <template slot="paneL" >
-          <div class="show-left">
+          <div class="show-left" style="height: calc(100% - 18px);">
             <div class="org_title">
               <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
             </div>
@@ -18,7 +18,7 @@
                   <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
                 </el-form-item>
                 <el-form-item label="缺陷确认状态:" prop="orderStatus">
-                  <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;">
+                  <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;" size="small">
                     <el-option label="待确认" value="0"></el-option>
                     <el-option label="已确认" value="1"></el-option>
                     <el-option label="已挂起" value="2"></el-option>
@@ -27,21 +27,21 @@
                 </el-form-item>
 
                 <el-form-item label="巡检时间从:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="ordersearch()">查询</el-button>
+                  <el-button @click="ordersearch()" size="small">查询</el-button>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="exportExcelHandle()">导出</el-button>
+                  <el-button @click="exportExcelHandle()" size="small">导出</el-button>
                 </el-form-item>
               </el-form>
               <el-table
                 ref="table"
-                :height="tableHeight"
+                height="calc(100vh - 254px)"
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
@@ -190,7 +190,7 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
+                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.deviceId,scope.row.orderStatus)">确认缺陷</el-button>
                    <el-button type="text" size="small"  :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="hangup(scope.row)">挂起</el-button>
                   </template>
                 </el-table-column>
@@ -517,12 +517,12 @@
         this.curPercent = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (defectiveId, id, orderStatus) {
-        console.log(orderStatus)
+      addOrUpdateHandle (defectiveId, id, deviceId,orderStatus) {
+        console.log(deviceId)
         if (orderStatus === 0 || orderStatus === null) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
-            this.$refs.addOrUpdate.init(defectiveId, id)
+            this.$refs.addOrUpdate.init(defectiveId, id, deviceId)
           })
         } else if (orderStatus === 3) { // 已转单被拒绝的情况
           this.addOrUpdateVisible = true
@@ -710,10 +710,18 @@
       }
     },
     mounted: function () {
+      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })
     }
   }
 </script>
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-tab-pane .el-table{
+      height: calc(100vh - 273px) !important;
+    }
+  }
+</style>
 

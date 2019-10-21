@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-pda">
+  <div class="mod-pda" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -18,14 +18,14 @@
         <el-input v-model="dataForm.pdaName" placeholder="设备名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
         <el-button v-if="isAuth('inspection:pda:save')" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('inspection:pda:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
       ref="table"
-      :height="tableHeight"
+      height="calc(100vh - 253px)"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -114,7 +114,7 @@
         tableHeight: 300,
         isDrawBack: false,
         drawBackClass: 'el-icon-d-arrow-left',
-        curPercent: 16,
+        curPercent: 12,
         oldPercent: 16,
         dataList: [],
         pageIndex: 1,
@@ -253,3 +253,11 @@
     }
   }
 </script>
+
+<style scoped="">
+  @media screen and (max-width: 1360px){
+    .el-table{
+      height: calc(100vh - 270px) !important;
+    }
+  }
+</style>

@@ -1,10 +1,10 @@
  <template>
 
-   <div class="mod-pda">
+   <div class="mod-pda" style="height: 100%;">
      <div class="show-data-content">
        <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
          <template slot="paneL" >
-           <div class="show-left">
+           <div class="show-left" style="height: calc(100% - 18px);">
              <div class="org_title">
                <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span ><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
              </div>
@@ -630,6 +630,7 @@
       }
     },
     mounted: function () {
+      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
 
