@@ -221,7 +221,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getturnbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getturnbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -254,7 +254,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getturnstatisticsbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getturnstatisticsbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -346,7 +346,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getallturnbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getallturnbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,

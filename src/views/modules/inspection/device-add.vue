@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    title="新增"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
@@ -116,6 +117,7 @@
 
 <script>
   import { treeDataTranslate } from '@/utils'
+  import ElTableEditabled from 'el-table-editabled'
   export default {
     data () {
       return {
@@ -145,6 +147,9 @@
           masterId: '',
           manufactureDate: '',
           createTime: ''
+        },
+        components: {
+          ElTableEditabled
         },
         dataRule: {
           deviceName: [

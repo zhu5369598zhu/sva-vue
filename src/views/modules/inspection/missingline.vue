@@ -240,7 +240,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontaskdevice/getlinebydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getlinebydate'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -274,7 +274,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontaskdevice/getlinestatisticsbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getlinestatisticsbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -363,7 +363,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getalllinebydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getalllinebydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,

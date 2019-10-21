@@ -92,6 +92,12 @@
                 label="班组">
               </el-table-column>
               <el-table-column
+                prop="inspectionDate"
+                header-align="center"
+                align="center"
+                label="应该日期">
+              </el-table-column>
+              <el-table-column
                 prop="startTime"
                 header-align="center"
                 align="center"
@@ -232,7 +238,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontaskdevice/getmissingbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getmissingbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -265,7 +271,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontaskdevice/getmissingstatisticsbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getmissingstatisticsbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -294,10 +300,7 @@
         this.category = []
         this.series = []
         this.getDataList()
-        if (this.type === 'dept') {
-          this.chartType = 'chartbar'
-          this.getStatisticsByDate()
-        }
+        this.getStatisticsByDate()
       },
       handleDeptSelect (val) {
         this.type = val.type
@@ -358,7 +361,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getallmissingbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getallmissingbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,

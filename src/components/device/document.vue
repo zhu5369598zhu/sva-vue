@@ -1,6 +1,7 @@
 <template>
 	<div class="device-document">
-    <el-table height="376"
+    <el-table 
+      height="376"
       ref="table"
       :data="dataList"
       border

@@ -239,7 +239,7 @@
         }
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getabsencebydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getabsencebydate'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -272,7 +272,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getabsencestatisticsbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getabsencestatisticsbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -301,10 +301,7 @@
         this.category = []
         this.series = []
         this.getDataList()
-        if (this.type === 'dept') {
-          this.chartType = 'chartbar'
-          this.getStatisticsByDate()
-        }
+        this.getStatisticsByDate()
       },
       handleDeptSelect (val) {
         this.type = val.type
@@ -365,7 +362,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('inspection/inspectiontask/getallabsencebydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getallabsencebydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,

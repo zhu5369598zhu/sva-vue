@@ -1,5 +1,6 @@
 <template>
   <el-dialog class="device-update"
+    :title="isModify? '修改' : '查看'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     :show-close="true"
@@ -171,6 +172,74 @@
         </el-tab-pane>
       </el-tabs>
     </el-tab-pane>
+    <el-tab-pane label="检修信息" name="repair">
+      <el-form>
+        <el-form-item>
+          <el-button @click="handleNewRepair">新增</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table
+        height="360"
+        :data="repairList"
+        border
+        highlight-current-row
+        style="width: 100%;">
+        <el-table-column
+          type="index"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="createDate"
+          header-align="center"
+          align="center"
+          label="检修类型">
+        </el-table-column>
+        <el-table-column
+          prop="content"
+          header-align="center"
+          align="center"
+          label="检修内容">
+        </el-table-column>
+        <el-table-column
+          prop="operator"
+          header-align="center"
+          align="center"
+          label="检修单位">
+        </el-table-column>
+        <el-table-column
+          prop="createDate"
+          header-align="center"
+          align="center"
+          label="检修时间">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          header-align="center"
+          align="center"
+          width="150"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="repairUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
+            <el-button type="text" size="small" @click="repairDeleteHandle(scope.$index)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div align="right">
+        <el-pagination class="pagecontrol"
+          @size-change="sizeChangeHandle"
+          @current-change="currentChangeHandle"
+          :current-page="repairPageIndex"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="repairPageSize"
+          :total="repairTotalPage"
+          layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+      </div>
+      <div align="center" class="repair-footer">
+        <el-button v-if="this.isModify===true" @click="visible = false">取消</el-button>
+        <el-button type="primary" v-if="this.isModify===true" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>
+      </div>
+    </el-tab-pane>
   </el-tabs>
   </el-dialog>
 </template>
@@ -178,7 +247,13 @@
 <script>
   import { treeDataTranslate } from '@/utils'
   import deviceDocument from '@/components/device/document'
+  import ElTableEditabled from 'el-table-editabled'
   export default {
+    computed: {
+      editTable () {
+        return this.$refs.editTable
+      }
+    },
     data () {
       return {
         isModify: true,
@@ -188,6 +263,11 @@
         deviceLevelList: [],
         deptList: [],
         fileList: [],
+        repairTypeList: [{'name':'小修','id':0},{'name':'中修','id':1},{'name':'大修','id':2}],
+        repairList: [],
+        repairTotalPage: 0,
+        repairPageIndex: 1,
+        repairPageSize: 10,
         deptListTreeProps: {
           label: 'name',
           children: 'children'
@@ -209,7 +289,7 @@
           isShowDashboard: '',
           masterId: '',
           manufactureDate: '',
-          createTime: ''
+          createTime: '',
         },
         activeTab: 'birth',
         uploadParams: {
@@ -232,6 +312,72 @@
       deviceDocument
     },
     methods: {
+      checkSelection () {
+        if (this.selection && this.selection.length) {
+          return true
+        } else {
+          this.$message.error('请先选择数据')
+        }
+      },
+      handleEditRows () {
+        if (this.checkSelection()) {
+          this.editTable.editRows(this.selection)
+        }
+      },
+      // 获取数据列表
+      getRepairList () {
+        this.$http({
+          url: this.$http.adornUrl('/inspection/repair/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.repairPageIndex,
+            'limit': this.repairPageSize
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.repairList = data.page.list
+            this.repairTotalPage = data.page.totalCount
+          } else {
+            this.repairList = []
+            this.repairTotalPage = 0
+          }
+        })
+      },
+      handleNewRepair () {
+      },
+      handleDelRepair (id) {
+        this.$confirm(`确定删除?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/inspection/repair/delete'),
+            method: 'post',
+            data: this.$http.adornData(id, false)
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.getRepairList()
+                }
+              })
+            } else {
+              this.$message.error(data.msg)
+            }
+          })
+        })
+      },
+      handleSave () {
+        // 保存数据前先进行数据验证
+        this.handleValidate(() => {
+          this.editTable.cancelRows(this.tableData, false)
+          this.$refs.table.clearSelection()
+        })
+      },
       onBeforeUpload (file) {
         const isIMAGE = file.type === 'image/jpeg' || 'image/gif' || 'image/png'
         if (!isIMAGE) {
@@ -243,7 +389,11 @@
         if (tab.label === '设备资料') {
           this.activeTab = 'birth'
           this.$refs.documentBirth.getDataList(0)
+        } else if (tab.label === '设备资料') {
+          this.activeTab = 'repair'
+          this.$refs.editTable.getDataList(0)
         }
+        
       },
       documentTabsClickHandle (tab) {
         if (tab.label === '出厂资料') {
@@ -326,6 +476,17 @@
             this.fileList = []
           }
         })
+      },
+      // 每页数
+      sizeChangeHandle (val) {
+        this.repairPageSize = val
+        this.repairPageIndex = 1
+        this.getRepairList()
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.repairPageIndex = val
+        this.getRepairList()
       },
        // 获取设备级别
       getDeviceLevelList () {
@@ -505,5 +666,8 @@
     overflow-y: scroll;
     width:280px;
     height: 200px;
+  }
+  .repair-footer {
+    margin: 30px;
   }
 </style>
