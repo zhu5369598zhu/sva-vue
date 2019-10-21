@@ -1,10 +1,11 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="'绑定'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
-    <el-input placeholder="请输入内容" v-model="dataForm.key" class="query">
+    <el-input placeholder="请输入内容" v-model="dataForm.key" class="query" size="mini">
       <el-select v-model="dataForm.select" slot="prepend" placeholder="请选择">
         <el-option
           v-for="item in selectList"

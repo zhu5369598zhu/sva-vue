@@ -38,7 +38,7 @@
                 :data="appForm"
                 accept="apk"
                 style="width:400px;">
-                <el-button slot="trigger" size="small">选取文件</el-button>
+                <el-button slot="trigger" size="mini">选取文件</el-button>
               </el-upload>
             </el-form-item>
             <el-form-item>

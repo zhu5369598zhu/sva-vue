@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :append-to-body='true'
@@ -8,7 +9,7 @@
     <!--<el-form-item label="工单编号" prop="orderNumber">{{this.dataForm.orderNumber}}
     </el-form-item>-->
     <el-form-item label="工单主题" prop="orderName">
-      <el-input v-model="dataForm.orderName" placeholder="工单主题"></el-input>
+      <el-input size="mini" v-model="dataForm.orderName" placeholder="工单主题"></el-input>
     </el-form-item>
     <el-form-item label="所属机构" prop="deptName">
       <el-popover
@@ -28,7 +29,7 @@
           :expand-on-click-node="false" clearable >
         </el-tree>
       </el-popover>
-      <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:160px;" placeholder="部门" >
+      <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:160px;" placeholder="部门" >
       </el-input>
     </el-form-item>
     <el-form-item label="工单内容" prop="orderContent">
@@ -46,19 +47,19 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="工单受理人" prop="orderAcceptor"  label-width="100px">
-            <el-input v-model="dataForm.orderAcceptor" placeholder="工单受理人" :disabled="true">
+            <el-input size="mini" v-model="dataForm.orderAcceptor" placeholder="工单受理人" :disabled="true">
               <span slot="suffix">
                 <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
               </span>
             </el-input>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible"  :append-to-body='true' style="clear: both;">
+            <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible"  :append-to-body='true' style="clear: both;">
               <div style="display: flex;justify-content: space-around;align-items: center;">
                 <div style="width:400px;height: 500px;">
                   <el-form :model="deptFrom">
                     <el-row>
                       <el-col :span="13">
                         <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
+                          <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -94,7 +95,7 @@
                     <el-row>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                          <el-input size="mini" v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="5">
@@ -153,7 +154,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="要求完成时间" prop="requirementTime" label-width="100px">
-            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;" size="mini" ></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>

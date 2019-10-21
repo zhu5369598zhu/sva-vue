@@ -79,8 +79,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('inspection:zone:save')" type="text" size="small" @click="zoneAddOrUpdateHandle(scope.row.zoneId)">修改</el-button>
-          <el-button v-if="isAuth('inspection:zone:delete')" type="text" size="small" @click="zoneDeleteHandle(scope.row.zoneId)">删除</el-button>
+          <el-button v-if="isAuth('inspection:zone:save')" type="text" size="mini" @click="zoneAddOrUpdateHandle(scope.row.zoneId)">修改</el-button>
+          <el-button v-if="isAuth('inspection:zone:delete')" type="text" size="mini" @click="zoneDeleteHandle(scope.row.zoneId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -138,7 +138,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="deviceDeleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="text" size="mini" @click="deviceDeleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

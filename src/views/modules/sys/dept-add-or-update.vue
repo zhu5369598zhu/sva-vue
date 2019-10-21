@@ -1,15 +1,16 @@
 <template>
   <el-dialog
+    v-dialog-drag 
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
       <el-form-item label="机构名称" prop="name">
-        <el-input v-model="dataForm.name" placeholder="机构名称"></el-input>
+        <el-input size="mini" v-model="dataForm.name" placeholder="机构名称"></el-input>
       </el-form-item>
       <el-form-item label="机构编码" prop="deptCode">
-        <el-input v-model="dataForm.deptCode" placeholder="机构编码"></el-input>
+        <el-input size="mini" v-model="dataForm.deptCode" placeholder="机构编码"></el-input>
       </el-form-item>
       <el-form-item label="上级机构" prop="parentName">
         <el-popover
@@ -29,10 +30,10 @@
             :expand-on-click-node="false">
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.parentName" v-popover:deptListPopover :readonly="true" placeholder="点击选择上级机构" class="dept-list__input"></el-input>
+        <el-input size="mini" v-model="dataForm.parentName" v-popover:deptListPopover :readonly="true" placeholder="点击选择上级机构" class="dept-list__input"></el-input>
       </el-form-item>
       <el-form-item label="排序号" prop="orderNum">
-        <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号"></el-input-number>
+        <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号" size="mini" ></el-input-number>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

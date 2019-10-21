@@ -17,22 +17,22 @@
     <div class="show-data-up" id="data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" clearable></el-input>
+        <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" size="mini" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.orderName" placeholder="请输入工单主题" clearable></el-input>
+        <el-input v-model="dataForm.orderName" placeholder="请输入工单主题" size="mini" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.startTime" type="datetime" size="mini" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item  prop="endTime">
-        <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.endTime" type="datetime" size="mini" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
 
     </el-form>
@@ -102,28 +102,28 @@
         prop="defectiveName"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="缺陷操作人">
       </el-table-column>
       <el-table-column
         prop="orderApplicant"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="工单操作人">
       </el-table-column>
       <el-table-column
         prop="orderAcceptor"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="工单受理人">
       </el-table-column>
       <el-table-column
         prop="orderConfirmer"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="工单审核人">
       </el-table-column>
       <el-table-column
@@ -145,6 +145,7 @@
     </el-pagination>
     <!-- 已派单待受理 -->
     <el-dialog
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
         :close-on-click-modal="false"
         :append-to-body='true'

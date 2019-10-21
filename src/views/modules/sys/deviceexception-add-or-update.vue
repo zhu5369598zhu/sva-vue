@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag 
     :title="!dataForm.id ? '推送规则' : '推送规则'"
     :close-on-click-modal="false"
     v-if="visible"

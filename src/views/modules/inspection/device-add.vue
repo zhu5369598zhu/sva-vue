@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
@@ -7,12 +8,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="设备名称:" prop="deviceName">
-            <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceName" placeholder="设备名称" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备等级" prop="deviceLevel" >
-            <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" style="width:140px;">
+            <el-select v-model="dataForm.deviceLevel" placeholder="设备等级" style="width:140px;" size="mini" >
               <el-option
                 v-for="item in deviceLevelList"
                 :key="item.id"
@@ -41,53 +42,53 @@
                 :expand-on-click-node="false" clearable style="width:140px;">
               </el-tree>
             </el-popover>
-            <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="生产日期:" prop="manufactureDate">
-            <el-date-picker v-model="dataForm.manufactureDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择生产日期" @change="handleDateChange" clearable style="width:140px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.manufactureDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择生产日期" @change="handleDateChange" clearable style="width:140px;" size="mini" ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备编号:" prop="deviceNum">
-            <el-input v-model="dataForm.deviceNum" placeholder="设备编号" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceNum" placeholder="设备编号" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备编码:" prop="deviceCode">
-            <el-input v-model="dataForm.deviceCode" placeholder="设备编码" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceCode" placeholder="设备编码" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="设备规格:" prop="deviceUnit">
-            <el-input v-model="dataForm.deviceUnit" placeholder="设备规格" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceUnit" placeholder="设备规格" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="生产厂家:" prop="deviceManufacturer">
-            <el-input v-model="dataForm.deviceManufacturer" placeholder="生产厂家" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceManufacturer" placeholder="生产厂家" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="供货商:" prop="deviceSupplier">
-            <el-input v-model="dataForm.deviceSupplier" placeholder="供货商" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceSupplier" placeholder="供货商" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="设备模型:" prop="deviceModel">
-            <el-input v-model="dataForm.deviceModel" placeholder="设备模型" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceModel" placeholder="设备模型" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="责任人:" prop="deviceMaster">
-            <el-input v-model="dataForm.deviceMaster" placeholder="责任人" clearable style="width:140px;"></el-input>
+            <el-input size="mini" v-model="dataForm.deviceMaster" placeholder="责任人" clearable style="width:140px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">

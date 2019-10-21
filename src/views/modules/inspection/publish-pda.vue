@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="'发布'"
     :close-on-click-modal="false"
     :visible.sync="visible"

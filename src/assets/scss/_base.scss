@@ -209,14 +209,14 @@ img {
   &__header {
     position: relative;
     float: left;
-    width: 170px;
+    width: 165px;
     height: 50px;
     overflow: hidden;
   }
   &__brand {
     display: table-cell;
     vertical-align: middle;
-    width: 200px;
+    width: 164px;
     height: 50px;
     margin: 0;
     line-height: 50px;
@@ -261,7 +261,7 @@ img {
   }
   &__body {
     position: relative;
-    margin-left: 170px;
+    margin-left: 165px;
     padding-right: 15px;
     background-color: #fff;
   }
@@ -307,7 +307,7 @@ img {
   left: 0;
   bottom: 0;
   z-index: 1020;
-  width: 170px;
+  width: 165px;
   overflow: hidden;
   &--dark,
   &--dark-popper {
@@ -365,7 +365,7 @@ img {
   right: 0;
   bottom: 0;
   padding: 0px;
-  margin: 100px 10px 10px 10px;
+  margin: 95px 5px 5px 0px;
 
   &__wrapper {
     position: relative;
@@ -381,7 +381,7 @@ img {
     > .el-tabs__header {
       position: fixed;
       top: 50px;
-      left: 170px;
+      left: 165px;
       right: 0;
       z-index: 930;
       padding: 0 85px 0 15px;
@@ -465,7 +465,7 @@ img {
   }
   .show-data-table {
     position: relative;
-    padding:10px;
+    padding:5px;
     min-height: 400px;
     height: 100%;
   }
@@ -508,6 +508,10 @@ img {
 
 /* 新增加
 ------------------------------ */
+*, *:before, *:after{
+  margin: 0;
+  padding: 0;
+}
 .site-wrapper .el-pagination{
   padding-right: 20px;
 }
@@ -685,20 +689,64 @@ img {
 .splitter-pane{
   transition: 0.2s;
 }
+// 弹窗使用
 .el-form-item{
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+// 普通使用
+.show-data-up{
+  >.el-form{
+    .el-form-item{
+      margin-bottom: 2px !important;
+    }
+  }
+}
+.show-data-table{
+  >.showform{
+    >.el-form{
+      >.el-form-item{
+        margin-bottom: 5px;
+      }
+    }
+  }
+  >.el-form{
+    >.el-form-item{
+      margin-bottom: 5px;
+    }
+  }
 }
 .search_top{
   >.el-form-item{
     flex: 1;
     .el-form-item__content{
       width: 100%;
+      .el-select{
+        width: 100%;
+        .el-input{
+          width: 100%;
+        }
+      }
     }
     &:last-child{
       margin-right: 0;
     }
   }
 }
+.el-table--medium{
+  th{
+    padding: 5px 0;
+  }
+  td{
+    padding: 0px 0;
+    .el-button--text{
+      padding: 0px;
+    }
+  }
+}
+.el-table__row{
+  height: 30px !important;
+}
+
 // // 修复element-ui表格错位问题
 // body /deep/ .el-table th.gutter{
 //     display: table-cell !important;

@@ -1,15 +1,19 @@
 <template>
   <el-dialog
+    v-dialog-drag 
+    wdith="800px"
     :title="!dataForm.id ? '数据列表' : '数据列表'"
     :close-on-click-modal="false"
     :append-to-body='true'
-    :visible.sync="visible">
+    :visible.sync="visible"
+    class="dialog"
+  >
     <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
       <div >
         <span class="span-a">拟制中</span><span class="span-b">已下发</span><span class="span-c">已受理</span><span class="span-d">已审核</span>
         <el-progress :text-inside="true"  :stroke-width="28" :show-text="true"  :percentage="progressNum" ></el-progress>
       </div>
-      <div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px; ">
+      <div style="display: flex;align-items: center;margin-top: 10px; ">
         <div  style="width:200px;height: 160px;border-left: 8px solid #8c939d;">
           <el-form-item label="工单主题" prop="orderName">
             {{dataForm.orderName}}
@@ -50,8 +54,8 @@
         </div>
       </div>
       <div >
-      <p style="border-left: 10px solid #8c939d;margin-left: 12px;">流程记录</p>
-      <div v-for="item in recordList" :key="item.recordId" style="margin-left: 12px;">
+      <p style="border-left: 8px solid #8c939d;padding-left: 12px;margin: 20px 0;">流程记录</p>
+      <div v-for="item in recordList" :key="item.recordId" style="">
           <el-form-item :label="item.orderPeopleName" style="border-left: 8px solid #8c939d">
               {{item.orderPeople}}:{{item.orderOpinion}} <br>
              {{item.nowTime}}
@@ -179,6 +183,9 @@
   }
 </script>
 <style>
+  .dialog .el-dialog{
+    width:  810px !important;
+  }
   .span-a{ float:left;}
   .span-b{ float:left;margin-left:15%;}
   .span-c{ float:left;margin-left:25%;}

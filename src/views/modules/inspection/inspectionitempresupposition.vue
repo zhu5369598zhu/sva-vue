@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="'预设'"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -59,8 +60,8 @@
               width="150"
               label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="presuppositionUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
-                <el-button type="text" size="small" @click="presuppositionDeleteHandle(scope.$index)">删除</el-button>
+                <el-button type="text" size="mini" @click="presuppositionUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
+                <el-button type="text" size="mini" @click="presuppositionDeleteHandle(scope.$index)">删除</el-button>
               </template>
       </el-table-column>
     </el-table>

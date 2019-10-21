@@ -15,7 +15,7 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input placeholder="请输入内容" v-model="key">
+        <el-input placeholder="请输入内容" v-model="key" size="mini">
           <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option
               v-for="item in selectList"
@@ -27,10 +27,10 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
-        <el-button v-if="isAuth('inspection:device:save')" @click="deviceAddHandle()">新增</el-button>
-        <el-button v-if="isAuth('inspection:device:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button v-if="isAuth('inspection:device:save')" @click="deviceAddHandle()" size="mini">新增</el-button>
+        <el-button v-if="isAuth('inspection:device:delete')" size="mini" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
       <el-form-item>
         <el-upload
@@ -39,7 +39,7 @@
         :action="this.$http.adornUrl(`/inspection/device/upload?token=${this.$cookie.get('token')}`)"
         :file-list="importFileList"
         :on-success="UploadSuccessHandle">
-        <el-button>导入</el-button>
+        <el-button size="mini">导入</el-button>
       </el-upload>
     </el-form-item>
     </el-form>

@@ -24,6 +24,7 @@ export function isAuth (key) {
  * @param {*} data
  * @param {*} id
  * @param {*} pid
+ * @param {*} _level【核心，用于控制向左间距问题】
  */
 export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
   var res = []
@@ -43,6 +44,17 @@ export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
       temp[data[k][pid]]['children'].push(data[k])
     } else {
       res.push(data[k])
+    }
+  }
+  recursion(res)
+  // BUG修复
+  // 递归遍历dataList，修复_level问题
+  function recursion(data, _level = 1) {
+    for (const i in data) {
+      data[i]._level = _level
+      if (data[i].children && data[i].children.length > 0) {
+        recursion(data[i].children, _level + 1)
+      }
     }
   }
   return res

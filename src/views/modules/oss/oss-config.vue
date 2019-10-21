@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag 
     title="云存储配置"
     :close-on-click-modal="false"
     :visible.sync="visible">

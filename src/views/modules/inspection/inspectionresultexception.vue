@@ -16,17 +16,17 @@
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-row style="display: flex;" class="search_top">
       <el-form-item prop="deviceName">
-        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable size="small"></el-input>
+        <el-input v-model="dataForm.deviceName" placeholder="设备名称" clearable size="mini"></el-input>
       </el-form-item>
       <el-form-item prop="itemName">
-        <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable size="small"></el-input>
+        <el-input v-model="dataForm.itemName" placeholder="巡检内容" clearable size="mini"></el-input>
       </el-form-item>
       <el-form-item  prop="username">
-        <el-input v-model="dataForm.username" placeholder="巡检人员" clearable size="small"></el-input>
+        <el-input v-model="dataForm.username" placeholder="巡检人员" clearable size="mini"></el-input>
       </el-form-item>
       </el-form-item>
       <el-form-item prop="statusId">
-        <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable size="small">
+        <el-select v-model="dataForm.statusId" placeholder="检时状态" clearable size="mini">
           <el-option
             v-for="item in deviceStatusList"
             :key="item.id"
@@ -36,7 +36,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="statusId">
-        <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable size="small">
+        <el-select v-model="dataForm.exceptionId" placeholder="异常等级" clearable size="mini">
           <el-option
             v-for="item in exceptionList"
             :key="item.id"
@@ -46,7 +46,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="inspectionTypeId">
-        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable size="small">
+        <el-select v-model="dataForm.inspectionTypeId" placeholder="巡检类型" clearable size="mini">
           <el-option
             v-for="item in inspectionTypeList"
             :key="item.id"
@@ -56,7 +56,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="statusId">
-        <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable size="small">
+        <el-select v-model="dataForm.deviceLevelId" placeholder="设备等级" clearable size="mini">
           <el-option
             v-for="item in deviceLevelList"
             :key="item.id"
@@ -68,16 +68,16 @@
     </el-row>
     <el-row>
       <el-form-item label="巡检时间:" prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker"  style="width:140px;" size="small"></el-date-picker>
+        <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker"  style="width:140px;" size="mini"></el-date-picker>
       </el-form-item>
       <el-form-item label="到:" prop="endTime">
-        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
+        <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="mini"></el-date-picker>
       </el-form-item>
         <el-form-item>
-          <el-button @click="getDataList()" size="small">查询</el-button>
+          <el-button @click="getDataList()" size="mini">查询</el-button>
         </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
     </el-row>
     </el-form>
@@ -93,6 +93,7 @@
       style="width: 100%;">
       <el-table-column
         fixed
+        align="center"
         type="index"
         width="50"
         lable="">
@@ -102,7 +103,7 @@
         prop="deviceName"
         header-align="center"
         align="center"
-        width="150"
+        width="170"
         label="设备名称">
       </el-table-column>
       <el-table-column

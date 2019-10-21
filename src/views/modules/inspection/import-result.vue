@@ -1,5 +1,6 @@
 <template>
   <el-dialog style="z-index:1"
+    v-dialog-drag
     :close-on-click-modal="false"
     :modal=true
     width="30%"

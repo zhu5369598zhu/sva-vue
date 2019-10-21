@@ -9,7 +9,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="用户名" prop="userName">
-            <el-input v-model="dataForm.userName" placeholder="登录帐号"></el-input>
+            <el-input size="mini" v-model="dataForm.userName" placeholder="登录帐号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -31,48 +31,48 @@
                 :expand-on-click-node="false">
               </el-tree>
             </el-popover>
-            <el-input v-model="dataForm.deptName" v-popover:deptListPopover placeholder="点击选择所属机构" class="dept-list__input"></el-input>
+            <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover placeholder="点击选择所属机构" class="dept-list__input"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="工号" prop="userCode">
-            <el-input v-model="dataForm.userCode" placeholder="工号"></el-input>
+            <el-input size="mini" v-model="dataForm.userCode" placeholder="工号"></el-input>
           </el-form-item>
         </el-col>
           <el-col :span="12">
             <el-form-item label="密码" prop="password" :class="{ 'is-required': !dataForm.id }">
-              <el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
+              <el-input size="mini" v-model="dataForm.password" type="password" placeholder="密码"></el-input>
             </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
-            <el-input v-model="dataForm.mobile" placeholder="手机号"></el-input>
+            <el-input size="mini" v-model="dataForm.mobile" placeholder="手机号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="确认密码" prop="comfirmPassword" :class="{ 'is-required': !dataForm.id }">
-            <el-input v-model="dataForm.comfirmPassword" type="password" placeholder="确认密码"></el-input>
+            <el-input size="mini" v-model="dataForm.comfirmPassword" type="password" placeholder="确认密码"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="微信号" prop="wechat">
-            <el-input v-model="dataForm.wechat" placeholder="微信号"></el-input>
+            <el-input size="mini" v-model="dataForm.wechat" placeholder="微信号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="邮箱" prop="email">
-            <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
+            <el-input size="mini" v-model="dataForm.email" placeholder="邮箱"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="备注" prop="remark">
-        <el-input type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注"></el-input>
+        <el-input size="mini" type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
       <el-form-item label="角色" size="mini" prop="roleIdList">
         <el-checkbox-group v-model="dataForm.roleIdList">

@@ -3,7 +3,7 @@
     <div class="show-data-table" style="height: 100% !important;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item prop="logNumber">
-        <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
+        <el-input v-model="dataForm.logNumber" size="mini" placeholder="请输入日志编号" clearable ></el-input>
       </el-form-item>
       <el-form-item prop="deptId">
         <el-popover
@@ -26,14 +26,14 @@
             :expand-on-click-node="false" clearable >
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称">
+        <el-input v-model="dataForm.deptName" size="mini" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称">
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
+        <el-input v-model="dataForm.classGroupName" size="mini" placeholder="请输入班组名称" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="baseTurnId">
-        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" >
+        <el-select v-model="dataForm.baseTurnId" size="mini" placeholder="请选择班次" clearable style="width:115px;" >
           <el-option
             v-for="item in TurnList"
             :key="item.id"
@@ -43,7 +43,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="logType">
-        <el-select v-model="dataForm.logType" placeholder="请选择日志类型" clearable style="width: 135px;" >
+        <el-select v-model="dataForm.logType" size="mini" placeholder="请选择日志类型" clearable style="width: 135px;" >
           <el-option
             v-for="item in GroupList"
             :key="item.id"
@@ -52,7 +52,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="logStatus">
-        <el-select v-model="dataForm.logStatus" placeholder="请选择日志状态" clearable style="width: 135px;" >
+        <el-select v-model="dataForm.logStatus" size="mini" placeholder="请选择日志状态" clearable style="width: 135px;" >
           <el-option
             v-for="item in LogStatusList"
             :key="item.id"
@@ -63,21 +63,31 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="getDataList()" style="margin-right: 10px;">查询</el-button>
-
-        <el-button-group >
-        <el-select v-model="dataForm.add" style="width:80px;margin-right: 10px;">
-          <el-option :value="dataForm.add" >
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()">班长日志</el-button>
-          </el-option>
-          <el-option :value="dataForm.add" >
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()">班前会</el-button>
-          </el-option>
-          <el-option :value="dataForm.add" v-popover:groupListPopover>
-            <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()">班后会</el-button>
-          </el-option>
-        </el-select>
-        </el-button-group>
+        <el-button @click="getDataList()" style="margin-right: 10px;" size="mini">查询</el-button>
+        <div v-popover:groupListPopover style="display: none;"></div>
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-right: 10px;">
+          <el-button size="mini">
+            新增<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="a">班长日志</el-dropdown-item>
+            <el-dropdown-item command="b">班前会</el-dropdown-item>
+            <el-dropdown-item command="c">班后会</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+<!--         <el-button-group  size="mini">
+          <el-select v-model="dataForm.add" style="width:80px;margin-right: 10px;">
+            <el-option :value="dataForm.add" >
+              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateHandle()">班长日志</el-button>
+            </el-option>
+            <el-option :value="dataForm.add" >
+              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="addOrUpdateBanQianHandle()">班前会</el-button>
+            </el-option>
+            <el-option :value="dataForm.add" v-popover:groupListPopover>
+              <el-button v-if="isAuth('group:classgrouplog:save')" type="text" @click="getbanqianDataList()">班后会</el-button>
+            </el-option>
+          </el-select>
+        </el-button-group> -->
 
         <el-popover
           ref="groupListPopover"
@@ -86,14 +96,14 @@
             z-index: 2058;
             position: absolute;
             top: 100px;
-            left: 1247px;"
+            left: 1200px;"
           trigger="click"
           highlight-current="true"
           v-model="isShowTree">
           <el-table
             :data="banqiandataList"
             :cell-style="cellStyle"
-            :default-expand-all="true"
+            :default-expand-all="false"
             v-loading="dataListLoading"
             >
             <el-table-column
@@ -108,11 +118,12 @@
             </el-table-column>
           </el-table>
         </el-popover>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
     </el-form-item>
     </el-form>
     <el-table
       ref="table"
+      height="calc(100vh - 240px)"
       :data="dataList"
       border
       :cell-style="cellStyle"
@@ -212,6 +223,7 @@
     </el-table>
       <!-- 班长日志详情 -->
       <el-dialog
+        v-dialog-drag
         :title="logdataForm.logNumber ? '班长日志详情' : '班长日志详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -315,6 +327,7 @@
       </el-dialog>
       <!-- 班前会详情-->
       <el-dialog
+        v-dialog-drag
         :title="logdataForm.logNumber ? '班前会详情' : '班前会详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -414,6 +427,7 @@
       </el-dialog>
       <!-- 班后会详情-->
       <el-dialog
+        v-dialog-drag
         :title="dialogthreevisible ? '班后会详情' : '班后会详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -424,90 +438,90 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="部门(工段)" prop="deptName">
-                <el-input v-model="logdataForm.deptName"  readonly>
+                <el-input size="mini" v-model="logdataForm.deptName"  readonly>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="班组" prop="classGroupName">
-                <el-input v-model="logdataForm.classGroupName" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.classGroupName" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="班次" prop="baseTurnName">
-                <el-input v-model="logdataForm.baseTurnName" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.baseTurnName" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="8">
               <el-form-item label="班长" prop="monitor">
-                <el-input v-model="logdataForm.monitor" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.monitor" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="应出勤人数" prop="shouldAttendance">
-                <el-input v-model="logdataForm.shouldAttendance" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.shouldAttendance" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="实出勤人数" prop="attendance">
-                <el-input v-model="logdataForm.attendance" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.attendance" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="实到人员" prop="actualArrival">
-            <el-input v-model="logdataForm.actualArrival" readonly>
+            <el-input size="mini" v-model="logdataForm.actualArrival" readonly>
             </el-input>
           </el-form-item>
           <el-row>
             <el-col :span="8">
               <el-form-item label="未到人员" prop="notArrived">
-                <el-input v-model="logdataForm.notArrived" readonly>
+                <el-input size="mini" v-model="logdataForm.notArrived" readonly>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="顶班人员" prop="topArrived">
-                <el-input v-model="logdataForm.topArrived" readonly>
+                <el-input size="mini" v-model="logdataForm.topArrived" readonly>
                 </el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="缺勤原因" prop="reasonsAbsence">
-            <el-input v-model="logdataForm.reasonsAbsence" readonly></el-input>
+            <el-input size="mini" v-model="logdataForm.reasonsAbsence" readonly></el-input>
           </el-form-item>
           <el-form-item  label="人员精神异常" prop="mentalException">
-            <el-input type="textarea" autosize v-model="logdataForm.mentalException" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.mentalException" readonly></el-input>
           </el-form-item>
           <el-form-item  label="劳动防护用品异常描述" prop="protectiveException">
-            <el-input type="textarea" autosize v-model="logdataForm.protectiveException" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.protectiveException" readonly></el-input>
           </el-form-item>
           <el-form-item  label="工器具异常描述" prop="toolsException">
-            <el-input type="textarea" autosize v-model="logdataForm.toolsException" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.toolsException" readonly></el-input>
           </el-form-item>
           <el-form-item label="其他异常" prop="otherException">
-            <el-input type="textarea" autosize v-model="logdataForm.otherException" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.otherException" readonly></el-input>
           </el-form-item>
           <el-form-item label="工作安排" prop="workTask">
-            <el-input type="textarea" autosize v-model="logdataForm.workTask" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.workTask" readonly></el-input>
           </el-form-item>
           <el-form-item label="工作总结" prop="workSummary">
-            <el-input type="textarea" autosize v-model="logdataForm.workSummary" readonly></el-input>
+            <el-input size="mini" type="textarea" autosize v-model="logdataForm.workSummary" readonly></el-input>
           </el-form-item>
           <el-form-item label="班组成员" prop="teamMembers">
-            <el-input v-model="logdataForm.teamMembers" readonly >
+            <el-input size="mini" v-model="logdataForm.teamMembers" readonly >
             </el-input>
           </el-form-item>
           <el-row>
             <el-col :span="7">
               <el-form-item label="负责人" prop="personCharge">
-                <el-input v-model="logdataForm.personCharge" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.personCharge" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="交接时间" prop="createTime">
-                <el-input v-model="logdataForm.createTime" style="width: 160px" readonly></el-input>
+                <el-input size="mini" v-model="logdataForm.createTime" style="width: 160px" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -660,6 +674,17 @@
           this.dataListLoading = false
         })
       },
+      // 监听下拉菜单点击事件
+      handleCommand(command) {
+        if (command === 'a') {
+          this.addOrUpdateHandle()
+        } else if (command === 'b') {
+          this.addOrUpdateBanQianHandle()
+        } else if (command === 'c') {
+          this.$refs.groupListPopover.showPopper = true
+          this.getbanqianDataList()
+        }
+      },
       getbanqianDataList() {
         this.dataListLoading = true
         this.$http({
@@ -673,6 +698,7 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.banqiandataList = data.page.list
+            
           } else {
             this.banqiandataList = []
           }
@@ -963,6 +989,13 @@
   }
   /deep/ .el-select-dropdown__item span{
     line-height: normal !important;
+  }
+  /deep/ .el-form--inline .el-form-item{
+    margin-bottom: 10px;
+    margin-right: 5px;
+  }
+  /deep/ .el-button--medium{
+    padding: 11px 20px;
   }
 </style>
 <style scoped="">

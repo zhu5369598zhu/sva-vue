@@ -15,7 +15,7 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input placeholder="请输入内容" v-model="key">
+        <el-input placeholder="请输入内容" v-model="key" size="mini">
           <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option
               v-for="item in selectList"
@@ -27,9 +27,9 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
-        <el-button @click="printAllHandle()" :disabled="dataList.length <= 0">打印全部</el-button>
-        <el-button @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0">打印已选</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button @click="printAllHandle()" :disabled="dataList.length <= 0" size="mini">打印全部</el-button>
+        <el-button @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0" size="mini">打印已选</el-button>
       </el-form-item>
     </el-form>
     <el-table

@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     title="修改密码"
+    v-dialog-drag
     :visible.sync="visible"
     :append-to-body="true">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">

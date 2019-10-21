@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     title="待处理消息"
+    v-dialog-drag
     :visible.sync="visible"
     :append-to-body="true">
     <el-table
@@ -35,7 +36,7 @@
           width="150"
           label="操作">
           <template slot-scope="scope">
-            <el-button  type="primary"  @click="toNewsHandle(scope.row.newsType, scope.row.newsNumber)">去处理</el-button>
+            <el-button type="primary"  @click="toNewsHandle(scope.row.newsType)" size="mini">去处理</el-button>
           </template>
         </el-table-column>
       <el-pagination
@@ -120,7 +121,6 @@
           this.getDataList()
         },
         toNewsHandle (newsType, newsNumber) {
-          console.log(newsType)
           // 待处理的 确认班组日志
           if (newsType === 1) {
             if (this.isAuth('group:classgrouplogconfirmed:list')) {

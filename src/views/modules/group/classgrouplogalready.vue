@@ -3,7 +3,7 @@
     <div class="show-data-table" style="height: 100% !important;">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item prop="logNumber">
-        <el-input v-model="dataForm.logNumber" placeholder="请输入日志编号" clearable ></el-input>
+        <el-input v-model="dataForm.logNumber" size="mini" placeholder="请输入日志编号" clearable ></el-input>
       </el-form-item>
       <el-form-item prop="deptId">
         <el-popover
@@ -25,14 +25,14 @@
             :expand-on-click-node="false" clearable style="width:140px;">
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称" >
+        <el-input v-model="dataForm.deptName" size="mini" v-popover:deptListPopover  class="dept-list__input" style="width:140px;" placeholder="请输入机构名称" >
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
+        <el-input v-model="dataForm.classGroupName" size="mini" placeholder="请输入班组名称" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="baseTurnId">
-        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" >
+        <el-select v-model="dataForm.baseTurnId" size="mini" placeholder="请选择班次" clearable style="width:115px;" >
           <el-option
             v-for="item in TurnList"
             :key="item.id"
@@ -42,10 +42,10 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
+        <el-button @click="getDataList()" size="mini">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -383,6 +383,9 @@
 </script>
 
 <style scoped="">
+  .show-data-table .el-form .el-form-item{
+    margin-bottom:  10px;
+  }
   @media screen and (max-width: 1360px){
     .el-tab-pane .el-table{
       height: calc(100vh - 260px) !important;
