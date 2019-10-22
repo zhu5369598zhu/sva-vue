@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    title="新增"
     v-dialog-drag
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -95,7 +96,7 @@
           <span>&nbsp;</span>
         </el-col>
       </el-row>
-      <el-row>  
+      <el-row>
         <el-col :span="8">
           <el-form-item label="是否巡检:" prop="isInspect">
             <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" clearable style="width:140px;"></el-switch>
@@ -117,6 +118,7 @@
 
 <script>
   import { treeDataTranslate } from '@/utils'
+  import ElTableEditabled from 'el-table-editabled'
   export default {
     data () {
       return {
@@ -147,6 +149,9 @@
           manufactureDate: '',
           createTime: ''
         },
+        components: {
+          ElTableEditabled
+        },
         dataRule: {
           deviceName: [
             { required: true, message: '设备名称不能为空', trigger: 'change' }
@@ -161,7 +166,7 @@
       }
     },
     methods: {
-       // 获取设备级别
+      // 获取设备级别
       getDeviceLevelList () {
         this.$http({
           url: this.$http.adornUrl('/setting/devicelevel/list'),
@@ -171,7 +176,7 @@
           this.deviceLevelList = data.page.list
         })
       },
-       // 获取部门列表
+      // 获取部门列表
       getDeptList () {
         this.$http({
           url: this.$http.adornUrl('/sys/dept/list'),
