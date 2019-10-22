@@ -1,6 +1,7 @@
 <template>
   <!-- 新增页面 -->
   <el-dialog
+    v-dialog-drag
     :title="!this.dataForm.defectiveId ? '确认缺陷' : '确认缺陷'"
     :close-on-click-modal="false"
     :append-to-body='true'
@@ -79,7 +80,7 @@
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
             </span>
             </el-input>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+            <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
               <div style="display: flex;justify-content: space-around;align-items: center;">
                 <div style="width:400px;height: 500px;">
                   <el-form :model="deptFrom">

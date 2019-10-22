@@ -1,24 +1,25 @@
 <template>
   <el-dialog
+    v-dialog-drag 
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
     <el-form-item label="名称" prop="name">
-      <el-input v-model="dataForm.name" placeholder="名称"></el-input>
+      <el-input v-model="dataForm.name" placeholder="名称" size="mini" ></el-input>
     </el-form-item>
     <el-form-item label="开始时间" prop="startTime">
-      <el-time-select placeholder="开始时间" v-model="dataForm.startTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00:00' }"></el-time-select>
+      <el-time-select placeholder="开始时间" v-model="dataForm.startTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00:00' }" size="mini" ></el-time-select>
     </el-form-item>
     <el-form-item label="结束时间" prop="endTime">
-      <el-time-select placeholder="结束时间" v-model="dataForm.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00' }"></el-time-select>
+      <el-time-select placeholder="结束时间" v-model="dataForm.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00' }" size="mini" ></el-time-select>
     </el-form-item>
     <el-form-item label="总轮次" prop="turnCount">
-      <el-input-number v-model="dataForm.turnCount" controls-position="right" :min="1" label="排序"></el-input-number>
+      <el-input-number v-model="dataForm.turnCount" controls-position="right" :min="1" label="排序" size="mini" ></el-input-number>
     </el-form-item>
     <el-form-item label="排序" prop="orderNum">
-      <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序"></el-input-number>
+      <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序" size="mini" ></el-input-number>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

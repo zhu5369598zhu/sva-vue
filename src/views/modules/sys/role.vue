@@ -3,12 +3,12 @@
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
+        <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable size="mini"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('sys:role:save')" @click="roleAddOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('sys:role:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="getDataList()" size="mini">查询</el-button>
+        <el-button v-if="isAuth('sys:role:save')" @click="roleAddOrUpdateHandle()" size="mini">新增</el-button>
+        <el-button v-if="isAuth('sys:role:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -59,8 +59,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:role:update')" type="text" size="small" @click="roleAddOrUpdateHandle(scope.row.roleId)">修改</el-button>
-          <el-button v-if="isAuth('sys:role:delete')" type="text" size="small" @click="deleteHandle(scope.row.roleId)">删除</el-button>
+          <el-button v-if="isAuth('sys:role:update')" type="text" size="mini" @click="roleAddOrUpdateHandle(scope.row.roleId)">修改</el-button>
+          <el-button v-if="isAuth('sys:role:delete')" type="text" size="mini" @click="deleteHandle(scope.row.roleId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

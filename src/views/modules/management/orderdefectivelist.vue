@@ -16,13 +16,13 @@
     <div class="show-data-up" id="data-up">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
+          <el-input v-model="dataForm.defectiveNumber" size="mini" placeholder="请输入缺陷单编号"  clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="dataForm.defectiveTheme" placeholder="请输入缺陷单主题" clearable></el-input>
+          <el-input v-model="dataForm.defectiveTheme" size="mini" placeholder="请输入缺陷单主题" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="dataForm.exceptionId" placeholder="缺陷等级" style="width: 100px" clearable>
+          <el-select v-model="dataForm.exceptionId" size="mini" placeholder="缺陷等级" style="width: 100px" clearable>
             <el-option v-for="item in dataExceptionList"
               :key="item.id"
               :label="item.name"
@@ -34,12 +34,12 @@
           <el-input v-model="dataForm.defectiveName" placeholder="请输入填报人" clearable></el-input>
         </el-form-item>-->
         <el-form-item>
-          <el-button @click="search()" style="margin-left: 10px;">查询</el-button>
+          <el-button @click="search()" style="margin-left: 10px;" size="mini">查询</el-button>
           <!--<el-button v-if="isAuth('management:orderdefective:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
           <el-button v-if="isAuth('management:orderdefective:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>-->
         </el-form-item>
         <el-form-item>
-          <el-button @click="exportExcelHandle()">导出</el-button>
+          <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -132,6 +132,7 @@
       </el-pagination>
       <!-- 填报缺陷拟制中状态的 dialog -->
       <el-dialog
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -193,6 +194,7 @@
       </el-dialog>
       <!-- 填报缺陷已确认待派单 dialog -->
       <el-dialog
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -253,6 +255,7 @@
       </el-dialog>
       <!-- 填报缺陷已转单 -->
       <el-dialog
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -328,6 +331,7 @@
       </el-dialog>
       <!-- 填报缺陷转单被拒绝 -->
       <el-dialog
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -392,6 +396,7 @@
       </el-dialog>
       <!-- 巡检异常 已确认派单-->
       <el-dialog
+        v-dialog-drag
         :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '缺陷详情页'"
         :append-to-body='true'
         :visible.sync="dialogFourvisible"
@@ -457,6 +462,7 @@
       </el-dialog>
       <!-- 巡检异常 已转单被拒绝-->
       <el-dialog
+        v-dialog-drag
         :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '确认缺陷页'"
         :append-to-body='true'
         :visible.sync="dialogFivevisible"

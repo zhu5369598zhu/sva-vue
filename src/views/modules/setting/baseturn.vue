@@ -4,8 +4,8 @@
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm">
       <el-form-item>
-        <el-button v-if="isAuth('setting:baseturn:save')" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('setting:baseturn:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('setting:baseturn:save')" @click="addOrUpdateHandle()" size="mini">新增</el-button>
+        <el-button v-if="isAuth('setting:baseturn:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -66,8 +66,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('setting:baseturn:save')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button v-if="isAuth('setting:baseturn:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="isAuth('setting:baseturn:save')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button v-if="isAuth('setting:baseturn:delete')" type="text" size="mini" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

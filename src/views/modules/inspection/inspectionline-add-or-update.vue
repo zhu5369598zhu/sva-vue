@@ -1,15 +1,16 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
     append-to-body>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
     <el-form-item label="线路名称" prop="name">
-      <el-input v-model="dataForm.name" placeholder="线路名称"></el-input>
+      <el-input v-model="dataForm.name" placeholder="线路名称" size="mini"></el-input>
     </el-form-item>
     <el-form-item label="线路类型" prop="type">
-      <el-select v-model="dataForm.type" placeholder="线路类型">
+      <el-select v-model="dataForm.type" placeholder="线路类型" size="mini">
         <el-option
           v-for="item in TypeList"
           :key="item.id"
@@ -36,10 +37,10 @@
           :expand-on-click-node="false">
         </el-tree>
       </el-popover>
-      <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input"></el-input>
+      <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input" size="mini"></el-input>
     </el-form-item>
     <el-form-item label="巡检周期" prop="periodType">
-      <el-select v-model="dataForm.periodType" placeholder="巡检周期">
+      <el-select v-model="dataForm.periodType" placeholder="巡检周期" size="mini">
         <el-option
           v-for="item in periodTypeList"
           :key="item.id"
@@ -49,10 +50,10 @@
       </el-select>
     </el-form-item>
     <el-form-item label="备注" prop="remark">
-      <el-input type="textarea"  row="2" v-model="dataForm.remark" placeholder="备注"></el-input>
+      <el-input type="textarea"  row="2" v-model="dataForm.remark" placeholder="备注" size="mini"></el-input>
     </el-form-item>
     <el-form-item label="排序" prop="orderNum">
-      <el-input-number v-model="dataForm.orderNum" controls-position="right" label="排序"></el-input-number>
+      <el-input-number v-model="dataForm.orderNum" controls-position="right" label="排序" size="mini"></el-input-number>
     </el-form-item>    
     </el-form>
     <span slot="footer" class="dialog-footer">

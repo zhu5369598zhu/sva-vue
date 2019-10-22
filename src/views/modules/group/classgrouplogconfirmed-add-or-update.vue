@@ -1,6 +1,7 @@
 <template>
 
   <el-dialog
+    v-dialog-drag
     :title="!dataForm.classId ? '新增' : '审核'"
     :close-on-click-modal="false"
     :visible.sync="visible">
@@ -9,100 +10,100 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门(工段)" prop="deptName">
-            <el-input v-model="dataForm.deptName" readonly ></el-input>
+            <el-input size="mini" v-model="dataForm.deptName" readonly ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="班组" prop="classGroupName">
-            <el-input v-model="dataForm.classGroupName" style="width:120px;" readonly ></el-input>
+            <el-input size="mini" v-model="dataForm.classGroupName" style="width:120px;" readonly ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="班次" prop="baseTurnName">
-            <el-input v-model="dataForm.baseTurnName"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.baseTurnName"  readonly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="班长" prop="monitor">
-            <el-input v-model="dataForm.monitor"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.monitor"  readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="应出勤人数" prop="shouldAttendance">
-            <el-input v-model="dataForm.shouldAttendance"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.shouldAttendance"  readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="实出勤人数" prop="attendance">
-            <el-input v-model="dataForm.attendance"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.attendance"  readonly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-form-item label="实到人员" prop="actualArrival">
-        <el-input v-model="dataForm.actualArrival"  readonly></el-input>
+        <el-input size="mini" v-model="dataForm.actualArrival"  readonly></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="4">
         </el-col>
         <el-col :span="8">
           <el-form-item  label="未到人员" prop="notArrived">
-            <el-input v-model="dataForm.notArrived"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.notArrived"  readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item  label="顶班人员" prop="topArrived">
-            <el-input v-model="dataForm.topArrived"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.topArrived"  readonly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-        <el-input v-model="dataForm.reasonsAbsence"  readonly></el-input>
+        <el-input size="mini" v-model="dataForm.reasonsAbsence"  readonly></el-input>
       </el-form-item>
       <el-form-item label="接班记事" prop="successionRecord">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.successionRecord"  readonly></el-input>
       </el-form-item>
       <el-form-item label="当班记事" prop="onDuty">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.onDuty"  readonly></el-input>
       </el-form-item>
       <el-form-item label="上级通知" prop="superiorNotice">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.superiorNotice"  readonly></el-input>
       </el-form-item>
       <el-form-item label="交代事项" prop="accountConfession">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.accountConfession"  readonly></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="8">
           <el-form-item label="交班人" prop="handoverPerson">
-            <el-input v-model="dataForm.handoverPerson"  readonly></el-input>
+            <el-input size="mini" v-model="dataForm.handoverPerson"  readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="接班人" prop="successor">
-            <el-input v-model="dataForm.successor" readonly ></el-input>
+            <el-input size="mini" v-model="dataForm.successor" readonly ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="交接时间" prop="createTime">
-            <el-input v-model="dataForm.createTime" readonly style="width:150px;"></el-input>
+            <el-input size="mini" v-model="dataForm.createTime" readonly style="width:150px;"></el-input>
             <!--<el-date-picker v-model="" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:160px;"></el-date-picker>-->
           </el-form-item>
         </el-col>
       </el-row>
-      <el-dialog title="拒绝原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
+      <el-dialog v-dialog-drag title="拒绝原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
         <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
           <el-form-item label="拒绝原因" prop="rejectReason">
-            <el-input type="textarea"
+            <el-input size="mini" type="textarea"
                       autosize
                       v-model="dataForm.rejectReason" placeholder="拒绝原因"></el-input>
           </el-form-item>

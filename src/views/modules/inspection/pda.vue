@@ -15,17 +15,17 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.pdaName" placeholder="设备名称" clearable></el-input>
+        <el-input v-model="dataForm.pdaName" placeholder="设备名称" clearable size="mini"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()" size="small">查询</el-button>
-        <el-button v-if="isAuth('inspection:pda:save')" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('inspection:pda:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button v-if="isAuth('inspection:pda:save')" @click="addOrUpdateHandle()" size="mini">新增</el-button>
+        <el-button v-if="isAuth('inspection:pda:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
       ref="table"
-      height="calc(100vh - 253px)"
+      :height="tableHeight"
       :data="dataList"
       border
       v-loading="dataListLoading"
@@ -76,8 +76,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('inspection:pda:save')" type="text" size="small" @click="addOrUpdateHandle(scope.row.pdaId)">修改</el-button>
-          <el-button v-if="isAuth('inspection:pda:delete')" type="text" size="small" @click="deleteHandle(scope.row.pdaId)">删除</el-button>
+          <el-button v-if="isAuth('inspection:pda:save')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.pdaId)">修改</el-button>
+          <el-button v-if="isAuth('inspection:pda:delete')" type="text" size="mini" @click="deleteHandle(scope.row.pdaId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

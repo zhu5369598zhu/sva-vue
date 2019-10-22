@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="'扩展'"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -60,8 +61,8 @@
               width="150"
               label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="extraUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
-                <el-button type="text" size="small" @click="extraDeleteHandle(scope.$index)">删除</el-button>
+                <el-button type="text" size="mini" @click="extraUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
+                <el-button type="text" size="mini" @click="extraDeleteHandle(scope.$index)">删除</el-button>
               </template>
       </el-table-column>
     </el-table>

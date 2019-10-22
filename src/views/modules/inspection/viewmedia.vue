@@ -3,6 +3,7 @@
     :close-on-click-modal="false"
     :modal=true
     width="30%"
+    v-dialog-drag
     v-if="visible"
     :visible.sync="visible"
     append-to-body>

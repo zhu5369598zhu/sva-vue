@@ -15,12 +15,12 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.userName" placeholder="用户名" clearable></el-input>
+        <el-input v-model="dataForm.userName" placeholder="用户名" clearable size="mini"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search">查询</el-button>
-        <el-button v-if="isAuth('sys:user:save')" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('sys:user:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="search" size="mini">查询</el-button>
+        <el-button v-if="isAuth('sys:user:save')" @click="addOrUpdateHandle()" size="mini">新增</el-button>
+        <el-button v-if="isAuth('sys:user:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
       </el-form-item>
       <el-form-item>
           <el-upload
@@ -29,8 +29,8 @@
           :action="this.$http.adornUrl(`/sys/user/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button @click="exportExcelHandle()" size="small">导出</el-button>
-          <el-button >导入</el-button>
+          <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+          <el-button  size="mini">导入</el-button>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -39,6 +39,7 @@
       :height="tableHeight"
       :data="dataList"
       border
+      highlight-current-row
       :cell-style="cellStyle"
       :row-style="rowStyle"
       v-loading="dataListLoading"
@@ -88,8 +89,8 @@
         width="80"
         label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
-          <el-tag v-else size="small">正常</el-tag>
+          <el-tag v-if="scope.row.status === 0" size="mini" type="danger">禁用</el-tag>
+          <el-tag v-else size="mini">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -106,8 +107,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.userId)">修改</el-button>
-          <el-button v-if="isAuth('sys:user:delete')" type="text" size="small" @click="deleteHandle(scope.row.userId)">删除</el-button>
+          <el-button v-if="isAuth('sys:user:update')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.userId)">修改</el-button>
+          <el-button v-if="isAuth('sys:user:delete')" type="text" size="mini" @click="deleteHandle(scope.row.userId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -356,14 +357,15 @@
         })
       }
     },
+    watch: {
+      'documentClientHeight': function (val) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
+      }
+    },
     mounted: function () {
+      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
-
-        let self = this
-        window.onresize = function () {
-          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 105 - 32 - 20
-        }
       })
     }
   }

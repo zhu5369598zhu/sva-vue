@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     title="待处理消息"
+    v-dialog-drag
     :visible.sync="visible"
     :append-to-body="true">
     <el-table
@@ -35,7 +36,7 @@
           width="150"
           label="操作">
           <template slot-scope="scope">
-            <el-button  type="primary"  @click="toNewsHandle(scope.row.newsType, scope.row.newsNumber)">去处理</el-button>
+            <el-button  type="primary"  @click="toNewsHandle(scope.row.newsType, scope.row.newsNumber)" size="mini">去处理</el-button>
           </template>
         </el-table-column>
       <el-pagination

@@ -1,13 +1,14 @@
 <template>
   <!-- 新增页面 -->
   <el-dialog
+    v-dialog-drag
     :title="!this.dataForm.defectiveId ? '确认缺陷' : '确认缺陷'"
     :close-on-click-modal="false"
     :append-to-body='true'
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
       <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
-        <el-input v-model="dataForm.defectiveTheme" placeholder="巡检缺陷单主题"></el-input>
+        <el-input size="mini" v-model="dataForm.defectiveTheme" placeholder="巡检缺陷单主题"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="8">
@@ -29,13 +30,13 @@
                 :expand-on-click-node="false" clearable style="width:140px;">
               </el-tree>
             </el-popover>
-            <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
+            <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="缺陷异常等级" prop="exceptionId" style="margin-left: 50px;">
-            <el-select v-model="dataForm.exceptionId" style="width: 120px">
+            <el-select v-model="dataForm.exceptionId" style="width: 120px" size="mini" >
               <el-option
                 v-for="item in dataExceptionList"
                 :key="item.id"
@@ -66,7 +67,7 @@
             label="要求完成时间"
             prop="requirementTime"
           >
-            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;"></el-date-picker>
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleRequirementTimeChange" :picker-options="startDatePickerTime" style="width:180px;" size="mini" ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -75,19 +76,19 @@
             prop="orderConfirmer"
             style="margin-left: 50px"
           >
-            <el-input v-model="dataForm.orderConfirmer" :disabled="true" style="width: 160px; ">
+            <el-input size="mini" v-model="dataForm.orderConfirmer" :disabled="true" style="width: 160px; ">
             <span slot="suffix">
               <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
             </span>
             </el-input>
-            <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+            <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
               <div style="display: flex;justify-content: space-around;align-items: center;">
                 <div style="width:400px;height: 500px;">
                   <el-form :model="deptFrom">
                     <el-row>
                       <el-col :span="13">
                         <el-form-item>
-                          <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                          <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -123,7 +124,7 @@
                     <el-row>
                       <el-col :span="8">
                         <el-form-item>
-                          <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                          <el-input size="mini" v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="5">

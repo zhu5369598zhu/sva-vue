@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-dialog-drag
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"

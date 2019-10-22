@@ -15,7 +15,7 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input placeholder="请输入内容" v-model="key">
+        <el-input placeholder="请输入内容" v-model="key" size="mini">
           <el-select v-model="select" slot="prepend" placeholder="请选择">
             <el-option
               v-for="item in selectList"
@@ -27,9 +27,9 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()">查询</el-button>
-        <el-button @click="printAllHandle()" :disabled="dataList.length <= 0">打印全部</el-button>
-        <el-button @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0">打印已选</el-button>
+        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button @click="printAllHandle()" :disabled="dataList.length <= 0" size="mini">打印全部</el-button>
+        <el-button @click="printSelectedHandle()" :disabled="dataListSelections.length <= 0" size="mini">打印已选</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -330,11 +330,10 @@
           let deviceId = printDataList[i].deviceId
           printContent += '<div align="center"><img width="250" src="' + qrcodeUrl + deviceId + '"></img></div><div style="text-align: center"><strong>' + printDataList[i].deviceName + '</strong></div></td>'
         }
-        let printAfter = '</tr></table></div></em>;'
+        let printAfter = '</tr></table></div></em>'
         let printHtml = printBeforeStr + printContent + printAfter
         var printWin = window.open('')
         printWin.document.write(headStr + printHtml + footStr)
-        printWin.document.close()
         printWin.focus()
         setTimeout(function () {
           printWin.print()
