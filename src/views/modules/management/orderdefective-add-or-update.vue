@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag
     :title="!this.dataForm.defectiveId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :append-to-body='true'
@@ -10,7 +9,7 @@
       {{dataForm.defectiveNumber}}
     </el-form-item>-->
     <el-form-item label="缺陷单主题" prop="defectiveTheme">
-      <el-input size="mini" v-model="dataForm.defectiveTheme" placeholder="缺陷单主题"></el-input>
+      <el-input v-model="dataForm.defectiveTheme" placeholder="缺陷单主题"></el-input>
     </el-form-item>
     <el-row>
       <el-col :span="8">
@@ -32,13 +31,13 @@
             :expand-on-click-node="false" clearable style="width:140px;">
           </el-tree>
         </el-popover>
-        <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
+        <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
         </el-input>
       </el-form-item>
       </el-col>
       <el-col :span="8">
       <el-form-item label="缺陷异常等级" prop="exceptionId">
-        <el-select v-model="dataForm.exceptionId" size="mini" >
+        <el-select v-model="dataForm.exceptionId">
           <el-option
             v-for="item in dataExceptionList"
             :key="item.id"
@@ -53,12 +52,12 @@
     <el-row>
       <el-col :span="8">
         <el-form-item label="缺陷填报人" prop="defectiveName">
-          <el-input size="mini" v-model="dataForm.defectiveName" placeholder="缺陷填报人" :disabled="true"></el-input>
+          <el-input v-model="dataForm.defectiveName" placeholder="缺陷填报人" :disabled="true"></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item label="归属设备" prop="defectiveDevice">
-          <el-input size="mini" v-model="dataForm.defectiveDevice" :disabled="true" style="width: 180px">
+          <el-input v-model="dataForm.defectiveDevice" :disabled="true" style="width: 180px">
             <span slot="suffix">
                   <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/device.jpg" @click="clickdevice()" ></a>
               </span>
@@ -66,14 +65,14 @@
         </el-form-item>
       </el-col>
     </el-row>
-      <el-dialog v-dialog-drag title="可选择设备列表" :visible.sync="dialogDeviceVisible" v-if="dialogDeviceVisible" :append-to-body='true'>
+      <el-dialog title="可选择设备列表" :visible.sync="dialogDeviceVisible" v-if="dialogDeviceVisible" :append-to-body='true'>
         <div style="display: flex;justify-content: space-around;align-items: center;">
           <div style="width:400px;height: 500px;">
             <el-form :model="deptFrom">
               <el-row>
                 <el-col :span="13">
                   <el-form-item>
-                    <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                    <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -109,7 +108,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item>
-                    <el-input size="mini" v-model="datadeviceForm.deviceName" placeholder="设备名称" clearable style="width: 100px;"></el-input>
+                    <el-input v-model="datadeviceForm.deviceName" placeholder="设备名称" clearable style="width: 100px;"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="5">

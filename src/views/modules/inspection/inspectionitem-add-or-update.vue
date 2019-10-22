@@ -1,6 +1,5 @@
 <template>
   <el-dialog class="inspectionForm"
-    v-dialog-drag
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -9,7 +8,7 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="巡检项" prop="name">
-            <el-input size="mini" v-model="dataForm.name" placeholder="巡检项" clearable style="width:155px;"></el-input>
+            <el-input v-model="dataForm.name" placeholder="巡检项" clearable style="width:155px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="3">
@@ -17,7 +16,7 @@
         </el-col>
         <el-col :span="10">
           <el-form-item label="检时状态" prop="inspectionStatus">
-            <el-select v-model="dataForm.inspectionStatus" placeholder="检时状态" clearable style="width:155px;" size="mini">
+            <el-select v-model="dataForm.inspectionStatus" placeholder="检时状态" clearable style="width:155px;">
               <el-option
                 v-for="item in inspectionStatusList"
                 :key="item.id"
@@ -31,7 +30,7 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="巡检类型" prop="inspectionType">
-              <el-select v-model="dataForm.inspectionType" placeholder="巡检类型" clearable style="width:155px;" size="mini">
+              <el-select v-model="dataForm.inspectionType" placeholder="巡检类型" clearable style="width:155px;">
                 <el-option
                   v-for="item in inspectionTypeList"
                   :key="item.id"
@@ -42,7 +41,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-button v-if="dataForm.inspectionType===8 || dataForm.inspectionType===9" @click="setting" icon="el-icon-setting" size="mini">设置扩展</el-button><span>&nbsp;</span>
+          <el-button v-if="dataForm.inspectionType===8 || dataForm.inspectionType===9" @click="setting" icon="el-icon-setting">设置扩展</el-button><span>&nbsp;</span>
         </el-col>
         <el-col :span="10" v-if="dataForm.inspectionType===1 || dataForm.inspectionType===3 || dataForm.inspectionType===4 || dataForm.inspectionType===5 || dataForm.inspectionType===6 || dataForm.inspectionType===7">
           <el-form-item label="单位" prop="inspectionUnit">
@@ -137,12 +136,12 @@
     </el-row>
     <el-row>
       <el-form-item label="备注" prop="remark">
-        <el-input size="mini" type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注" style="width:525px;" clearable></el-input>
+        <el-input type="textarea" :rows="2" v-model="dataForm.remark" placeholder="备注" style="width:525px;" clearable></el-input>
       </el-form-item>
     </el-row>
     <el-row>
       <el-form-item label="排序号" prop="orderNum">
-        <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号" style="width:155px;" size="mini"></el-input-number>
+        <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号" style="width:155px;"></el-input-number>
       </el-form-item>
     </el-row>
     </el-form>

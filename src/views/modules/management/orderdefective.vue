@@ -16,13 +16,13 @@
     <div class="show-data-up" id="data-up">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model="dataForm.defectiveNumber" size="mini" placeholder="请输入缺陷单编号"  clearable></el-input>
+          <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="dataForm.defectiveTheme" size="mini" placeholder="请输入缺陷单主题" clearable></el-input>
+          <el-input v-model="dataForm.defectiveTheme" placeholder="请输入缺陷单主题" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="dataForm.exceptionId" size="mini" placeholder="缺陷等级" style="width: 100px; margin-right: 10px;" clearable>
+          <el-select v-model="dataForm.exceptionId" placeholder="缺陷等级" style="width: 100px; margin-right: 10px;" clearable>
             <el-option v-for="item in dataExceptionList"
               :key="item.id"
               :label="item.name"
@@ -31,15 +31,15 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="dataForm.defectiveName" size="mini" placeholder="请输入填报人" clearable></el-input>
+          <el-input v-model="dataForm.defectiveName" placeholder="请输入填报人" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="search()" size="mini">查询</el-button>
-          <el-button v-if="isAuth('management:orderdefective:save')" type="primary" @click="addOrUpdateHandle()" size="mini">新增</el-button>
-          <el-button v-if="isAuth('management:orderdefective:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
+          <el-button @click="search()">查询</el-button>
+          <el-button v-if="isAuth('management:orderdefective:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+          <el-button v-if="isAuth('management:orderdefective:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+          <el-button @click="exportExcelHandle()">导出</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -57,10 +57,10 @@
           type="selection"
           header-align="center"
           align="center"
-          width="50">
+          width="30">
         </el-table-column>
         <el-table-column
-          align="center"
+          header-align="center"
           type="index"
           width="50"
           lable="">
@@ -79,7 +79,6 @@
           prop="defectiveTheme"
           header-align="center"
           align="center"
-          min-width="180"
           label="缺陷单主题">
         </el-table-column>
         <el-table-column
@@ -110,7 +109,6 @@
           prop="createTime"
           header-align="center"
           align="center"
-          width="150"
           label="填报时间">
         </el-table-column>
         <el-table-column
@@ -129,7 +127,6 @@
           prop="confirmedTime"
           header-align="center"
           align="center"
-          width="150"
           label="工单确认时间">
         </el-table-column>
         <el-table-column
@@ -154,7 +151,6 @@
       </el-pagination>
       <!-- 拟制中状态的 dialog -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -217,7 +213,6 @@
       </el-dialog>
       <!-- 已确认待派单 dialog -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -291,7 +286,7 @@
                     <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
                   </span>
               </el-input>
-              <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+              <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
                 <div style="display: flex;justify-content: space-around;align-items: center;">
                   <div style="width:400px;height: 500px;">
                     <el-form :model="deptFrom">
@@ -399,7 +394,6 @@
       </el-dialog>
       <!-- 已转单 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -472,7 +466,6 @@
       </el-dialog>
       <!-- 转单被拒绝 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '缺陷单详情' : '缺陷单详情'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -546,7 +539,7 @@
                     <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
                   </span>
                 </el-input>
-                <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+                <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
                   <div style="display: flex;justify-content: space-around;align-items: center;">
                     <div style="width:400px;height: 500px;">
                       <el-form :model="deptFrom">

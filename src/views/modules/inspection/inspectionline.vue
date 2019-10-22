@@ -109,9 +109,9 @@
               width="150"
               label="操作">
               <template slot-scope="scope" sytle="z-index=1;">
-                <el-button v-if="isAuth('inspection:inspectionline:save') && scope.row.isPublish===0" type="text" size="mini" @click="lineAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                <el-button v-if="isAuth('inspection:inspectionline:delete') && scope.row.isPublish===0" type="text" size="mini" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
-                <el-button v-if="scope.row.isPublish===1" type="text" size="mini" @click="viewPublish(scope.row.id)" >下载详情</el-button>
+                <el-button v-if="isAuth('inspection:inspectionline:save') && scope.row.isPublish===0" type="text" size="small" @click="lineAddOrUpdateHandle(scope.row.id)">修改</el-button>
+                <el-button v-if="isAuth('inspection:inspectionline:delete') && scope.row.isPublish===0" type="text" size="small" @click="lineDeleteHandle(scope.row.id)">删除</el-button>
+                <el-button v-if="scope.row.isPublish===1" type="text" size="small" @click="viewPublish(scope.row.id)" >下载详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -176,8 +176,8 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0" type="text" size="mini" @click="classGroupAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="text" size="mini" @click="classGroupDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0" type="text" size="small" @click="classGroupAddOrUpdateHandle(scope.row.id)">修改</el-button>
+                  <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="text" size="small" @click="classGroupDeleteHandle(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -252,8 +252,8 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" type="text" size="mini" @click="turnAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="text" size="mini" @click="turnDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" type="text" size="small" @click="turnAddOrUpdateHandle(scope.row.id)">修改</el-button>
+                  <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="text" size="small" @click="turnDeleteHandle(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -353,8 +353,8 @@
                 width="110"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" type="text" size="mini" @click="periodAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="text" size="mini" @click="periodDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" type="text" size="small" @click="periodAddOrUpdateHandle(scope.row.id)">修改</el-button>
+                  <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="text" size="small" @click="periodDeleteHandle(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -417,7 +417,7 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="text" size="mini" @click="lineZoneDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="text" size="small" @click="lineZoneDeleteHandle(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -481,7 +481,7 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="text" size="mini" @click="pdaDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="text" size="small" @click="pdaDeleteHandle(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>

@@ -26,6 +26,7 @@
     },
     methods: {
       initChart (chartElement) {
+        console.log(this.category)
         var option = {
           title: {
             text: this.title,

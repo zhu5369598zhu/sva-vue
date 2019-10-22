@@ -512,34 +512,6 @@ export default {
               this.exceptionSeriesA = data.data.series.A
               this.exceptionSeriesB = data.data.series.B
               this.exceptionSeriesC = data.data.series.C
-              if (this.exceptionFilterType === '%a') {
-                let array = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-                let cms_series = {
-                  category: [],
-                  A: [],
-                  B: [],
-                  C: []
-                }
-                for (const i in array) {
-                  for (const y in this.exceptionCategory) {
-                    if (this.exceptionCategory[y] === array[i]) {
-                      cms_series.category.push(this.exceptionCategory[y])
-                      cms_series.A.push(this.exceptionSeriesA[y])
-                      cms_series.B.push(this.exceptionSeriesB[y])
-                      cms_series.C.push(this.exceptionSeriesC[y])
-                    }
-                  }
-                }
-                this.exceptionCategory = cms_series.category
-                this.exceptionSeriesA = cms_series.A
-                this.exceptionSeriesB = cms_series.B
-                this.exceptionSeriesC = cms_series.C
-                // console.log(cms_series)
-                // console.log(this.exceptionCategory)
-                // console.log(this.exceptionSeriesA)
-                // console.log(this.exceptionSeriesB)
-                // console.log(this.exceptionSeriesC)
-              }
               this.drawChart()
             } else {
               this.hasExceptionData = false
@@ -645,12 +617,13 @@ export default {
         this.inspectedItemSum = 0
         this.inspectItemSum = 0
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontask/getStatus'),
+          url: this.$http.adornUrl('/inspection/inspectiontask/getstatus'),
           method: 'get',
           params: this.$http.adornParams({
             'date': this.finishStartTime
           })
         }).then(({data}) => {
+          console.log(data.status)
           if (data && data.code === 0) {
             if(data.status[0] != null){
               let tmpRate = 0

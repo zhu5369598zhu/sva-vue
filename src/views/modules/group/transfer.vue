@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag
     :visible.sync="tranvisible"
     v-if="tranvisible"
     :append-to-body='true'

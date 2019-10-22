@@ -79,9 +79,9 @@
               this.tip = '暂无数据'
               this.hasData = false
             }
-            this.timeXData = data.chart.timeXData
+            this.timeXData = data.chart.timeXData.map(item => { return item.toFixed(4) })
             this.timeYData = data.chart.timeYData
-            this.fftXData = data.chart.fftXData
+            this.fftXData = data.chart.fftXData.map(item => { return item.toFixed(2) })
             this.fftYData = data.chart.fftYData
             this.timeRemark = '<br/>有效值：' + parseFloat(data.chart.rm).toFixed(2) + '<br/>' +
                               '峰&nbsp;&nbsp;值：' + parseFloat(data.chart.pk).toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;' + '峰峰值：' +

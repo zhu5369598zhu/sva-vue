@@ -18,7 +18,6 @@
         type: Array
       },
       series: {
-        type: Array
       }
     },
     data () {

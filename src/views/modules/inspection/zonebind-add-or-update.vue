@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag
     :title="'绑定'"
     :close-on-click-modal="false"
     :visible.sync="visible"

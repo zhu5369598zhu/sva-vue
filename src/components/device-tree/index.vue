@@ -2,7 +2,7 @@
   <div class="common-device-tree">
   <el-form :inline="true" @keyup.enter.native="getDeviceList()">
     <div class="search">
-      <el-input v-model="deviceName" size="mini">
+      <el-input v-model="deviceName">
         <el-button slot="append" icon="el-icon-search" @click="getDeviceList()"></el-button>
       </el-input>
     </div>

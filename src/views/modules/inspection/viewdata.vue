@@ -2,7 +2,6 @@
   <el-dialog style="z-index:1"
     :close-on-click-modal="false"
     :modal=true
-    v-dialog-drag
     :visible.sync="visible"
     append-to-body>
       <div>

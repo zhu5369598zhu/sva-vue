@@ -19,7 +19,7 @@
         <el-input v-model="dataForm.classGroupName" placeholder="请输入班组名称" clearable></el-input>
       </el-form-item>
       <el-form-item  prop="baseTurnId">
-        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" size="mini" >
+        <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:115px;" size="small" >
           <el-option
             v-for="item in TurnList"
             :key="item.id"
@@ -42,7 +42,7 @@
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -130,8 +130,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" v-if="scope.row.newsCounts > 0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
-          <el-button type="text" size="mini" v-if="scope.row.newsCounts ===0" :disabled="scope.row.newsCounts ===0" style="color: #8c939d;">修改</el-button>
+          <el-button type="text" size="small" v-if="scope.row.newsCounts > 0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">修改</el-button>
+          <el-button type="text" size="small" v-if="scope.row.newsCounts ===0" :disabled="scope.row.newsCounts ===0" style="color: #8c939d;">修改</el-button>
         </template>
       </el-table-column>
     </el-table>

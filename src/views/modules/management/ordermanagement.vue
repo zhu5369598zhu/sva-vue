@@ -16,13 +16,13 @@
     <div class="show-data-up" id="data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" size="mini" clearable></el-input>
+        <el-input v-model="dataForm.orderNumber" placeholder="请输入工单编号" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.orderName" placeholder="请输入工单主题" size="mini" clearable></el-input>
+        <el-input v-model="dataForm.orderName" placeholder="请输入工单主题" clearable></el-input>
       </el-form-item>
       <el-form-item prop="orderStatus" >
-        <el-select v-model="dataForm.orderStatus" placeholder="请选择工单状态" size="mini"  clearable style="width: 140px;">
+        <el-select v-model="dataForm.orderStatus" placeholder="请选择工单状态"  clearable style="width: 140px;">
             <el-option
               v-for="item in orderStatusList"
               :key="item.id"
@@ -33,18 +33,18 @@
         </el-select>
       </el-form-item>
       <el-form-item  prop="startTime">
-        <el-date-picker v-model="dataForm.startTime" type="datetime" size="mini" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="请选择开始时间" value-format="yyyy-MM-dd HH:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item  prop="endTime">
-        <el-date-picker v-model="dataForm.endTime" type="datetime" size="mini" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+        <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()" size="mini">查询</el-button>
-        <el-button v-if="isAuth('management:ordermanagement:save')" type="primary" @click="addOrUpdateHandle()" size="mini">新增</el-button>
-        <el-button v-if="isAuth('management:ordermanagement:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
+        <el-button @click="search()">查询</el-button>
+        <el-button v-if="isAuth('management:ordermanagement:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('management:ordermanagement:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+        <el-button @click="exportExcelHandle()">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -71,12 +71,7 @@
         width="80"
         label="序号">
         <template slot-scope="scope" >
-          <div style="width: 50px;text-align: left;padding-left: 18px;">
-            <span>{{scope.row.orderId}}</span>
-              <a v-if="scope.row.orderStatus>0&&scope.row.orderStatus!='9'" href="#">
-                <img alt="" style="height: 15px;width: 15px" src="./../../../../static/img/management.png" @click=orderRecordHandle(scope.row.orderId,scope.row.orderNumber)>
-              </a>
-          </div>
+          <span>{{scope.row.orderId}}</span> <a v-if="scope.row.orderStatus>0&&scope.row.orderStatus!='9'" href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/management.png" @click=orderRecordHandle(scope.row.orderId,scope.row.orderNumber)></a>
         </template>
       </el-table-column>
       <el-table-column
@@ -189,7 +184,6 @@
 
       <!-- 拟制中状态的 dialog -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -251,44 +245,43 @@
       </el-dialog>
       <!-- 已派单待受理 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogonevisible">
         <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-form-item label="工单编号" prop="orderNumber">
-            <el-input size="mini" v-model="orderDataForm.orderNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.orderNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
-            <el-input size="mini" v-model="orderDataForm.orderStatusName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="要求完成时间" prop="requirementTime">
-            <el-input size="mini" v-model="orderDataForm.requirementTime" readonly></el-input>
+            <el-input v-model="orderDataForm.requirementTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
-            <el-input size="mini" v-model="orderDataForm.deptName" readonly></el-input>
+            <el-input v-model="orderDataForm.deptName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
-            <el-input size="mini" v-model="orderDataForm.orderTypeName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷单等级" prop="exceptionName">
-            <el-input size="mini" v-model="orderDataForm.exceptionName" readonly></el-input>
+            <el-input v-model="orderDataForm.exceptionName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
-            <el-input size="mini" v-model="orderDataForm.defectiveName" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人" prop="orderApplicant">
-            <el-input size="mini" v-model="orderDataForm.orderApplicant" readonly></el-input>
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
-            <el-input size="mini" v-model="orderDataForm.orderAcceptor" readonly></el-input>
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
-            <el-input size="mini" v-model="orderDataForm.orderName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单内容" prop="orderContent">
             <el-input
@@ -309,47 +302,46 @@
       </el-dialog>
       <!-- 已受理待上报 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogtwovisible">
         <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-form-item label="工单编号" prop="orderNumber">
-            <el-input size="mini" v-model="orderDataForm.orderNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.orderNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
-            <el-input size="mini" v-model="orderDataForm.orderStatusName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="下发时间" prop="createTime">
-            <el-input size="mini" v-model="orderDataForm.createTime" readonly></el-input>
+            <el-input v-model="orderDataForm.createTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="要求完成时间" prop="requirementTime">
-            <el-input size="mini" v-model="orderDataForm.requirementTime" readonly></el-input>
+            <el-input v-model="orderDataForm.requirementTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
-            <el-input size="mini" v-model="orderDataForm.deptName" readonly></el-input>
+            <el-input v-model="orderDataForm.deptName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
-            <el-input size="mini" v-model="orderDataForm.orderTypeName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input size="mini" v-model="orderDataForm.exceptionName" readonly></el-input>
+            <el-input v-model="orderDataForm.exceptionName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
-            <el-input size="mini" v-model="orderDataForm.defectiveName" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人" prop="orderApplicant">
-            <el-input size="mini" v-model="orderDataForm.orderApplicant" readonly></el-input>
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
-            <el-input size="mini" v-model="orderDataForm.orderAcceptor" readonly></el-input>
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
-            <el-input size="mini" v-model="orderDataForm.orderName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单内容" prop="orderContent">
             <el-input
@@ -371,47 +363,46 @@
       </el-dialog>
       <!-- 已上报待审核 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogthreevisible">
         <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-form-item label="工单编号" prop="orderNumber" >
-            <el-input size="mini" v-model="orderDataForm.orderNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.orderNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
-            <el-input size="mini" v-model="orderDataForm.orderStatusName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="下发时间" prop="createTime">
-            <el-input size="mini" v-model="orderDataForm.createTime" readonly></el-input>
+            <el-input v-model="orderDataForm.createTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="要求完成时间" prop="requirementTime">
-            <el-input size="mini" v-model="orderDataForm.requirementTime" readonly></el-input>
+            <el-input v-model="orderDataForm.requirementTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptId">
-            <el-input size="mini" v-model="orderDataForm.deptName" readonly></el-input>
+            <el-input v-model="orderDataForm.deptName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
-            <el-input size="mini" v-model="orderDataForm.orderTypeName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input size="mini" v-model="orderDataForm.exceptionName" readonly></el-input>
+            <el-input v-model="orderDataForm.exceptionName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
-            <el-input size="mini" v-model="orderDataForm.defectiveName" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人" prop="orderApplicant">
-            <el-input size="mini" v-model="orderDataForm.orderApplicant" readonly></el-input>
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
-            <el-input size="mini" v-model="orderDataForm.orderAcceptor" readonly></el-input>
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
-            <el-input size="mini" v-model="orderDataForm.orderName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
           <el-form-item label="处理结果" prop="processingResult">
             <el-input
@@ -420,7 +411,7 @@
               v-model="orderDataForm.processingResult" readonly></el-input>
           </el-form-item>
           <el-form-item label="备件" prop="orderDevice" >
-            <el-input size="mini" v-model="orderDataForm.orderDevice"></el-input>
+            <el-input v-model="orderDataForm.orderDevice"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -430,17 +421,16 @@
       </el-dialog>
       <!-- 已上报待结单 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogfourvisible">
         <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-form-item label="工单编号" prop="orderNumber">
-            <el-input size="mini" v-model="orderDataForm.orderNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.orderNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
-            <el-input size="mini" v-model="orderDataForm.orderStatusName"></el-input>
+            <el-input v-model="orderDataForm.orderStatusName"></el-input>
             <!--<el-select v-model="orderDataForm.orderStatus" >
               <el-option
                 v-for="item in orderStatusList"
@@ -451,16 +441,16 @@
             </el-select>-->
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="下发时间" prop="createTime">
-            <el-input size="mini" v-model="orderDataForm.createTime" readonly></el-input>
+            <el-input v-model="orderDataForm.createTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="要求完成时间" prop="requirementTime">
-            <el-input size="mini" v-model="orderDataForm.requirementTime" readonly></el-input>
+            <el-input v-model="orderDataForm.requirementTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
-            <el-input size="mini" v-model="orderDataForm.deptName"></el-input>
+            <el-input v-model="orderDataForm.deptName"></el-input>
             <!--<el-select v-model="orderDataForm.deptId" placeholder="所属机构" clearable
             >
               <el-option
@@ -472,19 +462,19 @@
             </el-select>-->
           </el-form-item>
           <el-form-item label="工单类型" prop="orderTypeName">
-            <el-input size="mini" v-model="orderDataForm.orderTypeName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderTypeName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input size="mini" v-model="orderDataForm.exceptionName" readonly></el-input>
+            <el-input v-model="orderDataForm.exceptionName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
-            <el-input size="mini" v-model="orderDataForm.defectiveName" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
-            <el-input size="mini" v-model="orderDataForm.orderAcceptor" readonly></el-input>
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
-            <el-input size="mini" v-model="orderDataForm.orderName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
           <el-form-item label="处理结果" prop="processingResult">
             <el-input
@@ -493,7 +483,7 @@
               v-model="orderDataForm.processingResult" readonly></el-input>
           </el-form-item>
           <el-form-item label="备件" prop="orderDevice" >
-            <el-input size="mini" v-model="orderDataForm.orderDevice" readonly></el-input>
+            <el-input v-model="orderDataForm.orderDevice" readonly></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -503,47 +493,46 @@
       </el-dialog>
       <!-- 已结单 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogfivevisible">
         <el-form :model="orderDataForm"  ref="dataForm"  label-width="100px">
           <el-form-item label="工单编号" prop="orderNumber">
-            <el-input size="mini" v-model="orderDataForm.orderNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.orderNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveNumber" readonly></el-input>
           </el-form-item>
           <el-form-item label="下发时间" prop="createTime">
-            <el-input size="mini" v-model="orderDataForm.createTime" readonly></el-input>
+            <el-input v-model="orderDataForm.createTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单状态" prop="orderStatusName">
-            <el-input size="mini" v-model="orderDataForm.orderStatusName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderStatusName" readonly></el-input>
           </el-form-item>
           <el-form-item label="实际完成时间" prop="actualTime">
-            <el-input size="mini" v-model="orderDataForm.actualTime" readonly></el-input>
+            <el-input v-model="orderDataForm.actualTime" readonly></el-input>
           </el-form-item>
           <el-form-item label="所属机构" prop="deptName">
-            <el-input size="mini" v-model="orderDataForm.deptName" readonly></el-input>
+            <el-input v-model="orderDataForm.deptName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷操作人" prop="defectiveName">
-            <el-input size="mini" v-model="orderDataForm.defectiveName" readonly></el-input>
+            <el-input v-model="orderDataForm.defectiveName" readonly></el-input>
           </el-form-item>
           <el-form-item label="缺陷等级" prop="exceptionName">
-            <el-input size="mini" v-model="orderDataForm.exceptionName" readonly></el-input>
+            <el-input v-model="orderDataForm.exceptionName" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单操作人" prop="orderApplicant">
-            <el-input size="mini" v-model="orderDataForm.orderApplicant" readonly></el-input>
+            <el-input v-model="orderDataForm.orderApplicant" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单受理人" prop="orderAcceptor">
-            <el-input size="mini" v-model="orderDataForm.orderAcceptor" readonly></el-input>
+            <el-input v-model="orderDataForm.orderAcceptor" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单审核人" prop="orderConfirmer">
-            <el-input size="mini" v-model="orderDataForm.orderConfirmer" readonly></el-input>
+            <el-input v-model="orderDataForm.orderConfirmer" readonly></el-input>
           </el-form-item>
           <el-form-item label="工单主题" prop="orderName">
-            <el-input size="mini" v-model="orderDataForm.orderName" readonly></el-input>
+            <el-input v-model="orderDataForm.orderName" readonly></el-input>
           </el-form-item>
           <el-form-item label="处理结果" prop="processingResult">
             <el-input
@@ -552,7 +541,7 @@
               v-model="orderDataForm.processingResult" readonly></el-input>
           </el-form-item>
           <el-form-item label="备件" prop="orderDevice" >
-            <el-input size="mini" v-model="orderDataForm.orderDevice" readonly></el-input>
+            <el-input v-model="orderDataForm.orderDevice" readonly></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -561,7 +550,6 @@
       </el-dialog>
       <!--已派单被拒绝 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '工单详情页'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -626,7 +614,6 @@
       </el-dialog>
       <!--已转单待下发 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '已转单待下发' : '已转单待下发'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -700,7 +687,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="受理人" prop="orderAcceptor">
-                <el-input size="mini" v-model="orderDataForm.orderAcceptor" :disabled="true">
+                <el-input v-model="orderDataForm.orderAcceptor" :disabled="true">
                   <span slot="suffix">
                     <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
                   </span>
@@ -708,14 +695,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
+          <el-dialog title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible" :append-to-body='true'>
             <div style="display: flex;justify-content: space-around;align-items: center;">
               <div style="width:400px;height: 500px;">
                 <el-form :model="deptFrom">
                   <el-row>
                     <el-col :span="13">
                       <el-form-item>
-                        <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
+                        <el-input v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -751,7 +738,7 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item>
-                        <el-input size="mini" v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
+                        <el-input v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="5">

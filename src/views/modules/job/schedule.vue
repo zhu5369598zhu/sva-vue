@@ -69,8 +69,8 @@
         align="center"
         label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini">正常</el-tag>
-          <el-tag v-else size="mini" type="danger">暂停</el-tag>
+          <el-tag v-if="scope.row.status === 0" size="small">正常</el-tag>
+          <el-tag v-else size="small" type="danger">暂停</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -80,11 +80,11 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:schedule:update')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.jobId)">修改</el-button>
-          <el-button v-if="isAuth('sys:schedule:delete')" type="text" size="mini" @click="deleteHandle(scope.row.jobId)">删除</el-button>
-          <el-button v-if="isAuth('sys:schedule:pause')" type="text" size="mini" @click="pauseHandle(scope.row.jobId)">暂停</el-button>
-          <el-button v-if="isAuth('sys:schedule:resume')" type="text" size="mini" @click="resumeHandle(scope.row.jobId)">恢复</el-button>
-          <el-button v-if="isAuth('sys:schedule:run')" type="text" size="mini" @click="runHandle(scope.row.jobId)">立即执行</el-button>
+          <el-button v-if="isAuth('sys:schedule:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.jobId)">修改</el-button>
+          <el-button v-if="isAuth('sys:schedule:delete')" type="text" size="small" @click="deleteHandle(scope.row.jobId)">删除</el-button>
+          <el-button v-if="isAuth('sys:schedule:pause')" type="text" size="small" @click="pauseHandle(scope.row.jobId)">暂停</el-button>
+          <el-button v-if="isAuth('sys:schedule:resume')" type="text" size="small" @click="resumeHandle(scope.row.jobId)">恢复</el-button>
+          <el-button v-if="isAuth('sys:schedule:run')" type="text" size="small" @click="runHandle(scope.row.jobId)">立即执行</el-button>
         </template>
       </el-table-column>
     </el-table>

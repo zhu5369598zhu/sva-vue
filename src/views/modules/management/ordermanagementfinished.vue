@@ -29,10 +29,10 @@
         <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="请选择结束时间" value-format="yyyy-MM-dd HH:mm:ss" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()" size="mini">查询</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
 
     </el-form>
@@ -102,28 +102,28 @@
         prop="defectiveName"
         header-align="center"
         align="center"
-        width="120"
+        width="100"
         label="缺陷操作人">
       </el-table-column>
       <el-table-column
         prop="orderApplicant"
         header-align="center"
         align="center"
-        width="120"
+        width="100"
         label="工单操作人">
       </el-table-column>
       <el-table-column
         prop="orderAcceptor"
         header-align="center"
         align="center"
-        width="120"
+        width="100"
         label="工单受理人">
       </el-table-column>
       <el-table-column
         prop="orderConfirmer"
         header-align="center"
         align="center"
-        width="120"
+        width="100"
         label="工单审核人">
       </el-table-column>
       <el-table-column
@@ -145,7 +145,6 @@
     </el-pagination>
       <! --已结单 -->
       <el-dialog
-        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
         :close-on-click-modal="false"
         :append-to-body='true'

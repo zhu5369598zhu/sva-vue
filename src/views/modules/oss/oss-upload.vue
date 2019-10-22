@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag 
     title="上传文件"
     :close-on-click-modal="false"
     @close="closeHandle"

@@ -4,11 +4,11 @@
     <div class="show-data-table">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.name" placeholder="机构名称" clearable size="mini"></el-input>
+        <el-input v-model="dataForm.name" placeholder="机构名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()" size="mini">查询</el-button>
-        <el-button v-if="isAuth('sys:dept:save')" @click="addOrUpdateHandle()" size="mini">新增</el-button>
+        <el-button @click="getDataList()">查询</el-button>
+        <el-button v-if="isAuth('sys:dept:save')" @click="addOrUpdateHandle()">新增</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -57,8 +57,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:dept:save')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.deptId)">修改</el-button>
-          <el-button v-if="isAuth('sys:dept:delete')" type="text" size="mini" @click="deleteHandle(scope.row.deptId)">删除</el-button>
+          <el-button v-if="isAuth('sys:dept:save')" type="text" size="small" @click="addOrUpdateHandle(scope.row.deptId)">修改</el-button>
+          <el-button v-if="isAuth('sys:dept:delete')" type="text" size="small" @click="deleteHandle(scope.row.deptId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,7 +101,6 @@
           method: 'get',
           params: this.$http.adornParams({'name': this.dataForm.name})
         }).then(({data}) => {
-          // BUG产生原因：_level层级计算错误，来自全局函数treeDataTranslate
           this.dataList = treeDataTranslate(data, 'deptId')
           this.dataListLoading = false
         })

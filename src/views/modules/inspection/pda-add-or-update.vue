@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag
     :title="!dataForm.pdaId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -9,7 +8,7 @@
     <el-row :gutter="10">
       <el-col :span="24">
         <el-form-item label="终端名称" prop="pdaName">
-          <el-input v-model="dataForm.pdaName" placeholder="终端名称" size="mini"></el-input>
+          <el-input v-model="dataForm.pdaName" placeholder="终端名称"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -33,18 +32,18 @@
               :expand-on-click-node="false">
             </el-tree>
           </el-popover>
-          <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input" size="mini"></el-input>
+          <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row :gutter="5">
       <el-col :span="21">
         <el-form-item label="MAC" prop="pdaMac">
-          <el-input v-model="dataForm.pdaMac" placeholder="MAC地址" size="mini"></el-input>
+          <el-input v-model="dataForm.pdaMac" placeholder="MAC地址"></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="3" style="margin-top: 2px;">
-        <el-button icon="el-icon-mobile-phone" @click="onBind()" size="mini">同步</el-button>
+      <el-col :span="3">
+        <el-button icon="el-icon-mobile-phone" @click="onBind()">同步</el-button>
       </el-col>
     </el-row>
     </el-form>

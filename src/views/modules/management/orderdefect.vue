@@ -15,10 +15,10 @@
             <div class="show-data-up" id="data-up">
               <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
                 <el-form-item>
-                  <el-input v-model="dataForm.defectiveNumber" size="mini" placeholder="请输入缺陷单编号"  clearable></el-input>
+                  <el-input v-model="dataForm.defectiveNumber" placeholder="请输入缺陷单编号"  clearable></el-input>
                 </el-form-item>
                 <el-form-item label="缺陷确认状态:" prop="orderStatus">
-                  <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;" size="mini">
+                  <el-select v-model="dataForm.orderStatus" placeholder="请选择" clearable style="width:100px;" size="small">
                     <el-option label="待确认" value="0"></el-option>
                     <el-option label="已确认" value="1"></el-option>
                     <el-option label="已挂起" value="2"></el-option>
@@ -27,16 +27,16 @@
                 </el-form-item>
 
                 <el-form-item label="巡检时间从:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;" size="mini"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="mini"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;" size="small"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="ordersearch()" size="mini">查询</el-button>
+                  <el-button @click="ordersearch()" size="small">查询</el-button>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+                  <el-button @click="exportExcelHandle()" size="small">导出</el-button>
                 </el-form-item>
               </el-form>
               <el-table
@@ -52,7 +52,6 @@
                 style="width: 100%;">
                 <el-table-column
                   fixed
-                  align="center"
                   type="index"
                   width="50"
                   lable="">
@@ -191,8 +190,8 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="mini" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.deviceId,scope.row.orderStatus)">确认缺陷</el-button>
-                   <el-button type="text" size="mini"  :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="hangup(scope.row)">挂起</el-button>
+                    <el-button type="text" size="small" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.deviceId,scope.row.orderStatus)">确认缺陷</el-button>
+                   <el-button type="text" size="small"  :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="hangup(scope.row)">挂起</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -206,7 +205,6 @@
                 layout="total, sizes, prev, pager, next, jumper">
               </el-pagination>
               <el-dialog
-                v-dialog-drag
                 :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '确认缺陷页'"
                 :append-to-body='true'
                 :visible.sync="defectivevisible"
@@ -259,13 +257,12 @@
                 </el-form>
               </el-dialog>
               <el-dialog
-                v-dialog-drag
                 :title="!this.orderDataForm.hangUp ? '挂起原因' : '挂起原因'"
                 :visible.sync="dialoghangupvisible"
                 :append-to-body='true'>
                 <el-form :model="orderDataForm" ref="orderDataForm" label-width="80px">
                   <el-form-item label="挂起原因" prop="hangUp" >
-                    <el-input  size="mini" v-model="orderDataForm.hangUp" placeholder="请输入挂起原因"></el-input>
+                    <el-input v-model="orderDataForm.hangUp" placeholder="请输入挂起原因"></el-input>
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -274,7 +271,6 @@
                   </span>
               </el-dialog>
               <el-dialog
-                v-dialog-drag
                 :title="!this.hangUpFrom.hangUp ? '挂起原因' : '挂起原因'"
                 :visible.sync="dialogUpdatehangUpvisible"
                 :append-to-body='true'>
@@ -288,7 +284,6 @@
               </el-dialog>
               <!-- 转工单被拒绝 详情页 -->
               <el-dialog
-                v-dialog-drag
                 :title="!this.orderDataForm.defectiveId ? '缺陷详情页' : '确认缺陷页'"
                 :append-to-body='true'
                 :visible.sync="defectiverejectvisible"

@@ -91,18 +91,21 @@
               name: '异常',
               type: 'bar',
               barGap: 0,
+              barWidth: 30,
               label: labelOption,
               data: this.unNormal
             },
             {
               name: '正常',
               type: 'bar',
+              barWidth: 30,
               label: labelOption,
               data: this.normal
             },
             {
               name: '全部',
               type: 'bar',
+              barWidth: 30,
               label: labelOption,
               data: this.all
             }

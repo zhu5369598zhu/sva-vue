@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-dialog-drag
     title="日志列表"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -57,8 +56,8 @@
         align="center"
         label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini">成功</el-tag>
-          <el-tag v-else @click.native="showErrorInfo(scope.row.logId)" size="mini" type="danger" style="cursor: pointer;">失败</el-tag>
+          <el-tag v-if="scope.row.status === 0" size="small">成功</el-tag>
+          <el-tag v-else @click.native="showErrorInfo(scope.row.logId)" size="small" type="danger" style="cursor: pointer;">失败</el-tag>
         </template>
       </el-table-column>
       <el-table-column

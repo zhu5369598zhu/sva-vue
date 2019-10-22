@@ -16,7 +16,6 @@
     <p><el-button @click="getContent()">获得内容</el-button></p>
     <el-dialog
       title="内容"
-      v-dialog-drag
       :visible.sync="dialogVisible"
       :append-to-body="true">
       {{ ueContent }}

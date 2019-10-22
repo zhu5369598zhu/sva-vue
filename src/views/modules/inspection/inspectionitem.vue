@@ -15,13 +15,13 @@
       <div class="show-data-up">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.name" placeholder="巡检项" clearable size="mini"></el-input>
+        <el-input v-model="dataForm.name" placeholder="巡检项" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="search()" size="mini">查询</el-button>
-        <el-button v-if="isAuth('inspection:inspectionitem:save')" @click="addOrUpdateHandle()" :disabled="dataForm.deviceId <= 0" size="mini">新增</el-button>
-        <el-button v-if="isAuth('inspection:inspectionitem:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
-        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
+        <el-button @click="search()" size="small">查询</el-button>
+        <el-button v-if="isAuth('inspection:inspectionitem:save')" @click="addOrUpdateHandle()" :disabled="dataForm.deviceId <= 0">新增</el-button>
+        <el-button v-if="isAuth('inspection:inspectionitem:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="exportExcelHandle()" size="small">导出</el-button>
       </el-form-item>
       <el-form-item>
           <el-upload
@@ -30,7 +30,7 @@
           :action="this.$http.adornUrl(`/inspection/inspectionitem/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button size="mini">导入</el-button>
+          <el-button>导入</el-button>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -148,8 +148,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="isAuth('inspection:inspectionitem:save')" type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button v-if="isAuth('inspection:inspectionitem:delete')" type="text" size="mini" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="isAuth('inspection:inspectionitem:save')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button v-if="isAuth('inspection:inspectionitem:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
