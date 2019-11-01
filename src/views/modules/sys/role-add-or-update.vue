@@ -12,7 +12,7 @@
       <el-form-item label="备注" prop="remark">
         <el-input size="mini" v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
-      <el-form-item size="mini" label="授权">
+      <el-form-item size="mini" label="授权" class="souquan">
         <el-tree
           :data="menuList"
           :props="menuListTreeProps"
@@ -126,3 +126,9 @@
     }
   }
 </script>
+
+<style>
+  .souquan .el-form-item__label{
+    margin-top: -6px;
+  }
+</style>

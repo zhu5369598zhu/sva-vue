@@ -4,8 +4,8 @@
     :close-on-click-modal="false"
     v-dialog-drag
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="100px">
-    班后会日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp;   日志编号: {{dataForm.logNumber}}
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="110px">
+    <p style="margin-left: 42px;">班后会日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp;   日志编号: {{dataForm.logNumber}}</p>
     <el-row>
       <el-col :span="8">
         <el-form-item label="部门(工段)" prop="deptName">
@@ -13,12 +13,12 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="班组" prop="classGroupName">
+        <el-form-item label="班组" prop="classGroupName" label-width="90px">
           <el-input size="mini" v-model="dataForm.classGroupName"  readonly></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="班次" prop="baseTurnName">
+        <el-form-item label="班次" prop="baseTurnName" label-width="90px">
           <el-input size="mini" v-model="dataForm.baseTurnName" readonly></el-input>
         </el-form-item>
       </el-col>
@@ -30,12 +30,12 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="应出勤人数" prop="shouldAttendance">
+        <el-form-item label="应出勤人数" prop="shouldAttendance" label-width="90px">
           <el-input size="mini" v-model="dataForm.shouldAttendance" readonly></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="实出勤人数" prop="attendance">
+        <el-form-item label="实出勤人数" prop="attendance" label-width="90px">
           <el-input size="mini" v-model="dataForm.attendance" readonly></el-input>
         </el-form-item>
       </el-col>
@@ -43,29 +43,23 @@
       <el-form-item label="实到人员" prop="actualArrival">
         <el-input size="mini" v-model="dataForm.actualArrival" readonly></el-input>
       </el-form-item>
-    <el-row>
-      <el-col :span="8">
-        <el-form-item label="未到人员" prop="notArrived">
+      <el-form-item label="未到人员" prop="notArrived">
           <el-input size="mini" v-model="dataForm.notArrived" readonly></el-input>
         </el-form-item>
-      </el-col>
-      <el-col :span="8">
-        <el-form-item label="顶班人员" prop="topArrived">
+      <el-form-item label="顶班人员" prop="topArrived">
           <el-input size="mini" v-model="dataForm.topArrived" readonly></el-input>
         </el-form-item>
-      </el-col>
-    </el-row>
       <el-form-item label="缺勤原因" prop="reasonsAbsence">
         <el-input size="mini" v-model="dataForm.reasonsAbsence" readonly></el-input>
       </el-form-item>
-      <el-form-item  label="人员精神异常描述" prop="mentalException">
+      <el-form-item  label="人员精神异常" prop="mentalException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.mentalException" readonly></el-input>
       </el-form-item>
-      <el-form-item label="劳动防护用品异常描述" prop="protectiveException">
+      <el-form-item label="劳动防护用品异常" prop="protectiveException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.protectiveException" readonly></el-input>
       </el-form-item>
 
-      <el-form-item  label="工器具异常描述" prop="toolsException">
+      <el-form-item  label="工器具异常" prop="toolsException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.toolsException" readonly></el-input>
       </el-form-item>
 
@@ -79,14 +73,14 @@
       <el-input size="mini" type="textarea" autosize v-model="dataForm.workSummary" readonly></el-input>
     </el-form-item>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="负责人" prop="personCharge">
             <el-input size="mini" v-model="dataForm.personCharge" readonly></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="交底时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:180px;"></el-date-picker>
+            <el-date-picker size="small" v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>

@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="90px">
-      班长日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}
+      <p style="margin-left: 22px;">班长日志(审核中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}</p>
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门(工段)" prop="deptName">
@@ -45,20 +45,12 @@
       <el-form-item label="实到人员" prop="actualArrival">
         <el-input size="mini" v-model="dataForm.actualArrival"  readonly></el-input>
       </el-form-item>
-      <el-row>
-        <el-col :span="4">
-        </el-col>
-        <el-col :span="8">
-          <el-form-item  label="未到人员" prop="notArrived">
-            <el-input size="mini" v-model="dataForm.notArrived"  readonly></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item  label="顶班人员" prop="topArrived">
-            <el-input size="mini" v-model="dataForm.topArrived"  readonly></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item  label="未到人员" prop="notArrived">
+        <el-input size="mini" v-model="dataForm.notArrived"  readonly></el-input>
+      </el-form-item>
+      <el-form-item  label="顶班人员" prop="topArrived">
+        <el-input size="mini" v-model="dataForm.topArrived"  readonly></el-input>
+      </el-form-item>
       <el-form-item  label="缺勤原因" prop="reasonsAbsence">
         <el-input size="mini" v-model="dataForm.reasonsAbsence"  readonly></el-input>
       </el-form-item>
@@ -83,23 +75,20 @@
                   v-model="dataForm.accountConfession"  readonly></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="交班人" prop="handoverPerson">
             <el-input size="mini" v-model="dataForm.handoverPerson"  readonly></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="接班人" prop="successor">
             <el-input size="mini" v-model="dataForm.successor" readonly ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="交接时间" prop="createTime">
-            <el-input size="mini" v-model="dataForm.createTime" readonly style="width:150px;"></el-input>
-            <!--<el-date-picker v-model="" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" readonly style="width:160px;"></el-date-picker>-->
-          </el-form-item>
-        </el-col>
       </el-row>
+      <el-form-item label="交接时间" prop="createTime">
+        <el-input size="mini" v-model="dataForm.createTime" readonly></el-input>
+      </el-form-item>
       <el-dialog v-dialog-drag title="拒绝原因" :visible.sync="dialogRejectVisible"  :append-to-body='true'>
         <el-form :model="dataForm"  @keyup.enter.native="dataFormSubmit()">
           <el-form-item label="拒绝原因" prop="rejectReason">

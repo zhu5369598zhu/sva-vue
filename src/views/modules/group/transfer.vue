@@ -7,6 +7,7 @@
   >
     <div>
       <tree-transfer
+          class="tree_transfer_cs"
           :title="title"
           ref="from-tree"
           :from_data='fromData'
@@ -36,7 +37,7 @@
         isHttp: false,
         dataListSelections: [],
         clicktitle: '',
-        title: ['部门人员', '关联人员'],
+        title: ['部门人员', '已选择人员'],
         mode: 'transfer', // transfer addressList
         fromData: [],
         toData: []
@@ -203,11 +204,15 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped="">
   .dialog-footer {
     margin-right: 20px;
   }
-
-
-
+  .tree_transfer_cs{
+    /deep/ .transfer-title{
+      .el-checkbox{
+        display: none;
+      }
+    }
+  }
 </style>

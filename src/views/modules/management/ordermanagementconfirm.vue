@@ -151,62 +151,62 @@
         :close-on-click-modal="false"
         :append-to-body='true'
         :visible.sync="dialogthreevisible">
-        <el-form :model="orderDataForm" :rules="dataRule"  ref="dataForm"  label-width="100px">
+        <el-form :model="orderDataForm" :rules="dataRule"  ref="dataForm"  label-width="100px" class="xiangqing_form">
           <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="工单编号" prop="orderNumber">
                 {{orderDataForm.orderNumber}}
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="工单状态" prop="orderStatusName">
                 {{orderDataForm.orderStatusName}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="缺陷单编号" prop="defectiveNumber">
                 {{orderDataForm.defectiveNumber}}
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="缺陷等级" prop="exceptionName">
                 {{orderDataForm.exceptionName}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="所属机构" prop="deptName">
                 {{orderDataForm.deptName}}
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="缺陷操作人" prop="defectiveName">
                 {{orderDataForm.defectiveName}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="工单操作人" prop="orderApplicant">
                 {{orderDataForm.orderApplicant}}
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="工单受理人" prop="orderAcceptor">
                 {{orderDataForm.orderAcceptor}}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="工单类型" prop="orderTypeName">
                 {{orderDataForm.orderTypeName}}
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <el-form-item label="要求完成时间" prop="requirementTime">
                 {{orderDataForm.requirementTime}}
               </el-form-item>
@@ -690,3 +690,8 @@
   }
 </script>
 
+<style>
+  .xiangqing_form .el-form-item--medium .el-form-item__label{
+    font-weight: bold;
+  }
+</style>

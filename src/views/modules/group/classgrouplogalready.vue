@@ -60,7 +60,7 @@
       style="width: 100%;">
       <el-table-column
         type="index"
-        width="50"
+        width="40"
         align="center"
         lable="">
       </el-table-column>
@@ -75,55 +75,63 @@
         prop="deptName"
         header-align="center"
         align="center"
+        min-width="80"
         label="车间(工段)">
       </el-table-column>
       <el-table-column
         prop="classGroupName"
         header-align="center"
         align="center"
+        min-width="80"
         label="班组">
       </el-table-column>
       <el-table-column
         prop="baseTurnName"
         header-align="center"
         align="center"
+        min-width="80"
         label="班次">
       </el-table-column>
       <el-table-column
         prop="logTypeName"
         header-align="center"
         align="center"
+        min-width="80"
         label="日志类型">
       </el-table-column>
       <el-table-column
         prop="logStatusName"
         header-align="center"
         align="center"
+        min-width="80"
         label="日志状态">
       </el-table-column>
       <el-table-column
         prop="noteTaker"
         header-align="center"
         align="center"
+        min-width="100"
         label="记录人">
       </el-table-column>
       <el-table-column
         prop="handoverPerson"
         header-align="center"
         align="center"
+        min-width="100"
         label="交班(底)人">
       </el-table-column>
       <el-table-column
         prop="successor"
         header-align="center"
         align="center"
+        min-width="200"
         label="接班(底)人">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-        width="150"
+        min-width="150"
         label="交接(底)时间">
       </el-table-column>
     </el-table>

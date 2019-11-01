@@ -83,7 +83,7 @@
                   prop="itemName"
                   header-align="center"
                   align="center"
-                  width="120"
+                  width="140"
                   label="巡项内容">
                 </el-table-column>
                 <el-table-column
@@ -127,7 +127,7 @@
                   prop="orderStatusName"
                   header-align="center"
                   align="center"
-                  width="80"
+                  width="100"
                   label="确认状态">
                 </el-table-column>
                 <el-table-column
@@ -213,46 +213,46 @@
                 >
                 <el-form :model="orderDataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
                   <el-row>
-                    <el-col span="8">
+                    <el-col :span="12">
                       <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
-                        {{orderDataForm.defectiveNumber}}
+                        <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly />
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item label="缺陷异常等级" prop="exceptionName">
-                        {{orderDataForm.exceptionName}}
+                        <el-input size="mini" v-model="orderDataForm.exceptionName" readonly />
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
-                    {{orderDataForm.defectiveTheme}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveTheme" readonly />
                   </el-form-item>
                   <el-form-item label="所属机构" prop="deptName">
-                    {{orderDataForm.deptName}}
+                    <el-input size="mini" v-model="orderDataForm.deptName" readonly />
                   </el-form-item>
                   <el-form-item label="巡检缺陷单内容" prop="orderContent">
-                    {{orderDataForm.orderContent}}
+                    <el-input size="mini" v-model="orderDataForm.orderContent" readonly />
                   </el-form-item>
                   <el-form-item label="缺陷操作人"  prop="defectiveName">
-                    {{orderDataForm.defectiveName}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveName" readonly />
                   </el-form-item>
                   <el-form-item label="缺陷操作人意见"  prop="defectiveNameOpinion">
-                    {{orderDataForm.defectiveNameOpinion}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveNameOpinion" readonly />
                   </el-form-item>
                   <el-row>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item
                         label="要求完成时间"
                         prop="requirementTime"
                       >
-                        {{orderDataForm.requirementTime}}
+                        <el-input size="mini" v-model="orderDataForm.requirementTime" readonly />
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item
                         label="工单操作人"
                         prop="orderConfirmer">
-                        {{orderDataForm.orderConfirmer}}
+                        <el-input size="mini" v-model="orderDataForm.orderConfirmer" readonly />
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -279,7 +279,8 @@
                 :visible.sync="dialogUpdatehangUpvisible"
                 :append-to-body='true'>
                 <el-form :model="hangUpFrom" ref="hangUpFrom" label-width="80px">
-                  <el-form-item label="挂起原因" prop="hangUp" >{{hangUpFrom.hangUp}}
+                  <el-form-item label="挂起原因" prop="hangUp" >
+                    <el-input size="mini" v-model="hangUpFrom.hangUp" />
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -295,31 +296,31 @@
               >
                 <el-form :model="orderDataForm" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
                   <el-row>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item label="巡检缺陷单编号" prop="defectiveNumber">
-                        {{orderDataForm.defectiveNumber}}
+                        <el-input size="mini" v-model="orderDataForm.defectiveNumber" readonly />
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item label="缺陷异常等级" prop="exceptionName">
-                        {{orderDataForm.exceptionName}}
+                        <el-input size="mini" v-model="orderDataForm.exceptionName" readonly />
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-form-item label="巡检缺陷单主题" prop="defectiveTheme">
-                    {{orderDataForm.defectiveTheme}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveTheme" readonly />
                   </el-form-item>
                   <el-form-item label="所属机构" prop="deptName">
-                    {{orderDataForm.deptName}}
+                    <el-input size="mini" v-model="orderDataForm.deptName" readonly />
                   </el-form-item>
                   <el-form-item label="巡检缺陷单内容" prop="orderContent">
-                    {{orderDataForm.orderContent}}
+                    <el-input size="mini" v-model="orderDataForm.orderContent" readonly />
                   </el-form-item>
                   <el-form-item label="缺陷操作人"  prop="defectiveName">
-                    {{orderDataForm.defectiveName}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveName" readonly />
                   </el-form-item>
                   <el-form-item label="缺陷操作人意见"  prop="defectiveNameOpinion">
-                    {{orderDataForm.defectiveNameOpinion}}
+                    <el-input size="mini" v-model="orderDataForm.defectiveNameOpinion" readonly />
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -523,8 +524,7 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (defectiveId, id, deviceId,orderStatus) {
-        console.log(deviceId)
-        if (orderStatus === 0 || orderStatus === null) {
+        if (orderStatus === 0 || orderStatus === null || orderStatus === undefined) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(defectiveId, id, deviceId)

@@ -8,53 +8,68 @@
     :visible.sync="visible"
     class="dialog"
   >
-    <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px" class="data_el_form">
       <div >
         <span class="span-a">拟制中</span><span class="span-b">已下发</span><span class="span-c">已受理</span><span class="span-d">已审核</span>
-        <el-progress :text-inside="true"  :stroke-width="28" :show-text="true"  :percentage="progressNum" ></el-progress>
+        <el-progress :text-inside="true"  :stroke-width="18" :show-text="true"  :percentage="progressNum" ></el-progress>
       </div>
-      <div style="display: flex;align-items: center;margin-top: 10px; ">
-        <div  style="width:200px;height: 160px;border-left: 8px solid #8c939d;">
+      <div>
+        <div style="border-left: 8px solid #8c939d; margin-top: 20px;">
           <el-form-item label="工单主题" prop="orderName">
             {{dataForm.orderName}}
           </el-form-item>
-          <el-form-item label="工单编号" prop="orderNumber">
-            {{dataForm.orderNumber}}
-          </el-form-item>
-          <el-form-item label="所属机构" prop="deptId">
-            {{dataForm.deptName}}
-          </el-form-item>
-        </div>
-        <div  style="width:200px;height: 160px;">
-          <el-form-item label="工单类型" prop="orderType">
-            {{dataForm.orderTypeName}}
-          </el-form-item>
-          <el-form-item label="工单状态" prop="orderStatus">
-            {{dataForm.orderStatusName}}
-          </el-form-item>
-        </div>
-        <div  style="width:200px;height: 160px;">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="工单类型" prop="orderType">
+                {{dataForm.orderTypeName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="工单状态" prop="orderStatus">
+                {{dataForm.orderStatusName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="工单编号" prop="orderNumber">
+                {{dataForm.orderNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="所属机构" prop="deptId">
+                {{dataForm.deptName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-form-item label="缺陷单主题" prop="orderName">
             {{dataForm.defectiveTheme}}
           </el-form-item>
-          <el-form-item label="缺陷单编号" prop="defectiveNumber">
-            {{dataForm.defectiveNumber}}
-          </el-form-item>
-          <el-form-item label="归属设备" prop="defectiveDevice">
-            {{dataForm.defectiveDevice}}
-          </el-form-item>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="缺陷单编号" prop="defectiveNumber">
+                {{dataForm.defectiveNumber}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="归属设备" prop="defectiveDevice">
+                {{dataForm.defectiveDevice}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="缺陷类型" prop="orderTypeName">
+                {{dataForm.orderTypeName}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="缺陷等级" prop="exceptionName">
+                {{dataForm.exceptionName}}
+              </el-form-item>
+            </el-col>
+          </el-row>
         </div>
-        <div  style="width:200px;height: 160px;">
-          <el-form-item label="缺陷类型" prop="orderTypeName">
-            {{dataForm.orderTypeName}}
-          </el-form-item>
-          <el-form-item label="缺陷等级" prop="exceptionName">
-            {{dataForm.exceptionName}}
-          </el-form-item>
-        </div>
+        
       </div>
       <div >
-      <p style="border-left: 8px solid #8c939d;padding-left: 12px;margin: 20px 0;">流程记录</p>
+      <p style="border-left: 8px solid #8c939d;padding-left: 12px;margin: 20px 0; font-weight: bold;">流程记录</p>
       <div v-for="item in recordList" :key="item.recordId" style="">
           <el-form-item :label="item.orderPeopleName" style="border-left: 8px solid #8c939d">
               {{item.orderPeople}}:{{item.orderOpinion}} <br>
@@ -185,6 +200,9 @@
 <style>
   .dialog .el-dialog{
     width:  810px !important;
+  }
+  .data_el_form .el-form-item__label{
+    font-weight: bold;
   }
   .span-a{ float:left;}
   .span-b{ float:left;margin-left:15%;}

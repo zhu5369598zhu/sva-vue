@@ -19,27 +19,27 @@
         header-align="center"
         align="center"
         label="工单编号"
-        width="150"
+        min-width="150"
       ></el-table-column>
       <el-table-column
         prop="defectiveNumber"
         header-align="center"
         align="center"
-        width="150"
+        min-width="150"
         label="缺陷单编号">
       </el-table-column>
       <el-table-column
         prop="defectiveTheme"
         header-align="center"
         align="center"
-        width="250"
+        min-width="250"
         label="维护内容">
       </el-table-column>
       <el-table-column
         prop="confirmedTime"
         header-align="center"
         align="center"
-        width="140"
+        min-width="140"
         label="维护时间">
       </el-table-column>
       <!--<el-table-column

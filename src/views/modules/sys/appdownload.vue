@@ -3,10 +3,10 @@
     <div class="show-data-content download">
       <a style="cursor:pointer" :href="download">
         <img class="qrcode" :src="getQrcode"></img>
-        <p>µã»÷»òÉ¨Ãè¶þÎ¬ÂëÏÂÔØAPP</p>
+        <p>ç‚¹å‡»æˆ–æ‰«æäºŒç»´ç ä¸‹è½½APP</p>
         <img src="~@/assets/img/android.png" alt="" class="android_img">
-        <p style="font-weight: bold;">V 1.1.10</p>
-        <p>ÐèÒªAndroid5.0»ò¸ü¸ß°æ±¾¡£</p>
+        <p style="font-weight: bold;">V 4.3.20</p>
+        <p>éœ€è¦Android5.0æˆ–æ›´é«˜ç‰ˆæœ¬</p>
       </a>
     </div>
   </div>

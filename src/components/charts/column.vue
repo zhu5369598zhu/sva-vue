@@ -106,6 +106,13 @@
             }
           ]
         }
+        // 长度较验
+        if (this.seriesA.length > 12) {
+          for (const i in option.series) {
+            option.series[i].label.normal.formatter = ''
+          }
+        }
+
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
 

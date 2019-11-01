@@ -8,30 +8,36 @@
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="110px">
     <!--<el-form-item label="工单编号" prop="orderNumber">{{this.dataForm.orderNumber}}
     </el-form-item>-->
-    <el-form-item label="工单主题" prop="orderName">
-      <el-input size="mini" v-model="dataForm.orderName" placeholder="工单主题"></el-input>
-    </el-form-item>
-    <el-form-item label="所属机构" prop="deptName">
-      <el-popover
-        ref="deptListPopover"
-        placement="bottom-start"
-        trigger="click"
-        v-model="isShowDeptTree">
-        <el-tree
-          :data="dataList"
-          :props="deptListTreeProps"
-          node-key="deptId"
-          ref="deptListTree"
-          class="tree"
-          @current-change="deptListTreeCurrentChangeHandle"
-          :default-expand-all="false"
-          :highlight-current="true"
-          :expand-on-click-node="false" clearable >
-        </el-tree>
-      </el-popover>
-      <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:160px;" placeholder="部门" >
-      </el-input>
-    </el-form-item>
+    <el-row>
+      <el-col :span="12">
+        <el-form-item label="工单主题" prop="orderName">
+          <el-input size="mini" v-model="dataForm.orderName" placeholder="工单主题"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="所属机构" prop="deptName">
+          <el-popover
+            ref="deptListPopover"
+            placement="bottom-start"
+            trigger="click"
+            v-model="isShowDeptTree">
+            <el-tree
+              :data="dataList"
+              :props="deptListTreeProps"
+              node-key="deptId"
+              ref="deptListTree"
+              class="tree"
+              @current-change="deptListTreeCurrentChangeHandle"
+              :default-expand-all="false"
+              :highlight-current="true"
+              :expand-on-click-node="false" clearable >
+            </el-tree>
+          </el-popover>
+          <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" placeholder="部门" >
+          </el-input>
+        </el-form-item>
+      </el-col>
+    </el-row>
     <el-form-item label="工单内容" prop="orderContent">
       <el-input
         type="textarea"
@@ -45,35 +51,34 @@
         v-model="dataForm.orderApplicantOpinion" placeholder="工单操作人意见"></el-input>
     </el-form-item>
       <el-row>
-        <el-col :span="8">
-          <el-form-item label="工单受理人" prop="orderAcceptor"  label-width="100px">
+        <el-col :span="12">
+          <el-form-item label="工单受理人" prop="orderAcceptor">
             <el-input size="mini" v-model="dataForm.orderAcceptor" placeholder="工单受理人" :disabled="true">
               <span slot="suffix">
                 <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle()" ></a>
               </span>
             </el-input>
             <el-dialog v-dialog-drag title="可选择用户列表" :visible.sync="dialogFormVisible" v-if="dialogFormVisible"  :append-to-body='true' style="clear: both;">
-              <div style="display: flex;justify-content: space-around;align-items: center;">
-                <div style="width:400px;height: 500px;">
+              <div style="display: flex;justify-content: space-between;align-items: center;">
+                <div style="width: 40%;">
                   <el-form :model="deptFrom">
                     <el-row>
-                      <el-col :span="13">
+                      <el-col :span="24">
                         <el-form-item>
-                          <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable style="width: 180px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-button @click="getDeptDataList()">查询</el-button>
+                          <div style="display: flex; flex-wrap: nowrap; height: 28px; align-items: center;">
+                            <el-input size="mini" v-model="deptFrom.name" placeholder="机构名称" clearable ></el-input>
+                            <el-button size="mini" @click="getDeptDataList()" style="margin-left: 25px; margin-bottom: 3px;">查询</el-button>
+                          </div>
                         </el-form-item>
                       </el-col>
                     </el-row>
                   </el-form>
                   <el-table
                     highlight-current-row
+                    border
                     @current-change="addOrUpdateHandle"
                     :data="dataDeptList"
-                    style="width: 100%;height: 440px;overflow: scroll;">
+                    style="width: 100%;height: 400px;overflow: scroll;">
                     <el-table-column
                       type="index"
                       header-align="center"
@@ -81,7 +86,6 @@
                       width="80">
                     </el-table-column>
                     <table-tree-column
-                      style="width: auto"
                       prop="name"
                       header-align="center"
                       treeKey="deptId"
@@ -90,33 +94,20 @@
                     </table-tree-column>
                   </el-table>
                 </div>
-                <div style="width:400px;height: 500px;">
+                <div style="width: 56%; height: 100%;">
                   <el-form :inline="true" :model="datauserForm" >
-                    <el-row>
-                      <el-col :span="8">
-                        <el-form-item>
-                          <el-input size="mini" v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: 100px;"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="search">查询</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button  type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="5">
-                        <el-form-item>
-                          <el-button @click="dialogFormVisible = false">取消</el-button>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
+                    <el-form-item>
+                      <el-input size="mini" v-model="datauserForm.userName" placeholder="用户名称" clearable style="width: calc( 100% - 225px); margin-right: 20px;"></el-input>
+                      <div class="buttons" style="width: 200px; display: inline-block;">
+                        <el-button size="mini" @click="search">查询</el-button>
+                        <el-button size="mini" type="danger" @click="handle()" :disabled="dataListSelections.length <= 0">确定</el-button>
+                        <el-button size="mini" @click="dialogFormVisible = false">取消</el-button>
+                      </div>
+                    </el-form-item>
                   </el-form>
                   <el-table
                     :data="UserdataList"
+                    border
                     style="width: 100%;height:400px;overflow: scroll;"
                     :row-style="rowStyle"
                     @selection-change="selectionChangeHandle"
@@ -152,9 +143,9 @@
 
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="要求完成时间" prop="requirementTime" label-width="100px">
-            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;" size="mini" ></el-date-picker>
+        <el-col :span="12">
+          <el-form-item label="要求完成时间" prop="requirementTime">
+            <el-date-picker v-model="dataForm.requirementTime" type="datetime" value-format="yyyy-MM-dd HH:00:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:100%;" size="mini" ></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>

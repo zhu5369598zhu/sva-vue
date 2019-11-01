@@ -4,8 +4,8 @@
     :title="!dataForm.classId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="90px">
-      班长日志(修改中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="90px" style="margin-left: -10px;">
+      <p style="margin-left: 22px;">班长日志(修改中)  &nbsp; &nbsp;&nbsp;&nbsp; 日志编号:{{dataForm.logNumber}}</p>
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门(工段)" prop="deptName">
@@ -26,18 +26,18 @@
                 :expand-on-click-node="false" clearable >
               </el-tree>
             </el-popover>
-            <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
+            <el-input v-model="dataForm.deptName" size="mini" v-popover:deptListPopover :readonly="true" class="dept-list__input" placeholder="部门" >
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="班组" prop="classGroupName">
-            <el-input v-model="dataForm.classGroupName" style="width:120px;" clearable placeholder="班组"></el-input>
+            <el-input v-model="dataForm.classGroupName" size="mini" clearable placeholder="班组"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="班次" prop="baseTurnId">
-            <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:120px;">
+            <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" size="mini" clearable>
               <el-option
                 v-for="item in TurnList"
                 :key="item.id"
@@ -52,88 +52,86 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="班长" prop="monitor">
-            <el-input v-model="dataForm.monitor" placeholder="班长"></el-input>
+            <el-input v-model="dataForm.monitor" placeholder="班长" size="mini"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="应出勤人数" prop="shouldAttendance">
-            <el-input v-model="dataForm.shouldAttendance" placeholder="应出勤人数"></el-input>
+            <el-input v-model="dataForm.shouldAttendance" placeholder="应出勤人数" size="mini"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="实出勤人数" prop="attendance">
-            <el-input v-model="dataForm.attendance" placeholder="实出勤人数"></el-input>
+            <el-input v-model="dataForm.attendance" placeholder="实出勤人数" size="mini"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-form-item label="实到人员" prop="actualArrival">
-        <el-input v-model="dataForm.actualArrival" placeholder="实到人员" :disabled="true">
+        <el-input size="mini" v-model="dataForm.actualArrival" placeholder="实到人员" :disabled="true">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('实到人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('实到人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
       <el-form-item  label="未到人员" prop="notArrived">
-        <el-input v-model="dataForm.notArrived" placeholder="未到人员">
+        <el-input size="mini" v-model="dataForm.notArrived" placeholder="未到人员">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
       <el-form-item  label="顶班人员" prop="topArrived">
-        <el-input v-model="dataForm.topArrived" placeholder="顶班人员">
+        <el-input size="mini" v-model="dataForm.topArrived" placeholder="顶班人员">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
       <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-        <el-input v-model="dataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
+        <el-input size="mini" v-model="dataForm.reasonsAbsence" placeholder="缺勤原因"></el-input>
       </el-form-item>
       <el-form-item label="接班记事" prop="successionRecord">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.successionRecord" placeholder="接班记事"></el-input>
       </el-form-item>
       <el-form-item label="当班记事" prop="onDuty">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.onDuty" placeholder="当班记事"></el-input>
       </el-form-item>
       <el-form-item label="上级通知" prop="superiorNotice">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.superiorNotice" placeholder="上级通知"></el-input>
       </el-form-item>
       <el-form-item label="交代事项" prop="accountConfession">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.accountConfession" placeholder="交代事项"></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="7">
+        <el-col :span="12">
           <el-form-item label="交班人" prop="handoverPerson">
-            <el-input v-model="dataForm.handoverPerson" :disabled="true" placeholder="交班人"></el-input>
+            <el-input size="mini" v-model="dataForm.handoverPerson" :disabled="true" placeholder="交班人"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="接班人" prop="successor">
-            <el-input v-model="dataForm.successor" :disabled="true" placeholder="接班人">
+            <el-input size="mini" v-model="dataForm.successor" :disabled="true" placeholder="接班人">
               <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('接班人')" ></a>
+                <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('接班人')" ></a>
               </span>
             </el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="交接时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width: 180px;"></el-date-picker>
-          </el-form-item>
-        </el-col>
       </el-row>
+      <el-form-item label="交接时间" prop="createTime">
+        <el-date-picker size="mini" v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:00"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width: 100%;"></el-date-picker>
+      </el-form-item>
       <el-form-item label="驳回原因" prop="rejectReason">
-        <el-input type="textarea"
+        <el-input size="mini" type="textarea"
                   autosize
                   v-model="dataForm.rejectReason" placeholder="驳回原因"></el-input>
       </el-form-item>

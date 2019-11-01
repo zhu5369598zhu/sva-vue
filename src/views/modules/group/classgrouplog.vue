@@ -133,7 +133,7 @@
       style="width: 100%;">
       <el-table-column
         type="index"
-        width="50"
+        width="40"
         align="center"
         lable="">
       </el-table-column>
@@ -151,31 +151,35 @@
         prop="deptName"
         header-align="center"
         align="center"
+        min-width="80"
         label="车间(工段)">
       </el-table-column>
       <el-table-column
         prop="classGroupName"
         header-align="center"
         align="center"
-        width="100"
+        min-width="80"
         label="班组">
       </el-table-column>
       <el-table-column
         prop="baseTurnName"
         header-align="center"
         align="center"
+        min-width="80"
         label="班次">
       </el-table-column>
       <el-table-column
         prop="logTypeName"
         header-align="center"
         align="center"
+        min-width="80"
         label="日志类型">
       </el-table-column>
       <el-table-column
         prop="logStatusName"
         header-align="center"
         align="center"
+        min-width="80"
         label="日志状态">
         <template slot-scope="scope">
           <span v-if="scope.row.logStatusName =='!待确认'" style="color: #5daf34">{{scope.row.logStatusName}}</span>
@@ -186,32 +190,35 @@
         prop="noteTaker"
         header-align="center"
         align="center"
+        min-width="120"
         label="记录人">
       </el-table-column>
       <el-table-column
         prop="handoverPerson"
         header-align="center"
         align="center"
+        min-width="120"
         label="交班(底)人">
       </el-table-column>
       <el-table-column
         prop="successorName"
         header-align="center"
         align="center"
+        min-width="120"
         label="接班(底)人">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-        width="140"
+        min-width="140"
         label="交接(底)时间">
       </el-table-column>
       <el-table-column
         fixed="right"
         header-align="center"
         align="center"
-        width="150"
+        min-width="100"
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" v-if="scope.row.logStatus == '1'" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType)">修改</el-button>
@@ -230,216 +237,11 @@
         :visible.sync="dialogonevisible"
         v-if="dialogonevisible">
         <el-form :model="logdataForm"  ref="logdataForm"  label-width="80px">
-          日志编号:{{logdataForm.logNumber}}
+          <p style="margin-left: 10px;">日志编号:{{logdataForm.logNumber}}</p>
           <el-row>
             <el-col :span="8">
               <el-form-item label="部门(工段)" prop="deptId">
-                <el-input v-model="logdataForm.deptName" readonly></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="班组" prop="classGroupName">
-                <el-input v-model="logdataForm.classGroupName" style="width:120px;" readonly ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="班次" prop="baseTurnId">
-                <el-input v-model="logdataForm.baseTurnName" readonly></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="班长" prop="monitor">
-                <el-input v-model="logdataForm.monitor"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="应出勤人数" prop="shouldAttendance">
-                <el-input v-model="logdataForm.shouldAttendance"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="实出勤人数" prop="attendance">
-                <el-input v-model="logdataForm.attendance"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-form-item label="实到人员" prop="actualArrival">
-            <el-input v-model="logdataForm.actualArrival"  readonly></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span="4">
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="未到人员" prop="notArrived">
-                <el-input v-model="logdataForm.notArrived"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="顶班人员" prop="topArrived">
-                <el-input v-model="logdataForm.topArrived"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-            <el-input v-model="logdataForm.reasonsAbsence"  readonly></el-input>
-          </el-form-item>
-          <el-form-item label="接班记事" prop="successionRecord">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.successionRecord"  readonly></el-input>
-          </el-form-item>
-          <el-form-item label="当班记事" prop="onDuty">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.onDuty"  readonly></el-input>
-          </el-form-item>
-          <el-form-item label="上级通知" prop="superiorNotice">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.superiorNotice"  readonly></el-input>
-          </el-form-item>
-          <el-form-item label="交代事项" prop="accountConfession">
-            <el-input type="textarea"
-                      autosize
-                      v-model="logdataForm.accountConfession"  readonly></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="交班人" prop="handoverPerson">
-                <el-input v-model="logdataForm.handoverPerson"  readonly></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="接班人" prop="successor">
-                <el-input v-model="logdataForm.successor" readonly ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="交接时间" prop="createTime">
-                <el-input v-model="logdataForm.createTime" readonly></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </el-dialog>
-      <!-- 班前会详情-->
-      <el-dialog
-        v-dialog-drag
-        :title="logdataForm.logNumber ? '班前会详情' : '班前会详情'"
-        :close-on-click-modal="false"
-        :append-to-body='true'
-        :visible.sync="dialogtwovisible"
-        v-if="dialogtwovisible">
-        <el-form :model="logdataForm"  ref="logdataForm"  label-width="80px">
-        日志编号: {{logdataForm.logNumber}}
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="部门(工段)" prop="deptName">
-              <el-input v-model="logdataForm.deptName" readonly></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="班组" prop="classGroupName">
-              <el-input v-model="logdataForm.classGroupName" readonly></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="班次" prop="baseTurnName">
-              <el-input v-model="logdataForm.baseTurnName" readonly></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="班长" prop="monitor">
-              <el-input v-model="logdataForm.monitor" readonly></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="应出勤人数" prop="shouldAttendance">
-              <el-input v-model="logdataForm.shouldAttendance" readonly></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="实出勤人数" prop="attendance">
-              <el-input v-model="logdataForm.attendance" readonly></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="实到人员" prop="actualArrival">
-          <el-input v-model="logdataForm.actualArrival" readonly></el-input>
-        </el-form-item>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item  label="未到人员" prop="notArrived">
-              <el-input v-model="logdataForm.notArrived" readonly></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item  label="顶班人员" prop="topArrived">
-              <el-input v-model="logdataForm.topArrived" readonly></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item  label="缺勤原因" prop="reasonsAbsence">
-          <el-input v-model="logdataForm.reasonsAbsence" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="人员精神异常" prop="mentalException">
-          <el-input type="textarea" autosize v-model="logdataForm.mentalException" readonly></el-input>
-        </el-form-item>
-        <el-form-item  label="劳动防护用品异常" prop="protectiveException">
-          <el-input type="textarea" autosize v-model="logdataForm.protectiveException" readonly></el-input>
-        </el-form-item>
-        <el-form-item  label="工器具异常" prop="toolsException">
-          <el-input type="textarea" autosize v-model="logdataForm.toolsException" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="其他异常" prop="otherException">
-          <el-input type="textarea" autosize v-model="logdataForm.otherException" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="工作安排" prop="workTask">
-          <el-input type="textarea" autosize v-model="logdataForm.workTask" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="危险点" prop="dangerousPoint">
-          <el-input type="textarea" autosize v-model="logdataForm.dangerousPoint" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="防范措施" prop="preventiveMeasures">
-          <el-input type="textarea" autosize v-model="logdataForm.preventiveMeasures" readonly></el-input>
-        </el-form-item>
-          <el-form-item label="班组成员" prop="teamMembers">
-            <el-input v-model="logdataForm.teamMembers" readonly></el-input>
-          </el-form-item>
-        <el-row>
-          <el-col :span="7">
-            <el-form-item label="交底人" prop="manAgreement">
-              <el-input v-model="logdataForm.manAgreement" readonly ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="交接时间" prop="createTime">
-              <el-input v-model="logdataForm.createTime" readonly></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        </el-form>
-      </el-dialog>
-      <!-- 班后会详情-->
-      <el-dialog
-        v-dialog-drag
-        :title="dialogthreevisible ? '班后会详情' : '班后会详情'"
-        :close-on-click-modal="false"
-        :append-to-body='true'
-        :visible.sync="dialogthreevisible"
-        v-if="dialogthreevisible">
-        <el-form :model="logdataForm"  ref="logdataForm"  label-width="100px">
-          日志编号: {{logdataForm.logNumber}}
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="部门(工段)" prop="deptName">
-                <el-input size="mini" v-model="logdataForm.deptName"  readonly>
-                </el-input>
+                <el-input size="mini" v-model="logdataForm.deptName" readonly></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -471,33 +273,215 @@
             </el-col>
           </el-row>
           <el-form-item label="实到人员" prop="actualArrival">
-            <el-input size="mini" v-model="logdataForm.actualArrival" readonly>
-            </el-input>
+            <el-input size="mini" v-model="logdataForm.actualArrival"  readonly></el-input>
+          </el-form-item>
+          <el-form-item  label="未到人员" prop="notArrived">
+            <el-input size="mini" v-model="logdataForm.notArrived"  readonly></el-input>
+          </el-form-item>
+          <el-form-item  label="顶班人员" prop="topArrived">
+            <el-input size="mini" v-model="logdataForm.topArrived"  readonly></el-input>
+          </el-form-item>
+          <el-form-item  label="缺勤原因" prop="reasonsAbsence">
+            <el-input size="mini" v-model="logdataForm.reasonsAbsence"  readonly></el-input>
+          </el-form-item>
+          <el-form-item label="接班记事" prop="successionRecord">
+            <el-input size="mini" type="textarea"
+                      autosize
+                      v-model="logdataForm.successionRecord"  readonly></el-input>
+          </el-form-item>
+          <el-form-item label="当班记事" prop="onDuty">
+            <el-input size="mini" type="textarea"
+                      autosize
+                      v-model="logdataForm.onDuty"  readonly></el-input>
+          </el-form-item>
+          <el-form-item label="上级通知" prop="superiorNotice">
+            <el-input size="mini" type="textarea"
+                      autosize
+                      v-model="logdataForm.superiorNotice"  readonly></el-input>
+          </el-form-item>
+          <el-form-item label="交代事项" prop="accountConfession">
+            <el-input size="mini" type="textarea"
+                      autosize
+                      v-model="logdataForm.accountConfession"  readonly></el-input>
           </el-form-item>
           <el-row>
-            <el-col :span="8">
-              <el-form-item label="未到人员" prop="notArrived">
-                <el-input size="mini" v-model="logdataForm.notArrived" readonly>
-                </el-input>
+            <el-col :span="12">
+              <el-form-item label="交班人" prop="handoverPerson">
+                <el-input size="mini" v-model="logdataForm.handoverPerson"  readonly></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
-              <el-form-item label="顶班人员" prop="topArrived">
-                <el-input size="mini" v-model="logdataForm.topArrived" readonly>
-                </el-input>
+            <el-col :span="12">
+              <el-form-item label="接班人" prop="successor">
+                <el-input size="mini" v-model="logdataForm.successor" readonly ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
+          <el-form-item label="交接时间" prop="createTime">
+            <el-input size="mini" v-model="logdataForm.createTime" readonly></el-input>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <!-- 班前会详情-->
+      <el-dialog
+        v-dialog-drag
+        :title="logdataForm.logNumber ? '班前会详情' : '班前会详情'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogtwovisible"
+        v-if="dialogtwovisible">
+        <el-form :model="logdataForm"  ref="logdataForm" label-width="110px">
+        <p style="margin-left: 40px;">日志编号: {{logdataForm.logNumber}}</p>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="部门(工段)" prop="deptName">
+              <el-input size="mini" v-model="logdataForm.deptName" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="班组" prop="classGroupName" label-width="90px">
+              <el-input size="mini" v-model="logdataForm.classGroupName" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="班次" prop="baseTurnName" label-width="90px">
+              <el-input size="mini" v-model="logdataForm.baseTurnName" readonly></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="班长" prop="monitor">
+              <el-input size="mini" v-model="logdataForm.monitor" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="应出勤人数" prop="shouldAttendance" label-width="90px">
+              <el-input size="mini" v-model="logdataForm.shouldAttendance" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="实出勤人数" prop="attendance" label-width="90px">
+              <el-input size="mini" v-model="logdataForm.attendance" readonly></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="实到人员" prop="actualArrival">
+          <el-input size="mini" v-model="logdataForm.actualArrival" readonly></el-input>
+        </el-form-item>
+        <el-form-item  label="未到人员" prop="notArrived">
+          <el-input size="mini" v-model="logdataForm.notArrived" readonly></el-input>
+        </el-form-item>
+        <el-form-item  label="顶班人员" prop="topArrived">
+          <el-input size="mini" v-model="logdataForm.topArrived" readonly></el-input>
+        </el-form-item>
+        <el-form-item  label="缺勤原因" prop="reasonsAbsence">
+          <el-input size="mini" v-model="logdataForm.reasonsAbsence" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="人员精神异常" prop="mentalException">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.mentalException" readonly></el-input>
+        </el-form-item>
+        <el-form-item  label="劳动防护用品异常" prop="protectiveException">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.protectiveException" readonly></el-input>
+        </el-form-item>
+        <el-form-item  label="工器具异常" prop="toolsException">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.toolsException" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="其他异常" prop="otherException">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.otherException" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="工作安排" prop="workTask">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.workTask" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="危险点" prop="dangerousPoint">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.dangerousPoint" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="防范措施" prop="preventiveMeasures">
+          <el-input size="mini" type="textarea" autosize v-model="logdataForm.preventiveMeasures" readonly></el-input>
+        </el-form-item>
+          <el-form-item label="班组成员" prop="teamMembers">
+            <el-input size="mini" v-model="logdataForm.teamMembers" readonly></el-input>
+          </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="交底人" prop="manAgreement">
+              <el-input size="mini" v-model="logdataForm.manAgreement" readonly ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="交接时间" prop="createTime">
+              <el-input size="mini" v-model="logdataForm.createTime" readonly></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        </el-form>
+      </el-dialog>
+      <!-- 班后会详情-->
+      <el-dialog
+        v-dialog-drag
+        :title="dialogthreevisible ? '班后会详情' : '班后会详情'"
+        :close-on-click-modal="false"
+        :append-to-body='true'
+        :visible.sync="dialogthreevisible"
+        v-if="dialogthreevisible">
+        <el-form :model="logdataForm"  ref="logdataForm"  label-width="110px" style="margin-left: -8px;">
+          <p style="margin-left: 41px;">日志编号: {{logdataForm.logNumber}}</p>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="部门(工段)" prop="deptName">
+                <el-input size="mini" v-model="logdataForm.deptName"  readonly>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="班组" prop="classGroupName" label-width="90px">
+                <el-input size="mini" v-model="logdataForm.classGroupName" readonly></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="班次" prop="baseTurnName" label-width="90px">
+                <el-input size="mini" v-model="logdataForm.baseTurnName" readonly></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="班长" prop="monitor">
+                <el-input size="mini" v-model="logdataForm.monitor" readonly></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="应出勤人数" prop="shouldAttendance" label-width="90px">
+                <el-input size="mini" v-model="logdataForm.shouldAttendance" readonly></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="实出勤人数" prop="attendance" label-width="90px">
+                <el-input size="mini" v-model="logdataForm.attendance" readonly></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="实到人员" prop="actualArrival">
+            <el-input size="mini" v-model="logdataForm.actualArrival" readonly>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="未到人员" prop="notArrived">
+            <el-input size="mini" v-model="logdataForm.notArrived" readonly>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="顶班人员" prop="topArrived">
+            <el-input size="mini" v-model="logdataForm.topArrived" readonly>
+            </el-input>
+          </el-form-item>
           <el-form-item label="缺勤原因" prop="reasonsAbsence">
             <el-input size="mini" v-model="logdataForm.reasonsAbsence" readonly></el-input>
           </el-form-item>
           <el-form-item  label="人员精神异常" prop="mentalException">
             <el-input size="mini" type="textarea" autosize v-model="logdataForm.mentalException" readonly></el-input>
           </el-form-item>
-          <el-form-item  label="劳动防护用品异常描述" prop="protectiveException">
+          <el-form-item  label="劳动防护用品异常" prop="protectiveException">
             <el-input size="mini" type="textarea" autosize v-model="logdataForm.protectiveException" readonly></el-input>
           </el-form-item>
-          <el-form-item  label="工器具异常描述" prop="toolsException">
+          <el-form-item  label="工器具异常" prop="toolsException">
             <el-input size="mini" type="textarea" autosize v-model="logdataForm.toolsException" readonly></el-input>
           </el-form-item>
           <el-form-item label="其他异常" prop="otherException">
@@ -514,14 +498,14 @@
             </el-input>
           </el-form-item>
           <el-row>
-            <el-col :span="7">
-              <el-form-item label="负责人" prop="personCharge">
+            <el-col :span="12">
+              <el-form-item label="负责人" prop="personCharge" style="width: 300px;">
                 <el-input size="mini" v-model="logdataForm.personCharge" readonly></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
-              <el-form-item label="交接时间" prop="createTime">
-                <el-input size="mini" v-model="logdataForm.createTime" style="width: 160px" readonly></el-input>
+            <el-col :span="12">
+              <el-form-item label="交接时间" prop="createTime" label-width="120px">
+                <el-input size="mini" v-model="logdataForm.createTime" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>

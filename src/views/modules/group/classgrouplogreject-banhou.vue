@@ -4,8 +4,8 @@
     :title="!dataForm.classId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="100px">
-    班后会日志(修改中)  &nbsp; &nbsp;&nbsp;&nbsp;   日志编号: {{dataForm.logNumber}}
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="100px" style="margin-left: -10px;">
+    <p style="margin-left: 32px;">班后会日志(修改中)  &nbsp; &nbsp;&nbsp;&nbsp;   日志编号: {{dataForm.logNumber}}</p>
     <el-row>
       <el-col :span="8">
         <el-form-item label="部门(工段)" prop="deptName">
@@ -26,7 +26,7 @@
               :expand-on-click-node="false" clearable >
             </el-tree>
           </el-popover>
-          <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" style="width:140px;" placeholder="部门" >
+          <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" class="dept-list__input" placeholder="部门" >
           </el-input>
         </el-form-item>
       </el-col>
@@ -37,7 +37,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="班次" prop="baseTurnId">
-          <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable style="width:120px;" size="mini">
+          <el-select v-model="dataForm.baseTurnId" placeholder="请选择班次" clearable size="mini">
             <el-option
               v-for="item in TurnList"
               :key="item.id"
@@ -68,21 +68,21 @@
       <el-form-item label="实到人员" prop="actualArrival">
         <el-input size="mini" v-model="dataForm.actualArrival" placeholder="实到人员" :disabled="true">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('实到人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('实到人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
       <el-form-item label="未到人员" prop="notArrived">
         <el-input size="mini" v-model="dataForm.notArrived" placeholder="未到人员">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('未到人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
       <el-form-item label="顶班人员" prop="topArrived">
         <el-input size="mini" v-model="dataForm.topArrived" placeholder="顶班人员">
           <span slot="suffix">
-            <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
+            <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('顶班人员')" ></a>
           </span>
         </el-input>
       </el-form-item>
@@ -93,21 +93,21 @@
         <el-radio v-model="dataForm.personnelMentalState" label="1">正常</el-radio>
         <el-radio v-model="dataForm.personnelMentalState" label="2">异常</el-radio>
       </el-form-item>
-      <el-form-item v-if="dataForm.personnelMentalState === '2'" label="人员精神异常描述" prop="mentalException">
+      <el-form-item v-if="dataForm.personnelMentalState === '2'" label="异常描述" prop="mentalException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.mentalException" placeholder="人员精神异常描述"></el-input>
       </el-form-item>
       <el-form-item label="劳动防护用品" prop="laborProtectiveArticles">
         <el-radio v-model="dataForm.laborProtectiveArticles" label="1">正常</el-radio>
         <el-radio v-model="dataForm.laborProtectiveArticles" label="2">异常</el-radio>
       </el-form-item>
-      <el-form-item v-if="dataForm.laborProtectiveArticles ==='2'" label="劳动防护用品异常描述" prop="protectiveException">
+      <el-form-item v-if="dataForm.laborProtectiveArticles ==='2'" label="异常描述" prop="protectiveException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.protectiveException" placeholder="劳动防护用品异常描述"></el-input>
       </el-form-item>
       <el-form-item label="工器具状态" prop="tools">
         <el-radio v-model="dataForm.tools" label="1">正常</el-radio>
         <el-radio v-model="dataForm.tools" label="2">异常</el-radio>
       </el-form-item>
-      <el-form-item v-if="dataForm.tools === '2'" label="工器具异常描述" prop="toolsException">
+      <el-form-item v-if="dataForm.tools === '2'" label="异常描述" prop="toolsException">
         <el-input size="mini" type="textarea" autosize v-model="dataForm.toolsException" placeholder="工器具异常描述"></el-input>
       </el-form-item>
       <el-form-item label="其他异常" prop="otherException">
@@ -120,21 +120,21 @@
         <el-input size="mini" type="textarea" autosize v-model="dataForm.workSummary" placeholder="工作总结"></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="负责人" prop="personCharge">
             <el-input size="mini" v-model="dataForm.personCharge" placeholder="负责人" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="交底时间" prop="createTime">
-            <el-date-picker v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:180px;"></el-date-picker>
+            <el-date-picker size="mini" v-model="dataForm.createTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  @change="handleStartTimeChange" :picker-options="startDatePicker" style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="班组成员" prop="teamMembers">
         <el-input size="mini" v-model="dataForm.teamMembers" :disabled="true" placeholder="班组成员">
               <span slot="suffix">
-                <a  href="#"><img alt="" style="height: 25px;width: 25px" src="./../../../../static/img/renren.jpg" @click="clickTitle('班组成员')" ></a>
+                <a  href="#"><img alt="" style="height: 25px;width: 25px; margin-top: -4px;" src="./../../../../static/img/renren.jpg" @click="clickTitle('班组成员')" ></a>
               </span>
         </el-input>
       </el-form-item>

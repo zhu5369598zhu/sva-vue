@@ -122,6 +122,7 @@
             :page-sizes="[5, 10, 20, 50]"
             :page-size="linePageSize"
             :total="lineTotalPage"
+            style="margin-bottom: 5px;"
             layout="total, sizes, prev, pager, next, jumper">
           </el-pagination>
           <!-- 弹窗, 新增 / 修改 -->
@@ -141,6 +142,7 @@
             <el-table
               :data="classGroupList"
               border
+              height="10px"
               v-loading="classGroupListLoading"
               @selection-change="classGroupSelectionChangeHandle"
               :cell-style="cellStyle"

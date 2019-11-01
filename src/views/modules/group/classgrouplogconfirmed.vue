@@ -70,7 +70,7 @@
       style="width: 100%;">
       <el-table-column
         type="index"
-        width="50"
+        width="40"
         align="center"
         lable="">
       </el-table-column>
@@ -85,23 +85,27 @@
         prop="deptName"
         header-align="center"
         align="center"
+        min-width="100"
         label="车间(工段)">
       </el-table-column>
       <el-table-column
         prop="classGroupName"
         header-align="center"
         align="center"
+        min-width="60"
         label="班组">
       </el-table-column>
       <el-table-column
         prop="baseTurnName"
         header-align="center"
         align="center"
+        min-width="60"
         label="班次">
       </el-table-column>
       <el-table-column
         prop="logTypeName"
         header-align="center"
+        min-width="80"
         align="center"
         label="日志类型">
       </el-table-column>
@@ -109,6 +113,7 @@
         prop="logStatusName"
         header-align="center"
         align="center"
+        min-width="80"
         label="日志状态">
         <template slot-scope="scope">
           <span v-if="scope.row.logStatusName =='!待确认'" style="color: #5daf34">{{scope.row.logStatusName}}</span>
@@ -119,11 +124,13 @@
         prop="noteTaker"
         header-align="center"
         align="center"
+        min-width="120"
         label="记录人">
       </el-table-column>
       <el-table-column
         prop="handoverPerson"
         header-align="center"
+        min-width="120"
         align="center"
         label="交班(底)人">
       </el-table-column>
@@ -131,19 +138,21 @@
         prop="successor"
         header-align="center"
         align="center"
+        min-width="120"
         label="接班(底)人">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
+        min-width="160"
         label="交接(底)时间">
       </el-table-column>
       <el-table-column
         fixed="right"
         header-align="center"
         align="center"
-        width="150"
+        min-width="100"
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="mini" v-if="scope.row.newsCounts >0" @click="updateHandle(scope.row.classId,scope.row.logStatus,scope.row.logType,scope.row.logNumber)">去确认</el-button>
