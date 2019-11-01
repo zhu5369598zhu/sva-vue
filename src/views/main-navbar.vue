@@ -3,7 +3,6 @@
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
         <a  v-if="sidebarFold===false" class="site-navbar__brand-lg" href="javascript:;">智慧云点巡检管理系统</a>
-        <a v-if="sidebarFold===true" class="site-navbar__brand-mini" href="javascript:;">巡检</a>
         <a  v-if="sidebarFold===false" class="site-navbar__brand-lg" href="javascript:;"><img style="height: 35px;" src="../../static/img/logo.png"></a>
         <a v-if="sidebarFold===true" class="site-navbar__brand-mini" href="javascript:;"><img style="height: 30px;" src="../../static/img/tologo.png"><!--巡检--></a>
       </h1>
