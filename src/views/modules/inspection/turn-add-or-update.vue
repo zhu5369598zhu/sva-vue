@@ -114,6 +114,10 @@
       // 表单提交
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
+          if(this.dataForm.startTime === this.dataForm.endTime){
+            this.$alert('开始时间结束时间不能重复')
+            return;
+          }
           if (valid) {
             this.isHttp = true
             this.$http({

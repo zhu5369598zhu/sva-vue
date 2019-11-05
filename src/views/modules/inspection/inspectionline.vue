@@ -300,11 +300,6 @@
                 align="center">
               </el-table-column>
               <el-table-column
-                type="index"
-                header-align="center"
-                align="center">
-              </el-table-column>
-              <el-table-column
                 prop="name"
                 header-align="center"
                 align="center"

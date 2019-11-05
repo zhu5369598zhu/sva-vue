@@ -326,6 +326,7 @@
       this.getInspectionTypeList()
       this.getDeviceStatusList()
       this.getDataList()
+      this.getChartData()
     },
     methods: {
       beginDate () {

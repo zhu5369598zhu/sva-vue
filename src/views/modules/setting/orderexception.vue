@@ -30,7 +30,7 @@
         prop="id"
         header-align="center"
         align="center"
-        label="缺陷异常id">
+        label="#">
       </el-table-column>
       <el-table-column
         prop="name"

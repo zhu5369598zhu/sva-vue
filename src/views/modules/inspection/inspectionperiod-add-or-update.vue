@@ -24,7 +24,6 @@
     </el-form-item>
     <el-form-item label="频度" prop="frequency">
       <el-input-number v-model="dataForm.frequency" controls-position="right" :disabled="dataForm.periodType!==1" :min="minFrequency" :max="maxFrequency" label="频度"></el-input-number>
-    </el-form-item> 
     </el-form-item>
     <el-form-item label="跨度起点" prop="startPoint">
       <el-input-number v-model="dataForm.startPoint" controls-position="right" :min="minStartPoint" :max="maxStartPoint" label="跨度起点"></el-input-number>

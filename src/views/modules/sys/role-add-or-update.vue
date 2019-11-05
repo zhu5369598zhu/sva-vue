@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-dialog-drag 
+    v-dialog-drag
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
@@ -129,6 +129,6 @@
 
 <style>
   .souquan .el-form-item__label{
-    margin-top: -6px;
+    margin-top: -2px;
   }
 </style>
