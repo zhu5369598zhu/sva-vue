@@ -109,7 +109,8 @@
       return {
         dataForm: {
           key: '',
-          deptId: null
+          deptId: null,
+          pdaName: null
         },
         tableHeight: 300,
         isDrawBack: false,
@@ -131,6 +132,8 @@
       splitPane
     },
     activated () {
+      // 接收巡线传递过来的数据
+      this.dataForm.pdaName = this.$route.params.pdaName
       this.getDataList()
     },
     methods: {

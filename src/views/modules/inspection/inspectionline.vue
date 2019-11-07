@@ -400,6 +400,9 @@
                 header-align="center"
                 align="center"
                 label="名称">
+                <template slot-scope="scope">
+                  <a href="#" style="text-decoration: none;color: black;"><span  @click=clickToZone(scope.row.zoneName)>{{scope.row.zoneName}}</span></a>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="zoneCode"
@@ -464,6 +467,9 @@
                 header-align="center"
                 align="center"
                 label="Pda名称">
+                <template slot-scope="scope">
+                  <a href="#" style="text-decoration: none;color: black;"><span  @click=clickToPda(scope.row.pdaName)>{{scope.row.pdaName}}</span></a>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="pdaMac"
@@ -1235,6 +1241,22 @@
               this.$message.error(data.msg)
             }
           })
+        }
+      },
+      // 跳转到 对应的巡区页面
+      clickToZone (zoneName) {
+        if (this.isAuth('inspection:zone:list')) {
+          this.$router.push({name: 'inspection-zone', params: {zoneName: zoneName}})
+        } else {
+          this.$alert('您没有开通页面权限')
+        }
+      },
+      // 跳转到 对应的Pda 页面
+      clickToPda (pdaName) {
+        if(this.isAuth('inspection:pda:list')){
+          this.$router.push({name: 'inspection-pda', params: {pdaName: pdaName}})
+        } else {
+          this.$alert('您没有开通页面权限')
         }
       }
     }

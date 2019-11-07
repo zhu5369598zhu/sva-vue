@@ -427,6 +427,8 @@
       TableTreeColumn
     },
     activated () {
+      // 接收前端传过来的数据
+      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.dataForm.startTime = new Date()
       this.dataForm.startTime.setDate(this.dataForm.startTime.getDate() - 7)
       this.getDeptList()
@@ -715,7 +717,6 @@
       }
     },
     mounted: function () {
-      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })

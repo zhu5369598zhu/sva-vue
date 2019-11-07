@@ -367,7 +367,7 @@
       </el-dialog>
       <!-- 申请延期-->
       <el-dialog
-        v-dialog-drag 
+        v-dialog-drag
         :title="orderDataForm.orderNumber ? '工单详情页' : '修改'"
         :close-on-click-modal="false"
         :append-to-body='true'
@@ -594,6 +594,8 @@
       TableTreeColumn
     },
     activated () {
+      // 接收首页传过来的数据
+      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.getDataList()
       this.getDeptList()
       this.getdeptDataList()   // 部门查询
@@ -1097,7 +1099,6 @@
       }
     },
     mounted: function () {
-      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
 

@@ -334,6 +334,8 @@
       splitPane
     },
     activated () {
+      // 接收首页传过来的数据
+      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.getDataList()
       this.getDeptList()
     },
@@ -614,7 +616,6 @@
       }
     },
     mounted: function () {
-      this.dataForm.orderNumber = this.$route.params.orderNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
 

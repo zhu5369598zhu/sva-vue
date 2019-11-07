@@ -174,6 +174,7 @@
       return {
         dataForm: {
           zoneId: null,
+          zoneName: null,
           deptId: 0
         },
         tableHeight: 210,
@@ -207,6 +208,8 @@
       importResult
     },
     activated () {
+      // 接收巡线传递过来的数据
+      this.dataForm.zoneName = this.$route.params.zoneName
       this.search()
     },
     methods: {

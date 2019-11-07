@@ -14,11 +14,10 @@
       border
       style="width: 100%;">
       <el-table-column
-        prop="menuId"
+        type="index"
         header-align="center"
         align="center"
-        width="80"
-        label="ID">
+        width="80">
       </el-table-column>
       <table-tree-column
         prop="name"

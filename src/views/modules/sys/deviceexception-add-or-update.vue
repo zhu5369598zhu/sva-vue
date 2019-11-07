@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-dialog-drag 
+    v-dialog-drag
     :title="!dataForm.id ? '推送规则' : '推送规则'"
     :close-on-click-modal="false"
     v-if="visible"
@@ -22,7 +22,7 @@
       <el-radio v-model="dataForm.ddOk" :label="1">正常</el-radio>
       <el-radio v-model="dataForm.ddOk" :label="0">禁用</el-radio>
     </el-form-item>
-    <el-form-item size="mini" label="授权">
+    <el-form-item size="mini"  label="授权">
       <el-tree
         :data="messageList"
         :props="messageListTreeProps"

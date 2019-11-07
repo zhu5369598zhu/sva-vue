@@ -750,6 +750,8 @@
 
     },
     activated () {
+      // 接收首页传过来的数据
+      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.getDataList()
       this.getDeptList()
       this.getDeptDataList()
@@ -1178,7 +1180,6 @@
       }
     },
     mounted: function () {
-      this.dataForm.defectiveNumber = this.$route.params.defectiveNumber
       this.$nextTick(function () {
         this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 105 - 32 - 20
       })
