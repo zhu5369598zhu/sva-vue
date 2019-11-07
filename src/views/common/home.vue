@@ -599,6 +599,12 @@ export default {
             })
           }).then(({data}) => {
             if (data.list.length > 0) {
+              for(var i = data.list.length - 1; i > 0; i--){
+                if (data.list[i].inspectionType === 2 || data.list[i].inspectionType === 8 || data.list[i].inspectionType === 9 ) {
+                  console.log(data.list[i])
+                  data.list.splice(i,1)
+                }
+              }
               this.itemList = data.list
               this.dataForm.itemId = data.list[0].id
               if (this.dataForm.itemId > 0) {
@@ -651,7 +657,6 @@ export default {
             'date': this.finishStartTime
           })
         }).then(({data}) => {
-          console.log(data.status)
           if (data && data.code === 0) {
             if(data.status[0] != null){
               let tmpRate = 0
@@ -663,7 +668,7 @@ export default {
               }else{
                 tmpRate = this.inspectedItemSum/this.inspectItemSum
               }
-              this.completionRate = '已完成' + parseFloat(tmpRate*100).toFixed(2) + '%'
+              this.completionRate = '已完成' + parseFloat(tmpRate*100).toFixed(4) + '%'
             }else{
               this.inspectedItemSum = 0
               this.inspectItemSum = 100
