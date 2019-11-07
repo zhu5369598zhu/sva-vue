@@ -12,7 +12,7 @@
       <el-form-item label="备注" prop="remark">
         <el-input size="mini" v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
-      <el-form-item size="mini" label="授权" class="souquan">
+      <el-form-item size="mini" label="授权" class="souquan" prop="menus">
         <el-tree
           :data="menuList"
           :props="menuListTreeProps"
@@ -50,12 +50,23 @@
         dataRule: {
           roleName: [
             { required: true, message: '角色名称不能为空', trigger: 'change' }
+          ],
+          menus:[
+            { required: true, validator:this.validateMenus, trigger: 'blur' }
           ]
         },
         tempKey: -666666 // 临时key, 用于解决tree半选中状态项不能传给后台接口问题. # 待优化
       }
     },
     methods: {
+      validateMenus (rule, alue, callback) {
+        var menus = [].concat(this.$refs.menuListTree.getCheckedKeys(), [this.tempKey], this.$refs.menuListTree.getHalfCheckedKeys())
+        console.log(menus.length)
+        if (menus.length <= 1) {
+          return callback(new Error('授权不能为空'))
+        }
+        return callback()
+      },
       init (id) {
         this.dataForm.id = id || 0
         this.isHttp = false
