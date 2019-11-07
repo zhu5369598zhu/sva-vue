@@ -32,18 +32,6 @@
     methods: {
       initChart (chartElement) {
         var option = {
-          title: {
-            text: this.title,
-            x: 'center',
-            y: 'center',
-            itemGap: 10,
-            textStyle : {
-              color : '#06aef9',
-              fontFamily : '微软雅黑',
-              fontSize : 18,
-              fontWeight : 'bolder'
-            }
-          },
           color: ['#06aef9', '#0366df'],
           tooltip: {
             trigger: 'item',
@@ -91,7 +79,25 @@
                 }
               },
               data: [
-                {value: this.a, name: '已完成'},
+                {
+                  value: this.a, 
+                  name: '已完成',
+                  label: {
+                    normal: {
+                      formatter: function(params){
+                        return "已完成" + params.percent + "%";
+                      },
+                      position: 'center',
+                      show: true,
+                      textStyle : {
+                        color : '#06aef9',
+                        fontFamily : '微软雅黑',
+                        fontSize : 18,
+                        fontWeight : 'bolder'
+                      }
+                    }
+                  },
+                },
                 {value: this.b, name: '未完成'}
               ]
             }
