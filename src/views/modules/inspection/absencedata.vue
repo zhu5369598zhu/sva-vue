@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-absencedata">
+  <div class="mod-absencedata" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -318,15 +318,11 @@
         this.getChartData()
       },
       drawChart () {
+        console.log(this.chartType)
         if (this.hasData === true) {
           if (this.chartType === 'chartbar') {
             this.$nextTick(() => {
               this.$refs.chartbar.initChart(this.chartType)
-            })
-          }
-          if (this.chartType === 'chartpie') {
-            this.$nextTick(() => {
-              this.$refs.chartpie.initChart(this.chartType)
             })
           }
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-missingturn">
+  <div class="mod-missingturn" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -86,25 +86,74 @@
                 label="轮次">
               </el-table-column>
               <el-table-column
+                prop="inspectDeviceCount"
+                header-align="center"
+                align="center"
+                width="100"
+                label="应检设备数量">
+              </el-table-column>
+              <el-table-column
+                prop="inspectedDeviceCount"
+                header-align="center"
+                align="center"
+                width="100"
+                label="已检设备数量">
+              </el-table-column>
+              <el-table-column
+                prop="inspectMissDeviceCount"
+                header-align="center"
+                align="center"
+                width="100"
+                label="设备漏检数量">
+              </el-table-column>
+              <el-table-column
+                prop="inspectMissDeviceRate"
+                header-align="center"
+                align="center"
+                width="100"
+                label="设备漏检率">
+              </el-table-column>
+              <el-table-column
                 prop="inspectItemCount"
                 header-align="center"
                 align="center"
-                width="80"
-                label="应检数量">
+                width="100"
+                label="应检巡项数量">
               </el-table-column>
               <el-table-column
                 prop="inspectedItemCount"
                 header-align="center"
                 align="center"
-                width="80"
-                label="已检数量">
+                width="100"
+                label="已检巡项数量">
               </el-table-column>
               <el-table-column
                 prop="inspectMissItemCount"
                 header-align="center"
                 align="center"
-                width="140"
-                label="漏检数量">
+                width="100"
+                label="漏检巡项数量">
+              </el-table-column>
+              <el-table-column
+                prop="inspectMissItemRate"
+                header-align="center"
+                align="center"
+                width="100"
+                label="巡项漏检率">
+              </el-table-column>
+              <el-table-column
+                prop="inspectStartDate"
+                header-align="center"
+                align="center"
+                width="100"
+                label="查询开始时间">
+              </el-table-column>
+              <el-table-column
+                prop="inspectEndDate"
+                header-align="center"
+                align="center"
+                width="100"
+                label="查询结束时间">
               </el-table-column>
             </el-table>
           <el-pagination
@@ -242,6 +291,7 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
+            console.log(this.dataList)
             this.totalPage = data.page.totalCount
           } else {
             this.dataList = []
@@ -315,11 +365,6 @@
           if (this.chartType === 'chartbar') {
             this.$nextTick(() => {
               this.$refs.chartbar.initChart(this.chartType)
-            })
-          }
-          if (this.chartType === 'chartpie') {
-            this.$nextTick(() => {
-              this.$refs.chartpie.initChart(this.chartType)
             })
           }
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-absencedata">
+  <div class="mod-absencedata" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -79,21 +79,21 @@
                 label="巡检线路">
               </el-table-column>
               <el-table-column
-                prop="inspectDeviceCount"
+                prop="inspectCount"
                 header-align="center"
                 align="center"
                 width="80"
                 label="应检次数">
               </el-table-column>
               <el-table-column
-                prop="inspectedDeviceCount"
+                prop="inspectedCount"
                 header-align="center"
                 align="center"
                 width="80"
                 label="已检次数">
               </el-table-column>
               <el-table-column
-                prop="mustInspectDeviceCount"
+                prop="mustInspectCount"
                 header-align="center"
                 align="center"
                 width="140"
@@ -337,7 +337,7 @@
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['所属机构', '巡检线路', '应检次数', '已检次数', '缺勤次数', '缺勤率', '查询开始时间', '查询结束时间']
-          const filterVal = ['deptName', 'lineName', 'inspectDeviceCount','inspectedDeviceCount', 'mustInspectDeviceCount','inspectRate', 'inspectStartDate', 'inspectEndDate']
+          const filterVal = ['deptName', 'lineName', 'inspectCount','inspectedCount', 'mustInspectCount','inspectRate', 'inspectStartDate', 'inspectEndDate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

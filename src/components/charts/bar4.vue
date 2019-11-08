@@ -47,7 +47,7 @@
           }
         }
         var option = {
-          color: ['#e3724e', '#30a231', '#224190'],
+          color: ['#e3724e', '#30a231', '#257ae2'],
           tooltip: {
             trigger: 'axis'
           },

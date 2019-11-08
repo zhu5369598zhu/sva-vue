@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-absencedata">
+  <div class="mod-absencedata" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -86,14 +86,14 @@
                 label="轮次">
               </el-table-column>
               <el-table-column
-                prop="inspectDeviceCount"
+                prop="inspectCount"
                 header-align="center"
                 align="center"
                 width="140"
                 label="应检次数">
               </el-table-column>
               <el-table-column
-                prop="inspectedDeviceCount"
+                prop="inspectedCount"
                 header-align="center"
                 align="center"
                 width="140"

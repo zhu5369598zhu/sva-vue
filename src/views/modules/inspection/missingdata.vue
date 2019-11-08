@@ -1,5 +1,5 @@
 <template>
-  <div class="mod-missingdata">
+  <div class="mod-missingdata" style="height: 100%;">
     <div class="show-data-content">
     <split-pane split="vertical" ref="splitPane"  :min-percent="0" :default-percent="curPercent" @resize="resize">
       <template slot="paneL" >
@@ -95,7 +95,8 @@
                 prop="inspectionDate"
                 header-align="center"
                 align="center"
-                label="应该日期">
+                width="140"
+                label="应检日期">
               </el-table-column>
               <el-table-column
                 prop="startTime"
