@@ -31,7 +31,7 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="巡检类型" prop="inspectionType">
-              <el-select v-model="dataForm.inspectionType" placeholder="巡检类型" clearable style="width:155px;" size="mini">
+              <el-select v-model="dataForm.inspectionType" @change="changeInspectionType()" placeholder="巡检类型" clearable style="width:155px;" size="mini">
                 <el-option
                   v-for="item in inspectionTypeList"
                   :key="item.id"
@@ -105,7 +105,7 @@
        <el-col :span="10">
          <el-form-item label="上限" prop="upLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.upUsed">报警</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.upUsed" v-model="dataForm.upLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mini" style="width:125px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.upUsed" v-model="dataForm.upLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mininum" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
        <el-col :span="3">
@@ -114,7 +114,7 @@
        <el-col :span="10">
         <el-form-item label="上上限" prop="upupLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
           <el-checkbox v-model="dataForm.upupUsed">危险</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-          <el-input-number :disabled="!dataForm.upupUsed" v-model="dataForm.upupLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mini" style="width:125px;"></el-input-number>
+          <el-input-number :disabled="!dataForm.upupUsed" v-model="dataForm.upupLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mininum" style="width:125px;"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
@@ -122,7 +122,7 @@
        <el-col :span="10">
          <el-form-item label="下限" prop="downLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.downUsed">报警</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.downUsed" v-model="dataForm.downLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mini" style="width:125px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.downUsed" v-model="dataForm.downLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mininum" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
        <el-col :span="3">
@@ -131,7 +131,7 @@
        <el-col :span="10">
          <el-form-item label="下下限" prop="downdownLimit" v-if="dataForm.inspectionType !== 9 && dataForm.inspectionType !== 8 && dataForm.inspectionType !== 2">
            <el-checkbox v-model="dataForm.downdownUsed">危险</el-checkbox><span>&nbsp;&nbsp;&nbsp;</span>
-           <el-input-number :disabled="!dataForm.downdownUsed" v-model="dataForm.downdownLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mini" style="width:125px;"></el-input-number>
+           <el-input-number :disabled="!dataForm.downdownUsed" v-model="dataForm.downdownLimit" :precision="precision" controls-position="right" value="0.00"  :step="0.10" :min="mininum" style="width:125px;"></el-input-number>
          </el-form-item>
       </el-col>
     </el-row>
@@ -172,7 +172,7 @@
         precisionList: [],
         extraSettingVisible: false,
         presuppositionSettingVisible: false,
-        mini: 0,
+        mininum: -999999,
         dataForm: {
           id: 0,
           deviceId: '',
@@ -262,6 +262,25 @@
           return callback(new Error('上上限值不能小于上限值'))
         }
         return callback()
+      },
+      changeInspectionType(){
+        if(this.dataForm.inspectionType === 1){ // 温度
+          this.mininum = -99999;
+        }else {
+          this.mininum = 0
+          if(this.dataForm.upUsed){
+            this.dataForm.upLimit = 0.00
+          }
+          if(this.dataForm.upupUsed){
+            this.dataForm.upupLimit = 0.00
+          }
+          if(this.dataForm.downUsed){
+            this.dataForm.downLimit = 0.00
+          }
+          if(this.dataForm.downdownUsed){
+            this.dataForm.downdownLimit = 0.00
+          }
+        }
       },
       getUnitList () {
         if (this.unitList <= 0) {
@@ -483,10 +502,8 @@
             this.dataForm.downdownLimit = ''
           }
           if(newVal !== 1) {
-            this.mini = 0
             this.dataForm.emissivity = ''
           }else{
-            this.mini = -999999
             if(this.dataForm.emissivity === '') {
               this.dataForm.emissivity = '0.950'
             }
@@ -507,7 +524,6 @@
             }
           }
         }
-        console.log(this.dataForm.inspectionUnit)
       }
     }
   }

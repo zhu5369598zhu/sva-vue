@@ -22,7 +22,7 @@
       <el-radio v-model="dataForm.ddOk" :label="1">正常</el-radio>
       <el-radio v-model="dataForm.ddOk" :label="0">禁用</el-radio>
     </el-form-item>
-    <el-form-item size="mini"  label="授权">
+    <el-form-item size="mini"  label="授权" prop="menus">
       <el-tree
         :data="messageList"
         :props="messageListTreeProps"
@@ -79,12 +79,23 @@
           ],
           deviceSmsType: [
             { required: true, message: '推送规则（1.按照用户推广，2按照角色推广）不能为空', trigger: 'blur' }
+          ],
+          menus:[
+            { required: true, validator:this.validateMenus, trigger: 'blur' }
           ]
         },
         tempKey: -666666 // 临时key, 用于解决tree半选中状态项不能传给后台接口问题. # 待优化
       }
     },
     methods: {
+      validateMenus (rule, alue, callback) {
+        var menus = [].concat(this.$refs.userListTree.getCheckedKeys(), [this.tempKey], this.$refs.userListTree.getHalfCheckedKeys())
+        console.log(menus.length)
+        if (menus.length <= 1) {
+          return callback(new Error('授权不能为空'))
+        }
+        return callback()
+      },
       init (smsId, deptId, levelId, levelName, deviceId, deviceName, exceptionIds, deviceSmsType, isOk, type) {
         this.dataForm.id = smsId || 0
         this.dataForm.deviceDept = deptId

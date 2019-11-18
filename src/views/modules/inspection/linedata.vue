@@ -378,6 +378,7 @@
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
         }
+        console.log('线路开始查询')
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectiontask/getlinebytime'),
           method: 'get',
@@ -388,6 +389,7 @@
             'endTime': endTime
           })
         }).then(({data}) => {
+          console.log(data.page.list)
           if (data && data.code === 0) {
             this.exportToExcel(data.page.list)
           } else {
