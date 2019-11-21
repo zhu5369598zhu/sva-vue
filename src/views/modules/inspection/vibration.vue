@@ -55,7 +55,7 @@
       </el-form>
     </div>
       <div class="tabs">
-      <el-tabs type="border-card" value="chart" ref="tabs">
+      <el-tabs type="border-card" value="chart" ref="tabs" @tab-click="handleChange">
       <el-tab-pane label="图表" name="chart" actived="true">
         <div v-show="hasData===true&&chartType==='chartbar'" id="chartbar" :style="{ 'height': chartHeight + 'px' }">
           <component  :is="chartType" ref="chartbar" :unNormal="unNormal" :normal="normal" :all="all" :category="category" :legend="legend" :series="series" title="加速度数据图表" @dblclick="chartDblClick"></component>
@@ -840,6 +840,12 @@
       },
       formatJson (filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      // 新增的函数
+      handleChange(tab, event) {
+        if (tab.index === "0" && this.hasData) {
+          this.$refs[this.chartType].changeSize()
+        }
       }
     },
     computed: {

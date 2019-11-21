@@ -68,15 +68,22 @@
                         prop="deptName"
                         header-align="center"
                         align="center"
-                        width="250"
+                        width="200"
                         label="所属机构">
                       </el-table-column>
                       <el-table-column
                         prop="lineName"
                         header-align="center"
                         align="center"
-                        width="300"
+                        width="200"
                         label="巡检线路">
+                      </el-table-column>
+                      <el-table-column
+                        prop="deviceName"
+                        header-align="center"
+                        align="center"
+                        width="150"
+                        label="设备名称">
                       </el-table-column>
                       <el-table-column
                         prop="periodName"

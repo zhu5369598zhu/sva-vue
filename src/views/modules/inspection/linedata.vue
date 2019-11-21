@@ -138,7 +138,7 @@
                         header-align="center"
                         align="center"
                         width="140"
-                        label="耗时(s)">
+                        label="耗时(min)">
                       </el-table-column>
                     </el-table>
                     <el-pagination

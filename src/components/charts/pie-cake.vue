@@ -88,6 +88,11 @@
         window.addEventListener('resize', function () {
           this.Chart.resize()
         }.bind(this))
+      },
+      changeSize() {
+        this.$nextTick(() => {
+          this.Chart.resize()
+        })
       }
     }
   }
