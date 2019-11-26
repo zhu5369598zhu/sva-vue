@@ -117,9 +117,13 @@
         this.deviceListSelections = val
       },
       dataFormSubmit () {
-        this.visible = false
-        this.deviceList = []
-        this.$emit('DeviceBindEvent', this.deviceListSelections)
+        if (this.deviceListSelections.length > 0){
+          this.visible = false
+          this.deviceList = []
+          this.$emit('DeviceBindEvent', this.deviceListSelections)
+        } else {
+          this.$alert('您没有选中需要绑定的设备')
+        }
       }
     },
     watch: {
