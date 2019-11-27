@@ -51,6 +51,11 @@
 
 <script>
   export default {
+    model: {
+      prop: 'lineZoneAddOrUpdateVisible',
+      event: 'lineZoneAddOrUpdateVisible'
+    },
+    props: ['lineZoneAddOrUpdateVisible'],
     data () {
       return {
         dataForm: {
@@ -111,8 +116,12 @@
       }
     },
     watch: {
-      'dataForm.inspectionLineId': function () {
-        this.zoneList = []
+      'dataForm.inspectionLineId' () {
+        this.getZoneList()
+        // this.zoneList = []
+      },
+      visible (newVal) {
+        this.$emit('lineZoneAddOrUpdateVisible', newVal)
       }
     }
   }

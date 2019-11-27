@@ -100,13 +100,6 @@
                         label="轮次">
                       </el-table-column>
                       <el-table-column
-                        prop="turnFinishMod"
-                        header-align="center"
-                        align="center"
-                        width="100"
-                        label="完成模式">
-                      </el-table-column>
-                      <el-table-column
                         prop="workerList"
                         header-align="center"
                         align="center"
@@ -359,8 +352,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属机构', '线路名称', '周期', '轮次', '完成模式', '班组', '应检次数', '已检次数', '巡检开始时间', '巡检结束时间', '耗时(s)']
-          const filterVal = ['deptName', 'lineName', 'periodName', 'turnName', 'turnFinishMod', 'workerList', 'inspectItemCount', 'inspectedItemCount', 'startTime', 'endTime', 'haoshi']
+          const tHeader = ['所属机构', '线路名称', '周期', '轮次', '班组', '应检次数', '已检次数', '巡检开始时间', '巡检结束时间', '耗时(s)']
+          const filterVal = ['deptName', 'lineName', 'periodName', 'turnName', 'workerList', 'inspectItemCount', 'inspectedItemCount', 'startTime', 'endTime', 'haoshi']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

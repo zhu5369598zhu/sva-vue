@@ -431,7 +431,7 @@
               layout="total, sizes, prev, pager, next, jumper">
             </el-pagination>
             <!-- 弹窗, 新增 / 修改 -->
-            <ZoneBindAddOrUpdate v-if="lineZoneAddOrUpdateVisible" ref="zoneBindAddOrUpdate" @refreshDataList="getLineZoneList" @ZoneBindEvent="zoneBindEvent"></ZoneBindAddOrUpdate>
+            <ZoneBindAddOrUpdate v-if="lineZoneAddOrUpdateVisible" v-model="lineZoneAddOrUpdateVisible" ref="zoneBindAddOrUpdate" @refreshDataList="getLineZoneList" @ZoneBindEvent="zoneBindEvent"></ZoneBindAddOrUpdate>
           </div>
         </el-tab-pane>
         <el-tab-pane label="PDA" name="pda">
