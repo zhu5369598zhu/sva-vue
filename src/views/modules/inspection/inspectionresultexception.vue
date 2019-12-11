@@ -219,6 +219,7 @@
         prop="username"
         header-align="center"
         align="center"
+        width="120"
         label="巡检人">
       </el-table-column>
       <el-table-column

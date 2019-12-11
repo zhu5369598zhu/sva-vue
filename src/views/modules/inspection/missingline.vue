@@ -235,7 +235,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
@@ -360,7 +360,7 @@
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['所属机构', '巡检线路', '应检数量', '已检数量', '漏检数量', '漏检率', '查询开始时间', '查询结束时间']
-          const filterVal = ['deptName', 'lineName', 'inspectItemCount','inspectedItemCount', 'InspectMissItemCount','inspectRate', 'inspectStartDate', 'inspectEndDate']
+          const filterVal = ['deptName', 'lineName', 'inspectItemCount','inspectItemCount', 'inspectedItemCount','inspectMissItemRate', 'inspectStartDate', 'inspectEndDate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
@@ -386,7 +386,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontask/getalllinebydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getalllinebydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,

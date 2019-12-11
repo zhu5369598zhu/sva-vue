@@ -12,10 +12,10 @@
     <span class="custom-tree-node" slot-scope="{ node, data }">
         <span v-if="data.type === 'device'">
             <icon-svg name="shezhi" style="font-size:20px;vertical-align: middle;"></icon-svg><span>&nbsp;</span><span style="font-size: 12px;vertical-align: middle;">{{ node.label }}[{{data.code}}]</span>
-        </span>  
+        </span>
         <span v-if="data.type === 'dept'">
             {{ node.label }}
-        </span> 
+        </span>
         <span v-if="data.type === 'line'">
             <icon-svg name="mudedi" style="font-size:20px;vertical-align: middle;"></icon-svg><span>&nbsp;</span><span style="font-size: 12px;vertical-align: middle;">{{ node.label }}</span>
         </span>
@@ -90,6 +90,7 @@
 <style>
   .common-device-tree {
     mini-height: 300px;
+    width: 100%;
     Border: 1px solid #ebeef5;
   }
   .search {
@@ -110,7 +111,7 @@
   .common-device-tree .el-form-item{
     margin-bottom: 0px;
   }
-  
+
   .device{
     background-color: rgb(231, 247, 251);
   }

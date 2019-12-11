@@ -243,11 +243,23 @@
         if ((this.dataForm.downdownUsed === true && this.dataForm.downUsed === true) && (this.dataForm.downdownLimit > this.dataForm.downLimit)) {
           return callback(new Error('下下限值不能大于下限值'))
         }
+        if((this.dataForm.downdownUsed === true && this.dataForm.upUsed === true) && (this.dataForm.downdownLimit > this.dataForm.upLimit)) {
+          return callback(new Error('下下限值不能大于上限值'))
+        }
+        if((this.dataForm.downdownUsed === true && this.dataForm.upupUsed === true) && (this.dataForm.downdownLimit > this.dataForm.upupLimit)){
+          return callback(new Error('下下限值不能大于上上限值'))
+        }
         return callback()
       },
       validateDownLimit (rule, alue, callback) {
+        if((this.dataForm.downUsed === true && this.dataForm.downdownUsed === true) && (this.dataForm.downLimit < this.dataForm.downdownLimit)){
+          return callback(new Error('下限值不能小于下下限值'))
+        }
         if ((this.dataForm.downUsed === true && this.dataForm.upUsed === true) && (this.dataForm.downLimit > this.dataForm.upLimit)) {
           return callback(new Error('下限值不能大于上限值'))
+        }
+        if((this.dataForm.downUsed === true && this.dataForm.upupUsed === true) && (this.dataForm.downLimit > this.dataForm.upupLimit)){
+          return callback(new Error('下限值不能大于上上限值'))
         }
         return callback()
       },
@@ -255,11 +267,23 @@
         if ((this.dataForm.upUsed === true && this.dataForm.upupUsed === true) && (this.dataForm.upLimit > this.dataForm.upupLimit)) {
           return callback(new Error('上限值不能大于上上限值'))
         }
+        if((this.dataForm.upUsed === true && this.dataForm.downUsed === true) && (this.dataForm.upLimit < this.dataForm.downLimit)) {
+          return callback(new Error('上限值不能小于下限值'))
+        }
+        if((this.dataForm.upUsed === true && this.dataForm.downdownUsed === true) && (this.dataForm.upLimit < this.dataForm.downdownLimit)){
+          return callback(new Error('上限值不能小于下下限值'))
+        }
         return callback()
       },
       validateUpupLimit (rule, alue, callback) {
         if ((this.dataForm.upupUsed === true && this.dataForm.upUsed === true) && (this.dataForm.upLimit > this.dataForm.upupLimit)) {
           return callback(new Error('上上限值不能小于上限值'))
+        }
+        if((this.dataForm.upupUsed === true && this.dataForm.downUsed === true) && (this.dataForm.upupLimit < this.dataForm.downLimit)) {
+          return callback(new Error('上上限值不能小于下限值'))
+        }
+        if((this.dataForm.upupUsed === true && this.dataForm.downdownUsed === true) && (this.dataForm.upupLimit < this.dataForm.downdownLimit)){
+          return callback(new Error('上上限值不能小于下下限值'))
         }
         return callback()
       },

@@ -810,9 +810,16 @@
         } else {
           if (this.orderDataForm.delayTime === '' || this.orderDataForm.delayTime === null) {
             this.$alert('申请延期时间不能为空')
+
           } else {
-            this.orderDataForm.orderStatus = 14
-            this.orderConfirm()
+            let startTime = new Date(this.orderDataForm.requirementTime)
+            let endTime = new Date(this.dataForm.delayTime)
+            if(endTime.getTime() <= startTime.getTime()){
+              this.$alert('申请延期时间要大于要求完成时间,请重新选择')
+            }else {
+              this.orderDataForm.orderStatus = 14
+              this.orderConfirm()
+            }
           }
         }
       },

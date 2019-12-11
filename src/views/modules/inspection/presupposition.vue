@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
@@ -248,7 +248,7 @@
 <script>
   import { formatDate } from '@/utils'
   import chartbar from '@/components/charts/bar'
-  import chartline from '@/components/charts/line'
+  import chartline from '@/components/charts/line-step'
   import chartpie from '@/components/charts/pie-cake'
   import linetree from '@/components/line-tree'
   import splitPane from '@/components/split-pane'
@@ -667,6 +667,8 @@
             this.ids = data.data.ids
             this.category = data.data.category
             this.series = data.data.series
+            console.log(this.category)
+            console.log(this.series)
             if (this.series.length > 0) {
               this.hasData = true
             } else {

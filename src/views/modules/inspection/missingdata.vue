@@ -206,7 +206,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
@@ -362,7 +362,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontask/getallmissingbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getallmissingbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -372,6 +372,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
+            console.log(data.list)
             this.exportToExcel(data.list)
           } else {
             this.$message.error(data.msg)

@@ -188,7 +188,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
@@ -320,7 +320,7 @@
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['所属机构', '巡检线路', '轮次', '应检次数', '已检次数']
-          const filterVal = ['deptName', 'lineName', 'turnName', 'inspectDeviceCount', 'inspectedDeviceCount']
+          const filterVal = ['deptName', 'lineName', 'turnName', 'inspectCount', 'inspectedCount']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

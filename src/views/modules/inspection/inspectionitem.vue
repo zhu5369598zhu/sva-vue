@@ -337,8 +337,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属设备<device_name>', '设备编码<device_code>', '巡检项<name>', '巡检类型名称<inspection_type_name>', '单位<unit>', '检时状态标记<inspection_status>', '发射率<emissivity>', '采样频率<frequency_name>', '采样点数<precision_name>', '上限报警<up_used>','上限<up_limit>', '上上限危险<upup_used>', '上上限<upup_limit>', '下限报警<down_used>', '下限<down_limit>', '下下限危险<downdwon_used>', '下下限<downdown_limit>', '扩展<extras>', '扩展异常<exceptions>', '描述<remark>', '默认转速<default_rpm>']
-          const filterVal = ['deviceName', 'deviceCode', 'name', 'inspectionTypeName', 'unit', 'inspectionStatusName', 'emissivity', 'frequencyName', 'precisionName', 'upUsed', 'upLimit', 'upupUsed', 'upupLimit', 'downUsed', 'downLimit', 'downdownUsed', 'downdownLimit', 'extras', 'extraExceptions', 'remark', 'defaultRpm']
+          const tHeader = ['所属设备<device_name>', '设备编码<device_code>', '巡检项<name>', '巡检类型名称<inspection_type_name>', '单位<unit>', '检时状态标记<inspection_status>', '发射率<emissivity>', '采样频率<frequency_name>', '采样点数<precision_name>', '上限报警<up_used>','上限<up_limit>', '上上限危险<upup_used>', '上上限<upup_limit>', '下限报警<down_used>', '下限<down_limit>', '下下限危险<downdwon_used>', '下下限<downdown_limit>', '扩展<extras>', '扩展异常<exceptions>', '描述<remark>', '默认转速<default_rpm>', '排序<orderNum>']
+          const filterVal = ['deviceName', 'deviceCode', 'name', 'inspectionTypeName', 'unit', 'inspectionStatusName', 'emissivity', 'frequencyName', 'precisionName', 'upUsed', 'upLimit', 'upupUsed', 'upupLimit', 'downUsed', 'downLimit', 'downdownUsed', 'downdownLimit', 'extras', 'extraExceptions', 'remark', 'defaultRpm', 'orderNum']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

@@ -48,7 +48,7 @@
                 <el-row class="device-info">
                   <el-col :span="8">
                     <el-form-item label="设备名称:" prop="deviceName">
-                      <el-input size="mini" v-model="dataForm.deviceName" placeholder="设备名称" :disabled="!isModify" clearable style="width:140px;"></el-input>
+                      <el-input size="mini" v-model="dataForm.deviceName" placeholder="设备名称" :disabled="!isModify" clearable style="width:140px;" :readonly="true"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -65,7 +65,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="所属机构:" prop="deptName">
-                      <el-popover
+                      <!--<el-popover
                         ref="deptListPopover"
                         placement="bottom-start"
                         trigger="click"
@@ -81,8 +81,9 @@
                           :highlight-current="true"
                           :expand-on-click-node="false" clearable style="width:140px;">
                         </el-tree>
-                      </el-popover>
-                      <el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" :disabled="!isModify" clearable style="width:140px;"></el-input>
+                      </el-popover>-->
+                      <!--<el-input size="mini" v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="所属机构" class="dept-list__input" :disabled="!isModify" clearable style="width:140px;" ></el-input>-->
+                      <el-input size="mini" v-model="dataForm.deptName"  :readonly="true" placeholder="所属机构" class="dept-list__input" :disabled="!isModify" clearable style="width:140px;" ></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -94,12 +95,12 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="设备编号:" prop="deviceNum">
-                      <el-input size="mini" v-model="dataForm.deviceNum" placeholder="设备编号" :disabled="!isModify" clearable style="width:140px;"></el-input>
+                      <el-input size="mini" v-model="dataForm.deviceNum" placeholder="设备编号"  :disabled="!isModify" clearable style="width:140px;"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="设备编码:" prop="deviceCode">
-                      <el-input size="mini" v-model="dataForm.deviceCode" placeholder="设备编码" :disabled="!isModify" clearable style="width:140px;"></el-input>
+                      <el-input size="mini" v-model="dataForm.deviceCode" placeholder="设备编码" :readonly="true" :disabled="!isModify" clearable style="width:140px;"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -314,6 +315,9 @@
           ],
           deptName: [
             { required: true, message: '所属机构不能为空', trigger: 'change' }
+          ],
+          deviceCode: [
+            { required: true, message: '设备编码不能为空', trigger: 'blur' }
           ]
         }
       }

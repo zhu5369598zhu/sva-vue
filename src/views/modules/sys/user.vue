@@ -21,7 +21,9 @@
         <el-button @click="search" size="mini">查询</el-button>
         <el-button v-if="isAuth('sys:user:save')" @click="addOrUpdateHandle()" size="mini">新增</el-button>
         <el-button v-if="isAuth('sys:user:delete')" type="warning" @click="deleteHandle()" :disabled="dataListSelections.length <= 0" size="mini">批量删除</el-button>
+        <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
       </el-form-item>
+
       <el-form-item>
           <el-upload
           class="device-import"
@@ -29,7 +31,6 @@
           :action="this.$http.adornUrl(`/sys/user/upload?token=${this.$cookie.get('token')}`)"
           :file-list="importFileList"
           :on-success="UploadSuccessHandle">
-          <el-button @click="exportExcelHandle()" size="mini">导出</el-button>
           <el-button  size="mini">导入</el-button>
         </el-upload>
       </el-form-item>
@@ -283,8 +284,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['用户名<username>', '工号<user_code>', '机构名称<dept_name>', '邮箱<email>', '手机号<mobile>', '微信<wechat>', '状态<status_name>', '备注<remark>', '密码<password>', '密码盐<salt>']
-          const filterVal = ['username', 'userCode', 'deptName', 'email', 'mobile', 'wechat', 'statusName', 'remark', 'password', 'salt']
+          const tHeader = ['用户名<username>', '工号<user_code>', '机构名称<dept_name>', '邮箱<email>', '手机号<mobile>', '微信<wechat>', '角色<roleNameList>', '状态<status_name>', '备注<remark>', '密码<password>', '密码盐<salt>']
+          const filterVal = ['username', 'userCode', 'deptName', 'email', 'mobile', 'wechat', 'roleNameList', 'statusName', 'remark', 'password', 'salt']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

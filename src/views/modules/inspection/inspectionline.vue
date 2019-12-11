@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <depttree @deptSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></depttree>
         </div>
@@ -23,8 +23,9 @@
               <el-button v-if="isAuth('inspection:inspectionline:publish')" @click="linePublish()" :icon="publishIcon" size="mini">{{publishName}}</el-button>
             </el-form-item>
           </el-form>
+        <!--height="calc(100% - 50px) !important"-->
           <el-table
-            height="calc(100% - 50px) !important"
+            height="210"
             border
             :data="lineList"
             v-loading="lineListLoading"
@@ -179,7 +180,7 @@
                 label="操作">
                 <template slot-scope="scope">
                   <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0" type="text" size="mini" @click="classGroupAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="text" size="mini" @click="classGroupDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="text" size="mini" @click="classGroupDeleteHandle(scope.row.id)">解绑</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -201,7 +202,7 @@
             <el-form :inline="true">
               <el-form-item>
                 <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" @click="turnAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
-                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0" size="mini">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="warning" @click="turnDeleteHandle()" :disabled="turnListSelections.length <= 0" size="mini">批量解绑</el-button>
               </el-form-item>
             </el-form>
             <el-table height="360"
@@ -255,7 +256,7 @@
                 label="操作">
                 <template slot-scope="scope">
                   <el-button v-if="isAuth('inspection:turn:save') && isPublish===0" type="text" size="mini" @click="turnAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="text" size="mini" @click="turnDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:turn:delete') && isPublish===0" type="text" size="mini" @click="turnDeleteHandle(scope.row.id)">解绑</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -277,7 +278,7 @@
             <el-form :inline="true">
               <el-form-item>
                 <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" @click="periodAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
-                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="warning" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0" size="mini">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="warning" @click="periodDeleteHandle()" :disabled="periodListSelections.length <= 0" size="mini">批量解绑</el-button>
               </el-form-item>
             </el-form>
             <el-table height="360"
@@ -351,7 +352,7 @@
                 label="操作">
                 <template slot-scope="scope">
                   <el-button v-if="isAuth('inspection:inspectionperiod:save') && isPublish===0" type="text" size="mini" @click="periodAddOrUpdateHandle(scope.row.id)">修改</el-button>
-                  <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="text" size="mini" @click="periodDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:inspectionperiod:delete') && isPublish===0" type="text" size="mini" @click="periodDeleteHandle(scope.row.id)">解绑</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -373,7 +374,7 @@
             <el-form :inline="true">
               <el-form-item>
                 <el-button v-if="isAuth('inspection:linezone:save') && isPublish===0" @click="zoneBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">绑定</el-button>
-                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="warning" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0" size="mini">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="warning" @click="lineZoneDeleteHandle()" :disabled="lineZoneListSelections.length <= 0" size="mini">批量解绑</el-button>
               </el-form-item>
             </el-form>
             <el-table height="360"
@@ -417,7 +418,7 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="text" size="mini" @click="lineZoneDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:linezone:delete') && isPublish===0" type="text" size="mini" @click="lineZoneDeleteHandle(scope.row.id)">解绑</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -484,7 +485,7 @@
                 width="150"
                 label="操作">
                 <template slot-scope="scope">
-                  <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="text" size="mini" @click="pdaDeleteHandle(scope.row.id)">删除</el-button>
+                  <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="text" size="mini" @click="pdaDeleteHandle(scope.row.id)">解绑</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -579,7 +580,8 @@
         periodAddOrUpdateVisible: false,
         lineZoneAddOrUpdateVisible: false,
         linePdaAddOrUpdateVisible: false,
-        activeTab: 'class'
+        activeTab: 'class',
+        lineSelected: false
       }
     },
     components: {
@@ -789,7 +791,13 @@
       // 当前页
       lineCurrentChangeHandle (val) {
         this.linePageIndex = val
-        this.getLineList(this.lineForm.deptId)
+        console.log('选择了线路'+this.lineSelected)
+        if(this.lineSelected){ // 选择了线路
+          this.lineForm.deptId = null
+          this.getLineList(null)
+        }else{
+          this.getLineList(this.lineForm.deptId)
+        }
       },
       // 当前页
       turnCurrentChangeHandle (val) {
@@ -827,13 +835,15 @@
             this.publishIcon = 'el-icon-edit-outline'
             this.publishName = '修改计划'
           }
-
+          this.lineForm.deptId = val.deptId
+          this.lineSelected = true
           this.lineForm.lineId = val.id
           this.lineForm.periodType = val.periodType
           this.getDataList()
         } else {
           this.lineForm.lineId = 0
           this.lineForm.periodType = 0
+          this.lineSelected = false
         }
       },
       // 多选
@@ -918,6 +928,7 @@
         this.periodList = []
         this.lineForm.lineId = 0
         this.lineForm.deptId = val
+        this.lineSelected = false
         this.linePageIndex = 1
         this.getLineList(this.lineForm.deptId)
       },
@@ -957,7 +968,7 @@
         var ids = id ? [id] : this.periodListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定删除?`, '提示', {
+        this.$confirm(`确定解绑?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -987,7 +998,7 @@
         var ids = id ? [id] : this.lineZoneListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定删除?`, '提示', {
+        this.$confirm(`确定解绑?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -1047,7 +1058,7 @@
         var ids = id ? [id] : this.turnListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定删除?`, '提示', {
+        this.$confirm(`确定解绑?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -1077,7 +1088,7 @@
         var ids = id ? [id] : this.classGroupListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定删除?`, '提示', {
+        this.$confirm(`确定解绑?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -1107,7 +1118,7 @@
         var ids = id ? [id] : this.pdaListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定删除?`, '提示', {
+        this.$confirm(`确定解绑?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -1211,7 +1222,8 @@
                   type: 'success',
                   duration: 1500,
                   onClose: () => {
-                    this.getLineList(this.lineForm.deptId)
+                    // this.getLineList(this.lineForm.deptId)
+                    this.getLineList(null)
                     this.isPublish = 0
                   }
                 })
@@ -1233,7 +1245,8 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.getLineList(this.lineForm.deptId)
+                  // this.getLineList(this.lineForm.deptId)
+                  this.getLineList(null)
                   this.isPublish = 1
                 }
               })

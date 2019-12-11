@@ -56,7 +56,9 @@
         this.$http({
           url: this.$http.adornUrl(`/sys/user/selectByDept`),
           method: 'get',
-          params: this.$http.adornParams()
+          params: this.$http.adornParams({
+            'deptId': this.dataForm.deptId
+          })
         }).then(({data}) => {
           if (data && data.code === 0) {
             console.log('users: %o', data)

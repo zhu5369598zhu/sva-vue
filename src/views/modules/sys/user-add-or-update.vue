@@ -172,6 +172,9 @@
           ],
           mobile: [
             { validator: validateMobile, trigger: 'blur' }
+          ],
+          roleIdList: [
+            { required: true, message: '角色不能为空', trigger: 'blur' }
           ]
         }
       }

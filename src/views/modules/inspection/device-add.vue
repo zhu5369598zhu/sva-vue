@@ -162,6 +162,9 @@
           ],
           deptName: [
             { required: true, message: '所属机构不能为空', trigger: 'change' }
+          ],
+          deviceCode: [
+            { required: true, message: '设备编码不能为空', trigger: 'blur' }
           ]
         }
       }

@@ -249,7 +249,7 @@
 <script>
   import { formatDate } from '@/utils'
   import chartbar from '@/components/charts/bar'
-  import chartline from '@/components/charts/line'
+  import chartline from '@/components/charts/line-step'
   import chartpie from '@/components/charts/pie-cake'
   import linetree from '@/components/line-tree'
   import splitPane from '@/components/split-pane'

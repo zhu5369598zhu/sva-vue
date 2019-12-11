@@ -245,7 +245,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
@@ -373,8 +373,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属机构', '巡检线路', '轮次', '应检数量', '已检数量','漏检数量']
-          const filterVal = ['deptName', 'lineName', 'turnName', 'inspectItemCount', 'inspectedItemCount','inspectMissItemCount']
+          const tHeader = ['所属机构', '巡检线路', '轮次', '应检设备数量', '已检设备数量', '设备漏检数量', '设备漏检率', '应检巡项数量', '已检巡项数量', '漏检巡项数量', '巡项漏检率']
+          const filterVal = ['deptName', 'lineName', 'turnName', 'inspectDeviceCount', 'inspectedDeviceCount', 'inspectMissDeviceCount', 'inspectMissDeviceRate', 'inspectItemCount', 'inspectItemCount', 'inspectMissItemCount', 'inspectMissItemRate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
