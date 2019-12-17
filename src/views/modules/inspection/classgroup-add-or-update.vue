@@ -88,6 +88,7 @@
               }
             })
           }
+          this.getUserList()
         })
       },
       // 表单提交

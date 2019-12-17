@@ -141,7 +141,7 @@
                 width="100"
                 label="巡项漏检率">
               </el-table-column>
-              <el-table-column
+              <!--<el-table-column
                 prop="inspectStartDate"
                 header-align="center"
                 align="center"
@@ -154,7 +154,7 @@
                 align="center"
                 width="100"
                 label="查询结束时间">
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
           <el-pagination
             @size-change="sizeChangeHandle"
@@ -400,7 +400,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontask/getallturnbydate'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getallturnbydate'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -410,6 +410,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
+            console.log(data.list)
             this.exportToExcel(data.list)
           } else {
             this.$message.error(data.msg)

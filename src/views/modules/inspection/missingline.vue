@@ -134,20 +134,6 @@
                 width="100"
                 label="巡项漏检率">
               </el-table-column>
-              <el-table-column
-                prop="inspectStartDate"
-                header-align="center"
-                align="center"
-                width="100"
-                label="查询开始时间">
-              </el-table-column>
-              <el-table-column
-                prop="inspectEndDate"
-                header-align="center"
-                align="center"
-                width="100"
-                label="查询结束时间">
-              </el-table-column>
             </el-table>
           <el-pagination
             @size-change="sizeChangeHandle"
@@ -359,8 +345,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属机构', '巡检线路', '应检数量', '已检数量', '漏检数量', '漏检率', '查询开始时间', '查询结束时间']
-          const filterVal = ['deptName', 'lineName', 'inspectItemCount','inspectItemCount', 'inspectedItemCount','inspectMissItemRate', 'inspectStartDate', 'inspectEndDate']
+          const tHeader = ['所属机构', '巡检线路', '应检设备数量', '已检设备数量', '设备漏检数量', '设备漏检率', '应检巡项数量', '已检巡项数量', '漏检巡项数量', '巡项漏检率']
+          const filterVal = ['deptName', 'lineName', 'inspectDeviceCount', 'inspectedDeviceCount', 'inspectMissDeviceCount', 'inspectMissDeviceRate','inspectItemCount','inspectedItemCount', 'inspectedItemCount','inspectMissItemRate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

@@ -5,11 +5,12 @@
 </template>
 
 <script>
-  let echarts = require('echarts/lib/echarts')
-  require('echarts/lib/chart/bar')
-  require('echarts/lib/component/title')
-  require('echarts/lib/component/tooltip')
-  require('echarts/lib/component/legend')
+  // let echarts = require('echarts/lib/echarts')
+  import echarts from 'echarts'
+  // require('echarts/lib/chart/bar')
+  // require('echarts/lib/component/title')
+  // require('echarts/lib/component/tooltip')
+  // require('echarts/lib/component/legend')
   export default {
     props: {
       title: {
@@ -108,6 +109,17 @@
               barWidth: 30,
               label: labelOption,
               data: this.inspect
+            }
+          ],
+          dataZoom:[
+            {
+              type: 'slider',
+              show: true,
+              xAxisIndex: [0],
+              left: '9%',
+              bottom: -5,
+              start: 10,
+              end: 200
             }
           ]
         }

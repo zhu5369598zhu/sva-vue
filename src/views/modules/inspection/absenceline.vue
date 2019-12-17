@@ -106,7 +106,7 @@
                 width="100"
                 label="缺勤率">
               </el-table-column>
-              <el-table-column
+              <!--<el-table-column
                 prop="inspectStartDate"
                 header-align="center"
                 align="center"
@@ -119,7 +119,7 @@
                 align="center"
                 width="140"
                 label="查询结束时间">
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
           <el-pagination
             @size-change="sizeChangeHandle"
@@ -207,7 +207,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
@@ -336,8 +336,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属机构', '巡检线路', '应检次数', '已检次数', '缺勤次数', '缺勤率', '查询开始时间', '查询结束时间']
-          const filterVal = ['deptName', 'lineName', 'inspectCount','inspectedCount', 'mustInspectCount','inspectRate', 'inspectStartDate', 'inspectEndDate']
+          const tHeader = ['所属机构', '巡检线路', '应检次数', '已检次数', '缺勤次数', '缺勤率']
+          const filterVal = ['deptName', 'lineName', 'inspectCount','inspectedCount', 'mustInspectCount','inspectRate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({

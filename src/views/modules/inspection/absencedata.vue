@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;" >机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
@@ -68,14 +68,14 @@
                 prop="deptName"
                 header-align="center"
                 align="center"
-                width="250"
+                width="150"
                 label="所属机构">
               </el-table-column>
               <el-table-column
                 prop="lineName"
                 header-align="center"
                 align="center"
-                width="300"
+                width="150"
                 label="巡检线路">
               </el-table-column>
               <el-table-column
@@ -206,7 +206,7 @@
       search () {
         this.getChartData()
       },
-      
+
       onDrawBack () {
         this.isDrawBack = !this.isDrawBack
         if (this.isDrawBack) {
