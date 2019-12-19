@@ -91,14 +91,14 @@
             {
               name: '漏检',
               type: 'bar',
-              barWidth: 30,
+              barWidth: 22,
               label: labelOption,
               data: this.inspectMiss
             },
             {
               name: '已检',
               type: 'bar',
-              barWidth: 30,
+              barWidth: 22,
               label: labelOption,
               data: this.inspected
             },
@@ -106,7 +106,7 @@
               name: '应检',
               type: 'bar',
               barGap: 0,
-              barWidth: 30,
+              barWidth: 22,
               label: labelOption,
               data: this.inspect
             }

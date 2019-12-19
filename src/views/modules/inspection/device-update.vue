@@ -295,6 +295,7 @@
           deviceDept: '',
           deptName: '',
           deviceModel: '',
+          deviceMaster: '',
           isInspect: '',
           isShowDashboard: '',
           masterId: '',

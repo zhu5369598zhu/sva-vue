@@ -89,14 +89,14 @@
               name: '应检',
               type: 'bar',
               barGap: 0,
-              barWidth: '50%',
+              barWidth: 22,
               label: labelOption,
               data: this.inspect
             },
             {
               name: '已检',
               type: 'bar',
-              barWidth: '50%',
+              barWidth: 22,
               label: labelOption,
               data: this.inspected
             }

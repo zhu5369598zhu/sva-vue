@@ -352,8 +352,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['所属机构', '线路名称', '周期', '轮次', '班组', '应检次数', '已检次数', '巡检开始时间', '巡检结束时间', '耗时(s)']
-          const filterVal = ['deptName', 'lineName', 'periodName', 'turnName', 'workerList', 'inspectItemCount', 'inspectedItemCount', 'startTime', 'endTime', 'haoshi']
+          const tHeader = ['所属机构', '线路名称', '设备名称', '周期', '轮次', '班组', '应检次数', '已检次数', '巡检开始时间', '巡检结束时间', '耗时(s)']
+          const filterVal = ['deptName', 'lineName', 'deviceName', 'periodName', 'turnName', 'workerList', 'inspectItemCount', 'inspectedItemCount', 'startTime', 'endTime', 'haoshi']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
@@ -379,7 +379,7 @@
           endTime = ''
         }
         this.$http({
-          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getdevicebytime'),
+          url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getalldevicebytime'),
           method: 'get',
           params: this.$http.adornParams({
             'deptId': this.dataForm.deptId,
@@ -389,7 +389,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.exportToExcel(data.page.list)
+            this.exportToExcel(data.list)
           } else {
             this.$message.error(data.msg)
           }

@@ -346,7 +346,7 @@
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['所属机构', '巡检线路', '应检设备数量', '已检设备数量', '设备漏检数量', '设备漏检率', '应检巡项数量', '已检巡项数量', '漏检巡项数量', '巡项漏检率']
-          const filterVal = ['deptName', 'lineName', 'inspectDeviceCount', 'inspectedDeviceCount', 'inspectMissDeviceCount', 'inspectMissDeviceRate','inspectItemCount','inspectedItemCount', 'inspectedItemCount','inspectMissItemRate']
+          const filterVal = ['deptName', 'lineName', 'inspectDeviceCount', 'inspectedDeviceCount', 'inspectMissDeviceCount', 'inspectMissDeviceRate','inspectItemCount','inspectedItemCount', 'inspectMissItemCount','inspectMissItemRate']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
