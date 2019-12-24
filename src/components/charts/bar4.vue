@@ -34,11 +34,15 @@
     },
     data () {
       return {
-        chart: null
+        chart: null,
+        path: ''
       }
     },
     components: {
       echarts
+    },
+    mounted() {
+      this.path = this.$route.path
     },
     methods: {
       initChart (chartElement) {
@@ -126,7 +130,10 @@
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
         window.addEventListener('resize', function () {
-          this.Chart.resize()
+          const path = this.$route.path
+          if (path === this.path) {
+            this.Chart.resize()
+          }
         }.bind(this))
       }
     }

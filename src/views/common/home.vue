@@ -278,69 +278,73 @@ export default {
         get () { return this.$store.state.user.id }
       }
     },
-    created () {
-      let today = new Date()
-      this.finishStartTime = new Date()
-      this.finishStartTime.setDate(this.finishStartTime.getDate() - 1)
-      this.finishStartTime = formatDate(this.finishStartTime, 'yyyy-MM-dd')
-      if (this.topFilter === '本周') {
-        this.topStartTime = getFirstDayOfWeek(today)
-      } else if (this.topFilter === '本月') {
-        this.topStartTime = getFirstDayOfMonth(today)
-      } else if (this.topFilter === '本年') {
-        this.topStartTime = getFirstDayOfYear(today)
-      } else if (this.topFilter === '全部') {
-        this.topStartTime = ''
-      }
-      if (this.inspectionFilter === '本周') {
-        this.inspectionStartTime = getFirstDayOfWeek(today)
-      } else if (this.inspectionFilter === '本月') {
-        this.inspectionStartTime = getFirstDayOfMonth(today)
-      } else if (this.inspectionFilter === '本年') {
-        this.inspectionStartTime = getFirstDayOfYear(today)
-      } else if (this.inspectionFilter === '全部') {
-        this.inspectionStartTime = ''
-      }
-      if (this.stautsFilter === '本周') {
-        this.statusStartTime = getFirstDayOfWeek(today)
-      } else if (this.stautsFilter === '本月') {
-        this.statusStartTime = getFirstDayOfMonth(today)
-      } else if (this.stautsFilter === '本年') {
-        this.statusStartTime = getFirstDayOfYear(today)
-      } else if (this.stautsFilter === '全部') {
-        this.statusStartTime = ''
-      }
-      if (this.exceptionFilter === '本周') {
-        this.exceptionFilterType = '%a'
-        this.exceptionStartTime = getFirstDayOfWeek(today)
-      } else if (this.exceptionFilter === '本月') {
-        this.exceptionFilterType = '%d'
-        this.exceptionStartTime = getFirstDayOfMonth(today)
-      } else if (this.exceptionFilter === '本年') {
-        this.exceptionFilterType = '%m'
-        this.exceptionStartTime = getFirstDayOfYear(today)
-      } else if (this.exceptionFilter === '全部') {
-        this.exceptionFilterType = '%y'
-        this.exceptionStartTime = ''
-      }
-      this.levelIds = []
-      for (var i = 0; i < this.topFilter.length; i++) {
-        if (this.topFilter[i] === 'A类') {
-          this.levelIds.push(1)
-        } else if (this.topFilter[i] === 'B类') {
-          this.levelIds.push(2)
-        } else if (this.topFilter[i] === 'C类') {
-          this.levelIds.push(3)
-        }
-      }
-      this.getDataList()
-      this.newsexistwork()
-      this.newsexistlog()
-    },
     mounted () {
-      this.getDataList()
+      console.log(123)
+      this.initModel()
     },
+    // mounted () {
+    //   this.getDataList()
+    // },
     methods: {
+      initModel() {
+        let today = new Date()
+        this.finishStartTime = new Date()
+        this.finishStartTime.setDate(this.finishStartTime.getDate() - 1)
+        this.finishStartTime = formatDate(this.finishStartTime, 'yyyy-MM-dd')
+        if (this.topFilter === '本周') {
+          this.topStartTime = getFirstDayOfWeek(today)
+        } else if (this.topFilter === '本月') {
+          this.topStartTime = getFirstDayOfMonth(today)
+        } else if (this.topFilter === '本年') {
+          this.topStartTime = getFirstDayOfYear(today)
+        } else if (this.topFilter === '全部') {
+          this.topStartTime = ''
+        }
+        if (this.inspectionFilter === '本周') {
+          this.inspectionStartTime = getFirstDayOfWeek(today)
+        } else if (this.inspectionFilter === '本月') {
+          this.inspectionStartTime = getFirstDayOfMonth(today)
+        } else if (this.inspectionFilter === '本年') {
+          this.inspectionStartTime = getFirstDayOfYear(today)
+        } else if (this.inspectionFilter === '全部') {
+          this.inspectionStartTime = ''
+        }
+        if (this.stautsFilter === '本周') {
+          this.statusStartTime = getFirstDayOfWeek(today)
+        } else if (this.stautsFilter === '本月') {
+          this.statusStartTime = getFirstDayOfMonth(today)
+        } else if (this.stautsFilter === '本年') {
+          this.statusStartTime = getFirstDayOfYear(today)
+        } else if (this.stautsFilter === '全部') {
+          this.statusStartTime = ''
+        }
+        if (this.exceptionFilter === '本周') {
+          this.exceptionFilterType = '%a'
+          this.exceptionStartTime = getFirstDayOfWeek(today)
+        } else if (this.exceptionFilter === '本月') {
+          this.exceptionFilterType = '%d'
+          this.exceptionStartTime = getFirstDayOfMonth(today)
+        } else if (this.exceptionFilter === '本年') {
+          this.exceptionFilterType = '%m'
+          this.exceptionStartTime = getFirstDayOfYear(today)
+        } else if (this.exceptionFilter === '全部') {
+          this.exceptionFilterType = '%y'
+          this.exceptionStartTime = ''
+        }
+        this.levelIds = []
+        for (var i = 0; i < this.topFilter.length; i++) {
+          if (this.topFilter[i] === 'A类') {
+            this.levelIds.push(1)
+          } else if (this.topFilter[i] === 'B类') {
+            this.levelIds.push(2)
+          } else if (this.topFilter[i] === 'C类') {
+            this.levelIds.push(3)
+          }
+        }
+        this.getDataList()
+        this.newsexistwork()
+        this.newsexistlog()
+      },
       beginDate () {
         return {
           disabledDate (time) {

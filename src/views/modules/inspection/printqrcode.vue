@@ -311,7 +311,45 @@
       },
       printQrcode (printDataList) {
         let pLength = printDataList.length
-        let headStr = '<html><head><title>二维码打印</title></head><body>'
+        let headStr = 
+        `<html>
+          <head>
+            <title>二维码打印</title>
+            <style>
+              html,body{
+                width: 100%;
+                height: 100%;
+              }
+              *{
+                margin: 0;
+                padding: 0;
+              }
+              #mask{
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: rgba(0,0,0,0.9);
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 2rem;
+                letter-spacing: 0.5rem;
+                text-transform: uppercase;
+              }
+              #mask span {
+                animation: shrink 2s infinite;
+              }
+              @keyframes shrink {
+                50% {
+                  transform: scale(0);
+                }
+              }
+            </style>
+          </head>
+          <body>`
         let footStr = '</body></html>'
         let printBeforeStr = '<em style="padding: 10px;text-align: center"><div align="center"><table style="border-collapse:collapse;width: auto;"><tr style="display:block; padding:10px; margin-bottom:50px;">'
         let printContent = ''
@@ -330,15 +368,35 @@
           let deviceId = printDataList[i].deviceId
           printContent += '<div align="center"><img width="250" src="' + qrcodeUrl + deviceId + '"></img></div><div style="text-align: center"><strong>' + printDataList[i].deviceName + '</strong></div></td>'
         }
-        let printAfter = '</tr></table></div></em>'
-        let printHtml = printBeforeStr + printContent + printAfter
+        let printAfter = '</tr></table></div></em><div id="mask">正在加载中...</div>'
+        const scriptAfter = 
+        `<script>
+          let loading = document.getElementById('mask');
+          let letters = loading.textContent.split("");
+          loading.textContent = "";
+          letters.forEach((letter, i) => {
+            let span = document.createElement("span");
+            span.textContent = letter;
+            span.style.animationDelay = i / 10 + 's';
+            loading.append(span);
+          });
+          let num = document.getElementsByTagName('img').length
+          const d = num
+          for (var i = 0; i < d; i++) {
+            document.getElementsByTagName('img')[i].onload = function() {
+              num = num - 1
+              if (num === 0) {
+                document.getElementById('mask').style.display = "none";
+                window.print()
+                window.close()
+              }
+            }
+          }
+        <\/script>`
+        let printHtml = printBeforeStr + printContent + printAfter + scriptAfter
         var printWin = window.open('')
         printWin.document.write(headStr + printHtml + footStr)
         printWin.focus()
-        setTimeout(function () {
-          printWin.print()
-          printWin.close()
-        }, this.timer)
       }
     },
     mounted: function () {
