@@ -15,13 +15,13 @@
             <div class="show-data-up">
               <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
                 <el-form-item label="巡检时间:" prop="startTime">
-                  <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.startTime" size="mini" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="到:" prop="endTime">
-                  <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+                  <el-date-picker v-model="dataForm.endTime" size="mini" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="" prop="selectDay">
-                  <el-select v-model="dataForm.selectDay" clearable style="width:100px;">
+                  <el-select v-model="dataForm.selectDay" size="mini" clearable style="width:100px;">
                     <el-option
                       v-for="item in selectDayList"
                       :key="item.id"
@@ -31,10 +31,10 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="search()">查询</el-button>
+                  <el-button size="mini" @click="search()">查询</el-button>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="exportExcelHandle()">导出</el-button>
+                  <el-button size="mini" @click="exportExcelHandle()">导出</el-button>
                 </el-form-item>
               </el-form>
               <el-tabs type="border-card" value="data" ref="tabs">
@@ -103,6 +103,7 @@
                         prop="workerList"
                         header-align="center"
                         align="center"
+                        width="150"
                         label="班组">
                       </el-table-column>
                       <el-table-column
@@ -443,7 +444,7 @@
         if (this.$refs.table !== null) {
           this.tableHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - this.$refs.table.$el.offsetTop - 105 - 32 - 40 - 20
         }
-        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 150
+        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 160
       },
       'dataForm.selectDay': function (val) {
         if (val === 0) {
@@ -475,7 +476,7 @@
         if (this.$refs.table !== null) {
           this.tableHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - this.$refs.table.$el.offsetTop - 105 - 32 - 40 - 20
         }
-        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 150
+        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 160
       })
     }
   }
@@ -488,3 +489,8 @@
   }
 </style>
 
+<style scoped>
+  .show-data-table .el-tab-pane .el-table {
+    height: calc(100vh - 246px) !important;
+  }
+</style>

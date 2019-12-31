@@ -141,6 +141,7 @@
         }
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
+        this.Chart.resize()
         var _self = this
         this.Chart.on('dblclick', function (params) {
           _self.$emit('dblclick', params.dataIndex)

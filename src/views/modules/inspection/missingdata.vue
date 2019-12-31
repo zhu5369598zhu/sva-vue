@@ -15,13 +15,13 @@
       <div class="show-data-up">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item label="巡检时间:" prop="startTime">
-          <el-date-picker v-model="dataForm.startTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+          <el-date-picker v-model="dataForm.startTime" size="mini" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleStartTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
         </el-form-item>
         <el-form-item label="到:" prop="endTime">
-          <el-date-picker v-model="dataForm.endTime" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
+          <el-date-picker v-model="dataForm.endTime" size="mini" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
         </el-form-item>
         <el-form-item label="" prop="selectDay">
-          <el-select v-model="dataForm.selectDay" clearable style="width:100px;">
+          <el-select v-model="dataForm.selectDay" size="mini" clearable style="width:100px;">
             <el-option
               v-for="item in selectDayList"
               :key="item.id"
@@ -31,13 +31,13 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="search()">查询</el-button>
+          <el-button size="mini" @click="search()">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="exportExcelHandle()">导出</el-button>
+          <el-button size="mini" @click="exportExcelHandle()">导出</el-button>
         </el-form-item>
       </el-form>
-      <el-tabs type="border-card" value="chart" ref="tabs">
+      <el-tabs type="border-card" value="chart" ref="tabs" @tab-click="handleChange">
       <el-tab-pane label="图表" name="chart" actived="true">
         <div v-show="hasData===true&&chartType==='chartbar'" id="chartbar" :style="{ 'height': chartHeight + 'px' }">
           <component  :is="chartType" ref="chartbar" :category="category" :legend="legend" :series="series" title="漏检统计图表"></component>
@@ -62,47 +62,49 @@
             <el-table-column
                 type="index"
                 width="50"
+                align="center"
                 lable="">
               </el-table-column>
               <el-table-column
                 prop="deviceName"
                 header-align="center"
                 align="center"
-                width="250"
+                min-width="250"
                 label="设备名称">
               </el-table-column>
               <el-table-column
                 prop="lineName"
                 header-align="center"
                 align="center"
-                width="300"
+                min-width="300"
                 label="巡检线路">
               </el-table-column>
               <el-table-column
                 prop="turnName"
                 header-align="center"
                 align="center"
-                width="140"
+                min-width="140"
                 label="轮次">
               </el-table-column>
               <el-table-column
                 prop="workerList"
                 header-align="center"
                 align="center"
+                min-width="150"
                 label="班组">
               </el-table-column>
               <el-table-column
                 prop="inspectionDate"
                 header-align="center"
                 align="center"
-                width="140"
+                min-width="140"
                 label="应检日期">
               </el-table-column>
               <el-table-column
                 prop="startTime"
                 header-align="center"
                 align="center"
-                width="140"
+                min-width="140"
                 label="轮次开始时间">
               </el-table-column>
               <el-table-column
@@ -415,6 +417,12 @@
       },
       formatJson (filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      // 新增的函数
+      handleChange(tab, event) {
+        if (tab.index === "0" && this.hasData) {
+          this.$refs[this.chartType].changeSize()
+        }
       }
     },
     computed: {
@@ -427,7 +435,7 @@
         if (this.$refs.table !== null) {
           this.tableHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - this.$refs.table.$el.offsetTop - 105 - 32 - 40 - 20
         }
-        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 150
+        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 160
       },
       'dataForm.selectDay': function (val) {
         if (val === 0) {
@@ -459,7 +467,7 @@
         if (this.$refs.table !== null) {
           this.tableHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - this.$refs.table.$el.offsetTop - 105 - 32 - 40 - 20
         }
-        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 150
+        this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 160
       })
     }
   }
@@ -469,5 +477,10 @@
   .no-data {
     font-size: 20px;
     margin-top: 30px;
+  }
+</style>
+<style scoped>
+  .show-data-table .el-tab-pane .el-table {
+    height: calc(100vh - 246px) !important;
   }
 </style>

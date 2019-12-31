@@ -194,6 +194,7 @@ export default {
         },
         inspectItemSum: 0,
         inspectedItemSum: 0,
+        TotalCount: 0,
         completionRate: '',
         finishStartTime: '',
         finishEndTime: '',
@@ -664,15 +665,15 @@ export default {
           if (data && data.code === 0) {
             if(data.status[0] != null){
               let tmpRate = 0
-
               this.inspectedItemSum = data.status[0].inspectedItemSum
-              this.inspectItemSum = data.status[0].inspectItemSum
-              if(this.inspectItemSum === 0){
+              this.TotalCount = data.status[0].inspectItemSum
+              if(this.TotalCount === 0){
                 tmpRate = 0.00
               }else{
-                tmpRate = this.inspectedItemSum/this.inspectItemSum
+                tmpRate = this.inspectedItemSum/this.TotalCount
               }
               this.completionRate = '已完成' + parseFloat(tmpRate*100).toFixed(4) + '%'
+              this.inspectItemSum = this.TotalCount - this.inspectedItemSum
             }else{
               this.inspectedItemSum = 0
               this.inspectItemSum = 100

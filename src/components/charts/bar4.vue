@@ -59,12 +59,12 @@
           title: {
             text: this.title,
             x: 'center',
-            y: '5px',
+            y: '10px',
             textStyle: {
               fontStyle: 'normal',
               fontWeight: 'bold',
               fontFamily: 'sans-serif',
-              fontSize: 22
+              fontSize: 20
             }
           },
           legend: {
@@ -91,6 +91,10 @@
               type: 'value'
             }
           ],
+          grid: {
+            top: 100,
+            bottom: 80
+          },
           series: [
             {
               name: '漏检',
@@ -121,7 +125,7 @@
               show: true,
               xAxisIndex: [0],
               left: '9%',
-              bottom: -5,
+              bottom: 20,
               start: 10,
               end: 200
             }
@@ -129,12 +133,18 @@
         }
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
+        this.Chart.resize()
         window.addEventListener('resize', function () {
           const path = this.$route.path
           if (path === this.path) {
             this.Chart.resize()
           }
         }.bind(this))
+      },
+      changeSize() {
+        this.$nextTick(() => {
+          this.Chart.resize()
+        })
       }
     }
   }

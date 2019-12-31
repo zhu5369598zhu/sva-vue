@@ -20,10 +20,12 @@
     </el-select>
     </el-form-item>
     <el-form-item label="开始时间" prop="startTime">
-      <el-time-select placeholder="开始时间" v-model="dataForm.startTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00' }"></el-time-select>
+      <!--<el-time-select placeholder="开始时间" v-model="dataForm.startTime" :picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"></el-time-select> -->
+      <el-time-picker v-model="dataForm.startTime" placeholder="开始时间" value-format="HH:mm" format="HH:mm"></el-time-picker>
     </el-form-item>
     <el-form-item label="结束时间" prop="endTime">
-      <el-time-select placeholder="结束时间" v-model="dataForm.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00' }"></el-time-select>
+      <!--<el-time-select placeholder="结束时间" v-model="dataForm.endTime" :picker-options="{ start: dataForm.startTime, step: '00:30', end: '23:30' }"></el-time-select>-->
+      <el-time-picker v-model="dataForm.endTime" placeholder="结束时间" value-format="HH:mm" format="HH:mm"></el-time-picker>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -116,6 +118,10 @@
         this.$refs['dataForm'].validate((valid) => {
           if(this.dataForm.startTime === this.dataForm.endTime){
             this.$alert('开始时间结束时间不能重复')
+            return;
+          }
+          if(this.dataForm.startTime > this.dataForm.endTime){
+            this.$alert('开始时间不能大于结束时间')
             return;
           }
           if (valid) {

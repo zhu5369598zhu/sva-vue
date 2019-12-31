@@ -117,6 +117,7 @@
         }
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
+        this.Chart.resize()
         window.addEventListener('resize', function () {
           const path = this.$route.path
           if (path === this.path) {

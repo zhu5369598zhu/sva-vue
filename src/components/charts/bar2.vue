@@ -51,12 +51,12 @@
           title: {
             text: this.title,
             x: 'center',
-            y: '5px',
+            y: '10px',
             textStyle: {
               fontStyle: 'normal',
               fontWeight: 'bold',
               fontFamily: 'sans-serif',
-              fontSize: 22
+              fontSize: 20
             }
           },
           toolbox: {
@@ -70,7 +70,11 @@
             {
               type: 'category',
               axisTick: {show: false},
-              data: this.category
+              data: this.category,
+              axisLabel:{
+                interval:0, //0：全部显示，1：间隔为1显示对应类目，2：依次类推，（简单试一下就明白了，这样说是不是有点抽象）
+                rotate:-30 //倾斜显示，-：顺时针旋转，+或不写：逆时针旋转
+              }
             }
           ],
           yAxis: [
@@ -82,7 +86,7 @@
             {
               name: '次数',
               type: 'bar',
-              barWidth: 30,
+              barWidth: 22,
               label: labelOption,
               data: this.series
             }
@@ -90,12 +94,18 @@
         }
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
+        this.Chart.resize()
         window.addEventListener('resize', function () {
           const path = this.$route.path
           if (path === this.path) {
             this.Chart.resize()
           }
         }.bind(this))
+      },
+      changeSize() {
+        this.$nextTick(() => {
+          this.Chart.resize()
+        })
       }
     }
   }

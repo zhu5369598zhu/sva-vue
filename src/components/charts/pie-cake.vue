@@ -18,7 +18,7 @@
         type: Array
       },
       series: {
-        type: Array
+        type: [Array, Object]
       }
     },
     data () {
@@ -40,7 +40,7 @@
           title: {
             text: this.title,
             x: 'center',
-            y: '5px'
+            y: '50px'
           },
           tooltip: {
             trigger: 'item'
@@ -48,7 +48,7 @@
           legend: {
             data: this.legend,
             x: 'center',
-            y: '40px'
+            y: '100px'
           },
           toolbox: {
             show: true,
@@ -89,6 +89,7 @@
         }
         this.Chart = echarts.init(document.getElementById(chartElement))
         this.Chart.setOption(option)
+        this.Chart.resize()
         window.addEventListener('resize', function () {
           const path = this.$route.path
           if (path === this.path) {

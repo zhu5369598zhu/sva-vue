@@ -1222,8 +1222,14 @@
                   type: 'success',
                   duration: 1500,
                   onClose: () => {
-                    // this.getLineList(this.lineForm.deptId)
-                    this.getLineList(null)
+                    console.log('选择了线路'+this.lineSelected)
+                    if(this.lineSelected){ // 选择了线路
+                      this.lineForm.deptId = null
+                      this.getLineList(null)
+                    }else{
+                      this.getLineList(this.lineForm.deptId)
+                    }
+                    // this.getLineList(null)
                     this.isPublish = 0
                   }
                 })
@@ -1246,7 +1252,14 @@
                 duration: 1500,
                 onClose: () => {
                   // this.getLineList(this.lineForm.deptId)
-                  this.getLineList(null)
+                  console.log('选择了线路'+this.lineSelected)
+                  if(this.lineSelected){ // 选择了线路
+                    this.lineForm.deptId = null
+                    this.getLineList(null)
+                  }else{
+                    this.getLineList(this.lineForm.deptId)
+                  }
+                  // this.getLineList(null)
                   this.isPublish = 1
                 }
               })
