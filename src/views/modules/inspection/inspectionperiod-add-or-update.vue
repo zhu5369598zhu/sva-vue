@@ -23,7 +23,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="频度" prop="frequency">
-      <el-input-number v-model="dataForm.frequency" controls-position="right" :disabled="dataForm.periodType!==1" :min="minFrequency" :max="maxFrequency" label="频度"></el-input-number>
+      <el-input-number v-model="dataForm.frequency" controls-position="right" :disabled="dataForm.periodType!==0" :min="minFrequency" :max="maxFrequency" label="频度"></el-input-number>
     </el-form-item>
     <el-form-item label="跨度起点" prop="startPoint">
       <el-input-number v-model="dataForm.startPoint" controls-position="right" :min="minStartPoint" :max="maxStartPoint" label="跨度起点"></el-input-number>
@@ -229,6 +229,23 @@
           this.maxSpan = 31
           this.minFrequency = 31
           this.maxFrequency = 31
+        }
+      },
+      'dataForm.startPoint': function (newVal, oldVal) {
+         if (this.dataForm.frequency === 7) { // 周
+           this.maxStartPoint = 7 - this.dataForm.span
+           this.maxSpan = 7 - this.dataForm.startPoint
+         } else if (this.dataForm.frequency === 31){
+           this.maxStartPoint = 31 - this.dataForm.span
+           this.maxSpan = 31 - this.dataForm.startPoint
+         }
+      },
+      'dataForm.span': function (newVal, oldVal) {
+        if (this.dataForm.frequency === 7) { // 周
+          this.maxSpan = 7 - this.dataForm.startPoint
+          this.maxStartPoint = 7 - this.dataForm.span
+        } else if (this.dataForm.frequency === 31){
+          this.maxSpan = 31 - this.dataForm.startPoint
         }
       }
     },
