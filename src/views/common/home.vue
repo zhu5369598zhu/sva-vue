@@ -16,7 +16,7 @@
                     </div>
                   </div>
                   <div align="center" v-if="false">
-                    <el-checkbox-group size="mini"  @change="topCheckboxChange" v-model="topFilter" style="display: inline;vertical-align: text-bottom;">
+                    <el-checkbox-group size="mini"  @change="topCheckboxChange" v-model="topPeriod" style="display: inline;vertical-align: text-bottom;">
                       <el-checkbox-button  v-for="level in deviceLevelList" :label="level" :key="level">{{level}}</el-checkbox-button>
                     </el-checkbox-group>
                   </div>
@@ -280,7 +280,6 @@ export default {
       }
     },
     mounted () {
-      console.log(123)
       this.initModel()
     },
     // mounted () {
@@ -292,13 +291,13 @@ export default {
         this.finishStartTime = new Date()
         this.finishStartTime.setDate(this.finishStartTime.getDate() - 1)
         this.finishStartTime = formatDate(this.finishStartTime, 'yyyy-MM-dd')
-        if (this.topFilter === '本周') {
+        if (this.topPeriod === '本周') {
           this.topStartTime = getFirstDayOfWeek(today)
-        } else if (this.topFilter === '本月') {
+        } else if (this.topPeriod === '本月') {
           this.topStartTime = getFirstDayOfMonth(today)
-        } else if (this.topFilter === '本年') {
+        } else if (this.topPeriod === '本年') {
           this.topStartTime = getFirstDayOfYear(today)
-        } else if (this.topFilter === '全部') {
+        } else if (this.topPeriod === '全部') {
           this.topStartTime = ''
         }
         if (this.inspectionFilter === '本周') {
@@ -310,13 +309,13 @@ export default {
         } else if (this.inspectionFilter === '全部') {
           this.inspectionStartTime = ''
         }
-        if (this.stautsFilter === '本周') {
+        if (this.statusFilter === '本周') {
           this.statusStartTime = getFirstDayOfWeek(today)
-        } else if (this.stautsFilter === '本月') {
+        } else if (this.statusFilter === '本月') {
           this.statusStartTime = getFirstDayOfMonth(today)
-        } else if (this.stautsFilter === '本年') {
+        } else if (this.statusFilter === '本年') {
           this.statusStartTime = getFirstDayOfYear(today)
-        } else if (this.stautsFilter === '全部') {
+        } else if (this.statusFilter === '全部') {
           this.statusStartTime = ''
         }
         if (this.exceptionFilter === '本周') {
