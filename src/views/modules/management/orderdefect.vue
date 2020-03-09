@@ -191,7 +191,7 @@
                   width="150"
                   label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text" size="mini" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.orderStatus)">确认缺陷</el-button>
+                    <el-button type="text" size="mini" :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="addOrUpdateHandle(scope.row.defectiveId,scope.row.id,scope.row.deviceId,scope.row.orderStatus,scope.row.deviceName)">确认缺陷</el-button>
                    <el-button type="text" size="mini"  :disabled="scope.row.orderStatus!='0' && scope.row.orderStatus!='3'" @click="hangup(scope.row)">挂起</el-button>
                   </template>
                 </el-table-column>
@@ -525,11 +525,11 @@
         this.curPercent = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (defectiveId, id, deviceId,orderStatus) {
+      addOrUpdateHandle (defectiveId, id, deviceId,orderStatus,deviceName) {
         if (orderStatus === 0 || orderStatus === null || orderStatus === undefined) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
-            this.$refs.addOrUpdate.init(defectiveId, id, deviceId)
+            this.$refs.addOrUpdate.init(defectiveId, id, deviceId,deviceName)
           })
         } else if (orderStatus === 3) { // 已转单被拒绝的情况
           this.addOrUpdateVisible = true

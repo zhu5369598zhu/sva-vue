@@ -19,7 +19,7 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="所属机构" prop="deptName">
+    <el-form-item label="所属机构" prop="deptName" v-if="dataForm.id == 0" >
       <el-popover
         ref="deptListPopover"
         placement="bottom-start"
@@ -37,12 +37,13 @@
           :expand-on-click-node="false">
         </el-tree>
       </el-popover>
-      <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input" size="mini"></el-input>
+      <el-input  v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" placeholder="点击选择所属机构" class="dept-list__input" size="mini"></el-input>
     </el-form-item>
-    <el-form-item label="巡检周期" prop="periodType">
-      <el-select v-model="dataForm.periodType" placeholder="巡检周期" size="mini">
+    <el-form-item label="巡检周期" prop="periodTypeName" v-if="dataForm.id == 0">
+      <el-select v-model="dataForm.periodType" placeholder="巡检周期" size="mini" >
         <el-option
           v-for="item in periodTypeList"
+          :disabled="true"
           :key="item.id"
           :label="item.name"
           :value="item.id">
@@ -54,7 +55,7 @@
     </el-form-item>
     <el-form-item label="排序" prop="orderNum">
       <el-input-number v-model="dataForm.orderNum" controls-position="right" label="排序" size="mini"></el-input-number>
-    </el-form-item>    
+    </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -86,6 +87,7 @@
           deptId: 0,
           deptName: '',
           periodType: '',
+          periodTypeName: '',
           remark: '',
           createTime: '',
           updateTime: '',
@@ -101,7 +103,7 @@
           deptName: [
             { required: true, message: '所属机构不能为空', trigger: 'change' }
           ],
-          periodType: [
+          periodTypeName: [
             { required: true, message: '巡检周期不能为空', trigger: 'change' }
           ]
         }
@@ -137,11 +139,12 @@
                 this.dataForm.deptId = data.inspectionLine.deptId
                 this.dataForm.deptName = data.inspectionLine.deptName
                 this.dataForm.periodType = data.inspectionLine.periodType
+                this.dataForm.periodTypeName = data.inspectionLine.periodTypeName
                 this.dataForm.remark = data.inspectionLine.remark
                 this.dataForm.createTime = data.inspectionLine.createTime
                 this.dataForm.updateTime = data.inspectionLine.updateTime
                 this.dataForm.orderNum = data.inspectionLine.orderNum
-                this.deptListTreeSetCurrentNode()
+                // this.deptListTreeSetCurrentNode()
               }
             })
           }

@@ -100,7 +100,7 @@
     <el-form :inline="true" :model="dataForm">
       <el-form-item>
         <el-button v-if="isAuth('inspection:zonedevice:save')" @click="deviceAddOrUpdateHandle()" :disabled="dataForm.zoneId <= 0" size="mini">绑定设备</el-button>
-        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="warning" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0" size="mini">批量删除</el-button>
+        <el-button v-if="isAuth('inspection:zonedevice:delete')" type="warning" @click="deviceDeleteHandle()" :disabled="deviceListSelections.length <= 0" size="mini">批量解绑</el-button>
       </el-form-item>
     </el-form>
     <el-table

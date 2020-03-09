@@ -137,7 +137,7 @@
             <el-form :inline="true">
               <el-form-item>
                 <el-button v-if="isAuth('inspection:classgroup:save') && isPublish===0"  @click="classGroupAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">新增</el-button>
-                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0" size="mini">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:classgroup:delete') && isPublish===0" type="warning" @click="classGroupDeleteHandle()" :disabled="classGroupListSelections.length <= 0" size="mini">批量解绑</el-button>
               </el-form-item>
             </el-form>
             <el-table
@@ -440,7 +440,7 @@
             <el-form :inline="true">
               <el-form-item>
                 <el-button v-if="isAuth('inspection:inspectionlinepublish:save') && isPublish===0" @click="pdaBindAddOrUpdateHandle()" :disabled="lineForm.lineId <= 0" size="mini">绑定</el-button>
-                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="warning" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0" size="mini">批量删除</el-button>
+                <el-button v-if="isAuth('inspection:inspectionlinepublish:delete') && isPublish===0" type="warning" @click="pdaDeleteHandle()" :disabled="linePdaListSelections.length <= 0" size="mini">批量解绑</el-button>
               </el-form-item>
             </el-form>
             <el-table

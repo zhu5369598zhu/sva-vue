@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span ><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
@@ -20,7 +20,7 @@
         <el-form-item label="到:" prop="endTime">
           <el-date-picker v-model="dataForm.endTime" size="mini" type="date" value-format="yyyy-MM-dd 00:00:00" @change="handleEndTimeChange" :picker-options="startDatePicker" style="width:140px;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="" prop="selectDay">
+        <!--<el-form-item label="" prop="selectDay">
           <el-select v-model="dataForm.selectDay" size="mini" clearable style="width:100px;">
             <el-option
               v-for="item in selectDayList"
@@ -29,7 +29,7 @@
               :value="item.id">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item>
           <el-button size="mini" @click="search()">查询</el-button>
         </el-form-item>
@@ -70,7 +70,7 @@
                 header-align="center"
                 align="center"
                 min-width="250"
-                label="设备名称">
+                label="巡点名称">
               </el-table-column>
               <el-table-column
                 prop="lineName"
@@ -80,25 +80,32 @@
                 label="巡检线路">
               </el-table-column>
               <el-table-column
+                prop="deptName"
+                header-align="center"
+                align="center"
+                width="250"
+                label="所属机构">
+              </el-table-column>
+              <el-table-column
                 prop="turnName"
                 header-align="center"
                 align="center"
                 min-width="140"
                 label="轮次">
               </el-table-column>
-              <el-table-column
+              <!--<el-table-column
                 prop="workerList"
                 header-align="center"
                 align="center"
                 min-width="150"
                 label="班组">
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column
                 prop="inspectionDate"
                 header-align="center"
                 align="center"
                 min-width="140"
-                label="应检日期">
+                label="漏检日期">
               </el-table-column>
               <el-table-column
                 prop="startTime"
@@ -114,13 +121,13 @@
                 width="140"
                 label="软次结束时间">
               </el-table-column>
-              <el-table-column
+              <!--<el-table-column
                 prop="createTime"
                 header-align="center"
                 align="center"
                 width="140"
                 label="上传时间">
-              </el-table-column>
+              </el-table-column>-->
             </el-table>
           <el-pagination
             @size-change="sizeChangeHandle"
@@ -158,7 +165,7 @@
           deviceId: null,
           startTime: null,
           endTime: '',
-          selectDay: 1
+          // selectDay: 1
         },
         tableHeight: 300,
         isDrawBack: false,
@@ -173,7 +180,7 @@
         dataListLoading: false,
         dataListSelections: [],
         startDatePicker: this.beginDate(),
-        selectDayList: [{'id':0,'name':'近一天'},{'id':1,'name':'近七天'},{'id':2,'name':'上一周'},{'id':3,'name':'上一月'}],
+        // selectDayList: [{'id':0,'name':'近一天'},{'id':1,'name':'近七天'},{'id':2,'name':'上一周'},{'id':3,'name':'上一月'}],
         chartHeight: '',
         type: 'dept',
         chartType: 'chartbar',
@@ -234,6 +241,14 @@
         }
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
+        }else{
+          let time = formatDate(new Date(), 'yyyy-MM-dd')  // 当日时间
+          if(endTime < time){
+            endTime = new Date(this.dataForm.endTime)
+            endTime.setDate(endTime.getDate()+ 1)
+            endTime = formatDate(endTime, 'yyyy-MM-dd')
+            console.log('查询时间'+ endTime)
+          }
         }
         if(endTime !=='' && endTime<startTime) {
           this.$message.error('结束时间不能小于开始时间')
@@ -272,6 +287,14 @@
         }
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
+        }else{
+          let time = formatDate(new Date(), 'yyyy-MM-dd')  // 当日时间
+          if(endTime < time){
+            endTime = new Date(this.dataForm.endTime)
+            endTime.setDate(endTime.getDate()+ 1)
+            endTime = formatDate(endTime, 'yyyy-MM-dd')
+            console.log('查询时间'+ endTime)
+          }
         }
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getmissingstatisticsbydate'),
@@ -337,8 +360,8 @@
         this.downloadLoading = true
         require.ensure([], () => {
           const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['设备名称', '巡检线路', '轮次', '班组', '轮次开始时间', '轮次结束时间', '上传时间']
-          const filterVal = ['deviceName', 'lineName', 'turnName', 'workerList', 'startTime', 'endTime','createTime']
+          const tHeader = ['巡点名称', '巡线名称', '所属机构', '轮次', '轮次开始时间', '轮次结束时间']
+          const filterVal = ['deviceName', 'lineName', 'deptName', 'turnName', 'startTime', 'endTime']
           const data = this.formatJson(filterVal, list)
           let filename = formatDate(new Date(), 'yyyyMMddhhmmss')
           export_json_to_excel({
@@ -362,6 +385,14 @@
         }
         if (endTime === 'NaN-aN-aN' || endTime === '1970-01-01') {
           endTime = ''
+        }else{
+          let time = formatDate(new Date(), 'yyyy-MM-dd')  // 当日时间
+          if(endTime < time){
+            endTime = new Date(this.dataForm.endTime)
+            endTime.setDate(endTime.getDate()+ 1)
+            endTime = formatDate(endTime, 'yyyy-MM-dd')
+            console.log('查询时间'+ endTime)
+          }
         }
         this.$http({
           url: this.$http.adornUrl('/inspection/inspectiontaskdevice/getallmissingbydate'),
@@ -437,7 +468,7 @@
         }
         this.chartHeight = window.innerHeight - this.$refs.tabs.$el.offsetTop - 160
       },
-      'dataForm.selectDay': function (val) {
+      /*'dataForm.selectDay': function (val) {
         if (val === 0) {
           this.dataForm.endTime = new Date()
           this.dataForm.startTime = new Date()
@@ -460,7 +491,7 @@
           this.dataForm.endTime.setDate(this.dataForm.startTime.getDate() - 1)
         }
         this.search()
-      }
+      }*/
     },
     mounted: function () {
       this.$nextTick(function () {

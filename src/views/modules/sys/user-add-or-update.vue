@@ -76,7 +76,7 @@
       </el-form-item>
       <el-form-item label="角色" size="mini" prop="roleIdList">
         <el-checkbox-group v-model="dataForm.roleIdList">
-          <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId" style="margin-left: 0px; margin-right: 30px;">{{ role.roleName }}</el-checkbox>
+          <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId" style="margin-left: 0px; margin-right: 30px;"  @change="isChecked">{{ role.roleName }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="状态" size="mini" prop="status">
@@ -179,6 +179,16 @@
         }
       }
     },
+    computed: {
+      userId: {
+        get () { return this.$store.state.user.id },
+        set (val) { this.$store.commit('user/updateId', val) }
+      },
+      userName: {
+        get () { return this.$store.state.user.name },
+        set (val) { this.$store.commit('user/updateName', val) }
+      }
+    },
     methods: {
        // 获取部门列表
       getDeptList () {
@@ -246,6 +256,21 @@
       deptListTreeSetCurrentNode () {
         this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
         this.dataForm.deptName = (this.$refs.deptListTree.getCurrentNode() || {})['name']
+      },
+      isChecked(){
+        if(this.userId === this.dataForm.id){
+          // 不让选中
+          this.$alert('用户不能改变自己的权限')
+          this.$http({
+            url: this.$http.adornUrl(`/sys/user/info/${this.dataForm.id}`),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataForm.roleIdList = data.user.roleIdList
+            }
+          })
+        }
       },
       // 表单提交
       dataFormSubmit () {

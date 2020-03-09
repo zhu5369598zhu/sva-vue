@@ -188,7 +188,7 @@
         this.curPercent = val
       },
       search () {
-        this.dataForm.deptId = null
+        // this.dataForm.deptId = null
         this.getDataList()
       },
       // 获取数据列表

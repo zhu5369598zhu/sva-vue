@@ -303,7 +303,7 @@
       }
     },
     methods: {
-      init (defectiveId, id, deviceId) {
+      init (defectiveId, id, deviceId,deviceName) {
         this.dataForm.defectiveId = defectiveId || 0
         this.isHttp = false
         this.visible = true
@@ -343,12 +343,13 @@
               }
             })
           }
-          this.dataForm.deviceId = deviceId
         })
         // 新增  工单编号  managementNumber
         if (this.dataForm.defectiveId <= 0) {
           this.visible = true
-          // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
+          this.dataForm.deviceId = deviceId
+          this.dataForm.defectiveDevice = deviceName
+            // 缺陷填报人 和 缺陷确定人 都是 当前登录用户
           this.dataForm.defectiveName = this.loginuserName
           this.dataForm.defectiveNameId = this.loginuserId
           this.dataForm.resultId = id

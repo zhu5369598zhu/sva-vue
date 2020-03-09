@@ -9,7 +9,7 @@
     append-to-body>
     <el-tabs type="border-card" value="device" ref="tabs" @tab-click="TabsClickHandle">
       <el-tab-pane label="设备台账" name="device" actived="true" >
-        <el-tabs type="border-card" value="devicepane"  >
+        <el-tabs type="border-card" value="devicepane"  @tab-click="docTabsClickHandle">
           <el-tab-pane label="设备资料" name="devicepane" actived="true">
             <div class="device-form">
               <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
@@ -137,6 +137,62 @@
                   </el-col>
                 </el-row>
                 <el-row>
+                  <el-col span="8">
+                    <el-form-item label="特性1" prop="featureOne">
+                        <el-input size="mini" v-model="dataForm.featureOne" placeholder="特征1" clearable style="width:140px;"></el-input>
+                    </el-form-item>
+
+                  </el-col>
+                  <el-col span="8">
+                    <el-form-item label="特性1内容" prop="OneContent">
+                      <el-input size="mini" type="textarea"
+                                autosize v-model="dataForm.oneContent" placeholder="特征1内容" clearable ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col span="8">
+                    <el-form-item label="特性2" prop="featureTwo">
+                      <el-input size="mini" v-model="dataForm.featureTwo" placeholder="特征2" clearable style="width:140px;"></el-input>
+                    </el-form-item>
+
+                  </el-col>
+                  <el-col span="8">
+                    <el-form-item label="特性2内容" prop="twoContent">
+                      <el-input size="mini" type="textarea"
+                                autosize v-model="dataForm.twoContent" placeholder="特征2内容" clearable ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col span="8">
+                    <el-form-item label="特性3" prop="featureThree">
+                      <el-input size="mini" v-model="dataForm.featureThree" placeholder="特征3" clearable style="width:140px;"></el-input>
+                    </el-form-item>
+
+                  </el-col>
+                  <el-col span="8">
+                    <el-form-item label="特性3内容" prop="threeContent">
+                      <el-input size="mini" type="textarea"
+                                autosize v-model="dataForm.threeContent" placeholder="特征3内容" clearable ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col span="8">
+                    <el-form-item label="特性4" prop="featureFour">
+                      <el-input size="mini" v-model="dataForm.featureFour" placeholder="特征4" clearable style="width:140px;"></el-input>
+                    </el-form-item>
+
+                  </el-col>
+                  <el-col span="8">
+                    <el-form-item label="特性4内容" prop="fourContent">
+                      <el-input size="mini" type="textarea"
+                                autosize v-model="dataForm.fourContent" placeholder="特征4内容" clearable ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
                   <el-col :span="8">
                     <el-form-item label="是否巡检:" prop="isInspect">
                       <el-switch v-model="dataForm.isInspect" placeholder="是否巡检" :disabled="!isModify" clearable style="width:140px;"></el-switch>
@@ -164,6 +220,75 @@
           <el-tab-pane label="日常维护" name="maintain">
             <order-device :disabled="!isModify" ref="orderDevice" :deviceId="dataForm.deviceId"></order-device>
           </el-tab-pane>
+          <el-tab-pane label="检修信息" name="repair">
+            <el-form>
+              <el-form-item>
+                <el-button @click="handleNewRepair">新增</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table
+              height="360"
+              :data="repairList"
+              border
+              highlight-current-row
+              style="width: 100%;">
+              <el-table-column
+                type="index"
+                width="50">
+              </el-table-column>
+              <el-table-column
+                prop="type"
+                header-align="center"
+                align="center"
+                label="检修类型">
+              </el-table-column>
+              <el-table-column
+                prop="content"
+                header-align="center"
+                align="center"
+                label="检修内容">
+              </el-table-column>
+              <el-table-column
+                prop="repairDept"
+                header-align="center"
+                align="center"
+                label="检修单位">
+              </el-table-column>
+              <el-table-column
+                prop="repairtime"
+                header-align="center"
+                align="center"
+                label="检修时间">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                header-align="center"
+                align="center"
+                width="150"
+                label="操作">
+                <template slot-scope="scope">
+                  <!--<el-button type="text" size="small" @click="repairUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>-->
+                  <el-button type="text" size="small" @click="repairDeleteHandle(scope.row.id)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div align="right">
+              <el-pagination class="pagecontrol"
+                             @size-change="sizeChangeHandle"
+                             @current-change="currentChangeHandle"
+                             :current-page="repairPageIndex"
+                             :page-sizes="[10, 20, 50, 100]"
+                             :page-size="repairPageSize"
+                             :total="repairTotalPage"
+                             layout="total, sizes, prev, pager, next, jumper">
+              </el-pagination>
+            </div>
+            <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getRepairList"></add-or-update>
+            <!--<div align="center" class="repair-footer">
+              <el-button v-if="this.isModify===true" @click="visible = false">取消</el-button>
+             &lt;!&ndash; <el-button type="primary" v-if="this.isModify===true" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>&ndash;&gt;
+            </div>-->
+          </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="设备资料" name="document">
@@ -182,74 +307,6 @@
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
-      <el-tab-pane label="检修信息" name="repair">
-        <el-form>
-          <el-form-item>
-            <el-button @click="handleNewRepair">新增</el-button>
-          </el-form-item>
-        </el-form>
-        <el-table
-          height="360"
-          :data="repairList"
-          border
-          highlight-current-row
-          style="width: 100%;">
-          <el-table-column
-            type="index"
-            width="50">
-          </el-table-column>
-          <el-table-column
-            prop="createDate"
-            header-align="center"
-            align="center"
-            label="检修类型">
-          </el-table-column>
-          <el-table-column
-            prop="content"
-            header-align="center"
-            align="center"
-            label="检修内容">
-          </el-table-column>
-          <el-table-column
-            prop="operator"
-            header-align="center"
-            align="center"
-            label="检修单位">
-          </el-table-column>
-          <el-table-column
-            prop="createDate"
-            header-align="center"
-            align="center"
-            label="检修时间">
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            header-align="center"
-            align="center"
-            width="150"
-            label="操作">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="repairUpdateHandle(scope.$index)">{{scope.row.isSet?'保存':"修改"}}</el-button>
-              <el-button type="text" size="small" @click="repairDeleteHandle(scope.$index)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div align="right">
-          <el-pagination class="pagecontrol"
-                         @size-change="sizeChangeHandle"
-                         @current-change="currentChangeHandle"
-                         :current-page="repairPageIndex"
-                         :page-sizes="[10, 20, 50, 100]"
-                         :page-size="repairPageSize"
-                         :total="repairTotalPage"
-                         layout="total, sizes, prev, pager, next, jumper">
-          </el-pagination>
-        </div>
-        <div align="center" class="repair-footer">
-          <el-button v-if="this.isModify===true" @click="visible = false">取消</el-button>
-          <el-button type="primary" v-if="this.isModify===true" @click="dataFormSubmit()" :disabled="isHttp">保存</el-button>
-        </div>
-      </el-tab-pane>
     </el-tabs>
   </el-dialog>
 </template>
@@ -258,6 +315,7 @@
   import { treeDataTranslate } from '@/utils'
   import deviceDocument from '@/components/device/document'
   import orderDevice from '@/components/device/orderdevice'
+  import AddOrUpdate from './repair-add-or-update'
   export default {
     computed: {
       editTable () {
@@ -266,6 +324,8 @@
     },
     data () {
       return {
+        repairList: [],
+        addOrUpdateVisible: false,
         isModify: true,
         isHttp: false,
         visible: false,
@@ -273,8 +333,6 @@
         deviceLevelList: [],
         deptList: [],
         fileList: [],
-        repairTypeList: [{'name':'小修','id':0},{'name':'中修','id':1},{'name':'大修','id':2}],
-        repairList: [],
         repairTotalPage: 0,
         repairPageIndex: 1,
         repairPageSize: 10,
@@ -296,6 +354,14 @@
           deptName: '',
           deviceModel: '',
           deviceMaster: '',
+          featureOne: '',
+          oneContent: '',
+          featureTwo: '',
+          twoContent: '',
+          featureThree: '',
+          threeContent: '',
+          featureFour: '',
+          fourContent: '',
           isInspect: '',
           isShowDashboard: '',
           masterId: '',
@@ -325,7 +391,8 @@
     },
     components: {
       deviceDocument,
-      orderDevice
+      orderDevice,
+      AddOrUpdate
     },
     methods: {
       checkSelection () {
@@ -346,10 +413,12 @@
           url: this.$http.adornUrl('/inspection/repair/list'),
           method: 'get',
           params: this.$http.adornParams({
+            'deviceId': this.dataForm.deviceId,
             'page': this.repairPageIndex,
             'limit': this.repairPageSize
           })
         }).then(({data}) => {
+          console.log(data.page.list)
           if (data && data.code === 0) {
             this.repairList = data.page.list
             this.repairTotalPage = data.page.totalCount
@@ -359,10 +428,11 @@
           }
         })
       },
-      handleNewRepair () {
-      },
-      handleDelRepair (id) {
-        this.$confirm(`确定删除?`, '提示', {
+      repairDeleteHandle (id) {
+        var ids = id ? [id] : this.dataListSelections.map(item => {
+          return item.id
+        })
+        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -370,7 +440,7 @@
           this.$http({
             url: this.$http.adornUrl('/inspection/repair/delete'),
             method: 'post',
-            data: this.$http.adornData(id, false)
+            data: this.$http.adornData(ids, false)
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
@@ -387,11 +457,10 @@
           })
         })
       },
-      handleSave () {
-        // 保存数据前先进行数据验证
-        this.handleValidate(() => {
-          this.editTable.cancelRows(this.tableData, false)
-          this.$refs.table.clearSelection()
+      handleNewRepair (id) {
+        this.addOrUpdateVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdate.init(id,this.dataForm.deviceId)
         })
       },
       onBeforeUpload (file) {
@@ -414,6 +483,33 @@
           this.$refs.orderDevice.getDataList(this.dataForm.deviceId)
         }
       },
+      docTabsClickHandle(tab){
+        if(tab.label="日常检修"){
+          // this.getRepairDeviceList()
+          this.getRepairList()
+        }
+      },
+     /* getRepairDeviceList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/inspection/repair/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'key': this.dataForm.key
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.repairTotalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.repairTotalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },*/
       documentTabsClickHandle (tab) {
         if (tab.label === '出厂资料') {
           this.$refs.documentBirth.getDataList(0)
@@ -557,6 +653,14 @@
                 this.dataForm.isShowDashboard = data.device.isShowDashboard
                 this.dataForm.manufactureDate = data.device.manufactureDate
                 this.dataForm.deviceMaster = data.device.deviceMaster
+                this.dataForm.featureOne = data.device.featureOne
+                this.dataForm.oneContent = data.device.oneContent
+                this.dataForm.featureTwo = data.device.featureTwo
+                this.dataForm.twoContent = data.device.twoContent
+                this.dataForm.featureThree = data.device.featureThree
+                this.dataForm.threeContent = data.device.threeContent
+                this.dataForm.featureFour = data.device.featureFour
+                this.dataForm.fourContent = data.device.fourContent
                 this.dataForm.createTime = data.device.createTime
                 if (data.device.isInspect === 1) {
                   this.dataForm.isInspect = true
@@ -625,6 +729,14 @@
                 'masterId': this.dataForm.masterId,
                 'manufactureDate': this.dataForm.manufactureDate,
                 'deviceMaster': this.dataForm.deviceMaster,
+                'featureOne': this.dataForm.featureOne,
+                'oneContent': this.dataForm.oneContent,
+                'featureTwo': this.dataForm.featureTwo,
+                'twoContent': this.dataForm.twoContent,
+                'featureThree': this.dataForm.featureThree,
+                'threeContent': this.dataForm.threeContent,
+                'featureFour': this.dataForm.featureFour,
+                'fourContent': this.dataForm.fourContent,
                 'createTime': this.dataForm.createTime
               })
             }).then(({data}) => {

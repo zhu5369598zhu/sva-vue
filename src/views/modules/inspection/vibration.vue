@@ -145,6 +145,13 @@
               label="上上/上/下/下下">
             </el-table-column>
             <el-table-column
+              prop="threshold"
+              header-align="center"
+              align="center"
+              width="120"
+              label="阈值">
+            </el-table-column>
+            <el-table-column
               prop="inspectionType"
               header-align="center"
               align="center"

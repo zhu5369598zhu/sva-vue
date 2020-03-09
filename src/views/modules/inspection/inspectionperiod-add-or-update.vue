@@ -233,19 +233,19 @@
       },
       'dataForm.startPoint': function (newVal, oldVal) {
          if (this.dataForm.frequency === 7) { // 周
-           this.maxStartPoint = 7 - this.dataForm.span
-           this.maxSpan = 7 - this.dataForm.startPoint
+           this.maxStartPoint = 8 - this.dataForm.span
+           this.maxSpan = 8 - this.dataForm.startPoint
          } else if (this.dataForm.frequency === 31){
-           this.maxStartPoint = 31 - this.dataForm.span
-           this.maxSpan = 31 - this.dataForm.startPoint
+           this.maxStartPoint = 32 - this.dataForm.span
+           this.maxSpan = 32 - this.dataForm.startPoint
          }
       },
       'dataForm.span': function (newVal, oldVal) {
         if (this.dataForm.frequency === 7) { // 周
-          this.maxSpan = 7 - this.dataForm.startPoint
-          this.maxStartPoint = 7 - this.dataForm.span
+          this.maxSpan = 8 - this.dataForm.startPoint
+          this.maxStartPoint = 8 - this.dataForm.span
         } else if (this.dataForm.frequency === 31){
-          this.maxSpan = 31 - this.dataForm.startPoint
+          this.maxSpan = 32 - this.dataForm.startPoint
         }
       }
     },

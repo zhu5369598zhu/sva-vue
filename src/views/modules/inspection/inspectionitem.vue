@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left" style="height: calc(100% - 15px);">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">设备选择</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">设备选择</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <DeviceTree @TreeSelectEvent="treeSelectHandle" v-if="this.isDrawBack===false"></DeviceTree>
         </div>
@@ -121,6 +121,13 @@
         align="center"
         width="140"
         label="上上/上/下/下下">
+      </el-table-column>
+      <el-table-column
+        prop="threshold"
+        header-align="center"
+        align="center"
+        width="120"
+        label="阈值">
       </el-table-column>
       <el-table-column
         prop="defaultRpm"
@@ -289,15 +296,29 @@
       addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
         var _self = this
-        this.$nextTick(() => {
-          _self.$refs.addOrUpdate.dataForm.deviceId = _self.dataForm.deviceId
-          _self.$refs.addOrUpdate.getUnitList()
-          _self.$refs.addOrUpdate.getInspectionTypeList()
-          _self.$refs.addOrUpdate.getInspectionStatusList()
-          _self.$refs.addOrUpdate.getFrequencyList()
-          _self.$refs.addOrUpdate.getPrecisionList()
-          _self.$refs.addOrUpdate.init(id)
+        // 判断该巡点绑定的巡线是否发布，如果发布不能新增和修改
+        this.$http({
+          url: this.$http.adornUrl('/inspection/inspectionitem/ispublished'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'deviceId': this.dataForm.deviceId
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$nextTick(() => {
+              _self.$refs.addOrUpdate.dataForm.deviceId = _self.dataForm.deviceId
+              _self.$refs.addOrUpdate.getUnitList()
+              _self.$refs.addOrUpdate.getInspectionTypeList()
+              _self.$refs.addOrUpdate.getInspectionStatusList()
+              _self.$refs.addOrUpdate.getFrequencyList()
+              _self.$refs.addOrUpdate.getPrecisionList()
+              _self.$refs.addOrUpdate.init(id)
 
+            })
+          } else {
+            // this.$message.error(data.msg)
+            this.$alert(data.msg)
+          }
         })
       },
       // 删除

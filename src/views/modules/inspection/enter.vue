@@ -5,7 +5,7 @@
       <template slot="paneL" >
         <div class="show-left">
         <div class="org_title">
-          <span v-if="this.isDrawBack===false">机构列表</span style="vertical-align: middle;"><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
+          <span v-if="this.isDrawBack===false" style="vertical-align: middle;">机构列表</span><i :class="drawBackClass" style="float:right;cursor:pointer;" @click="onDrawBack"></i>
         </div>
         <linetree :inspectionType="dataForm.inspectionTypeId" @TreeSelectEvent="handleDeptSelect" v-if="this.isDrawBack===false"></linetree>
         </div>
@@ -143,6 +143,13 @@
               align="center"
               width="140"
               label="上上/上/下/下下">
+            </el-table-column>
+            <el-table-column
+              prop="threshold"
+              header-align="center"
+              align="center"
+              width="120"
+              label="阈值">
             </el-table-column>
             <el-table-column
               prop="inspectionType"
@@ -691,6 +698,7 @@
         this.unNormal = []
         this.normal = []
         this.getDataList()
+        console.log(this.type)
         if (this.type === 'dept') {
           this.chartType = 'chartpie'
           this.getStatistics()
@@ -729,6 +737,7 @@
       },
       drawChart () {
         if (this.hasData === true) {
+          console.log(this.chartType)
           if (this.chartType === 'chartline') {
             this.$nextTick(() => {
               this.$refs.chartline.initChart(this.chartType)
